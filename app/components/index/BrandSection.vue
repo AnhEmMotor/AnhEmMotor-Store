@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
 }
 
 .brand-card:hover {
-	@apply -translate-y-2 shadow-2xl shadow-red-500/20;
+	@apply shadow-lg;
 }
 
 .brand-icon {
@@ -183,7 +183,7 @@ onBeforeUnmount(() => {
 }
 
 .brand-logo {
-	@apply h-12 sm:h-16 md:h-20 w-auto aspect-square object-contain transition-all duration-300 ease-in-out;
+	@apply h-12 sm:h-16 md:h-20 w-auto aspect-square object-contain;
 }
 
 .brand-card p {

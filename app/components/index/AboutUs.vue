@@ -15,15 +15,15 @@
 
 					<ul class="feature-list">
 						<li>
-							<i class="fas fa-check-circle text-red-500"/>
+							<i class="fas fa-check-circle text-red-500" />
 							Bảo hành toàn quốc
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500"/>
+							<i class="fas fa-check-circle text-red-500" />
 							Dịch vụ hậu mãi chuyên nghiệp
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500"/>
+							<i class="fas fa-check-circle text-red-500" />
 							Giá cả cạnh tranh
 						</li>
 					</ul>
@@ -59,7 +59,7 @@
 }
 
 .about-image img {
-	@apply w-full aspect-[16/9] object-cover transition-transform duration-500 ease-in-out group-hover:scale-110;
+	@apply w-full aspect-[16/9] object-cover;
 }
 
 .about-text h2 {
@@ -83,6 +83,6 @@
 }
 
 .cta-button {
-	@apply inline-block bg-red-500 text-white font-bold py-2.5 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 hover:bg-red-600 text-sm sm:text-base;
+	@apply inline-block bg-red-500 text-white font-bold py-2.5 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg hover:bg-red-600 text-sm sm:text-base;
 }
 </style>

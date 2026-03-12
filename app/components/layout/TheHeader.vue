@@ -73,13 +73,16 @@
 				<!-- Action Icons & User -->
 				<div class="flex-none flex items-center gap-2 sm:gap-4">
 					<div class="flex items-center gap-1 sm:gap-2">
-						<button class="header-icon-btn group" @click="toggleCart">
+						<button
+							v-if="cartItemCount > 0"
+							class="header-icon-btn group"
+							@click="toggleCart"
+						>
 							<div class="relative">
 								<IconCart
 									class="w-6 h-6 text-gray-700 group-hover:text-red-500 transition-colors"
 								/>
 								<span
-									v-if="cartItemCount > 0"
 									class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white animate-in zoom-in duration-300"
 								>
 									{{ cartItemCount }}

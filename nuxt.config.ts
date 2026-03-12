@@ -64,7 +64,7 @@ export default defineNuxtConfig({
 	},
 
 	site: {
-		url: "https://anhemmotor.vn",
+		url: "https://anhemmotor.online",
 		name: "AnhEm Motor",
 		description:
 			"Chuyên cung cấp xe máy, phụ tùng, phụ kiện chính hãng | AnhEm Motor",
