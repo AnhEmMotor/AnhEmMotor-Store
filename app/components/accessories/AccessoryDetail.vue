@@ -9,13 +9,13 @@
 				<router-link to="/" class="hover:text-red-600 transition-colors"
 					>Trang chủ</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]"></i>
+				<i class="fas fa-chevron-right text-[10px]"/>
 				<router-link
 					to="/accessories"
 					class="hover:text-red-600 transition-colors"
 					>Phụ kiện</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]"></i>
+				<i class="fas fa-chevron-right text-[10px]"/>
 				<span class="text-gray-900 font-medium truncate max-w-[200px]">{{
 					product.name
 				}}</span>
@@ -33,7 +33,7 @@
 								:src="product.image"
 								:alt="product.name"
 								class="max-w-full h-auto object-contain hover:scale-105 transition-transform duration-500 ease-out"
-							/>
+							>
 						</div>
 					</div>
 
@@ -81,22 +81,22 @@
 										class="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm"
 									>
 										<button
-											@click="changeQty(-1)"
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-r border-gray-200 text-gray-600"
+											@click="changeQty(-1)"
 										>
-											<i class="fas fa-minus"></i>
+											<i class="fas fa-minus"/>
 										</button>
 										<input
-											type="number"
 											v-model.number="quantity"
+											type="number"
 											class="w-14 text-center font-bold text-lg focus:outline-none border-none pointer-events-none"
 											min="1"
-										/>
-										<button
-											@click="changeQty(1)"
-											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"
 										>
-											<i class="fas fa-plus"></i>
+										<button
+											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"
+											@click="changeQty(1)"
+										>
+											<i class="fas fa-plus"/>
 										</button>
 									</div>
 									<span
@@ -104,7 +104,7 @@
 									>
 										<span
 											class="w-2 h-2 bg-green-500 rounded-full animate-pulse"
-										></span>
+										/>
 										Sẵn có trong kho
 									</span>
 								</div>
@@ -112,10 +112,10 @@
 
 							<div class="pt-8">
 								<button
-									@click="handleAddToCart"
 									class="w-full md:w-auto px-16 py-4 bg-[#de0000] text-white rounded-xl font-bold text-lg hover:bg-black hover:shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3"
+									@click="handleAddToCart"
 								>
-									<i class="fas fa-cart-plus"></i> THÊM VÀO GIỎ HÀNG
+									<i class="fas fa-cart-plus"/> THÊM VÀO GIỎ HÀNG
 								</button>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 					class="flex items-center justify-between mb-8 border-b border-gray-200 pb-5"
 				>
 					<div class="flex items-center gap-3">
-						<div class="w-2 h-8 bg-[#de0000] rounded-full"></div>
+						<div class="w-2 h-8 bg-[#de0000] rounded-full"/>
 						<h2
 							class="text-2xl font-bold text-gray-800 uppercase tracking-tight"
 						>
@@ -142,7 +142,7 @@
 						Xem tất cả
 						<i
 							class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"
-						></i>
+						/>
 					</router-link>
 				</div>
 
@@ -164,7 +164,7 @@
 		>
 			<div
 				class="w-12 h-12 border-4 border-gray-200 border-t-[#de0000] rounded-full animate-spin"
-			></div>
+			/>
 			<div class="text-lg font-medium animate-pulse">
 				Đang tải thông tin sản phẩm...
 			</div>

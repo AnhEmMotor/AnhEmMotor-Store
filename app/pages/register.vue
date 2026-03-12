@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "../stores/useAuthStore";
 
 useSeoMeta({
 	title: "Đăng Ký | AnhEm Motor",
@@ -7,14 +8,10 @@ useSeoMeta({
 });
 
 const formData = ref({
-	username: "",
 	email: "",
-	phone: "",
 	password: "",
 	confirm_password: "",
 });
-const terms = ref(false);
-const privacy = ref(false);
 const feedback = ref({ message: "", type: "" });
 const isLoading = ref(false);
 const passwordFieldType = ref("password");
@@ -39,7 +36,7 @@ function togglePassword(field) {
 
 async function handleRegister() {
 	const data = formData.value;
-	if (!data.username || !data.email || !data.phone || !data.password) {
+	if (!data.email || !data.password || !data.confirm_password) {
 		return showFeedback("Vui lòng nhập đầy đủ thông tin!", false);
 	}
 	if (data.password.length < 6) {
@@ -48,39 +45,38 @@ async function handleRegister() {
 	if (data.password !== data.confirm_password) {
 		return showFeedback("Mật khẩu xác nhận không khớp!", false);
 	}
-	if (!terms.value || !privacy.value) {
-		return showFeedback("Bạn cần đồng ý với Điều khoản & Chính sách!", false);
-	}
 
 	isLoading.value = true;
 	feedback.value = { message: "", type: "" };
 	try {
-		const config = useRuntimeConfig();
-		await $fetch(`${config.public.apiBaseUrl}/api/auth/register`, {
-			method: "POST",
-			body: {
-				fullName: data.username,
-				email: data.email,
-				phone: data.phone,
-				password: data.password,
-			},
+		const authStore = useAuthStore();
+		const { error, data: resData } = await authStore.register({
+			Email: data.email,
+			Password: data.password,
 		});
+
+		if (error) {
+			throw error;
+		}
+
 		showFeedback(
-			"🎉 Đăng ký thành công! Vui lòng kiểm tra email để xác thực.",
+			resData?.message || "🎉 Đăng ký thành công! Vui lòng đăng nhập.",
 			true,
 		);
 		formData.value = {
-			username: "",
 			email: "",
-			phone: "",
 			password: "",
 			confirm_password: "",
 		};
-		terms.value = false;
-		privacy.value = false;
-	} catch {
+
+		const router = useRouter();
+		setTimeout(() => {
+			router.push("/login");
+		}, 2000);
+	} catch (error) {
 		showFeedback(
-			"Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.",
+			error.response?.data?.errors?.[0]?.message ||
+				"Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.",
 			false,
 		);
 	} finally {
@@ -97,58 +93,40 @@ async function handleRegister() {
 				<p>Tạo tài khoản mới để bắt đầu</p>
 			</div>
 
-			<div id="global-feedback" v-if="feedback.message" :class="feedback.type">
+			<div v-if="feedback.message" id="global-feedback" :class="feedback.type">
 				{{ feedback.message }}
 			</div>
 
 			<form id="register-form" @submit.prevent="handleRegister">
 				<div class="form-group">
 					<input
-						type="text"
-						id="username"
-						placeholder="Họ Tên *"
-						autocomplete="name"
-						v-model="formData.username"
-					/>
-				</div>
-				<div class="form-group">
-					<input
-						type="email"
 						id="email"
+						v-model="formData.email"
+						type="email"
 						placeholder="Email *"
 						autocomplete="email"
-						v-model="formData.email"
-					/>
-				</div>
-				<div class="form-group">
-					<input
-						type="tel"
-						id="phone"
-						placeholder="Số điện thoại *"
-						autocomplete="tel"
-						v-model="formData.phone"
-					/>
+					>
 				</div>
 				<div class="form-group relative-group">
 					<input
-						:type="passwordFieldType"
 						id="password"
+						v-model="formData.password"
+						:type="passwordFieldType"
 						placeholder="Mật khẩu *"
 						autocomplete="new-password"
-						v-model="formData.password"
-					/>
+					>
 					<span class="togglePassword" @click="togglePassword('password')">{{
 						passwordFieldType === "password" ? "🐵" : "🙈"
 					}}</span>
 				</div>
 				<div class="form-group relative-group">
 					<input
-						:type="confirmPasswordFieldType"
 						id="confirm_password"
+						v-model="formData.confirm_password"
+						:type="confirmPasswordFieldType"
 						placeholder="Xác nhận mật khẩu *"
 						autocomplete="new-password"
-						v-model="formData.confirm_password"
-					/>
+					>
 					<span
 						class="togglePassword"
 						@click="togglePassword('confirm_password')"
@@ -156,26 +134,11 @@ async function handleRegister() {
 					>
 				</div>
 
-				<div class="checkbox-container">
-					<input type="checkbox" id="terms" v-model="terms" />
-					<label for="terms"
-						>Tôi đồng ý với
-						<NuxtLink to="/terms">điều khoản dịch vụ</NuxtLink></label
-					>
-				</div>
-				<div class="checkbox-container">
-					<input type="checkbox" id="privacy" v-model="privacy" />
-					<label for="privacy"
-						>Tôi đồng ý với
-						<NuxtLink to="/privacy">Chính sách bảo mật</NuxtLink></label
-					>
-				</div>
-
-				<button type="submit" class="btn" id="submitBtn" :disabled="isLoading">
+				<button id="submitBtn" type="submit" class="btn" :disabled="isLoading">
 					{{ isLoading ? "Đang xử lý..." : "Đăng Ký Ngay" }}
 				</button>
 
-				<div class="loading" id="loading" v-if="isLoading && !feedback.message">
+				<div v-if="isLoading && !feedback.message" id="loading" class="loading">
 					<div class="spinner" />
 					<p>Đang xử lý đăng ký...</p>
 				</div>

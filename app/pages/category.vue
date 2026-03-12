@@ -10,19 +10,19 @@ useSeoMeta({
 const categories = ref([
 	{
 		href: "/motorcycles",
-		imgSrc: "/assets/image/categories/xe.png",
+		imgSrc: "/assets/image/categories/xe.webp",
 		alt: "Xe",
 		title: "Xe",
 	},
 	{
 		href: "/spare-parts",
-		imgSrc: "/assets/image/categories/spare-parts.png",
+		imgSrc: "/assets/image/categories/spare-parts.webp",
 		alt: "Phụ tùng",
 		title: "Phụ Tùng",
 	},
 	{
 		href: "/accessories",
-		imgSrc: "/assets/image/categories/accessories.png",
+		imgSrc: "/assets/image/categories/accessories.webp",
 		alt: "Phụ kiện",
 		title: "Phụ Kiện",
 	},
@@ -74,7 +74,7 @@ const categories = ref([
 						:src="category.imgSrc"
 						:alt="category.alt"
 						class="object-contain w-full h-full p-6 sm:p-8 md:p-12 transition-transform duration-300 group-hover:scale-105"
-					/>
+					>
 					<div
 						class="absolute bottom-4 right-4 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white text-lg transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110"
 					>

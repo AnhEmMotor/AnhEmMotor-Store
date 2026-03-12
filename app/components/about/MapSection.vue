@@ -12,17 +12,16 @@
           allowfullscreen=""
           loading="lazy"
           referrerpolicy="no-referrer-when-dowrade"
-        >
-        </iframe>
+        />
       </div>
 
       <div class="mt-8 bg-white p-4 sm:p-5 rounded-xl shadow-lg">
         <h3 class="text-red-500 mb-5 text-center font-bold text-xl sm:text-2xl">🗺️ Các Cơ Sở Trên Bản Đồ</h3>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div
-            class="flex flex-col sm:flex-row items-center justify-between p-3 sm:p-4 border-l-4 border-red-500 bg-gray-50 rounded-lg transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-lg text-center sm:text-left gap-2 sm:gap-2.5"
             v-for="(loc, idx) in locations"
             :key="idx"
+            class="flex flex-col sm:flex-row items-center justify-between p-3 sm:p-4 border-l-4 border-red-500 bg-gray-50 rounded-lg transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:shadow-lg text-center sm:text-left gap-2 sm:gap-2.5"
           >
             <div class="flex items-center">
               <span class="text-red-500 text-xl mr-2.5">📍</span>

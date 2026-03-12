@@ -4,10 +4,10 @@
       Cam Kết Từ AnhEm Moto
     </h2>
     <p class="mb-4 sm:mb-6 leading-relaxed text-base sm:text-lg">
-      ✅ Xe đúng chất lượng như cam kết <br />
-      ✅ Không xe tai nạn, ngập nước <br />
-      ✅ Giá bán hợp lý, minh bạch <br />
-      ✅ Bảo hành rõ ràng, dịch vụ hậu mãi tận tâm <br />
+      ✅ Xe đúng chất lượng như cam kết <br >
+      ✅ Không xe tai nạn, ngập nước <br >
+      ✅ Giá bán hợp lý, minh bạch <br >
+      ✅ Bảo hành rõ ràng, dịch vụ hậu mãi tận tâm <br >
       ✅ Hỗ trợ khách hàng từ khâu tư ván đến sau khi mua
     </p>
   </div>

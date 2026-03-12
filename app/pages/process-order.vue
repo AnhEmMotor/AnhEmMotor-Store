@@ -183,7 +183,7 @@ onMounted(async () => {
 			:deposit-amount="depositAmount"
 			:selected-method="selectedPaymentMethod"
 			@close="closeCheckoutModal"
-			@update:selectedMethod="(m) => (selectedPaymentMethod = m)"
+			@update:selected-method="(m) => (selectedPaymentMethod = m)"
 			@confirm="confirmPayment"
 		/>
 
@@ -225,7 +225,7 @@ onMounted(async () => {
 									:src="item.image"
 									:alt="item.name"
 									class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg border border-gray-200"
-								/>
+								>
 								<div>
 									<h5 class="text-gray-800 font-semibold text-sm sm:text-base">
 										{{ item.name }}
@@ -260,7 +260,7 @@ onMounted(async () => {
 									@change="
 										updateQuantity(item.id, parseInt($event.target.value) || 1)
 									"
-								/>
+								>
 								<button
 									class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 text-xs sm:text-sm"
 									@click="updateQuantity(item.id, item.quantity + 1)"

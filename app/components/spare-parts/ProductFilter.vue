@@ -4,13 +4,13 @@
       
       <div class="flex justify-between items-center border-b pb-2 mb-4">
         <h3 class="text-xl font-bold text-[#de0000]">
-          <i class="fas fa-filter mr-2"></i>Bộ Lọc
+          <i class="fas fa-filter mr-2"/>Bộ Lọc
         </h3>
         <button 
-          @click="$emit('close')" 
-          class="md:hidden text-gray-500 hover:text-[#de0000] p-2 transition-colors"
+          class="md:hidden text-gray-500 hover:text-[#de0000] p-2 transition-colors" 
+          @click="$emit('close')"
         >
-          <i class="fas fa-times text-xl"></i>
+          <i class="fas fa-times text-xl"/>
         </button>
       </div>
 
@@ -23,9 +23,9 @@
               name="product_type"
               value="all"
               :checked="selectedType === 'all'"
-              @change="updateType('all')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updateType('all')"
+            >
             <span class="ml-2 text-gray-600">Tất cả</span>
           </label>
 
@@ -35,9 +35,9 @@
               name="product_type"
               value="phu-tung"
               :checked="selectedType === 'phu-tung'"
-              @change="updateType('phu-tung')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updateType('phu-tung')"
+            >
             <span class="ml-2 text-gray-600">Phụ tùng</span>
           </label>
 
@@ -47,9 +47,9 @@
               name="product_type"
               value="hoa-chat"
               :checked="selectedType === 'hoa-chat'"
-              @change="updateType('hoa-chat')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updateType('hoa-chat')"
+            >
             <span class="ml-2 text-gray-600">Hóa chất</span>
           </label>
         </div>
@@ -64,9 +64,9 @@
               name="price"
               value="all"
               :checked="selectedPrice === 'all'"
-              @change="updatePrice('all')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updatePrice('all')"
+            >
             <span class="ml-2 text-gray-600">Tất cả</span>
           </label>
           <label class="flex items-center text-sm cursor-pointer hover:bg-gray-50 p-1 rounded transition">
@@ -75,9 +75,9 @@
               name="price"
               value="0-300000"
               :checked="selectedPrice === '0-300000'"
-              @change="updatePrice('0-300000')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updatePrice('0-300000')"
+            >
             <span class="ml-2 text-gray-600">Dưới 300.000</span>
           </label>
           <label class="flex items-center text-sm cursor-pointer hover:bg-gray-50 p-1 rounded transition">
@@ -86,9 +86,9 @@
               name="price"
               value="300000-500000"
               :checked="selectedPrice === '300000-500000'"
-              @change="updatePrice('300000-500000')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updatePrice('300000-500000')"
+            >
             <span class="ml-2 text-gray-600">300.000 - 500.000</span>
           </label>
           <label class="flex items-center text-sm cursor-pointer hover:bg-gray-50 p-1 rounded transition">
@@ -97,9 +97,9 @@
               name="price"
               value="500000-1000000"
               :checked="selectedPrice === '500000-1000000'"
-              @change="updatePrice('500000-1000000')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updatePrice('500000-1000000')"
+            >
             <span class="ml-2 text-gray-600">500.000 - 1.000.000</span>
           </label>
           <label class="flex items-center text-sm cursor-pointer hover:bg-gray-50 p-1 rounded transition">
@@ -108,19 +108,19 @@
               name="price"
               value="1000000-max"
               :checked="selectedPrice === '1000000-max'"
-              @change="updatePrice('1000000-max')"
               class="w-4 h-4 text-[#de0000] border-gray-300 focus:ring-[#de0000]"
-            />
+              @change="updatePrice('1000000-max')"
+            >
             <span class="ml-2 text-gray-600">Trên 1.000.000</span>
           </label>
         </div>
       </div>
 
       <button
-        @click="$emit('clear-filters')"
         class="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-200 transition duration-200 mt-auto"
+        @click="$emit('clear-filters')"
       >
-        <i class="fas fa-sync-alt mr-2"></i> Xóa Bộ Lọc
+        <i class="fas fa-sync-alt mr-2"/> Xóa Bộ Lọc
       </button>
     </div>
   </aside>

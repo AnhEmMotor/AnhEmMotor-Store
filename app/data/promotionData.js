@@ -4,15 +4,15 @@ export const promotionData = [
     title: "Honda Việt Nam tri ân khách hàng với loạt ưu đãi hấp dẫn chào hè...",
     slug: "honda-tri-an-kh-uu-dai-chao-he",
     date: "15/07/2025",
-    image: "https://cdn.honda.com.vn/news-motorbike/July2025/xQD9vsxGTpqh2umWS1vjvvCsDiMcrgTYmiOqfxDb.jpeg",
+    image: "https://cdn.honda.com.vn/news-motorbike/July2025/xQD9vsxGTpqh2umWS1vjvvCsDiMcrgTYmiOqfxDb.webp",
     isHot: true,
     shortDescription: "Chương trình khuyến mại khủng dành cho các dòng xe máy và xe gắn máy điện",
     fullTitle: "Honda Việt Nam tri ân khách hàng với loạt ưu đãi hấp dẫn chào hè trong chương trình khuyến mại khủng dành cho các dòng xe máy và xe gắn máy điện – Chốt đơn Honda – Săn quà cực đã",
     duration: "từ ngày 15/07/2025 đến hết ngày 15/10/2025",
     carouselImages: [
-      "https://cdn.honda.com.vn/news-motorbike/July2025/PC.jpg",
-      "https://cdn.honda.com.vn/news-motorbike/August2025/A7bEiMawaAlNH0GolFRitRxSjkfAl1HzRCB1yF6C.png",
-      "https://cdn.honda.com.vn/news-motorbike/August2025/KPSb6JR1h2sUYsCh5PC1Yh2gZYrH9lRIchu6DWX5.jpeg"
+      "https://cdn.honda.com.vn/news-motorbike/July2025/PC.webp",
+      "https://cdn.honda.com.vn/news-motorbike/August2025/A7bEiMawaAlNH0GolFRitRxSjkfAl1HzRCB1yF6C.webp",
+      "https://cdn.honda.com.vn/news-motorbike/August2025/KPSb6JR1h2sUYsCh5PC1Yh2gZYrH9lRIchu6DWX5.webp"
     ],
     content: `
       <p class="font-semibold italic">Hà Nội, ngày 15 tháng 7 năm 2025 – Tiếp lửa cho những hành trình hè mới mẻ và sôi động, Honda Việt Nam (HVN) mang tới chương trình ưu đãi cực kỳ hấp dẫn "Chốt đơn Honda – Săn quà cực đã" cho các dòng xe máy và xe gắn máy điện để tri ân những khách hàng luôn tin tưởng và ủng hộ các sản phẩm của Honda Việt Nam.</p>
@@ -75,13 +75,13 @@ export const promotionData = [
     title: "Honda Việt Nam triển khai chương trình khuyến mại Chốt xế liền tay,...",
     slug: "honda-ctkm-chot-xe-lien-tay",
     date: "01/06/2025",
-    image: "https://cdn.honda.com.vn/news-motorbike/May2025/LGEoMNCjsDrOjIrhuLEoGc3t88MZFg2GshuBYUoO.png",
+    image: "https://cdn.honda.com.vn/news-motorbike/May2025/LGEoMNCjsDrOjIrhuLEoGc3t88MZFg2GshuBYUoO.webp",
     isHot: false,
     shortDescription: "Chương trình khuyến mại đặc biệt tháng 6",
     fullTitle: "Honda Việt Nam triển khai chương trình khuyến mại Chốt xế liền tay, quà tặng cực chất",
     duration: "từ ngày 01/06/2025 đến hết ngày 30/06/2025",
     carouselImages: [
-      "https://cdn.honda.com.vn/news-motorbike/May2025/LGEoMNCjsDrOjIrhuLEoGc3t88MZFg2GshuBYUoO.png"
+      "https://cdn.honda.com.vn/news-motorbike/May2025/LGEoMNCjsDrOjIrhuLEoGc3t88MZFg2GshuBYUoO.webp"
     ],
     content: `<p>Chương trình khuyến mại đặc biệt dành cho khách hàng trong tháng 6/2025.</p>`,
     benefits: [],
@@ -98,7 +98,7 @@ export const promotionData = [
     title: "Honda Việt Nam thông báo ngừng nhận đăng ký chương trình Chinh...",
     slug: "honda-ngung-nhan-dang-ky-chinh-phuc",
     date: "05/07/2024",
-    image: "https://cdn.honda.com.vn/news-motorbike/September2024/vAPKaxLnIWMHzrVpyWdhLaXzZ7RiUT7ooeMOMoIC.png",
+    image: "https://cdn.honda.com.vn/news-motorbike/September2024/vAPKaxLnIWMHzrVpyWdhLaXzZ7RiUT7ooeMOMoIC.webp",
     isHot: false,
     shortDescription: "Thông báo kết thúc chương trình",
     fullTitle: "Honda Việt Nam thông báo ngừng nhận đăng ký chương trình Chinh phục mọi cung đường",
@@ -112,7 +112,7 @@ export const promotionData = [
     title: "Honda Việt Nam giới thiệu ưu đãi đặc biệt mừng tháng 8...",
     slug: "honda-uu-dai-thang-8",
     date: "20/08/2025",
-    image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/06/d04a4d192a9d8e6f36b63cdcda96c412.jpg",
+    image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/06/d04a4d192a9d8e6f36b63cdcda96c412.webp",
     isHot: false,
     shortDescription: "Ưu đãi đặc biệt tháng 8",
     fullTitle: "Honda Việt Nam giới thiệu ưu đãi đặc biệt mừng tháng 8",
@@ -126,7 +126,7 @@ export const promotionData = [
     title: "Khuyến mãi Sắm xe sang - Nhận quà vàng áp dụng toàn quốc...",
     slug: "khuyen-mai-sam-xe-sang-nhan-qua-vang",
     date: "10/08/2025",
-    image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/11/4a28f54f7fd3763a3cf0cc7ca9fefa76-768x432.jpg",
+    image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/11/4a28f54f7fd3763a3cf0cc7ca9fefa76-768x432.webp",
     isHot: false,
     shortDescription: "Chương trình khuyến mãi toàn quốc",
     fullTitle: "Khuyến mãi Sắm xe sang - Nhận quà vàng áp dụng toàn quốc",
@@ -140,7 +140,7 @@ export const promotionData = [
     title: "Honda Việt Nam ra mắt chiến dịch Tiết kiệm xăng - Rinh quà lớn...",
     slug: "honda-tiet-kiem-xang-rinh-qua-lon",
     date: "01/08/2025",
-    image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/07/Thumb_1720661013-1-768x432.jpg",
+    image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/07/Thumb_1720661013-1-768x432.webp",
     isHot: false,
     shortDescription: "Chiến dịch tiết kiệm xăng",
     fullTitle: "Honda Việt Nam ra mắt chiến dịch Tiết kiệm xăng - Rinh quà lớn",

@@ -74,8 +74,8 @@ onMounted(() => {
 					</div>
 				</div>
 				<UiBasePagination
-					:currentPage="currentPage"
-					:totalPages="totalPages"
+					:current-page="currentPage"
+					:total-pages="totalPages"
 					@page-change="handlePageChange"
 				/>
 			</section>

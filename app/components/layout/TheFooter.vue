@@ -5,23 +5,23 @@
         <div class="footer-col">
           <h3 class="footer-heading">Thông Tin Liên Hệ</h3>
           <p class="contact-info-item">
-            <i class="fas fa-map-marker-alt mr-2"></i>193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên
+            <i class="fas fa-map-marker-alt mr-2"/>193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên
             Hoà, Tỉnh Đồng Nai
           </p>
-          <p class="contact-info-item"><i class="fas fa-phone mr-2"></i>(024) 8582 0808</p>
-          <p class="contact-info-item"><i class="fas fa-envelope mr-2"></i>anhemmotor@gmail.com</p>
+          <p class="contact-info-item"><i class="fas fa-phone mr-2"/>(024) 8582 0808</p>
+          <p class="contact-info-item"><i class="fas fa-envelope mr-2"/>anhemmotor@gmail.com</p>
           <div class="flex gap-4 mt-5">
             <RouterLink to="#" class="social-icon">
-              <i class="fab fa-facebook-f"></i>
+              <i class="fab fa-facebook-f"/>
             </RouterLink>
             <RouterLink to="#" class="social-icon">
-              <i class="fab fa-youtube"></i>
+              <i class="fab fa-youtube"/>
             </RouterLink>
             <RouterLink to="#" class="social-icon">
-              <i class="fab fa-instagram"></i>
+              <i class="fab fa-instagram"/>
             </RouterLink>
             <RouterLink to="#" class="social-icon">
-              <i class="fab fa-tiktok"></i>
+              <i class="fab fa-tiktok"/>
             </RouterLink>
           </div>
         </div>

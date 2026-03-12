@@ -6,48 +6,48 @@
     <div v-if="loading" class="flex items-center justify-center space-x-2">
       <div
         class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"
-      ></div>
+      />
       <span class="text-sm text-gray-500">Đang tải...</span>
     </div>
 
     <div v-else-if="totalPages > 0" class="flex items-center space-x-2">
       <button
-        @click="prevPage"
         :disabled="isPrevDisabled"
         :class="[
           'min-w-[40px] h-10 px-2 rounded-lg border bg-white text-gray-700 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
           !isPrevDisabled ? 'hover:border-red-600 hover:text-red-600' : '',
         ]"
+        @click="prevPage"
       >
         Trước
       </button>
 
       <div class="text-sm text-gray-700 px-3 min-w-[120px] text-center">
-        <span v-if="!isEditing" @dblclick="startEditing" class="cursor-pointer"
+        <span v-if="!isEditing" class="cursor-pointer" @dblclick="startEditing"
           >Trang {{ currentPage }} / {{ totalPages }}</span
         >
         <div v-else class="flex items-center justify-center gap-2">
           <input
             ref="pageInputEl"
-            type="number"
             v-model.number="inputPage"
-            @keydown.enter="goToPage"
-            @blur="goToPage"
+            type="number"
             :max="totalPages"
             step="1"
             min="1"
             class="w-20 text-center border border-gray-300 rounded-md shadow-sm focus:border-[#de0000] focus:ring-[#de0000]"
-          />
+            @keydown.enter="goToPage"
+            @blur="goToPage"
+          >
         </div>
       </div>
 
       <button
-        @click="nextPage"
         :disabled="isNextDisabled"
         :class="[
           'min-w-[40px] h-10 px-2 rounded-lg border bg-white text-gray-700 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
           !isNextDisabled ? 'hover:border-red-600 hover:text-red-600' : '',
         ]"
+        @click="nextPage"
       >
         Sau
       </button>

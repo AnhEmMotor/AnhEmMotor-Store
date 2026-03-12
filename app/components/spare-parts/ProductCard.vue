@@ -8,7 +8,7 @@
 				:src="product.image"
 				:alt="product.name"
 				class="w-full h-full aspect-square object-contain p-5 transition-transform duration-300 group-hover:scale-110"
-			/>
+			>
 		</div>
 
 		<div class="p-4 flex flex-col flex-1">
@@ -22,7 +22,7 @@
 			</div>
 
 			<BaseButton @click.stop="$emit('addToCart', product)">
-				<i class="fas fa-shopping-cart"></i>
+				<i class="fas fa-shopping-cart"/>
 				Thêm vào giỏ hàng
 			</BaseButton>
 		</div>

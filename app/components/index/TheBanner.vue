@@ -10,12 +10,12 @@
 
 			<div class="search-bar">
 				<input
-					type="text"
 					id="searchInput"
+					type="text"
 					placeholder="Tìm kiếm theo hãng, mẫu xe, năm sản xuất..."
-				/>
+				>
 				<button id="searchButton" class="search-button">
-					<i class="fas fa-search"></i> Tìm Kiếm
+					<i class="fas fa-search"/> Tìm Kiếm
 				</button>
 			</div>
 

@@ -6,7 +6,7 @@
         <span
           class="absolute bottom-[-12px] sm:bottom-[-16px] left-1/2 -translate-x-1/2 w-20 h-1 bg-red-600 rounded-sm"
           aria-hidden="true"
-        ></span>
+        />
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-8 mt-10 sm:mt-16">
         <ServiceCard v-for="(service, index) in services" :key="index" :service="service" />

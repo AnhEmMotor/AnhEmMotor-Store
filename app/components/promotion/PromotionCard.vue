@@ -23,7 +23,7 @@
       </h3>
       <span class="font-semibold text-primary-red group-hover:underline inline-flex items-center">
         Xem chi tiết
-        <i class="fas fa-arrow-right ml-1 transition-transform duration-300 group-hover:translate-x-1"></i>
+        <i class="fas fa-arrow-right ml-1 transition-transform duration-300 group-hover:translate-x-1"/>
       </span>
     </div>
   </router-link>

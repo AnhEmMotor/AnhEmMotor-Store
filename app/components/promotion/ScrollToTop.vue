@@ -2,11 +2,11 @@
   <transition name="fade-slide">
     <button
       v-show="visible"
-      @click="scrollToTop"
       class="fixed bottom-6 right-6 bg-primary-red text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-red-700 hover:-translate-y-1 transition-all duration-300 z-50"
       aria-label="Scroll to top"
+      @click="scrollToTop"
     >
-      <i class="fas fa-chevron-up text-xl"></i>
+      <i class="fas fa-chevron-up text-xl"/>
     </button>
   </transition>
 </template>
@@ -20,6 +20,12 @@ export default {
       scrollThreshold: 300
     };
   },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
   methods: {
     handleScroll() {
       this.visible = window.scrollY > this.scrollThreshold;
@@ -30,12 +36,6 @@ export default {
         behavior: 'smooth'
       });
     }
-  },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll);
-  },
-  beforeUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
   }
 };
 </script>

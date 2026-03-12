@@ -95,88 +95,89 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<div class="pt-6 md:pt-0 bg-gray-50">
-		<CommonCategoryNav />
-	</div>
-
-	<div class="container mx-auto px-4 mt-8 pb-12">
-		<div class="md:hidden flex justify-between items-center mb-6">
-			<h2 class="text-2xl font-bold text-gray-800">Phụ Kiện</h2>
-			<button
-				class="bg-white border border-gray-300 px-4 py-2 rounded-lg shadow-sm flex items-center gap-2 text-gray-700 hover:text-[#de0000] hover:border-[#de0000] transition"
-				@click="isFilterOpen = true"
-			>
-				<i class="fas fa-filter" />
-				<span class="font-bold">LỌC</span>
-			</button>
+	<div class="accessories-page">
+		<div class="pt-6 md:pt-0 bg-gray-50">
+			<CommonCategoryNav />
 		</div>
 
-		<div class="flex flex-col md:flex-row gap-8 relative">
-			<div
-				v-if="isFilterOpen"
-				class="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity"
-				@click="isFilterOpen = false"
-			/>
-
-			<AccessoriesFilterSidebar
-				id="filter-sidebar"
-				:products="allProducts"
-				v-model="filters"
-				@clear-filters="clearFilters"
-				@close="isFilterOpen = false"
-				class="transition-transform duration-300 ease-in-out bg-white"
-				:class="[
-					!isDesktop
-						? 'fixed top-0 left-0 h-full w-[85%] max-w-[320px] z-50 shadow-2xl'
-						: '',
-					!isDesktop && !isFilterOpen ? '-translate-x-full' : 'translate-x-0',
-					isDesktop ? 'md:w-1/4 md:block' : '',
-				]"
-			/>
-
-			<main class="flex-grow">
-				<h2 class="hidden md:block text-3xl font-bold text-gray-800 mb-6">
-					Phụ Kiện Chính Hãng
-				</h2>
-
-				<div
-					v-if="paginatedProducts.length === 0"
-					class="text-center py-10 bg-gray-50 rounded-xl"
+		<div class="container mx-auto px-4 mt-8 pb-12">
+			<div class="md:hidden flex justify-between items-center mb-6">
+				<h2 class="text-2xl font-bold text-gray-800">Phụ Kiện</h2>
+				<button
+					class="bg-white border border-gray-300 px-4 py-2 rounded-lg shadow-sm flex items-center gap-2 text-gray-700 hover:text-[#de0000] hover:border-[#de0000] transition"
+					@click="isFilterOpen = true"
 				>
-					<p class="text-gray-500 text-lg">
-						Không tìm thấy sản phẩm nào phù hợp với bộ lọc.
-					</p>
-					<button
-						class="mt-2 text-[#de0000] font-semibold hover:underline"
-						@click="clearFilters"
+					<i class="fas fa-filter" />
+					<span class="font-bold">LỌC</span>
+				</button>
+			</div>
+
+			<div class="flex flex-col md:flex-row gap-8 relative">
+				<div
+					v-if="isFilterOpen"
+					class="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity"
+					@click="isFilterOpen = false"
+				/>
+
+				<AccessoriesFilterSidebar
+					id="filter-sidebar"
+					v-model="filters"
+					:products="allProducts"
+					class="transition-transform duration-300 ease-in-out bg-white"
+					:class="[
+						!isDesktop
+							? 'fixed top-0 left-0 h-full w-[85%] max-w-[320px] z-50 shadow-2xl'
+							: '',
+						!isDesktop && !isFilterOpen ? '-translate-x-full' : 'translate-x-0',
+						isDesktop ? 'md:w-1/4 md:block' : '',
+					]"
+					@clear-filters="clearFilters"
+					@close="isFilterOpen = false"
+				/>
+
+				<main class="flex-grow">
+					<h2 class="hidden md:block text-3xl font-bold text-gray-800 mb-6">
+						Phụ Kiện Chính Hãng
+					</h2>
+
+					<div
+						v-if="paginatedProducts.length === 0"
+						class="text-center py-10 bg-gray-50 rounded-xl"
 					>
-						Xóa bộ lọc
-					</button>
-				</div>
+						<p class="text-gray-500 text-lg">
+							Không tìm thấy sản phẩm nào phù hợp với bộ lọc.
+						</p>
+						<button
+							class="mt-2 text-[#de0000] font-semibold hover:underline"
+							@click="clearFilters"
+						>
+							Xóa bộ lọc
+						</button>
+					</div>
 
-				<div
-					v-else
-					class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
-				>
-					<AccessoriesProductCard
-						v-for="product in paginatedProducts"
-						:key="product.id"
-						:product="product"
-						@add-to-cart="handleAddToCart"
-						@view-details="goToDetail"
-					/>
-				</div>
+					<div
+						v-else
+						class="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+					>
+						<AccessoriesProductCard
+							v-for="product in paginatedProducts"
+							:key="product.id"
+							:product="product"
+							@add-to-cart="handleAddToCart"
+							@view-details="goToDetail"
+						/>
+					</div>
 
-				<div class="mt-8">
-					<UiBasePagination
-						v-if="totalPages > 1"
-						:current-page="currentPage"
-						:total-pages="totalPages"
-						@page-change="handlePageChange"
-					/>
-				</div>
-			</main>
+					<div class="mt-8">
+						<UiBasePagination
+							v-if="totalPages > 1"
+							:current-page="currentPage"
+							:total-pages="totalPages"
+							@page-change="handlePageChange"
+						/>
+					</div>
+				</main>
+			</div>
 		</div>
 	</div>
 </template>
-

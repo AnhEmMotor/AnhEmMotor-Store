@@ -19,7 +19,7 @@
         {{ news.excerpt }}
       </p>
       <span class="text-primary-red font-bold mt-4 inline-block text-sm hover:underline">
-        Đọc thêm <i class="fas fa-arrow-right ml-1 text-xs"></i>
+        Đọc thêm <i class="fas fa-arrow-right ml-1 text-xs"/>
       </span>
     </div>
   </router-link>

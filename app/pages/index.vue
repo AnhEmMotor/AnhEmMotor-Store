@@ -7,9 +7,10 @@ useSeoMeta({
 </script>
 
 <template>
-	<IndexTheBanner />
-	<IndexNewestProduct />
-	<IndexBrandSection />
-	<IndexAboutUs />
+	<main class="home-page">
+		<IndexTheBanner />
+		<IndexNewestProduct />
+		<IndexBrandSection />
+		<IndexAboutUs />
+	</main>
 </template>
-

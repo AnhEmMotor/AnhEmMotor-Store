@@ -3,7 +3,7 @@
 		<div class="container">
 			<div class="about-content">
 				<div class="about-image group">
-					<img src="/assets/image/index/about.webp" alt="Về AnhEm Motor" />
+					<img src="/assets/image/index/about.webp" alt="Về AnhEm Motor" >
 				</div>
 
 				<div class="about-text">
@@ -15,15 +15,15 @@
 
 					<ul class="feature-list">
 						<li>
-							<i class="fas fa-check-circle text-red-500"></i>
+							<i class="fas fa-check-circle text-red-500"/>
 							Bảo hành toàn quốc
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500"></i>
+							<i class="fas fa-check-circle text-red-500"/>
 							Dịch vụ hậu mãi chuyên nghiệp
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500"></i>
+							<i class="fas fa-check-circle text-red-500"/>
 							Giá cả cạnh tranh
 						</li>
 					</ul>

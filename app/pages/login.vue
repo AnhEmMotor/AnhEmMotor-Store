@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "../stores/useAuthStore";
 
 useSeoMeta({
 	title: "Đăng Nhập | AnhEm Motor",
@@ -31,21 +32,29 @@ async function handleLogin() {
 	isLoading.value = true;
 	feedback.value = { message: "", type: "" };
 	try {
-		const config = useRuntimeConfig();
-		const response = await $fetch(
-			`${config.public.apiBaseUrl}/api/auth/login`,
-			{
-				method: "POST",
-				body: { email: identifier.value, password: password.value },
-			},
-		);
-		if (response) {
-			showFeedback("✅ Đăng nhập thành công!", true);
-			identifier.value = "";
-			password.value = "";
+		const authStore = useAuthStore();
+		const { error } = await authStore.login({
+			UsernameOrEmail: identifier.value,
+			Password: password.value,
+		});
+
+		if (error) {
+			throw error;
 		}
-	} catch {
-		showFeedback("Email hoặc mật khẩu không đúng!", false);
+
+		showFeedback("✅ Đăng nhập thành công!", true);
+		identifier.value = "";
+		password.value = "";
+		const router = useRouter();
+		setTimeout(() => {
+			router.push("/");
+		}, 1000);
+	} catch (error) {
+		showFeedback(
+			error.response?.data?.errors?.[0]?.message ||
+				"Email hoặc mật khẩu không đúng!",
+			false,
+		);
 	} finally {
 		if (feedback.value.type !== "success") isLoading.value = false;
 	}
@@ -60,38 +69,38 @@ async function handleLogin() {
 				<p>Truy cập hệ thống của bạn</p>
 			</div>
 
-			<div id="global-feedback" v-if="feedback.message" :class="feedback.type">
+			<div v-if="feedback.message" id="global-feedback" :class="feedback.type">
 				{{ feedback.message }}
 			</div>
 
 			<form id="login-form" @submit.prevent="handleLogin">
 				<div class="form-group">
 					<input
-						type="text"
 						id="identifier"
+						v-model="identifier"
+						type="text"
 						placeholder="Email *"
 						autocomplete="username"
-						v-model="identifier"
-					/>
+					>
 				</div>
 				<div class="form-group relative-group">
 					<input
-						:type="passwordFieldType"
 						id="password"
+						v-model="password"
+						:type="passwordFieldType"
 						placeholder="Mật khẩu *"
 						autocomplete="current-password"
-						v-model="password"
-					/>
+					>
 					<span class="togglePassword" @click="togglePassword">
 						{{ passwordFieldType === "password" ? "🐵" : "🙈" }}
 					</span>
 				</div>
 
-				<button type="submit" class="btn" id="submitBtn" :disabled="isLoading">
+				<button id="submitBtn" type="submit" class="btn" :disabled="isLoading">
 					{{ isLoading ? "Đang xử lý..." : "Đăng Nhập" }}
 				</button>
 
-				<div class="loading" id="loading" v-if="isLoading">
+				<div v-if="isLoading" id="loading" class="loading">
 					<div class="spinner" />
 					<p>Đang xử lý đăng nhập...</p>
 				</div>

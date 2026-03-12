@@ -5,11 +5,31 @@ export default defineNuxtConfig({
 	compatibilityDate: "2025-07-15",
 	devtools: { enabled: true },
 
-	modules: ["@nuxtjs/seo", "@nuxt/content"],
+	modules: [
+		"@nuxtjs/seo",
+		"@nuxt/content",
+		"@pinia/nuxt",
+		"@nuxt/eslint-config",
+		"@nuxt/eslint",
+	],
+
+	sitemap: {
+		zeroRuntime: true,
+	},
 
 	vite: {
-		plugins: [(tailwindcss as any)(), (svgLoader as any)()],
+		plugins: [
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			(tailwindcss as any)(),
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			(svgLoader as any)(),
+		],
+		build: {
+			sourcemap: false,
+		},
 	},
+
+	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],
 
 	css: ["~/assets/main.css"],
 

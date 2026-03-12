@@ -58,10 +58,11 @@ watch(
 							:src="news.image"
 							:alt="news.title"
 							class="w-full rounded-xl shadow-lg mb-8 object-cover max-h-[500px]"
-						/>
+						>
 						<div
 							class="prose prose-lg max-w-none text-gray-800 leading-relaxed"
 						>
+							<!-- eslint-disable-next-line vue/no-v-html -->
 							<div v-html="news.content" />
 						</div>
 						<div class="mt-10 pt-6 border-t border-gray-200">
@@ -86,7 +87,7 @@ watch(
 						</div>
 					</article>
 					<aside class="lg:w-1/3">
-						<NewsSidebar :relatedNews="relatedNews" />
+						<NewsSidebar :related-news="relatedNews" />
 					</aside>
 				</div>
 			</main>
