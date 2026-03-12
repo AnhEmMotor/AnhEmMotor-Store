@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { useAxios } from "~/composables/useAxios";
 import { useQueryClient } from "@tanstack/vue-query";
-import { getCookie, appendResponseHeader } from "h3";
+import { parseCookies, appendResponseHeader } from "h3";
 import { useRouter } from "vue-router";
 
 let refreshTokenPromise = null;
@@ -21,6 +21,7 @@ export const useAuthStore = defineStore("auth", () => {
 	let abortController = null;
 	const sseStatus = ref("disconnected");
 	let isLoggingOut = false;
+	const successRedirectMessage = ref(null);
 
 	const isLoggedIn = computed(() => !!accessToken.value && !!user.value);
 	const authHeader = computed(() => ({
@@ -307,24 +308,22 @@ export const useAuthStore = defineStore("auth", () => {
 	async function _performRefresh() {
 		try {
 			let headers = {};
-			const backendUrl = import.meta.server
-				? config.apiServerUrl
-				: config.public.apiBaseUrl;
+			const backendUrl =
+				(import.meta.server ? config.apiServerUrl : config.public.apiBaseUrl) ||
+				"";
 
 			let mainRequestEvent = null;
 			if (import.meta.server) {
-				mainRequestEvent = ssrEvent.value;
-				let cookieString = "";
+				mainRequestEvent = ssrEvent.value || useRequestEvent();
 				if (mainRequestEvent) {
-					const refreshToken = getCookie(mainRequestEvent, "refreshToken");
-					if (refreshToken) cookieString = `refreshToken=${refreshToken}`;
-				} else {
-					const event = useRequestEvent();
-					const refreshToken = getCookie(event, "refreshToken");
-					if (refreshToken) cookieString = `refreshToken=${refreshToken}`;
-				}
-				if (cookieString) {
-					headers.Cookie = cookieString;
+					const allCookies = parseCookies(mainRequestEvent);
+					const refreshToken = allCookies["refreshToken"];
+
+					if (!refreshToken) {
+						return { error: "No refresh token available" };
+					}
+
+					headers.Cookie = `refreshToken=${refreshToken}`;
 				}
 			}
 
@@ -478,6 +477,15 @@ export const useAuthStore = defineStore("auth", () => {
 		refreshToken,
 		setSsrEvent,
 		sseStatus,
+		successRedirectMessage: computed(() => successRedirectMessage.value),
+		setSuccessMessage: (msg) => {
+			successRedirectMessage.value = msg;
+		},
+		consumeSuccessMessage: () => {
+			const msg = successRedirectMessage.value;
+			successRedirectMessage.value = null;
+			return msg;
+		},
 		reconnectSSE: () => {
 			closeSSE();
 			connectSSE();

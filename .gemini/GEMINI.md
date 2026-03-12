@@ -107,7 +107,7 @@
 
 # Build dự án
 
-Khi có sự thay đổi trong dự án, chạy "npm run lint" để kiểm tra xem còn lỗi cú pháp thừa nào hay không, sau đó thì yêu cầu người dùng kiểm tra thủ công.
+Khi có sự thay đổi trong dự án, chạy "npm run lint" để kiểm tra xem còn lỗi cú pháp thừa nào hay không, sau đó thì yêu cầu người dùng kiểm tra thủ công. Với dự án NuxtJS, tuyệt đối không chạy "npm run build".
 
 # Tuyệt đối không tự ý Commit Dự án
 
