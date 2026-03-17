@@ -4,10 +4,10 @@
       <div class="checkout-modal-content" role="dialog" aria-modal="true">
         <header class="checkout-header flex items-center justify-between">
           <h3 class="text-lg font-semibold flex items-center gap-3">
-            <i class="fas fa-credit-card text-red-600 mr-2"></i>
+            <i class="fas fa-credit-card text-red-600 mr-2"/>
             <span>Chọn phương thức thanh toán</span>
           </h3>
-          <button class="close-btn" @click="$emit('close')" aria-label="Đóng">×</button>
+          <button class="close-btn" aria-label="Đóng" @click="$emit('close')">×</button>
         </header>
 
         <div class="checkout-body">
@@ -28,17 +28,17 @@
                 <small class="text-sm text-gray-500">{{ method.note }}</small>
               </div>
               <div class="pm-check"> 
-                <i v-if="selectedMethod === method.key" class="fas fa-check-circle text-red-600"></i>
+                <i v-if="selectedMethod === method.key" class="fas fa-check-circle text-red-600"/>
               </div>
             </div>
           </section>
 
           <section class="order-summary bg-gray-50 p-4 rounded-lg mt-4">
-            <h5 class="font-semibold text-gray-800 mb-2"><i class="fas fa-receipt text-red-600 mr-2"></i>Tóm tắt đơn hàng</h5>
+            <h5 class="font-semibold text-gray-800 mb-2"><i class="fas fa-receipt text-red-600 mr-2"/>Tóm tắt đơn hàng</h5>
 
             <div id="checkout-items-list" class="mt-3 space-y-3 max-h-48 overflow-auto">
               <div v-for="item in cart" :key="item.id" class="flex items-center gap-3 bg-white p-3 rounded">
-                <img :src="item.image" :alt="item.name" class="w-12 h-12 object-cover rounded" />
+                <img :src="item.image" :alt="item.name" class="w-12 h-12 object-cover rounded" >
                 <div class="flex-1">
                   <span class="block font-semibold text-gray-800">{{ item.name }}</span>
                   <span class="text-sm text-gray-500">x{{ item.quantity }}</span>

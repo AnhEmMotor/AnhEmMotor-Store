@@ -8,19 +8,19 @@
 
     <div class="contact-info">
       <div class="contact-item">
-        <i class="fas fa-map-marker-alt"></i>
+        <i class="fas fa-map-marker-alt"/>
         <span>123 Đường ABC, Quận 1, TP.HCM</span>
       </div>
       <div class="contact-item">
-        <i class="fas fa-phone"></i>
+        <i class="fas fa-phone"/>
         <span>0901 234 567</span>
       </div>
       <div class="contact-item">
-        <i class="fas fa-envelope"></i>
+        <i class="fas fa-envelope"/>
         <span>info@anhemmotor.vn</span>
       </div>
       <div class="contact-item">
-        <i class="fas fa-clock"></i>
+        <i class="fas fa-clock"/>
         <span>8:00 - 22:00 (Hàng ngày)</span>
       </div>
     </div>

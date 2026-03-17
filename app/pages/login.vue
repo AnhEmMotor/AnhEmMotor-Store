@@ -1,14 +1,15 @@
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "../stores/useAuthStore";
 
 useSeoMeta({
 	title: "Đăng Nhập | AnhEm Motor",
 	description: "Đăng nhập vào tài khoản AnhEm Motor của bạn.",
 });
 
+const instance = useNuxtApp();
 const identifier = ref("");
 const password = ref("");
-const feedback = ref({ message: "", type: "" });
 const isLoading = ref(false);
 const passwordFieldType = ref("password");
 
@@ -17,37 +18,35 @@ function togglePassword() {
 		passwordFieldType.value === "password" ? "text" : "password";
 }
 
-function showFeedback(msg, ok) {
-	feedback.value = { message: msg, type: ok ? "success" : "error" };
-	setTimeout(() => {
-		feedback.value = { message: "", type: "" };
-	}, 4000);
-}
-
 async function handleLogin() {
 	if (!identifier.value || !password.value) {
-		return showFeedback("Vui lòng nhập đầy đủ thông tin đăng nhập!", false);
+		return instance.$toast.error("Vui lòng nhập đầy đủ thông tin đăng nhập!");
 	}
 	isLoading.value = true;
-	feedback.value = { message: "", type: "" };
+	const authStore = useAuthStore();
 	try {
-		const config = useRuntimeConfig();
-		const response = await $fetch(
-			`${config.public.apiBaseUrl}/api/auth/login`,
-			{
-				method: "POST",
-				body: { email: identifier.value, password: password.value },
-			},
-		);
-		if (response) {
-			showFeedback("✅ Đăng nhập thành công!", true);
-			identifier.value = "";
-			password.value = "";
+		const { error } = await authStore.login({
+			UsernameOrEmail: identifier.value,
+			Password: password.value,
+		});
+
+		if (error) {
+			throw error;
 		}
-	} catch {
-		showFeedback("Email hoặc mật khẩu không đúng!", false);
+
+		authStore.setSuccessMessage("Đăng nhập thành công!");
+		identifier.value = "";
+		password.value = "";
+		const router = useRouter();
+		router.push("/");
+	} catch (error) {
+		const errorMessage =
+			error.response?.data?.message ||
+			error.response?.data?.errors?.[0]?.message ||
+			"Email hoặc mật khẩu không đúng!";
+		instance.$toast.error(errorMessage);
 	} finally {
-		if (feedback.value.type !== "success") isLoading.value = false;
+		if (!authStore.isLoggedIn) isLoading.value = false;
 	}
 }
 </script>
@@ -56,46 +55,70 @@ async function handleLogin() {
 	<div class="login-container">
 		<div class="card">
 			<div class="form-header">
-				<h1>🔒 Đăng Nhập</h1>
-				<p>Truy cập hệ thống của bạn</p>
-			</div>
-
-			<div id="global-feedback" v-if="feedback.message" :class="feedback.type">
-				{{ feedback.message }}
+				<h1>Đăng Nhập</h1>
+				<p>Chào mừng bạn trở lại với AnhEm Motor</p>
 			</div>
 
 			<form id="login-form" @submit.prevent="handleLogin">
 				<div class="form-group">
 					<input
-						type="text"
 						id="identifier"
+						v-model="identifier"
+						type="text"
 						placeholder="Email *"
 						autocomplete="username"
-						v-model="identifier"
-					/>
+					>
 				</div>
 				<div class="form-group relative-group">
 					<input
-						:type="passwordFieldType"
 						id="password"
+						v-model="password"
+						:type="passwordFieldType"
 						placeholder="Mật khẩu *"
 						autocomplete="current-password"
-						v-model="password"
-					/>
+					>
 					<span class="togglePassword" @click="togglePassword">
-						{{ passwordFieldType === "password" ? "🐵" : "🙈" }}
+						<svg
+							v-if="passwordFieldType === 'password'"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+							<circle cx="12" cy="12" r="3" />
+						</svg>
+						<svg
+							v-else
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+							/>
+							<line x1="1" y1="1" x2="23" y2="23" />
+						</svg>
 					</span>
 				</div>
 
-				<button type="submit" class="btn" id="submitBtn" :disabled="isLoading">
+				<button id="submitBtn" type="submit" class="btn" :disabled="isLoading">
 					{{ isLoading ? "Đang xử lý..." : "Đăng Nhập" }}
 				</button>
-
-				<div class="loading" id="loading" v-if="isLoading">
-					<div class="spinner" />
-					<p>Đang xử lý đăng nhập...</p>
-				</div>
 			</form>
+
+			<CommonFullLoading :show="isLoading" text="Đang xử lý đăng nhập..." />
 
 			<div class="register-link">
 				Chưa có tài khoản?
@@ -196,48 +219,6 @@ async function handleLogin() {
 .btn:disabled {
 	background-color: #fab1a0;
 	cursor: not-allowed;
-}
-
-#global-feedback {
-	padding: 12px;
-	margin-bottom: 20px;
-	border-radius: 8px;
-	font-size: 14px;
-	text-align: left;
-	border: 1px solid transparent;
-}
-#global-feedback.success {
-	background-color: #ecfdf5;
-	color: #047857;
-	border-color: #6ee7b7;
-}
-#global-feedback.error {
-	background-color: #fef2f2;
-	color: #b91c1c;
-	border-color: #fca5a5;
-}
-
-.loading {
-	text-align: center;
-	margin-top: 20px;
-	color: #2c3e50;
-}
-.loading .spinner {
-	border: 3px solid #f3f3f3;
-	border-top: 3px solid #e74c3c;
-	border-radius: 50%;
-	width: 24px;
-	height: 24px;
-	animation: spin 1s linear infinite;
-	display: inline-block;
-	vertical-align: middle;
-	margin-right: 8px;
-}
-.loading p {
-	display: inline-block;
-	font-size: 14px;
-	margin: 0;
-	vertical-align: middle;
 }
 
 @keyframes spin {

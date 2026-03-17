@@ -1,31 +1,21 @@
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "../stores/useAuthStore";
 
 useSeoMeta({
 	title: "Đăng Ký | AnhEm Motor",
 	description: "Tạo tài khoản AnhEm Motor để trải nghiệm mua sắm dễ dàng hơn.",
 });
 
+const instance = useNuxtApp();
 const formData = ref({
-	username: "",
 	email: "",
-	phone: "",
 	password: "",
 	confirm_password: "",
 });
-const terms = ref(false);
-const privacy = ref(false);
-const feedback = ref({ message: "", type: "" });
 const isLoading = ref(false);
 const passwordFieldType = ref("password");
 const confirmPasswordFieldType = ref("password");
-
-function showFeedback(msg, ok) {
-	feedback.value = { message: msg, type: ok ? "success" : "error" };
-	setTimeout(() => {
-		feedback.value = { message: "", type: "" };
-	}, 4000);
-}
 
 function togglePassword(field) {
 	if (field === "password") {
@@ -39,50 +29,45 @@ function togglePassword(field) {
 
 async function handleRegister() {
 	const data = formData.value;
-	if (!data.username || !data.email || !data.phone || !data.password) {
-		return showFeedback("Vui lòng nhập đầy đủ thông tin!", false);
+	if (!data.email || !data.password || !data.confirm_password) {
+		return instance.$toast.error("Vui lòng nhập đầy đủ thông tin!");
 	}
 	if (data.password.length < 6) {
-		return showFeedback("Mật khẩu phải có ít nhất 6 ký tự!", false);
+		return instance.$toast.error("Mật khẩu phải có ít nhất 6 ký tự!");
 	}
 	if (data.password !== data.confirm_password) {
-		return showFeedback("Mật khẩu xác nhận không khớp!", false);
-	}
-	if (!terms.value || !privacy.value) {
-		return showFeedback("Bạn cần đồng ý với Điều khoản & Chính sách!", false);
+		return instance.$toast.error("Mật khẩu xác nhận không khớp!");
 	}
 
 	isLoading.value = true;
-	feedback.value = { message: "", type: "" };
+	const authStore = useAuthStore();
 	try {
-		const config = useRuntimeConfig();
-		await $fetch(`${config.public.apiBaseUrl}/api/auth/register`, {
-			method: "POST",
-			body: {
-				fullName: data.username,
-				email: data.email,
-				phone: data.phone,
-				password: data.password,
-			},
+		const { error, data: resData } = await authStore.register({
+			Email: data.email,
+			Password: data.password,
 		});
-		showFeedback(
-			"🎉 Đăng ký thành công! Vui lòng kiểm tra email để xác thực.",
-			true,
+
+		if (error) {
+			throw error;
+		}
+
+		authStore.setSuccessMessage(
+			resData?.message || "Đăng ký thành công! Vui lòng đăng nhập.",
 		);
 		formData.value = {
-			username: "",
 			email: "",
-			phone: "",
 			password: "",
 			confirm_password: "",
 		};
-		terms.value = false;
-		privacy.value = false;
-	} catch {
-		showFeedback(
-			"Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.",
-			false,
-		);
+
+		const router = useRouter();
+		router.push("/login");
+	} catch (error) {
+		const errorMessage =
+			error.response?.data?.message ||
+			error.response?.data?.errors?.[0]?.message ||
+			"Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.";
+		instance.$toast.error(errorMessage);
 	} finally {
 		isLoading.value = false;
 	}
@@ -93,93 +78,116 @@ async function handleRegister() {
 	<div class="register-container">
 		<div class="card">
 			<div class="form-header">
-				<h1>🚀 Đăng Ký</h1>
-				<p>Tạo tài khoản mới để bắt đầu</p>
-			</div>
-
-			<div id="global-feedback" v-if="feedback.message" :class="feedback.type">
-				{{ feedback.message }}
+				<h1>Đăng Ký</h1>
+				<p>Tham gia cộng đồng AnhEm Motor ngay hôm nay</p>
 			</div>
 
 			<form id="register-form" @submit.prevent="handleRegister">
 				<div class="form-group">
 					<input
-						type="text"
-						id="username"
-						placeholder="Họ Tên *"
-						autocomplete="name"
-						v-model="formData.username"
-					/>
-				</div>
-				<div class="form-group">
-					<input
-						type="email"
 						id="email"
+						v-model="formData.email"
+						type="email"
 						placeholder="Email *"
 						autocomplete="email"
-						v-model="formData.email"
-					/>
-				</div>
-				<div class="form-group">
-					<input
-						type="tel"
-						id="phone"
-						placeholder="Số điện thoại *"
-						autocomplete="tel"
-						v-model="formData.phone"
-					/>
+					>
 				</div>
 				<div class="form-group relative-group">
 					<input
-						:type="passwordFieldType"
 						id="password"
+						v-model="formData.password"
+						:type="passwordFieldType"
 						placeholder="Mật khẩu *"
 						autocomplete="new-password"
-						v-model="formData.password"
-					/>
-					<span class="togglePassword" @click="togglePassword('password')">{{
-						passwordFieldType === "password" ? "🐵" : "🙈"
-					}}</span>
+					>
+					<span class="togglePassword" @click="togglePassword('password')">
+						<svg
+							v-if="passwordFieldType === 'password'"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+							<circle cx="12" cy="12" r="3" />
+						</svg>
+						<svg
+							v-else
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+							/>
+							<line x1="1" y1="1" x2="23" y2="23" />
+						</svg>
+					</span>
 				</div>
 				<div class="form-group relative-group">
 					<input
-						:type="confirmPasswordFieldType"
 						id="confirm_password"
+						v-model="formData.confirm_password"
+						:type="confirmPasswordFieldType"
 						placeholder="Xác nhận mật khẩu *"
 						autocomplete="new-password"
-						v-model="formData.confirm_password"
-					/>
+					>
 					<span
 						class="togglePassword"
 						@click="togglePassword('confirm_password')"
-						>{{ confirmPasswordFieldType === "password" ? "🐵" : "🙈" }}</span
 					>
+						<svg
+							v-if="confirmPasswordFieldType === 'password'"
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+							<circle cx="12" cy="12" r="3" />
+						</svg>
+						<svg
+							v-else
+							xmlns="http://www.w3.org/2000/svg"
+							width="20"
+							height="20"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+							/>
+							<line x1="1" y1="1" x2="23" y2="23" />
+						</svg>
+					</span>
 				</div>
 
-				<div class="checkbox-container">
-					<input type="checkbox" id="terms" v-model="terms" />
-					<label for="terms"
-						>Tôi đồng ý với
-						<NuxtLink to="/terms">điều khoản dịch vụ</NuxtLink></label
-					>
-				</div>
-				<div class="checkbox-container">
-					<input type="checkbox" id="privacy" v-model="privacy" />
-					<label for="privacy"
-						>Tôi đồng ý với
-						<NuxtLink to="/privacy">Chính sách bảo mật</NuxtLink></label
-					>
-				</div>
-
-				<button type="submit" class="btn" id="submitBtn" :disabled="isLoading">
+				<button id="submitBtn" type="submit" class="btn" :disabled="isLoading">
 					{{ isLoading ? "Đang xử lý..." : "Đăng Ký Ngay" }}
 				</button>
-
-				<div class="loading" id="loading" v-if="isLoading && !feedback.message">
-					<div class="spinner" />
-					<p>Đang xử lý đăng ký...</p>
-				</div>
 			</form>
+
+			<CommonFullLoading :show="isLoading" text="Đang xử lý đăng ký..." />
 
 			<div class="login-link">
 				Đã có tài khoản? <NuxtLink to="/login">Đăng nhập</NuxtLink>
@@ -193,18 +201,17 @@ async function handleRegister() {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh;
-	padding: 20px 15px;
+	min-height: 70vh;
+	padding: 20px;
 	background-color: #f4f6f8;
-	box-sizing: border-box;
 }
 .card {
 	background: #ffffff;
 	border-radius: 16px;
 	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-	padding: 35px 30px;
+	padding: 40px;
 	width: 100%;
-	max-width: 420px;
+	max-width: 400px;
 	text-align: center;
 	box-sizing: border-box;
 }
@@ -297,48 +304,6 @@ async function handleRegister() {
 	cursor: not-allowed;
 }
 
-#global-feedback {
-	padding: 12px;
-	margin-bottom: 20px;
-	border-radius: 8px;
-	font-size: 14px;
-	text-align: left;
-	border: 1px solid transparent;
-}
-#global-feedback.success {
-	background-color: #ecfdf5;
-	color: #047857;
-	border-color: #6ee7b7;
-}
-#global-feedback.error {
-	background-color: #fef2f2;
-	color: #b91c1c;
-	border-color: #fca5a5;
-}
-
-.loading {
-	text-align: center;
-	margin-top: 20px;
-	color: #2c3e50;
-}
-.loading .spinner {
-	border: 3px solid #f3f3f3;
-	border-top: 3px solid #e74c3c;
-	border-radius: 50%;
-	width: 24px;
-	height: 24px;
-	animation: spin 1s linear infinite;
-	display: inline-block;
-	vertical-align: middle;
-	margin-right: 8px;
-}
-.loading p {
-	display: inline-block;
-	font-size: 14px;
-	margin: 0;
-	vertical-align: middle;
-}
-
 @keyframes spin {
 	0% {
 		transform: rotate(0deg);
@@ -362,16 +327,13 @@ async function handleRegister() {
 
 @media (max-width: 480px) {
 	.register-container {
-		padding: 10px;
-		padding-top: 40px;
-		align-items: flex-start;
-		height: auto;
-		background-color: #fff;
+		padding: 15px;
+		background-color: #ffffff;
 	}
 	.card {
 		box-shadow: none;
-		padding: 10px 5px;
-		max-width: 100%;
+		padding: 20px 10px;
+		width: 100%;
 		border-radius: 0;
 	}
 	.form-header h1 {

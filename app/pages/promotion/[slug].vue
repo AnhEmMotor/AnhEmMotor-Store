@@ -63,6 +63,7 @@ watch(
 				</h1>
 				<CommonSocialShare :url="shareUrl" :title="promotion.fullTitle" />
 				<div class="prose prose-lg max-w-none mb-8">
+					<!-- eslint-disable-next-line vue/no-v-html -->
 					<div v-html="promotion.content" />
 				</div>
 				<PromotionCarousel
@@ -108,10 +109,10 @@ watch(
 				</div>
 				<CommonContactInfo
 					v-if="promotion.contactInfo"
-					:contactInfo="promotion.contactInfo"
-					:financialCompanies="promotion.financialCompanies"
+					:contact-info="promotion.contactInfo"
+					:financial-companies="promotion.financialCompanies"
 					description="Mọi thông tin liên quan đến Chương trình khuyến mại, khách hàng vui lòng liên hệ theo thông tin sau để được hướng dẫn, giải đáp:"
-					closingText="Xin trân trọng cảm ơn, Công ty Honda Việt Nam."
+					closing-text="Xin trân trọng cảm ơn, Công ty Honda Việt Nam."
 				/>
 			</div>
 		</main>

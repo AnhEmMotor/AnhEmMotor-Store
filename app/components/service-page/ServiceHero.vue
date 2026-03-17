@@ -4,7 +4,7 @@
 		class="relative w-screen left-1/2 -translate-x-1/2 bg-cover bg-center bg-no-repeat text-white text-center py-32 sm:py-40 md:py-48 lg:py-[225px] mb-10 mt-[-16px]"
 		:style="{ backgroundImage: `url(${heroImage})` }"
 	>
-		<div class="absolute inset-0 bg-black/50"></div>
+		<div class="absolute inset-0 bg-black/50" />
 		<div class="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
 			<div class="hero-content">
 				<h1
@@ -30,7 +30,8 @@
 </template>
 
 <script setup>
-import heroImage from "/assets/image/index/service-page/pngtree-auto-mechanic-working-in-garage-repair-service-image_15647943.jpg";
+const heroImage =
+	"/assets/image/index/service-page/pngtree-auto-mechanic-working-in-garage-repair-service-image_15647943.webp";
 const scrollToServices = (e) => {
 	e.preventDefault();
 	const target = document.querySelector("#services");

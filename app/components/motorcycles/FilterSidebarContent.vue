@@ -4,16 +4,16 @@
       <h4 class="font-semibold mb-3 text-gray-700 text-base sm:text-lg">Loại xe</h4>
       <div class="space-y-3">
         <label
-          class="flex items-center text-xs sm:text-sm cursor-pointer"
           v-for="type in vehicleTypes"
           :key="type.value"
+          class="flex items-center text-xs sm:text-sm cursor-pointer"
         >
           <input
+            v-model="selectedTypes"
             type="checkbox"
             class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-600"
             :value="type.value"
-            v-model="selectedTypes"
-          />
+          >
           <span class="ml-3 text-gray-600 text-xs sm:text-sm">{{ type.label }}</span>
         </label>
       </div>
@@ -28,7 +28,7 @@
           placeholder="Tối thiểu"
           class="w-1/2 p-1.5 sm:p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 text-xs sm:text-sm"
           readonly
-        />
+        >
         <span class="text-xs sm:text-sm text-gray-600">-</span>
         <input
           type="text"
@@ -36,37 +36,37 @@
           placeholder="Tối đa"
           class="w-1/2 p-1.5 sm:p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800 text-xs sm:text-sm"
           readonly
-        />
+        >
       </div>
 
       <div class="mb-4">
         <label for="minPriceRange" class="sr-only">Minimum Price Range</label>
         <input
-          type="range"
           id="minPriceRange"
+          v-model.number="currentMinPrice"
+          type="range"
           :min="0"
           :max="MAX_PRICE"
           step="100000"
-          v-model.number="currentMinPrice"
-          @input="onRangeInput('min')"
           class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
-        />
+          @input="onRangeInput('min')"
+        >
         <label for="maxPriceRange" class="sr-only">Maximum Price Range</label>
         <input
-          type="range"
           id="maxPriceRange"
+          v-model.number="currentMaxPrice"
+          type="range"
           :min="0"
           :max="MAX_PRICE"
           step="100000"
-          v-model.number="currentMaxPrice"
-          @input="onRangeInput('max')"
           class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600 mt-2"
-        />
+          @input="onRangeInput('max')"
+        >
       </div>
 
       <button
-        @click="applyFilters"
         class="w-full bg-gray-800 text-white font-semibold py-1.5 sm:py-2 rounded-md hover:bg-gray-900 transition-colors duration-200 text-sm sm:text-base"
+        @click="applyFilters"
       >
         Lọc
       </button>
@@ -76,16 +76,16 @@
       <h4 class="font-semibold mb-3 text-gray-700 text-base sm:text-lg">Dung tích động cơ</h4>
       <div class="space-y-3">
         <label
-          class="flex items-center text-xs sm:text-sm cursor-pointer"
           v-for="cc in ccRanges"
           :key="cc.value"
+          class="flex items-center text-xs sm:text-sm cursor-pointer"
         >
           <input
+            v-model="selectedCCs"
             type="checkbox"
             class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-600"
             :value="cc.value"
-            v-model="selectedCCs"
-          />
+          >
           <span class="ml-3 text-gray-600 text-xs sm:text-sm">{{ cc.label }}</span>
         </label>
       </div>

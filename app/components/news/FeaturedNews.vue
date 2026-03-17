@@ -4,7 +4,8 @@
             NỔI BẬT TRONG TUẦN</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <a v-for="(news, index) in featuredNews" :key="news.id" :href="news.link"
+            <a
+v-for="(news, index) in featuredNews" :key="news.id" :href="news.link"
                 :style="{ 'transition-delay': `${index * 100}ms` }"
                 class="block news-card-hover bg-white rounded-xl overflow-hidden shadow-2xl border-t-4 border-primary-red transform hover:translate-y-[-5px] transition-all duration-300 ease-in-out fade-in-up">
                 <div class="overflow-hidden">
@@ -19,7 +20,7 @@
                         {{ news.description }}
                     </p>
                     <span class="text-primary-red font-bold mt-4 inline-block text-xs sm:text-sm hover:underline">Đọc thêm <i
-                            class="fas fa-arrow-right ml-1 text-xs"></i></span>
+                            class="fas fa-arrow-right ml-1 text-xs"/></span>
                 </div>
             </a>
         </div>
@@ -33,7 +34,7 @@ const featuredNews = ref([
     {
         id: 1,
         link: "tin2.html",
-        image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/08/Thumb-Post-1.jpg",
+        image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/08/Thumb-Post-1.webp",
         date: "15 tháng 8, 2025",
         title: "Ra mắt dòng xe thể thao mới với công nghệ đột phá",
         description: "Chúng tôi tự hào giới thiệu mẫu xe thể thao mới, hứa hẹn mang đến trải nghiệm lái xe tuyệt vời nhất với động cơ thế hệ mới và khung gầm siêu nhẹ."
@@ -41,7 +42,7 @@ const featuredNews = ref([
     {
         id: 2,
         link: "tin3.html",
-        image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/05/WTGP-slogan_01-1.png",
+        image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/05/WTGP-slogan_01-1.webp",
         date: "12 tháng 8, 2025",
         title: "Kết quả giải đua xe vô địch quốc gia 2025: Đội AnhEm Motor vô địch",
         description: "Đội đua của chúng tôi đã xuất sắc giành vị trí dẫn đầu trong giải đấu năm nay. Cùng nhìn lại những khoảnh khắc đáng nhớ và chặng đường chinh phục đỉnh cao."
@@ -49,7 +50,7 @@ const featuredNews = ref([
     {
         id: 3,
         link: "tin4.html",
-        image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/07/xe-dien-yamaha-neos.jpg",
+        image: "https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/07/xe-dien-yamaha-neos.webp",
         date: "17 tháng 7, 2025",
         title: "NEO’s – Dòng xe điện dẫn đầu xu hướng di chuyển xanh tại Việt Nam",
         description: "Khám phá mẫu xe điện tiên phong của Yamaha, kết hợp thiết kế thời thượng và công nghệ pin thân thiện với môi trường, đáp ứng nhu cầu di chuyển đô thị."

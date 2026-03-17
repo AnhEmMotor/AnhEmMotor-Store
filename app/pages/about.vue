@@ -7,14 +7,15 @@ useSeoMeta({
 </script>
 
 <template>
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-		<AboutMissionSection />
-		<AboutServicesSection />
-		<AboutCommitmentSection />
-		<AboutWhyChooseUsSection />
-		<AboutContactSection />
+	<div class="about-page">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+			<AboutMissionSection />
+			<AboutServicesSection />
+			<AboutCommitmentSection />
+			<AboutWhyChooseUsSection />
+			<AboutContactSection />
+		</div>
+		<AboutVideoSection />
+		<AboutMapSection />
 	</div>
-	<AboutVideoSection />
-	<AboutMapSection />
 </template>
-

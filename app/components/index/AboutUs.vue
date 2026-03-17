@@ -3,7 +3,13 @@
 		<div class="container">
 			<div class="about-content">
 				<div class="about-image group">
-					<img src="/assets/image/index/about.webp" alt="Về AnhEm Motor" />
+					<img
+						src="/assets/image/index/about.webp"
+						alt="Về AnhEm Motor"
+						width="380"
+						height="214"
+						loading="lazy"
+					>
 				</div>
 
 				<div class="about-text">
@@ -15,15 +21,15 @@
 
 					<ul class="feature-list">
 						<li>
-							<i class="fas fa-check-circle text-red-500"></i>
+							<i class="fas fa-check-circle text-red-500" />
 							Bảo hành toàn quốc
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500"></i>
+							<i class="fas fa-check-circle text-red-500" />
 							Dịch vụ hậu mãi chuyên nghiệp
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500"></i>
+							<i class="fas fa-check-circle text-red-500" />
 							Giá cả cạnh tranh
 						</li>
 					</ul>
@@ -33,7 +39,12 @@
 						lượng và dịch vụ tận tâm.
 					</p>
 
-					<a href="#" class="cta-button">Liên hệ ngay</a>
+					<a
+						href="#"
+						class="cta-button"
+						aria-label="Liên hệ ngay với AnhEm Motor"
+						>Liên hệ ngay</a
+					>
 				</div>
 			</div>
 		</div>
@@ -59,7 +70,7 @@
 }
 
 .about-image img {
-	@apply w-full aspect-[16/9] object-cover transition-transform duration-500 ease-in-out group-hover:scale-110;
+	@apply w-full aspect-[16/9] object-cover;
 }
 
 .about-text h2 {
@@ -83,6 +94,6 @@
 }
 
 .cta-button {
-	@apply inline-block bg-red-500 text-white font-bold py-2.5 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 hover:bg-red-600 text-sm sm:text-base;
+	@apply inline-block bg-red-600 text-white font-bold py-2.5 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg hover:bg-red-700 text-sm sm:text-base;
 }
 </style>

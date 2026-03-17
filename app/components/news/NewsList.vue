@@ -18,12 +18,12 @@
           :src="news.image"
           :alt="news.title"
           class="w-full md:w-1/3 lg:w-1/4 h-48 sm:h-56 object-cover news-image rounded-t-xl md:rounded-l-xl md:rounded-tr-none"
-        />
+        >
         <div class="p-4 sm:p-6 flex-1">
           <div class="flex items-center space-x-3 text-xs sm:text-sm mb-3">
             <span class="text-primary-red font-bold uppercase">{{ news.category }}</span>
             <span class="text-gray-400">|</span>
-            <span class="text-gray-500"><i class="far fa-clock mr-1"></i> {{ news.date }}</span>
+            <span class="text-gray-500"><i class="far fa-clock mr-1"/> {{ news.date }}</span>
           </div>
           <h3
             class="news-title text-xl sm:text-2xl font-extrabold text-dark-text hover:text-primary-red transition-colors duration-300 mb-2"
@@ -47,7 +47,7 @@ const allNews = ref([
     id: 1,
     link: 'tin1.html',
     image:
-      'https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/07/522738521_1082519664023136_5925928157789263882_n.jpeg',
+      'https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/07/522738521_1082519664023136_5925928157789263882_n.webp',
     category: 'TIN TỨC SỰ KIỆN',
     date: '03.08.2025',
     title: 'KHAI TRƯƠNG YAMAHA TOWN THANH VƯƠNG PHÁT 8 TẠI TP. HỒ CHÍ MINH',
@@ -58,7 +58,7 @@ const allNews = ref([
     id: 2,
     link: 'tin5.html',
     image:
-      'https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/10/xe-tay-ga-gia-re-ua-chuong-nhat-1-768x384.jpg',
+      'https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/10/xe-tay-ga-gia-re-ua-chuong-nhat-1-768x384.webp',
     category: 'REVIEW SẢN PHẨM',
     date: '10.08.2025',
     title: 'TOP XE TAY GA GIÁ RẺ, CHẤT LƯỢNG CAO NÊN MUA HIỆN NAY',
@@ -68,7 +68,7 @@ const allNews = ref([
   {
     id: 3,
     link: 'tin6.html',
-    image: 'https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/08/Thumb-1-768x432.jpg',
+    image: 'https://yamaha-motor.com.vn/wp/wp-content/uploads/2024/08/Thumb-1-768x432.webp',
     category: 'KỸ THUẬT',
     date: '05.08.2025',
     title: '5 MẸO BẢO DƯỠNG XE MÁY ĐƠN GIẢN TẠI NHÀ ĐỂ KÉO DÀI TUỔI THỌ ĐỘNG CƠ',

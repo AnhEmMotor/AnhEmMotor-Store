@@ -12,7 +12,7 @@
     </div>
     <div class="flex items-center justify-center p-2 cursor-pointer flex-grow">
       <router-link :to="`/product-details/${product.id}`">
-        <img :src="product.image" :alt="product.name" class="w-full h-32 sm:h-40 md:h-36 object-contain" />
+        <img :src="product.image" :alt="product.name" class="w-full h-32 sm:h-40 md:h-36 object-contain" >
       </router-link>
     </div>
     <div class="p-3 sm:p-4 text-center flex-shrink-0">

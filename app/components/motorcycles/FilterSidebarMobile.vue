@@ -7,14 +7,14 @@
     <div class="p-4 sm:p-5">
       <div class="flex items-center justify-between mb-4 border-b pb-4">
         <h3 class="text-base sm:text-lg font-bold text-red-600 flex items-center gap-2">
-          <i class="fas fa-filter"></i>
+          <i class="fas fa-filter"/>
           <span>Bộ Lọc Sản Phẩm</span>
         </h3>
         <button
-          @click="handleClose"
           class="text-gray-600 hover:text-gray-900 text-xl p-2"
+          @click="handleClose"
         >
-          <i class="fas fa-times"></i>
+          <i class="fas fa-times"/>
         </button>
       </div>
       <FilterSidebarContent @update-filters="handleUpdateFilters" @close="handleClose" />

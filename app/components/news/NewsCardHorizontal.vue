@@ -13,7 +13,7 @@
         <span class="text-primary-red font-bold uppercase">{{ news.category }}</span>
         <span class="text-gray-400">|</span>
         <span class="text-gray-500">
-          <i class="far fa-clock mr-1"></i> {{ news.date }}
+          <i class="far fa-clock mr-1"/> {{ news.date }}
         </span>
       </div>
       <h3 class="text-xl md:text-2xl font-extrabold text-dark-text group-hover:text-primary-red transition-colors duration-300 mb-2">

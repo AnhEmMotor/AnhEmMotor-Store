@@ -9,20 +9,20 @@ useSeoMeta({
 
 const categories = ref([
 	{
-		href: "/motorcycles",
-		imgSrc: "/assets/image/categories/xe.png",
+		href: "/products?page=1&categoryIds=1",
+		imgSrc: "/assets/image/categories/xe.webp",
 		alt: "Xe",
 		title: "Xe",
 	},
 	{
-		href: "/spare-parts",
-		imgSrc: "/assets/image/categories/spare-parts.png",
+		href: "/products?page=1&categoryIds=3",
+		imgSrc: "/assets/image/categories/spare-parts.webp",
 		alt: "Phụ tùng",
 		title: "Phụ Tùng",
 	},
 	{
-		href: "/accessories",
-		imgSrc: "/assets/image/categories/accessories.png",
+		href: "/products?page=1&categoryIds=2",
+		imgSrc: "/assets/image/categories/accessories.webp",
 		alt: "Phụ kiện",
 		title: "Phụ Kiện",
 	},

@@ -1,3 +1,64 @@
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+
+const currentPlaceholder = ref("");
+const phrases = [
+	"Nhập tên xe bạn muốn sở hữu...",
+	'Tìm "Winner X v4", "Vario 160" hoặc hãng xe...',
+];
+
+let phraseIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let timeoutId = null;
+
+const typeEffect = () => {
+	const currentPhrase = phrases[phraseIndex];
+	let typingSpeed = isDeleting ? 20 : 30;
+
+	if (isDeleting) {
+		currentPlaceholder.value = currentPhrase.substring(0, charIndex - 1);
+		charIndex--;
+	} else {
+		currentPlaceholder.value = currentPhrase.substring(0, charIndex + 1);
+		charIndex++;
+	}
+
+	if (!isDeleting && charIndex === currentPhrase.length) {
+		isDeleting = true;
+		typingSpeed = 2000;
+	} else if (isDeleting && charIndex === 0) {
+		isDeleting = false;
+		phraseIndex = (phraseIndex + 1) % phrases.length;
+		typingSpeed = 500;
+	}
+
+	timeoutId = setTimeout(typeEffect, typingSpeed);
+};
+
+onMounted(() => {
+	typeEffect();
+});
+
+import { useRouter } from "#app";
+
+const router = useRouter();
+const searchQuery = ref("");
+
+const handleSearch = () => {
+	const trimmed = searchQuery.value.trim();
+	if (trimmed) {
+		router.push({ path: "/products", query: { search: trimmed, page: 1 } });
+	} else {
+		router.push({ path: "/products", query: { page: 1 } });
+	}
+};
+
+onUnmounted(() => {
+	if (timeoutId) clearTimeout(timeoutId);
+});
+</script>
+
 <template>
 	<section id="hero" class="hero-section">
 		<div class="hero-overlay" />
@@ -8,16 +69,23 @@
 				đầu thế giới
 			</p>
 
-			<div class="search-bar">
+			<form @submit.prevent="handleSearch" class="search-bar">
+				<label for="searchInput" class="sr-only">Tìm kiếm sản phẩm</label>
 				<input
-					type="text"
 					id="searchInput"
-					placeholder="Tìm kiếm theo hãng, mẫu xe, năm sản xuất..."
+					type="text"
+					:placeholder="currentPlaceholder"
+					v-model="searchQuery"
 				/>
-				<button id="searchButton" class="search-button">
-					<i class="fas fa-search"></i> Tìm Kiếm
+				<button
+					id="searchButton"
+					type="submit"
+					class="search-button"
+					aria-label="Tìm kiếm sản phẩm"
+				>
+					<i class="fas fa-search" /> Tìm Kiếm
 				</button>
-			</div>
+			</form>
 
 			<div class="hero-stats">
 				<div class="stat-item">
@@ -34,6 +102,15 @@
 				</div>
 			</div>
 		</div>
+
+		<Head>
+			<link
+				rel="preload"
+				as="image"
+				href="/assets/image/index/index-banner-bg.webp"
+				fetchpriority="high"
+			/>
+		</Head>
 	</section>
 </template>
 
@@ -71,7 +148,6 @@
 .hero-content h1 {
 	@apply text-3xl md:text-4xl lg:text-5xl font-extrabold mb-5 rounded-[50px];
 	text-shadow: 2px 2px 10px rgba(0, 0, 0, 1);
-	animation: fadeInUp 1s ease-out;
 }
 
 .hero-content p {
@@ -81,7 +157,6 @@
 
 .search-bar {
 	@apply flex flex-col sm:flex-row max-w-[600px] mx-auto bg-white/10 rounded-[50px] p-2 backdrop-blur-[10px];
-	animation: fadeInUp 1s ease-out 0.4s both;
 }
 
 .search-bar input {
@@ -97,13 +172,11 @@
 }
 
 .search-bar button:hover {
-	@apply transform scale-105;
-	box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+	@apply bg-white text-black;
 }
 
 .hero-stats {
 	@apply flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 md:gap-12 lg:gap-[60px] mt-[60px] pb-10;
-	animation: fadeInUp 1s ease-out 0.6s both;
 }
 
 .stat-item {
@@ -116,16 +189,5 @@
 
 .stat-label {
 	@apply text-sm sm:text-base opacity-80;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
 }
 </style>

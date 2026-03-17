@@ -3,7 +3,7 @@
     class="w-full h-[300px] md:h-[400px] lg:h-[500px] bg-cover bg-center flex items-center justify-center relative"
     :style="{ backgroundImage: `url(${backgroundImage})` }"
   >
-    <div class="absolute inset-0 bg-dark-text opacity-40"></div>
+    <div class="absolute inset-0 bg-dark-text opacity-40"/>
     <div 
       class="text-center z-10 p-4 transition-all duration-1000"
       :class="{ 'opacity-0 translate-y-5': !isVisible, 'opacity-100 translate-y-0': isVisible }"
@@ -32,7 +32,7 @@ export default {
     },
     backgroundImage: {
       type: String,
-      default: 'https://images7.alphacoders.com/106/thumb-1920-1062408.jpg'
+      default: 'https://images7.alphacoders.com/106/thumb-1920-1062408.webp'
     }
   },
   data() {
