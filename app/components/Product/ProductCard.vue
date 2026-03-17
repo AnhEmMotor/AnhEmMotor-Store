@@ -70,7 +70,7 @@ const currentUrl = computed(() => {
 				@click.prevent
 			>
 				<label class="block text-xs font-semibold text-gray-500 uppercase mb-1"
-					>Cấu hình</label
+					>Phiên bản</label
 				>
 				<select
 					v-model="selectedVariant"
