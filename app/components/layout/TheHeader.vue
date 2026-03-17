@@ -12,6 +12,7 @@
 				<div class="flex-none flex items-center">
 					<button
 						class="xl:hidden mr-3 p-2 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors"
+						aria-label="Mở menu điều hướng"
 						@click="openMobileNav"
 					>
 						<i class="fas fa-bars text-xl" />
@@ -25,10 +26,12 @@
 							class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center overflow-hidden shadow-lg shadow-red-500/20 group-hover:shadow-red-500/40 transition-all duration-300"
 						>
 							<img
-								src="/assets/image/logo.webp"
+								src="/assets/image/logo-optimized.webp"
 								alt="AnhEm Motor"
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-							>
+								width="40"
+								height="40"
+							/>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -76,6 +79,7 @@
 						<button
 							v-if="cartItemCount > 0"
 							class="header-icon-btn group"
+							aria-label="Xem giỏ hàng"
 							@click="toggleCart"
 						>
 							<div class="relative">
@@ -111,6 +115,7 @@
 						<div v-else class="relative user-menu-container">
 							<button
 								class="flex items-center gap-2 p-1 pr-3 bg-gray-50 border border-gray-100 rounded-full hover:bg-white hover:border-red-100 hover:shadow-md transition-all duration-300"
+								aria-label="Mở menu người dùng"
 								@click="toggleUserMenu"
 							>
 								<div
@@ -121,7 +126,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover"
-									>
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xs" />
 								</div>
 								<span
@@ -238,7 +243,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							>
+							/>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -246,6 +251,7 @@
 					</div>
 					<button
 						class="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-all active:scale-90"
+						aria-label="Đóng menu điều hướng"
 						@click="closeMobileNav"
 					>
 						<i class="fas fa-times text-xl" />
@@ -285,7 +291,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover"
-									>
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xl" />
 								</div>
 								<div class="flex-1 min-w-0">

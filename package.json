@@ -3,15 +3,16 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"build": "nuxt build",
+		"build": "cross-env NODE_OPTIONS='--no-deprecation' nuxi build",
 		"dev": "nuxt dev",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"lint": "eslint . --fix"
+		"lint": "eslint . --fix",
+		"start": "node --env-file=.env .output/server/index.mjs"
 	},
 	"dependencies": {
-		"@eslint/js": "^9.31.0",
+		"@eslint/js": "^10.0.1",
 		"@microsoft/fetch-event-source": "^2.0.1",
 		"@nuxt/content": "^3.12.0",
 		"@nuxt/eslint": "^1.15.2",
@@ -23,14 +24,14 @@
 		"@vue/eslint-config-prettier": "^10.2.0",
 		"axios": "^1.13.6",
 		"better-sqlite3": "^12.6.2",
-		"eslint": "^9.31.0",
-		"eslint-plugin-vue": "~10.3.0",
-		"nuxt": "^4.1.3",
+		"eslint": "^10.0.3",
+		"eslint-plugin-vue": "~10.8.0",
+		"nuxt": "^4.4.2",
 		"pinia": "^3.0.4",
 		"tailwindcss": "^4.2.1",
 		"vite-svg-loader": "^5.1.1",
 		"vue": "^3.5.30",
-		"vue-router": "^4.6.4",
+		"vue-router": "^5.0.3",
 		"vue3-toastify": "^0.2.9"
 	},
 	"overrides": {
@@ -38,6 +39,6 @@
 	},
 	"devDependencies": {
 		"@nuxt/eslint-config": "^1.15.2",
-		"sharp-cli": "^5.2.0"
+		"cross-env": "^10.1.0"
 	}
 }

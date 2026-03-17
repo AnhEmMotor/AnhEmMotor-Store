@@ -8,6 +8,7 @@ import {
 	watchEffect,
 	isRef,
 	onServerPrefetch,
+	onMounted,
 } from "vue";
 import { useRoute, useRouter, useNuxtApp, navigateTo } from "#app";
 
@@ -30,16 +31,19 @@ export function usePaginatedQuery(config) {
 	const queryClient = useQueryClient();
 	const nuxtApp = useNuxtApp();
 
+	let isInitializing = true;
+
 	const debouncedValues = reactive({});
 	const debounceTimers = {};
 
 	for (const field of debouncedFields) {
-		debouncedValues[field] = unref(rawFilters[field]) ?? "";
+		const filtersObj = unref(rawFilters);
+		debouncedValues[field] = filtersObj?.[field] ?? "";
 	}
 
 	for (const field of debouncedFields) {
 		watch(
-			() => unref(rawFilters[field]),
+			() => unref(rawFilters)?.[field],
 			(newVal) => {
 				if (debounceTimers[field]) clearTimeout(debounceTimers[field]);
 				debounceTimers[field] = setTimeout(() => {
@@ -48,7 +52,6 @@ export function usePaginatedQuery(config) {
 			},
 		);
 	}
-
 	const localPage = ref(1);
 
 	const pageParam = computed({
@@ -68,22 +71,24 @@ export function usePaginatedQuery(config) {
 
 	const buildCleanFilters = () => {
 		const clean = {};
-		if (!rawFilters) return clean;
-		const filterKeys = Object.keys(rawFilters);
+		const filtersObj = unref(rawFilters);
+		if (!filtersObj) return clean;
+		const filterKeys = Object.keys(filtersObj);
 		for (const key of filterKeys) {
 			const val = debouncedFields.includes(key)
 				? debouncedValues[key]
-				: unref(rawFilters[key]);
-			if (val !== undefined && val !== null && val !== "") {
+				: filtersObj[key];
+			if (Array.isArray(val)) {
+				if (val.length > 0) clean[key] = val;
+			} else if (val !== undefined && val !== null && val !== "") {
 				clean[key] = val;
 			}
 		}
 		return clean;
 	};
-
 	const queryParams = computed(() => ({
 		page: pageParam.value,
-		limit: itemsPerPage,
+		pageSize: itemsPerPage,
 		...buildCleanFilters(),
 	}));
 
@@ -95,49 +100,79 @@ export function usePaginatedQuery(config) {
 			},
 		);
 
-		if (rawFilters) {
-			const nonDebouncedKeys = Object.keys(rawFilters).filter(
-				(k) => !debouncedFields.includes(k),
-			);
-			if (nonDebouncedKeys.length > 0) {
-				watch(
-					() => nonDebouncedKeys.map((k) => unref(rawFilters[k])),
-					() => {
-						syncFiltersToUrl();
-					},
-				);
-			}
-		}
+		watch(
+			() => {
+				const filtersObj = unref(rawFilters);
+				if (!filtersObj) return [];
+				return Object.keys(filtersObj)
+					.filter((key) => !debouncedFields.includes(key))
+					.map((key) => filtersObj[key]);
+			},
+			() => {
+				if (!useLocalPagination && import.meta.client) {
+					syncFiltersToUrl();
+				}
+			},
+			{ deep: true },
+		);
 	}
 
 	function syncFiltersToUrl() {
+		if (isInitializing) return;
+
 		const newQuery = { ...route.query };
-		if (rawFilters) {
-			for (const key of Object.keys(rawFilters)) {
+		const filtersObj = unref(rawFilters);
+		if (filtersObj) {
+			for (const key of Object.keys(filtersObj)) {
 				delete newQuery[key];
 			}
 		}
 		const clean = buildCleanFilters();
-		Object.assign(newQuery, clean);
+
+		// Duyệt qua clean để nối chuỗi Array bằng dấu phẩy trước khi push lên URL
+		for (const [key, value] of Object.entries(clean)) {
+			if (Array.isArray(value)) {
+				if (value.length > 0) {
+					newQuery[key] = value.join(",");
+				}
+			} else {
+				newQuery[key] = value;
+			}
+		}
+
 		newQuery.page = 1;
 		router.replace({ query: newQuery });
 	}
-
-	if (rawFilters && !useLocalPagination) {
-		const filterKeys = Object.keys(rawFilters);
+	const initialFiltersObj = unref(rawFilters);
+	if (initialFiltersObj && !useLocalPagination) {
+		const filterKeys = Object.keys(initialFiltersObj);
 		for (const key of filterKeys) {
 			const urlVal = route.query[key];
 			if (urlVal !== undefined && urlVal !== null && urlVal !== "") {
-				if (isRef(rawFilters[key])) {
-					rawFilters[key].value = urlVal;
+				const isCurrentlyArray = Array.isArray(initialFiltersObj[key]);
+				let parsedVal = urlVal;
+
+				if (isCurrentlyArray) {
+					parsedVal = String(urlVal)
+						.split(",")
+						.map(Number)
+						.filter((n) => !Number.isNaN(n));
 				}
+
+				if (isRef(rawFilters) && rawFilters.value) {
+					rawFilters.value[key] = parsedVal;
+				} else if (isRef(rawFilters[key])) {
+					rawFilters[key].value = parsedVal;
+				} else if (initialFiltersObj[key] !== undefined) {
+					initialFiltersObj[key] = parsedVal;
+				}
+
 				if (debouncedFields.includes(key)) {
-					debouncedValues[key] = urlVal;
+					debouncedValues[key] = parsedVal;
 				}
 			}
 		}
 	}
-
 	if (import.meta.server) {
 		onServerPrefetch(async () => {
 			if (unref(enabled) === false) return;
@@ -238,21 +273,45 @@ export function usePaginatedQuery(config) {
 		queryKey: computed(() => [...queryKey, queryParams.value]),
 		queryFn: () => queryFn(queryParams.value),
 		initialData: initialData,
-		placeholderData: (previousData) => previousData,
+		placeholderData: (previousData, previousQuery) => {
+			if (!previousQuery || !previousData) return undefined;
+			const previousKey = previousQuery.queryKey;
+			const previousParams = previousKey[previousKey.length - 1] || {};
+			const currentParams = queryParams.value;
+
+			const prevFiltersObj = { ...previousParams };
+			delete prevFiltersObj.page;
+			const curFiltersObj = { ...currentParams };
+			delete curFiltersObj.page;
+
+			if (JSON.stringify(prevFiltersObj) === JSON.stringify(curFiltersObj)) {
+				return previousData;
+			}
+			return undefined;
+		},
 		staleTime: 5000,
 		...options,
 		enabled: enabled,
 	});
 
 	const listData = computed(() => {
-		if (!data.value) return [];
+		if (!data?.value) return [];
 		return typeof dataKey === "function"
 			? dataKey(data.value)
 			: data.value[dataKey] || [];
 	});
 
-	const paginationData = computed(() => data.value?.pagination || {});
-	const totalPages = computed(() => paginationData.value.totalPages || 1);
+	const paginationData = computed(() => {
+		if (data.value?.pagination) return data.value.pagination;
+		const root = data.value || {};
+		return {
+			totalPages: root.totalPages ?? root.TotalPages ?? 1,
+			totalCount: root.totalCount ?? root.TotalCount ?? 0,
+			pageNumber: root.pageNumber ?? root.PageNumber ?? 1,
+			pageSize: root.pageSize ?? root.PageSize ?? 10,
+		};
+	});
+	const totalPages = computed(() => paginationData.value.totalPages);
 
 	const isInitialLoading = computed(
 		() => status.value === "pending" && !data.value,
@@ -318,6 +377,10 @@ export function usePaginatedQuery(config) {
 		}
 	};
 
+	onMounted(() => {
+		isInitializing = false;
+	});
+
 	return {
 		data: listData,
 		rawData: data,
@@ -328,16 +391,16 @@ export function usePaginatedQuery(config) {
 		pageParam,
 		isPlaceholderData,
 		...restQuery,
-		pagination: computed(() => ({
-			currentPage: pageParam.value,
-			totalPages: totalPages.value,
+		pagination: reactive({
+			currentPage: pageParam,
+			totalPages: totalPages,
 			itemsPerPage,
-			totalItems: paginationData.value.totalCount,
+			totalItems: computed(() => paginationData.value.totalCount || 0),
 			goToPage: changePage,
 			nextPage: () => changePage(pageParam.value + 1),
 			prevPage: () => changePage(pageParam.value - 1),
-			hasNextPage: pageParam.value < totalPages.value,
-			hasPrevPage: pageParam.value > 1,
-		})),
+			hasNextPage: computed(() => pageParam.value < totalPages.value),
+			hasPrevPage: computed(() => pageParam.value > 1),
+		}),
 	};
 }

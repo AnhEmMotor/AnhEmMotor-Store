@@ -35,15 +35,20 @@
 					</div>
 				</div>
 				<div class="seo-image relative">
-					<div class="rounded-2xl overflow-hidden shadow-2xl">
+					<div
+						class="rounded-2xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500"
+					>
 						<img
 							src="/assets/image/index/index-banner-bg.webp"
 							alt="Cửa hàng AnhEm Motor"
 							class="w-full h-auto object-cover"
-						>
+							width="600"
+							height="400"
+							loading="lazy"
+						/>
 					</div>
 					<div
-						class="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-2xl shadow-xl hidden lg:block"
+						class="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-2xl shadow-xl hidden lg:block transform -rotate-6 hover:-rotate-3 transition-transform duration-300"
 					>
 						<p class="text-2xl font-black">5+ Năm</p>
 						<p class="text-sm opacity-80 uppercase tracking-widest">

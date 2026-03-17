@@ -20,7 +20,14 @@
 					>
 						<div class="brand-card">
 							<div class="brand-icon">
-								<img :src="brand.img" :alt="brand.alt" class="brand-logo" >
+								<img
+									:src="brand.img"
+									:alt="brand.alt"
+									class="brand-logo"
+									width="48"
+									height="48"
+									loading="lazy"
+								>
 							</div>
 							<p>{{ brand.text }}</p>
 						</div>
@@ -46,22 +53,22 @@ import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 
 const brands = ref([
 	{
-		img: "/assets/image/index/brand/honda.webp",
+		img: "/assets/image/index/brand/honda-optimized.webp",
 		alt: "Honda Logo",
 		text: "Thương hiệu xe máy số 1 thế giới với chất lượng và độ bền vượt trội",
 	},
 	{
-		img: "/assets/image/index/brand/yamaha.webp",
+		img: "/assets/image/index/brand/yamaha-optimized.webp",
 		alt: "Yamaha Logo",
 		text: "Thiết kế thể thao, công nghệ tiên tiến và âm thanh động cơ đầy sức hút",
 	},
 	{
-		img: "/assets/image/index/brand/suzuki.webp",
+		img: "/assets/image/index/brand/suzuki-optimized.webp",
 		alt: "Suzuki Logo",
 		text: "Nâng cao chất lượng, an toàn và thoải mái, nhân rộng niềm vui của tất cả mọi người",
 	},
 	{
-		img: "/assets/image/index/brand/kawasaki.webp",
+		img: "/assets/image/index/brand/kawasaki-optimized.webp",
 		alt: "Kawasaki Logo",
 		text: "Phong cách mạnh mẽ, hiệu suất vượt trội, tốc độ đỉnh cao và công nghệ đột phá",
 	},

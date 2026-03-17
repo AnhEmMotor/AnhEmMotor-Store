@@ -23,6 +23,34 @@ export default defineNuxtConfig({
 			(tailwindcss as any)(),
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(svgLoader as any)(),
+			{
+				apply: "build",
+				name: "vite-plugin-quiet-build",
+				configResolved(config) {
+					const originalOnWarn = config.build.rollupOptions.onwarn;
+					config.build.rollupOptions.onwarn = (warning, warn) => {
+						const silentCodes = ["SOURCEMAP_BROKEN", "UNUSED_EXTERNAL_IMPORT"];
+						const silentMessages = [
+							"cache-driver.js",
+							"virtual:#nitro-internal-virtual/storage",
+							"module-preload-polyfill",
+						];
+
+						if (
+							silentCodes.includes(warning.code || "") ||
+							silentMessages.some((msg) => warning.message?.includes(msg))
+						) {
+							return;
+						}
+
+						if (originalOnWarn) {
+							originalOnWarn(warning, warn);
+						} else {
+							warn(warning);
+						}
+					};
+				},
+			},
 		],
 		build: {
 			sourcemap: false,
@@ -30,6 +58,33 @@ export default defineNuxtConfig({
 	},
 
 	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],
+
+	nitro: {
+		rollupConfig: {
+			onwarn(warning, warn) {
+				const silentCodes = ["CIRCULAR_DEPENDENCY"];
+				const silentMessages = [
+					"cache-driver.js",
+					"virtual:#nitro-internal-virtual/storage",
+					"node_modules/nitropack",
+				];
+
+				if (
+					silentCodes.includes(warning.code || "") ||
+					silentMessages.some((msg) => warning.message?.includes(msg))
+				) {
+					return;
+				}
+				warn(warning);
+			},
+		},
+		routeRules: {
+			"/assets/**": {
+				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
+			},
+		},
+		compressPublicAssets: true,
+	},
 
 	css: ["~/assets/main.css"],
 
@@ -45,19 +100,14 @@ export default defineNuxtConfig({
 						"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==",
 					crossorigin: "anonymous",
 					referrerpolicy: "no-referrer",
+					media: "print",
+					onload: "this.media='all'",
 				},
-				{
-					rel: "preconnect",
-					href: "https://fonts.googleapis.com",
-				},
+				// Google Fonts preconnect stays for gstatic as our URLs still point there for now
 				{
 					rel: "preconnect",
 					href: "https://fonts.gstatic.com",
 					crossorigin: "anonymous",
-				},
-				{
-					rel: "stylesheet",
-					href: "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
 				},
 			],
 		},
@@ -72,9 +122,10 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
-		apiServerUrl: "",
+		apiServerUrl: process.env.API_SERVER_URL || "http://localhost:7001",
 		public: {
-			apiBaseUrl: "",
+			apiBaseUrl:
+				process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:7001",
 		},
 	},
 });

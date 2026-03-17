@@ -36,11 +36,19 @@ const sparePartsData = [
 	},
 ];
 
-export const ProductRepository = {
+export const ProductRepository = (axios) => ({
 	getAccessoryById(id) {
 		return accessoriesData.find((item) => item.id === parseInt(id));
 	},
 	getSparePartById(id) {
 		return sparePartsData.find((item) => item.id === parseInt(id));
 	},
-};
+	async getProducts(params) {
+		const response = await axios.get("/api/v1/product", { params });
+		return response.data;
+	},
+	async getProductBySlug(slug) {
+		const response = await axios.get(`/api/v1/product/${slug}`);
+		return response.data;
+	},
+});

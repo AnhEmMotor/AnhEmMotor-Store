@@ -40,6 +40,20 @@ onMounted(() => {
 	typeEffect();
 });
 
+import { useRouter } from "#app";
+
+const router = useRouter();
+const searchQuery = ref("");
+
+const handleSearch = () => {
+	const trimmed = searchQuery.value.trim();
+	if (trimmed) {
+		router.push({ path: "/products", query: { search: trimmed, page: 1 } });
+	} else {
+		router.push({ path: "/products", query: { page: 1 } });
+	}
+};
+
 onUnmounted(() => {
 	if (timeoutId) clearTimeout(timeoutId);
 });
@@ -55,12 +69,23 @@ onUnmounted(() => {
 				đầu thế giới
 			</p>
 
-			<div class="search-bar">
-				<input id="searchInput" type="text" :placeholder="currentPlaceholder" />
-				<button id="searchButton" class="search-button">
+			<form @submit.prevent="handleSearch" class="search-bar">
+				<label for="searchInput" class="sr-only">Tìm kiếm sản phẩm</label>
+				<input
+					id="searchInput"
+					type="text"
+					:placeholder="currentPlaceholder"
+					v-model="searchQuery"
+				/>
+				<button
+					id="searchButton"
+					type="submit"
+					class="search-button"
+					aria-label="Tìm kiếm sản phẩm"
+				>
 					<i class="fas fa-search" /> Tìm Kiếm
 				</button>
-			</div>
+			</form>
 
 			<div class="hero-stats">
 				<div class="stat-item">
@@ -77,6 +102,15 @@ onUnmounted(() => {
 				</div>
 			</div>
 		</div>
+
+		<Head>
+			<link
+				rel="preload"
+				as="image"
+				href="/assets/image/index/index-banner-bg.webp"
+				fetchpriority="high"
+			/>
+		</Head>
 	</section>
 </template>
 

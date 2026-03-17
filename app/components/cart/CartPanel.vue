@@ -25,14 +25,15 @@
 				class="flex justify-between items-center p-4 border-b bg-gradient-to-r from-gray-50 to-white"
 			>
 				<h3 class="text-xl font-bold flex items-center gap-2">
-					<i class="fas fa-shopping-cart text-honda-red"/>
+					<i class="fas fa-shopping-cart text-honda-red" />
 					Giỏ hàng của bạn
 				</h3>
 				<button
 					class="text-gray-700 text-2xl hover:text-honda-red transition-colors"
+					aria-label="Đóng giỏ hàng"
 					@click="$emit('close')"
 				>
-					<i class="fas fa-times"/>
+					<i class="fas fa-times" />
 				</button>
 			</div>
 
@@ -45,7 +46,7 @@
 					v-if="cartItems.length === 0"
 					class="text-center py-8 text-gray-500"
 				>
-					<i class="fas fa-shopping-cart text-4xl mb-4 opacity-30"/>
+					<i class="fas fa-shopping-cart text-4xl mb-4 opacity-30" />
 					<p>Giỏ hàng của bạn đang trống.</p>
 				</div>
 				<div v-else>
@@ -78,9 +79,10 @@
 						</div>
 						<button
 							class="text-red-500 hover:bg-red-100 rounded p-2"
+							aria-label="Xóa sản phẩm khỏi giỏ hàng"
 							@click="$emit('removeItem', index)"
 						>
-							<i class="fas fa-trash"/>
+							<i class="fas fa-trash" />
 						</button>
 					</div>
 				</div>
@@ -99,7 +101,7 @@
 					:disabled="cartItems.length === 0"
 					@click="onCheckout"
 				>
-					<i class="fas fa-credit-card mr-2"/>
+					<i class="fas fa-credit-card mr-2" />
 					Xem giỏ hàng
 				</BaseButton>
 			</div>
