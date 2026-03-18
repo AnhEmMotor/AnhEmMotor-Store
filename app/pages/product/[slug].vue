@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useProductStore } from "@/stores/useProductStore";
 
@@ -7,7 +7,19 @@ const route = useRoute();
 const slug = computed(() => route.params.slug);
 const productStore = useProductStore();
 
-// Fetch product details
+// SSR Data Fetching
+const { data: detailData } = await useAsyncData(
+	`product-detail-${slug.value}`,
+	() => productStore.getProductStoreDetailBySlug(slug.value),
+	{ watch: [slug] },
+);
+
+const { data: attributeLabelsData } = await useAsyncData(
+	"product-attribute-labels",
+	() => productStore.getProductAttributeLabels(),
+);
+
+// Vue Query Integration (Hydrate cache from SSR data)
 const {
 	data: detail,
 	isLoading,
@@ -15,14 +27,15 @@ const {
 } = useQuery({
 	queryKey: ["product-detail", slug],
 	queryFn: () => productStore.getProductStoreDetailBySlug(slug.value),
-	staleTime: 1000 * 60 * 5, // 5 minutes
+	initialData: detailData,
+	staleTime: 1000 * 60 * 5,
 });
 
-// Fetch attribute labels
 const { data: attributeLabels } = useQuery({
 	queryKey: ["product-attribute-labels"],
 	queryFn: () => productStore.getProductAttributeLabels(),
-	staleTime: 1000 * 60 * 60, // 1 hour
+	initialData: attributeLabelsData,
+	staleTime: 1000 * 60 * 60,
 });
 
 const currentVariant = computed(() => detail.value?.current_variant);
@@ -104,26 +117,34 @@ const handleVariantChange = (event) => {
 	}
 };
 
+const seoTitle = computed(() => {
+	const name =
+		detail.value?.product?.meta_title ||
+		detail.value?.product?.name ||
+		"Chi tiết sản phẩm";
+	return variantName.value ? `${name} - ${variantName.value}` : name;
+});
+
+const seoDescription = computed(() => {
+	return (
+		detail.value?.product?.meta_description ||
+		detail.value?.product?.short_description ||
+		detail.value?.product?.description ||
+		"Thông tin chi tiết sản phẩm tại AnhEm Motor."
+	);
+});
+
 useSeoMeta({
-	title: () =>
-		`${detail.value?.product?.name || "Chi tiết sản phẩm"} | AnhEm Motor`,
-	ogTitle: () =>
-		`${detail.value?.product?.name || "Chi tiết sản phẩm"} | AnhEm Motor`,
-	description: () =>
-		detail.value?.product?.description ||
-		"Thông tin chi tiết sản phẩm tại AnhEm Motor.",
-	ogDescription: () =>
-		detail.value?.product?.description ||
-		"Thông tin chi tiết sản phẩm tại AnhEm Motor.",
+	title: () => `${seoTitle.value} | AnhEm Motor`,
+	ogTitle: () => `${seoTitle.value} | AnhEm Motor`,
+	description: () => seoDescription.value,
+	ogDescription: () => seoDescription.value,
 	ogImage: () =>
 		detail.value?.current_variant?.cover_image_url ||
 		detail.value?.current_variant?.photo_collection?.[0] ||
 		"/assets/image/index/index-banner-bg.webp",
-	twitterTitle: () =>
-		`${detail.value?.product?.name || "Chi tiết sản phẩm"} | AnhEm Motor`,
-	twitterDescription: () =>
-		detail.value?.product?.description ||
-		"Thông tin chi tiết sản phẩm tại AnhEm Motor.",
+	twitterTitle: () => `${seoTitle.value} | AnhEm Motor`,
+	twitterDescription: () => seoDescription.value,
 	twitterImage: () =>
 		detail.value?.current_variant?.cover_image_url ||
 		detail.value?.current_variant?.photo_collection?.[0] ||
@@ -280,7 +301,13 @@ useHead({
 									<h1 class="text-2xl font-black text-gray-900 leading-tight">
 										{{ detail.product.name }}
 									</h1>
-									<div class="flex items-baseline gap-2">
+									<p
+										v-if="detail.product.short_description"
+										class="text-gray-500 text-sm font-medium"
+									>
+										{{ detail.product.short_description }}
+									</p>
+									<div class="flex items-baseline gap-2 pt-2">
 										<span class="text-2xl font-black text-primary">
 											{{ formattedPrice }}
 										</span>
