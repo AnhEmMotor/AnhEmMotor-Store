@@ -18,14 +18,7 @@ export const useProductStore = defineStore("product", () => {
 		optionsError.value = null;
 		try {
 			const res = await optionRepo.getOptions();
-			if (Array.isArray(res)) {
-				options.value = res;
-			} else if (res && res.isSuccess) {
-				options.value = res.value;
-			} else {
-				optionsError.value =
-					res?.errors?.[0]?.message || "Failed to load options";
-			}
+			options.value = res || [];
 		} catch (error) {
 			optionsError.value = error.message || "An error occurred";
 		} finally {
@@ -34,14 +27,24 @@ export const useProductStore = defineStore("product", () => {
 	};
 
 	const getProducts = async (params) => {
-		const res = await productRepo.getProducts(params);
-		return res;
+		return await productRepo.getProducts(params);
 	};
+
+	const getProductStoreDetailBySlug = async (slug) => {
+		return await productRepo.getProductStoreDetailBySlug(slug);
+	};
+
+	const getProductAttributeLabels = async () => {
+		return await productRepo.getProductAttributeLabels();
+	};
+
 	return {
 		options,
 		isLoadingOptions,
 		optionsError,
 		fetchOptions,
 		getProducts,
+		getProductStoreDetailBySlug,
+		getProductAttributeLabels,
 	};
 });

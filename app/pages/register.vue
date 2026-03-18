@@ -1,10 +1,28 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useAuthStore } from "../stores/useAuthStore";
 
 useSeoMeta({
-	title: "Đăng Ký | AnhEm Motor",
+	title: "Đăng Ký",
 	description: "Tạo tài khoản AnhEm Motor để trải nghiệm mua sắm dễ dàng hơn.",
+	ogTitle: "Đăng Ký",
+	ogDescription:
+		"Tạo tài khoản AnhEm Motor để trải nghiệm mua sắm dễ dàng hơn.",
+	ogImage: "/assets/image/index/index-banner-bg.webp",
+	twitterTitle: "Đăng Ký",
+	twitterDescription:
+		"Tạo tài khoản AnhEm Motor để trải nghiệm mua sắm dễ dàng hơn.",
+	twitterImage: "/assets/image/index/index-banner-bg.webp",
+});
+
+useHead({
+	link: [
+		{
+			rel: "icon",
+			type: "image/png",
+			href: "/favicon.png",
+		},
+	],
 });
 
 const instance = useNuxtApp();
@@ -17,7 +35,7 @@ const isLoading = ref(false);
 const passwordFieldType = ref("password");
 const confirmPasswordFieldType = ref("password");
 
-function togglePassword(field) {
+function togglePassword(field: string) {
 	if (field === "password") {
 		passwordFieldType.value =
 			passwordFieldType.value === "password" ? "text" : "password";
@@ -42,17 +60,24 @@ async function handleRegister() {
 	isLoading.value = true;
 	const authStore = useAuthStore();
 	try {
-		const { error, data: resData } = await authStore.register({
+		const result = (await authStore.register({
 			Email: data.email,
 			Password: data.password,
-		});
+		})) as {
+			error?: {
+				response?: {
+					data?: { message?: string; errors?: { message: string }[] };
+				};
+			};
+			data?: { message?: string };
+		};
 
-		if (error) {
-			throw error;
+		if (result?.error) {
+			throw result.error;
 		}
 
 		authStore.setSuccessMessage(
-			resData?.message || "Đăng ký thành công! Vui lòng đăng nhập.",
+			result?.data?.message || "Đăng ký thành công! Vui lòng đăng nhập.",
 		);
 		formData.value = {
 			email: "",
@@ -62,10 +87,15 @@ async function handleRegister() {
 
 		const router = useRouter();
 		router.push("/login");
-	} catch (error) {
+	} catch (error: unknown) {
+		const err = error as {
+			response?: {
+				data?: { message?: string; errors?: { message: string }[] };
+			};
+		};
 		const errorMessage =
-			error.response?.data?.message ||
-			error.response?.data?.errors?.[0]?.message ||
+			err.response?.data?.message ||
+			err.response?.data?.errors?.[0]?.message ||
 			"Đã xảy ra lỗi trong quá trình đăng ký. Vui lòng thử lại.";
 		instance.$toast.error(errorMessage);
 	} finally {
@@ -79,7 +109,7 @@ async function handleRegister() {
 		<div class="card">
 			<div class="form-header">
 				<h1>Đăng Ký</h1>
-				<p>Tham gia cộng đồng AnhEm Motor ngay hôm nay</p>
+				<p>Tạo tài khoản để trải nghiệm mua sắm!</p>
 			</div>
 
 			<form id="register-form" @submit.prevent="handleRegister">

@@ -47,7 +47,7 @@ const currentUrl = computed(() => {
 				:src="currentImage"
 				:alt="product.name"
 				class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-			/>
+			>
 		</div>
 
 		<!-- Content -->

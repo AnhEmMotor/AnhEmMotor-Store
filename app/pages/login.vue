@@ -1,10 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useAuthStore } from "../stores/useAuthStore";
 
 useSeoMeta({
-	title: "Đăng Nhập | AnhEm Motor",
+	title: "Đăng Nhập",
 	description: "Đăng nhập vào tài khoản AnhEm Motor của bạn.",
+	ogTitle: "Đăng Nhập",
+	ogDescription: "Đăng nhập vào tài khoản AnhEm Motor của bạn.",
+	ogImage: "/assets/image/index/index-banner-bg.webp",
+	twitterTitle: "Đăng Nhập",
+	twitterDescription: "Đăng nhập vào tài khoản AnhEm Motor của bạn.",
+	twitterImage: "/assets/image/index/index-banner-bg.webp",
+});
+
+useHead({
+	link: [
+		{
+			rel: "icon",
+			type: "image/png",
+			href: "/favicon.png",
+		},
+	],
 });
 
 const instance = useNuxtApp();
@@ -25,13 +41,19 @@ async function handleLogin() {
 	isLoading.value = true;
 	const authStore = useAuthStore();
 	try {
-		const { error } = await authStore.login({
+		const result = (await authStore.login({
 			UsernameOrEmail: identifier.value,
 			Password: password.value,
-		});
+		})) as {
+			error?: {
+				response?: {
+					data?: { message?: string; errors?: { message: string }[] };
+				};
+			};
+		};
 
-		if (error) {
-			throw error;
+		if (result?.error) {
+			throw result.error;
 		}
 
 		authStore.setSuccessMessage("Đăng nhập thành công!");
@@ -39,10 +61,15 @@ async function handleLogin() {
 		password.value = "";
 		const router = useRouter();
 		router.push("/");
-	} catch (error) {
+	} catch (error: unknown) {
+		const err = error as {
+			response?: {
+				data?: { message?: string; errors?: { message: string }[] };
+			};
+		};
 		const errorMessage =
-			error.response?.data?.message ||
-			error.response?.data?.errors?.[0]?.message ||
+			err.response?.data?.message ||
+			err.response?.data?.errors?.[0]?.message ||
 			"Email hoặc mật khẩu không đúng!";
 		instance.$toast.error(errorMessage);
 	} finally {

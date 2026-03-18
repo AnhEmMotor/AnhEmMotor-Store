@@ -45,7 +45,7 @@
 							width="600"
 							height="400"
 							loading="lazy"
-						/>
+						>
 					</div>
 					<div
 						class="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-2xl shadow-xl hidden lg:block transform -rotate-6 hover:-rotate-3 transition-transform duration-300"

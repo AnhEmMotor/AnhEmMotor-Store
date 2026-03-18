@@ -2,14 +2,30 @@
 import { ref } from "vue";
 import { useProductStore } from "@/stores/useProductStore";
 import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
-import ProductFilterSidebar from "@/components/Product/ProductFilterSidebar.vue";
-import ProductList from "@/components/Product/ProductList.vue";
 import BasePagination from "@/components/ui/BasePagination.vue";
 
 useSeoMeta({
-	title: "Danh sách sản phẩm | AnhEm Motor",
+	title: "Danh sách sản phẩm",
+	ogTitle: "Danh sách sản phẩm",
 	description:
 		"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
+	ogDescription:
+		"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
+	ogImage: "/assets/image/index/index-banner-bg.webp",
+	twitterTitle: "Danh sách sản phẩm",
+	twitterDescription:
+		"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
+	twitterImage: "/assets/image/index/index-banner-bg.webp",
+});
+
+useHead({
+	link: [
+		{
+			rel: "icon",
+			type: "image/png",
+			href: "/favicon.png",
+		},
+	],
 });
 
 const productStore = useProductStore();
@@ -71,8 +87,10 @@ const toggleSidebar = () => {
 };
 
 const handleViewDetail = (product) => {
-	// Navigate to detail page (to be implemented later)
-	navigateTo(`/products/${product.id}`);
+	const slug = product.variants?.[0]?.url;
+	if (slug) {
+		navigateTo(`/product/${slug}`);
+	}
 };
 </script>
 
@@ -98,7 +116,7 @@ const handleViewDetail = (product) => {
 		</Transition>
 
 		<!-- Main Content -->
-		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
 			<div class="flex flex-col lg:flex-row gap-12">
 				<!-- Desktop Sidebar -->
 				<aside class="hidden lg:block w-80 flex-shrink-0">

@@ -120,7 +120,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 						type="text"
 						placeholder="Nhập tên sản phẩm..."
 						class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
-					/>
+					>
 					<i
 						class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
 					/>
