@@ -2,6 +2,7 @@
 import { ref, computed, onServerPrefetch } from "vue";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { useProductStore } from "@/stores/useProductStore";
+import { useCart } from "~/composables/useCart";
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);
@@ -166,6 +167,25 @@ useHead({
 		},
 	],
 });
+
+const { addItem } = useCart();
+
+const onAddToCart = () => {
+	if (!currentVariant.value) return;
+
+	const productToAdd = {
+		id: currentVariant.value.id,
+		name:
+			detail.value.product.name +
+			(variantName.value ? ` - ${variantName.value}` : ""),
+		price: currentVariant.value.price,
+		image:
+			currentVariant.value.cover_image_url ||
+			"/assets/image/placeholder-product.webp",
+	};
+
+	addItem(productToAdd, 1);
+};
 </script>
 
 <template>
@@ -255,7 +275,7 @@ useHead({
 									:src="mainImage"
 									:alt="detail.product.name"
 									class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-								>
+								/>
 							</div>
 
 							<div
@@ -273,7 +293,7 @@ useHead({
 									"
 									@click="mainImage = photo"
 								>
-									<img :src="photo" class="w-full h-full object-cover" >
+									<img :src="photo" class="w-full h-full object-cover" />
 								</button>
 							</div>
 						</div>
@@ -357,6 +377,7 @@ useHead({
 								<div class="space-y-4 pt-4 border-b border-gray-100 pb-8">
 									<button
 										class="w-full py-4 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/20 flex items-center justify-center gap-3"
+										@click="onAddToCart"
 									>
 										<i class="fas fa-shopping-cart" />
 										THÊM VÀO GIỎ HÀNG

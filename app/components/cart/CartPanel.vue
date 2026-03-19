@@ -46,6 +46,25 @@
 					<i class="fas fa-shopping-cart text-4xl mb-4 opacity-30" />
 					<p>Giỏ hàng của bạn đang trống.</p>
 				</div>
+				<div
+					v-if="
+						isPending &&
+						cartItems.length > 0 &&
+						!cartItems[0]?.name?.includes('...')
+					"
+				>
+					<div
+						v-for="i in cartItems.length"
+						:key="i"
+						class="flex items-center gap-3 mb-4 pb-4 border-b animate-pulse"
+					>
+						<div class="w-16 h-16 bg-gray-100 rounded-lg shrink-0" />
+						<div class="flex-1 space-y-2">
+							<div class="h-4 bg-gray-100 rounded w-3/4" />
+							<div class="h-4 bg-gray-100 rounded w-1/2" />
+						</div>
+					</div>
+				</div>
 				<div v-else>
 					<div
 						v-for="(item, index) in cartItems"
@@ -56,7 +75,10 @@
 							:src="item.image"
 							:alt="item.name"
 							class="w-16 h-16 object-contain rounded-lg border p-1 bg-gray-50"
-						>
+							@error="
+								(e) => (e.target.src = '/assets/image/placeholder-product.webp')
+							"
+						/>
 						<div class="flex-1">
 							<div class="font-semibold text-sm text-gray-800">
 								{{ item.name }}
@@ -111,7 +133,7 @@ import { ref, watch } from "vue";
 import BaseButton from "../ui/button/BaseButton.vue";
 import NumberStepper from "../ui/input/NumberStepper.vue";
 
-const { isOpen, cartItems, cartTotal } = defineProps({
+const { isOpen, cartItems, cartTotal, isPending } = defineProps({
 	isOpen: Boolean,
 	cartItems: {
 		type: Array,
@@ -120,6 +142,10 @@ const { isOpen, cartItems, cartTotal } = defineProps({
 	cartTotal: {
 		type: Number,
 		default: 0,
+	},
+	isPending: {
+		type: Boolean,
+		default: false,
 	},
 });
 const emit = defineEmits(["close", "updateQuantity", "removeItem"]);
