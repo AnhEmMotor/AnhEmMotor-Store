@@ -45,12 +45,10 @@ export function useCart() {
 			return data;
 		},
 		enabled: computed(() => variantIds.value.length > 0),
-		staleTime: 1000 * 60 * 10, // 10 minutes
+		staleTime: 1000 * 60 * 10,
 	});
 
 	const cartDetails = computed(() => {
-		// Import static data samples (if needed for fallback)
-		// Note: In a real project, we'd move these to DB.
 		return cartItems.value.map((item) => {
 			const detail = batchDetails.value?.find((d) => d.id === Number(item.id));
 
@@ -65,7 +63,6 @@ export function useCart() {
 				};
 			}
 
-			// Fallback for static items if they were added with metadata
 			return {
 				...item,
 				name: item.name || "Sản phẩm",
@@ -91,7 +88,6 @@ export function useCart() {
 
 		if (idx === -1) {
 			const itemToAdd = { id: product.id, quantity };
-			// Nếu ID không phải là số (sản phẩm tĩnh từ local data), lưu thêm metadata để ko bị mất sau refresh
 			if (isNaN(Number(product.id))) {
 				itemToAdd.name = product.displayName || product.name;
 				itemToAdd.price = product.price;

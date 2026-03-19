@@ -78,7 +78,7 @@
 							@error="
 								(e) => (e.target.src = '/assets/image/placeholder-product.webp')
 							"
-						>
+						/>
 						<div class="flex-1">
 							<div class="font-semibold text-sm text-gray-800">
 								{{ item.name }}
@@ -115,13 +115,24 @@
 					>
 				</div>
 				<BaseButton
+					v-if="auth.isLoggedIn"
 					id="checkout-button"
 					:to="{ path: '/process-order' }"
 					:disabled="cartItems.length === 0"
 					@click="onCheckout"
 				>
 					<i class="fas fa-credit-card mr-2" />
-					Xem giỏ hàng
+					Tiến hành thanh toán
+				</BaseButton>
+				<BaseButton
+					v-if="!auth.isLoggedIn"
+					id="checkout-button"
+					:to="{ path: '/process-order' }"
+					:disabled="cartItems.length === 0"
+					@click="onCheckout"
+				>
+					<i class="fa-solid fa-right-to-bracket mr-2" />
+					Đăng nhập để thanh toán
 				</BaseButton>
 			</div>
 		</div>
@@ -148,6 +159,7 @@ const { isOpen, cartItems, cartTotal, isPending } = defineProps({
 		default: false,
 	},
 });
+const auth = useAuthStore();
 const emit = defineEmits(["close", "updateQuantity", "removeItem"]);
 
 const shouldRender = ref(isOpen);
