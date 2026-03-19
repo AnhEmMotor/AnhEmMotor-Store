@@ -8,6 +8,7 @@
 	>
 		<div class="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
 			<div class="relative flex h-16 sm:h-20 items-center justify-between">
+				<!-- Brand Logo -->
 				<div class="flex-none flex items-center">
 					<button
 						class="xl:hidden mr-3 p-2 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors"
@@ -25,12 +26,12 @@
 							class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center overflow-hidden shadow-lg shadow-red-500/20 group-hover:shadow-red-500/40 transition-all duration-300"
 						>
 							<img
-								src="/assets/image/logo.webp"
+								src="/assets/image/logo-optimized.webp"
 								alt="AnhEm Motor"
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
 								width="40"
 								height="40"
-							>
+							/>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -45,6 +46,7 @@
 					</RouterLink>
 				</div>
 
+				<!-- Desktop Navigation -->
 				<nav class="hidden xl:flex flex-1 justify-center px-8">
 					<ul class="flex items-center gap-1">
 						<li><RouterLink to="/" class="nav-link">Trang Chủ</RouterLink></li>
@@ -71,6 +73,7 @@
 					</ul>
 				</nav>
 
+				<!-- Action Icons & User -->
 				<div class="flex-none flex items-center gap-2 sm:gap-4">
 					<div class="flex items-center gap-1 sm:gap-2">
 						<button
@@ -92,6 +95,7 @@
 						</button>
 					</div>
 
+					<!-- Auth Buttons / User Menu -->
 					<div class="hidden sm:flex items-center gap-3">
 						<template v-if="!isLoggedIn">
 							<RouterLink
@@ -122,13 +126,13 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover"
-									>
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xs" />
 								</div>
 								<span
 									class="hidden md:block text-sm font-bold text-gray-800 max-w-[100px] truncate"
 								>
-									{{ user?.fullName || user?.userName }}
+									{{ user?.fullName || user?.userName || user?.email }}
 								</span>
 								<i
 									class="fas fa-chevron-down text-[10px] text-gray-400 transition-transform duration-300"
@@ -171,7 +175,7 @@
 											>
 												<i class="fas fa-user-circle" />
 											</div>
-											<span>Trang Cá Nhân</span>
+											<span>Chỉnh sửa hồ sơ</span>
 										</RouterLink>
 										<RouterLink
 											to="/orders"
@@ -207,6 +211,7 @@
 		</div>
 
 		<Teleport to="body">
+			<!-- Mobile Overlay -->
 			<Transition
 				enter-active-class="transition duration-300 ease-out"
 				enter-from-class="opacity-0"
@@ -222,6 +227,7 @@
 				/>
 			</Transition>
 
+			<!-- Mobile Sidebar -->
 			<nav
 				class="fixed top-0 bottom-0 left-0 w-[300px] sm:w-[350px] bg-white shadow-2xl z-[2100] flex flex-col transition-transform duration-500 ease-out transform"
 				:class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'"
@@ -237,7 +243,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							>
+							/>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -253,6 +259,7 @@
 				</div>
 
 				<div class="flex-1 overflow-y-auto custom-scrollbar bg-white">
+					<!-- Mobile User Info -->
 					<div class="p-6 bg-gray-50 border-b border-gray-100">
 						<template v-if="!isLoggedIn">
 							<div class="grid grid-cols-2 gap-3">
@@ -284,14 +291,14 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover"
-									>
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xl" />
 								</div>
 								<div class="flex-1 min-w-0">
 									<p class="font-black text-gray-900 truncate leading-tight">
-										{{ user?.fullName || user?.userName }}
+										{{ user?.fullName || user?.userName || user?.email }}
 									</p>
-									<p class="text-xs font-medium text-gray-500 truncate mt-0.5">
+									<p class="text-xs font-medium text-gray-500 truncate mt-0.5" v-if="(user?.fullName || user?.userName) && user?.email">
 										{{ user?.email }}
 									</p>
 								</div>
@@ -309,6 +316,7 @@
 						</div>
 					</div>
 
+					<!-- Mobile Navigation Links -->
 					<ul class="p-4 space-y-1">
 						<li>
 							<RouterLink to="/" class="mobile-nav-link" @click="closeMobileNav"
@@ -373,6 +381,7 @@
 			</nav>
 		</Teleport>
 
+		<!-- Cart Panel -->
 		<CartPanel
 			:is-open="isCartOpen"
 			:cart-items="cartItems"
@@ -406,6 +415,7 @@ const handleLogout = async () => {
 	await authStore.logout();
 };
 
+// Handle scroll effect
 if (import.meta.client) {
 	const handleScroll = () => {
 		isScrolled.value = window.scrollY > 20;
@@ -413,7 +423,7 @@ if (import.meta.client) {
 
 	onMounted(() => {
 		window.addEventListener("scroll", handleScroll);
-		handleScroll();
+		handleScroll(); // Initial check
 
 		window.addEventListener("click", (e) => {
 			if (!e.target.closest(".user-menu-container")) {
@@ -491,6 +501,7 @@ onBeforeUnmount(() => {
 	@apply p-2.5 rounded-xl text-gray-700 hover:bg-gray-100 active:scale-95 transition-all outline-none;
 }
 
+/* Custom Scrollbar for Mobile Nav */
 .custom-scrollbar::-webkit-scrollbar {
 	width: 4px;
 }
