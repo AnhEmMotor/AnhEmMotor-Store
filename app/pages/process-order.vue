@@ -130,11 +130,6 @@ async function handlePlaceOrder() {
 }
 
 onMounted(async () => {
-	if (!isLoggedIn.value && import.meta.client) {
-		navigateTo("/login?redirect=/process-order");
-		return;
-	}
-
 	if (user.value) {
 		shippingInfo.value.fullName =
 			user.value.fullName || user.value.userName || "";
