@@ -50,12 +50,36 @@ const shippingInfo = ref({
 	notes: "",
 });
 
+const errors = ref({
+	fullName: "",
+	phone: "",
+	address: "",
+});
+
+function validateForm() {
+	let isValid = true;
+	errors.value = { fullName: "", phone: "", address: "" };
+
+	if (!shippingInfo.value.fullName?.trim()) {
+		errors.value.fullName = "Vui lòng nhập họ và tên người nhận";
+		isValid = false;
+	}
+	if (!shippingInfo.value.phone?.trim()) {
+		errors.value.phone = "Vui lòng nhập số điện thoại nhận hàng";
+		isValid = false;
+	}
+	if (!shippingInfo.value.address?.trim()) {
+		errors.value.address = "Vui lòng nhập địa chỉ giao hàng chi tiết";
+		isValid = false;
+	}
+
+	return isValid;
+}
+
 const subtotal = computed(() =>
 	cartDetails.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
 );
-const shipping = computed(() =>
-	subtotal.value === 0 || subtotal.value > 10000000 ? 0 : 200000,
-);
+const shipping = computed(() => (subtotal.value > 10000000 ? 0 : 200000));
 const total = computed(() => subtotal.value + shipping.value);
 
 function formatCurrency(value) {
@@ -71,12 +95,8 @@ async function handlePlaceOrder() {
 		return;
 	}
 
-	if (
-		!shippingInfo.value.fullName ||
-		!shippingInfo.value.phone ||
-		!shippingInfo.value.address
-	) {
-		instance.$toast.error("Vui lòng điền đầy đủ thông tin nhận hàng!");
+	if (!validateForm()) {
+		instance.$toast.error("Vui lòng kiểm tra lại thông tin nhận hàng!");
 		return;
 	}
 
@@ -130,28 +150,24 @@ onMounted(async () => {
 			<ClientOnly>
 				<div
 					v-if="!orderSuccess && cartItems.length === 0"
-					class="max-w-2xl mx-auto text-center py-20 bg-white rounded-[3rem] shadow-xl border border-gray-100 space-y-8"
+					class="py-20 text-center"
 				>
 					<div
-						class="w-24 h-24 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner"
+						class="w-24 h-24 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6"
 					>
 						<i class="fas fa-shopping-cart" />
 					</div>
-					<div class="space-y-4">
-						<h2 class="text-3xl font-black text-gray-900 uppercase">
-							Giỏ hàng của bạn đang trống
-						</h2>
-						<p class="text-gray-500 font-medium px-8">
-							Có vẻ như bạn chưa chọn được sản phẩm ưng ý. Hãy quay lại trang
-							danh sách sản phẩm để khám phá những mẫu xe mới nhất nhé!
-						</p>
-					</div>
+					<h2 class="text-2xl font-black text-gray-900 mb-2">
+						Giỏ hàng của bạn đang trống
+					</h2>
+					<p class="text-gray-500 mb-8">
+						Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.
+					</p>
 					<NuxtLink
 						to="/products"
-						class="inline-flex items-center gap-3 px-8 py-4 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 shadow-xl shadow-red-600/20 transition-all transform hover:-translate-y-1 uppercase text-sm"
+						class="inline-flex items-center px-8 py-4 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 transition-all shadow-lg shadow-red-600/20 uppercase text-sm tracking-widest"
 					>
-						<i class="fas fa-motorcycle" />
-						Quay lại mua sắm ngay
+						Quay lại mua sắm
 					</NuxtLink>
 				</div>
 
@@ -192,7 +208,15 @@ onMounted(async () => {
 										type="text"
 										placeholder="Nhập họ và tên người nhận"
 										class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-									/>
+										:class="{ '!border-red-500 !bg-red-50': errors.fullName }"
+										@input="errors.fullName = ''"
+									>
+									<p
+										v-if="errors.fullName"
+										class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
+									>
+										{{ errors.fullName }}
+									</p>
 								</div>
 								<div class="space-y-2">
 									<label
@@ -204,7 +228,15 @@ onMounted(async () => {
 										type="tel"
 										placeholder="Nhập số điện thoại"
 										class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-									/>
+										:class="{ '!border-red-500 !bg-red-50': errors.phone }"
+										@input="errors.phone = ''"
+									>
+									<p
+										v-if="errors.phone"
+										class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
+									>
+										{{ errors.phone }}
+									</p>
 								</div>
 							</div>
 
@@ -218,7 +250,15 @@ onMounted(async () => {
 									rows="3"
 									placeholder="Nhập địa chỉ nhận hàng chi tiết"
 									class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
+									:class="{ '!border-red-500 !bg-red-50': errors.address }"
+									@input="errors.address = ''"
 								/>
+								<p
+									v-if="errors.address"
+									class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
+								>
+									{{ errors.address }}
+								</p>
 							</div>
 
 							<div class="space-y-2">
@@ -331,7 +371,7 @@ onMounted(async () => {
 														(e.target.src =
 															'/assets/image/placeholder-product.webp')
 												"
-											/>
+											>
 										</div>
 										<div class="flex-1 min-w-0">
 											<div class="flex justify-between items-start">
@@ -479,15 +519,16 @@ onMounted(async () => {
 				<template #fallback>
 					<div class="flex flex-col lg:flex-row gap-8 animate-pulse">
 						<div class="flex-1 space-y-6">
-							<div class="h-20 bg-white rounded-2xl" />
-							<div class="h-[400px] bg-white rounded-3xl" />
-							<div class="h-60 bg-white rounded-3xl" />
+							<div class="h-20 bg-gray-200 rounded-2xl" />
+							<div class="h-64 bg-gray-200 rounded-3xl" />
+							<div class="h-48 bg-gray-200 rounded-3xl" />
 						</div>
 						<div class="lg:w-[400px]">
-							<div class="h-[500px] bg-white rounded-3xl shadow-lg" />
+							<div class="h-[500px] bg-gray-200 rounded-3xl" />
 						</div>
 					</div>
 				</template>
+				<CommonFullLoading :show="isSubmitting" text="Đang xử lý đơn hàng..." />
 			</ClientOnly>
 		</div>
 	</main>

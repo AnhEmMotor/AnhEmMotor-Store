@@ -1,7 +1,6 @@
 import { ref, computed, watch, h } from "vue";
 import { toast } from "vue3-toastify";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
-import { useAxios } from "./useAxios";
+import { useQuery } from "@tanstack/vue-query";
 
 const CART_KEY = "cartItems";
 const cartItems = ref([]);
@@ -24,7 +23,6 @@ watch(
 );
 
 export function useCart() {
-	const queryClient = useQueryClient();
 	const axios = useAxios();
 
 	const variantIds = computed(() => cartItems.value.map((item) => item.id));
@@ -110,32 +108,42 @@ export function useCart() {
 
 		if (import.meta.client) {
 			toast(
-				h("div", { class: "flex flex-col gap-1" }, [
-					h("div", { class: "flex items-center gap-2" }, [
-						h("span", { class: "font-bold text-sm" }, "🛒 Đã thêm vào giỏ"),
-					]),
-					h("div", { class: "text-xs text-gray-600" }, [
+				h(
+					"div",
+					{
+						class: "flex flex-col gap-1",
+						style: { fontFamily: "'Be Vietnam Pro', sans-serif" },
+					},
+					[
+						h("div", { class: "flex items-center gap-2" }, [
+							h("span", { class: "font-bold text-sm" }, "🛒 Đã thêm vào giỏ"),
+						]),
+						h("div", { class: "text-xs text-gray-600" }, [
+							h(
+								"span",
+								{ class: "font-bold" },
+								product.displayName || product.name,
+							),
+						]),
+						h(
+							"div",
+							{ class: "text-xs text-gray-500" },
+							`Số lượng hiện tại: ${newQuantity}`,
+						),
 						h(
 							"span",
-							{ class: "font-bold" },
-							product.displayName || product.name,
+							{
+								class:
+									"text-xs font-bold text-red-500 underline mt-1 block cursor-pointer",
+								onClick: (e) => {
+									e.preventDefault();
+									navigateTo("/process-order");
+								},
+							},
+							"Xem giỏ hàng & Thanh toán",
 						),
-					]),
-					h(
-						"div",
-						{ class: "text-xs text-gray-500" },
-						`Số lượng hiện tại: ${newQuantity}`,
-					),
-					h(
-						"span",
-						{
-							class:
-								"text-xs font-bold text-red-500 underline mt-1 block cursor-pointer",
-							onClick: () => navigateTo("/process-order"),
-						},
-						"Xem giỏ hàng & Thanh toán",
-					),
-				]),
+					],
+				),
 				{
 					position: "bottom-right",
 					autoClose: 3000,

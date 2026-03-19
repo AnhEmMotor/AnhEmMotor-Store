@@ -30,7 +30,7 @@
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
 								width="40"
 								height="40"
-							/>
+							>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -124,7 +124,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover"
-									/>
+									>
 									<i v-else class="fas fa-user text-red-500 text-xs" />
 								</div>
 								<span
@@ -239,7 +239,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							/>
+							>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -286,7 +286,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover"
-									/>
+									>
 									<i v-else class="fas fa-user text-red-500 text-xl" />
 								</div>
 								<div class="flex-1 min-w-0">

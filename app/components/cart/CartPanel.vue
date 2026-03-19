@@ -50,7 +50,7 @@
 					v-if="
 						isPending &&
 						cartItems.length > 0 &&
-						!cartItems[0]?.name?.includes('...')
+						!cartItems[0].name.includes('...')
 					"
 				>
 					<div
@@ -78,7 +78,7 @@
 							@error="
 								(e) => (e.target.src = '/assets/image/placeholder-product.webp')
 							"
-						/>
+						>
 						<div class="flex-1">
 							<div class="font-semibold text-sm text-gray-800">
 								{{ item.name }}
