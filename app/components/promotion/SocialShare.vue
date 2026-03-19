@@ -42,7 +42,6 @@
 			</div>
 		</button>
 
-		<!-- Copy Success Toast -->
 		<transition name="fade">
 			<div
 				v-if="showCopySuccess"
@@ -86,15 +85,11 @@ export default {
 	},
 	methods: {
 		async copyLink() {
-			try {
-				await navigator.clipboard.writeText(this.shareUrl);
-				this.showCopySuccess = true;
-				setTimeout(() => {
-					this.showCopySuccess = false;
-				}, 3000);
-			} catch {
-				// Fallback or silent fail
-			}
+			await navigator.clipboard.writeText(this.shareUrl);
+			this.showCopySuccess = true;
+			setTimeout(() => {
+				this.showCopySuccess = false;
+			}, 3000);
 		},
 	},
 };

@@ -30,8 +30,7 @@
 </template>
 
 <script setup>
-const heroImage =
-	"/assets/image/index/service-page/pngtree-auto-mechanic-working-in-garage-repair-service-image_15647943.webp";
+const heroImage = "/assets/image/index/service-page/hero-image.webp";
 const scrollToServices = (e) => {
 	e.preventDefault();
 	const target = document.querySelector("#services");

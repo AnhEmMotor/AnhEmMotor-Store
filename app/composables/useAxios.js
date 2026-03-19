@@ -1,5 +1,4 @@
 import axios from "axios";
-import https from "node:https";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 let isRefreshing = false;
@@ -28,11 +27,6 @@ export const useAxios = () => {
 		headers: {
 			"Content-Type": "application/json",
 		},
-		httpsAgent: import.meta.server
-			? new https.Agent({
-					rejectUnauthorized: false,
-				})
-			: undefined,
 	});
 
 	axiosInstance.interceptors.request.use(

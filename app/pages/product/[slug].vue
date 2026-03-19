@@ -8,7 +8,6 @@ const slug = computed(() => route.params.slug);
 const productStore = useProductStore();
 const queryClient = useQueryClient();
 
-// Server-side prefetching
 if (import.meta.server) {
 	onServerPrefetch(async () => {
 		await Promise.all([
@@ -24,7 +23,6 @@ if (import.meta.server) {
 	});
 }
 
-// Vue Query Integration
 const {
 	data: detail,
 	isLoading,
@@ -33,6 +31,8 @@ const {
 	queryKey: ["product-detail", slug],
 	queryFn: () => productStore.getProductStoreDetailBySlug(slug.value),
 	staleTime: 1000 * 60 * 5,
+	retry: false,
+	refetchOnWindowFocus: (query) => query.state.status !== "error",
 });
 
 const { data: attributeLabels } = useQuery({
@@ -104,7 +104,6 @@ const specifications = computed(() => {
 	const product = detail.value.product;
 	const labels = attributeLabels.value;
 
-	// Chỉ hiển thị các thông số có nhãn (attribute-labels) từ backend
 	return Object.entries(product)
 		.filter(
 			([key, value]) =>
@@ -162,8 +161,8 @@ useHead({
 	link: [
 		{
 			rel: "icon",
-			type: "image/png",
-			href: "/favicon.png",
+			type: "image/x-icon",
+			href: "/favicon.ico",
 		},
 	],
 });
@@ -172,7 +171,6 @@ useHead({
 <template>
 	<div class="min-h-screen bg-gray-50/50 py-5 lg:py-10">
 		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-			<!-- Breadcrumb -->
 			<nav class="flex mb-8 text-sm font-medium" aria-label="Breadcrumb">
 				<ol class="inline-flex items-center">
 					<li>
@@ -210,7 +208,7 @@ useHead({
 			</nav>
 
 			<div
-				v-if="isLoading"
+				v-if="isLoading && !detail && !error"
 				class="flex flex-col lg:flex-row gap-8 animate-pulse"
 			>
 				<div class="lg:w-2/3 aspect-[16/9] bg-gray-200 rounded-3xl" />
@@ -247,11 +245,8 @@ useHead({
 				class="bg-white rounded-[2.5rem] lg:rounded-[3.5rem] p-6 lg:p-12 shadow-xl shadow-gray-200/40 border border-gray-100"
 			>
 				<div class="flex flex-col lg:flex-row gap-12">
-					<!-- Left Column: Gallery & Description -->
 					<div class="lg:w-[58%] space-y-12">
-						<!-- Gallery -->
 						<div class="space-y-6">
-							<!-- Main Image -->
 							<div
 								class="relative aspect-[4/3] rounded-[2rem] overflow-hidden bg-white shadow-lg border border-gray-100 group"
 							>
@@ -262,7 +257,6 @@ useHead({
 								>
 							</div>
 
-							<!-- Thumbnails -->
 							<div
 								v-if="!isPlaceholderActive && allPhotos.length > 1"
 								class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide"
@@ -283,7 +277,6 @@ useHead({
 							</div>
 						</div>
 
-						<!-- Description -->
 						<div class="space-y-4">
 							<h3
 								class="text-base font-black text-gray-900 uppercase tracking-wider flex items-center gap-3"
@@ -299,11 +292,9 @@ useHead({
 						</div>
 					</div>
 
-					<!-- Right Column: Info Card & Specs -->
 					<div class="lg:w-[42%]">
 						<div class="sticky top-24">
 							<div class="space-y-6">
-								<!-- Basic Info & Price -->
 								<div class="space-y-2">
 									<h1 class="text-2xl font-black text-gray-900 leading-tight">
 										{{ detail.product.name }}
@@ -321,7 +312,6 @@ useHead({
 									</div>
 								</div>
 
-								<!-- Variants Selection -->
 								<div
 									v-if="
 										detail.other_variants && detail.other_variants.length > 0
@@ -363,7 +353,6 @@ useHead({
 									</div>
 								</div>
 
-								<!-- Actions -->
 								<div class="space-y-4 pt-4 border-b border-gray-100 pb-8">
 									<button
 										class="w-full py-4 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/20 flex items-center justify-center gap-3"
@@ -387,7 +376,6 @@ useHead({
 									</div>
 								</div>
 
-								<!-- Specifications Box (Renamed to Thông số) -->
 								<div v-if="specifications.length > 0" class="space-y-4">
 									<h3
 										class="text-xs font-black text-gray-900 uppercase tracking-widest"
@@ -399,7 +387,6 @@ useHead({
 									>
 										<table class="w-full text-left border-collapse">
 											<tbody>
-												<!-- Brand & Category always on top -->
 												<tr class="border-b border-gray-100">
 													<td
 														class="py-3 px-4 bg-gray-100/50 w-1/3 text-[10px] font-bold text-gray-500 uppercase tracking-wider border-r border-gray-100"
@@ -420,7 +407,6 @@ useHead({
 														{{ detail.product.category }}
 													</td>
 												</tr>
-												<!-- Dynamic specs -->
 												<tr
 													v-for="spec in specifications"
 													:key="spec.key"

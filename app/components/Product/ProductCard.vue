@@ -41,7 +41,6 @@ const currentUrl = computed(() => {
 		:to="currentUrl"
 		class="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 flex flex-col h-full"
 	>
-		<!-- Image Container -->
 		<div class="relative aspect-[4/3] overflow-hidden bg-gray-50">
 			<img
 				:src="currentImage"
@@ -50,7 +49,6 @@ const currentUrl = computed(() => {
 			>
 		</div>
 
-		<!-- Content -->
 		<div class="p-4 flex flex-col flex-1">
 			<h3
 				class="text-gray-900 font-bold text-lg mb-1 line-clamp-2 min-h-[3.5rem] group-hover:text-primary transition-colors"
@@ -63,7 +61,6 @@ const currentUrl = computed(() => {
 				{{ selectedVariant.propertyName }}
 			</p>
 
-			<!-- Dropdown Biến thể -->
 			<div
 				v-if="product.variants && product.variants.length > 1"
 				class="mb-4"

@@ -72,7 +72,6 @@ const pageNumbers = computed(() => {
 		class="mt-12 mb-8 flex justify-center items-center h-12"
 	>
 		<div class="flex items-center space-x-2">
-			<!-- Prev Button -->
 			<button
 				:disabled="isPrevDisabled"
 				class="inline-flex items-center justify-center w-10 h-10 sm:w-auto sm:px-4 rounded-xl font-bold transition-all duration-300 border text-sm"
@@ -87,7 +86,6 @@ const pageNumbers = computed(() => {
 				<span class="hidden sm:inline">Trước</span>
 			</button>
 
-			<!-- Page Numbers -->
 			<div class="flex items-center space-x-1.5 sm:space-x-2">
 				<template v-for="(page, index) in pageNumbers" :key="index">
 					<span
@@ -111,7 +109,6 @@ const pageNumbers = computed(() => {
 				</template>
 			</div>
 
-			<!-- Next Button -->
 			<button
 				:disabled="isNextDisabled"
 				class="inline-flex items-center justify-center w-10 h-10 sm:w-auto sm:px-4 rounded-xl font-bold transition-all duration-300 border text-sm"

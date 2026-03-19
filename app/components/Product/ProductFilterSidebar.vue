@@ -131,7 +131,6 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 		</div>
 
 		<div class="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
-			<!-- Search -->
 			<div class="space-y-3">
 				<label class="text-sm font-bold text-gray-900 uppercase tracking-wider"
 					>Tìm kiếm</label
@@ -142,14 +141,13 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 						type="text"
 						placeholder="Nhập tên sản phẩm..."
 						class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
-					/>
+					>
 					<i
 						class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
 					/>
 				</div>
 			</div>
 
-			<!-- Categories -->
 			<div class="space-y-3">
 				<label class="text-sm font-bold text-gray-900 uppercase tracking-wider"
 					>Danh mục</label
@@ -181,7 +179,6 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 				</div>
 			</div>
 
-			<!-- Dynamic Options -->
 			<div v-if="isLoadingOptions" class="space-y-4">
 				<div v-for="i in 3" :key="i" class="animate-pulse space-y-3">
 					<div class="h-4 bg-gray-200 rounded w-1/3" />

@@ -1,6 +1,5 @@
 <template>
 	<teleport to="body">
-		<!-- Overlay covers only the area below the header (header uses h-20). This prevents covering the header. -->
 		<div
 			:class="[
 				'fixed left-0 right-0 top-[100px] bottom-0 bg-black/40 transition-opacity duration-300',
@@ -13,7 +12,6 @@
 			@click="$emit('close')"
 		/>
 
-		<!-- Panel starts below header (top-20) so header remains visible above it -->
 		<div
 			:class="[
 				'fixed top-24 right-0 bottom-0 w-screen md:w-96 bg-white transform transition-transform flex flex-col overflow-hidden',
@@ -37,7 +35,6 @@
 				</button>
 			</div>
 
-			<!-- Product list area: ensure white background for clarity -->
 			<div
 				class="flex-grow overflow-auto p-4 bg-white"
 				style="-webkit-overflow-scrolling: touch"

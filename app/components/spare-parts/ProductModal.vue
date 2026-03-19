@@ -96,7 +96,7 @@ watch(
 	() => props.isOpen,
 	(newVal) => {
 		if (newVal) {
-			quantity.value = 1; // Reset quantity when modal opens
+			quantity.value = 1;
 		}
 	},
 );

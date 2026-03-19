@@ -9,13 +9,13 @@
 				<router-link to="/" class="hover:text-red-600 transition-colors"
 					>Trang chủ</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]"/>
+				<i class="fas fa-chevron-right text-[10px]" />
 				<router-link
 					to="/accessories"
 					class="hover:text-red-600 transition-colors"
 					>Phụ kiện</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]"/>
+				<i class="fas fa-chevron-right text-[10px]" />
 				<span class="text-gray-900 font-medium truncate max-w-[200px]">{{
 					product.name
 				}}</span>
@@ -84,7 +84,7 @@
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-r border-gray-200 text-gray-600"
 											@click="changeQty(-1)"
 										>
-											<i class="fas fa-minus"/>
+											<i class="fas fa-minus" />
 										</button>
 										<input
 											v-model.number="quantity"
@@ -96,7 +96,7 @@
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"
 											@click="changeQty(1)"
 										>
-											<i class="fas fa-plus"/>
+											<i class="fas fa-plus" />
 										</button>
 									</div>
 									<span
@@ -115,7 +115,7 @@
 									class="w-full md:w-auto px-16 py-4 bg-[#de0000] text-white rounded-xl font-bold text-lg hover:bg-black hover:shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3"
 									@click="handleAddToCart"
 								>
-									<i class="fas fa-cart-plus"/> THÊM VÀO GIỎ HÀNG
+									<i class="fas fa-cart-plus" /> THÊM VÀO GIỎ HÀNG
 								</button>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 					class="flex items-center justify-between mb-8 border-b border-gray-200 pb-5"
 				>
 					<div class="flex items-center gap-3">
-						<div class="w-2 h-8 bg-[#de0000] rounded-full"/>
+						<div class="w-2 h-8 bg-[#de0000] rounded-full" />
 						<h2
 							class="text-2xl font-bold text-gray-800 uppercase tracking-tight"
 						>
@@ -202,10 +202,8 @@ const loadData = () => {
 	if (foundProduct) {
 		product.value = foundProduct;
 		quantity.value = 1;
-		// Đảm bảo cuộn lên đầu trang mượt mà khi đổi sản phẩm
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	} else {
-		// Nếu ID sai, chuyển hướng về trang danh sách để tránh lỗi ứng dụng
 		router.replace({ name: "accessories-details" });
 	}
 };
@@ -224,7 +222,6 @@ const relatedProducts = computed(() => {
 const handleAddToCart = () => {
 	if (product.value) {
 		addItem(product.value, quantity.value);
-		// Bạn có thể thêm Toast notification ở đây thay vì alert
 	}
 };
 

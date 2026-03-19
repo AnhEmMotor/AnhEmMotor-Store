@@ -22,8 +22,8 @@ useHead({
 	link: [
 		{
 			rel: "icon",
-			type: "image/png",
-			href: "/favicon.png",
+			type: "image/x-icon",
+			href: "/favicon.ico",
 		},
 	],
 });
@@ -61,7 +61,6 @@ const {
 			sieveParams.filters = `search@=${filters.value.search}`;
 		}
 
-		// Ghép chuỗi mảng bằng dấu phẩy
 		if (filters.value.optionValueIds.length > 0) {
 			sieveParams.optionValueIds = filters.value.optionValueIds.join(",");
 		}
@@ -96,7 +95,6 @@ const handleViewDetail = (product) => {
 
 <template>
 	<div class="bg-white min-h-screen">
-		<!-- Mobile Sidebar Overlay -->
 		<Transition name="fade">
 			<div
 				v-if="isSidebarOpen"
@@ -105,7 +103,6 @@ const handleViewDetail = (product) => {
 			/>
 		</Transition>
 
-		<!-- Mobile Sidebar -->
 		<Transition name="slide">
 			<aside
 				v-show="isSidebarOpen"
@@ -115,10 +112,8 @@ const handleViewDetail = (product) => {
 			</aside>
 		</Transition>
 
-		<!-- Main Content -->
 		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
 			<div class="flex flex-col lg:flex-row gap-12">
-				<!-- Desktop Sidebar -->
 				<aside class="hidden lg:block w-80 flex-shrink-0">
 					<div
 						class="sticky top-24 border border-gray-100 rounded-3xl shadow-sm overflow-hidden"
@@ -127,9 +122,7 @@ const handleViewDetail = (product) => {
 					</div>
 				</aside>
 
-				<!-- Product Grid Section -->
 				<div class="flex-1 min-w-0">
-					<!-- Header Area -->
 					<div
 						class="flex flex-col sm:flex-row sm:items-center justify-between mb-10 gap-6"
 					>
@@ -140,7 +133,6 @@ const handleViewDetail = (product) => {
 						</div>
 
 						<div class="flex items-center gap-3">
-							<!-- Mobile Filter Toggle -->
 							<button
 								class="lg:hidden flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"
 								@click="toggleSidebar"
@@ -151,7 +143,6 @@ const handleViewDetail = (product) => {
 						</div>
 					</div>
 
-					<!-- Active Chips (Optional) -->
 					<div
 						v-if="filters.optionValueIds.length > 0 || filters.categoryId"
 						class="flex flex-wrap gap-2 mb-8"
@@ -172,14 +163,12 @@ const handleViewDetail = (product) => {
 						</button>
 					</div>
 
-					<!-- Results -->
 					<ProductList
 						:products="products"
 						:is-loading="isLoading"
 						@view-detail="handleViewDetail"
 					/>
 
-					<!-- Pagination -->
 					<div v-if="pagination.totalPages > 1" class="flex justify-center">
 						<BasePagination
 							:current-page="pagination.currentPage"

@@ -17,8 +17,25 @@
 					Mã đơn hàng: <strong>{{ orderId }}</strong>
 				</p>
 
-				<!-- eslint-disable-next-line vue/no-v-html -->
-				<div class="payment-info" v-html="paymentInfoHtml" />
+				<div v-if="paymentInfo" class="payment-info">
+					<h4 class="font-bold text-lg mb-2">
+						{{ paymentInfo.title }}
+					</h4>
+					<p v-if="paymentInfo.message" class="mb-2">
+						{{ paymentInfo.message }}
+					</p>
+					<div class="space-y-1">
+						<p v-for="(detail, idx) in paymentInfo.details" :key="idx">
+							{{ detail.label }}: <strong>{{ detail.value }}</strong>
+						</p>
+					</div>
+					<p
+						v-if="paymentInfo.footerMessage"
+						class="mt-2 text-sm text-gray-600"
+					>
+						{{ paymentInfo.footerMessage }}
+					</p>
+				</div>
 
 				<div class="confirmation-actions mt-4">
 					<button ref="primaryBtn" class="btn-primary" @click="$emit('close')">
@@ -39,9 +56,9 @@ defineProps({
 		type: String,
 		default: "",
 	},
-	paymentInfoHtml: {
-		type: String,
-		default: "",
+	paymentInfo: {
+		type: Object,
+		default: () => ({}),
 	},
 });
 
