@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import { useProductStore } from "@/stores/useProductStore";
 import { useCategoryStore } from "@/stores/useCategoryStore";
 
@@ -14,14 +16,34 @@ const emit = defineEmits(["update:modelValue", "close"]);
 const productStore = useProductStore();
 const categoryStore = useCategoryStore();
 
-onMounted(() => {
-	if (productStore.options.length === 0) {
-		productStore.fetchOptions();
-	}
-	if (categoryStore.categories.length === 0) {
-		categoryStore.fetchCategories();
-	}
+const {
+	data: categoriesData,
+	isLoading: isLoadingCategories,
+	error: categoriesError,
+} = useQuery({
+	queryKey: ["product-categories"],
+	queryFn: () => categoryStore.getProductCategories(),
+	staleTime: 1000 * 60 * 60,
 });
+
+const categories = computed(() => {
+	if (categoriesData.value?.items) return categoriesData.value.items;
+	if (Array.isArray(categoriesData.value)) return categoriesData.value;
+	return [];
+});
+
+const {
+	data: optionsData,
+	isLoading: isLoadingOptions,
+	error: optionsError,
+	refetch: fetchOptionsManual,
+} = useQuery({
+	queryKey: ["product-options"],
+	queryFn: () => productStore.getOptions(),
+	staleTime: 1000 * 60 * 60,
+});
+
+const options = computed(() => optionsData.value || []);
 
 const searchQuery = computed({
 	get: () => props.modelValue.search || "",
@@ -120,7 +142,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 						type="text"
 						placeholder="Nhập tên sản phẩm..."
 						class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
-					>
+					/>
 					<i
 						class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
 					/>
@@ -132,28 +154,19 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 				<label class="text-sm font-bold text-gray-900 uppercase tracking-wider"
 					>Danh mục</label
 				>
-				<div
-					v-if="
-						!categoryStore.categoriesError &&
-						categoryStore.categories.length === 0
-					"
-					class="space-y-2"
-				>
+				<div v-if="isLoadingCategories" class="space-y-2">
 					<div
 						v-for="i in 3"
 						:key="i"
 						class="animate-pulse h-8 bg-gray-100 rounded-lg"
 					/>
 				</div>
-				<div
-					v-else-if="categoryStore.categoriesError"
-					class="text-sm text-red-500"
-				>
-					{{ categoryStore.categoriesError }}
+				<div v-else-if="categoriesError" class="text-sm text-red-500">
+					{{ categoriesError.message || categoriesError }}
 				</div>
-				<div v-else class="grid grid-cols-2 gap-2">
+				<div v-else-if="categories.length > 0" class="grid grid-cols-2 gap-2">
 					<button
-						v-for="cat in categoryStore.categories"
+						v-for="cat in categories"
 						:key="cat.id"
 						class="px-3 py-2 text-xs font-semibold rounded-lg border transition-all duration-300 text-center"
 						:class="[
@@ -169,10 +182,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 			</div>
 
 			<!-- Dynamic Options -->
-			<div
-				v-if="!productStore.optionsError && productStore.options.length === 0"
-				class="space-y-4"
-			>
+			<div v-if="isLoadingOptions" class="space-y-4">
 				<div v-for="i in 3" :key="i" class="animate-pulse space-y-3">
 					<div class="h-4 bg-gray-200 rounded w-1/3" />
 					<div class="grid grid-cols-2 gap-2">
@@ -181,22 +191,20 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 				</div>
 			</div>
 
-			<div v-else-if="productStore.optionsError" class="text-center py-4">
-				<p class="text-red-500 text-sm mb-2">{{ productStore.optionsError }}</p>
+			<div v-else-if="optionsError" class="text-center py-4">
+				<p class="text-red-500 text-sm mb-2">
+					{{ optionsError.message || optionsError }}
+				</p>
 				<button
 					class="text-primary font-bold text-xs uppercase"
-					@click="productStore.fetchOptions"
+					@click="fetchOptionsManual"
 				>
 					Thử lại
 				</button>
 			</div>
 
-			<div v-else class="space-y-8">
-				<div
-					v-for="option in productStore.options"
-					:key="option.id"
-					class="space-y-3"
-				>
+			<div v-else-if="options.length > 0" class="space-y-8">
+				<div v-for="option in options" :key="option.id" class="space-y-3">
 					<h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider">
 						{{ getOptionLabel(option.name) }}
 					</h3>

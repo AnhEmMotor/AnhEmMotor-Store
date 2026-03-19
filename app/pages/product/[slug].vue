@@ -1,25 +1,30 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import { useQuery } from "@tanstack/vue-query";
+import { ref, computed, onServerPrefetch } from "vue";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { useProductStore } from "@/stores/useProductStore";
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);
 const productStore = useProductStore();
+const queryClient = useQueryClient();
 
-// SSR Data Fetching
-const { data: detailData } = await useAsyncData(
-	`product-detail-${slug.value}`,
-	() => productStore.getProductStoreDetailBySlug(slug.value),
-	{ watch: [slug] },
-);
+// Server-side prefetching
+if (import.meta.server) {
+	onServerPrefetch(async () => {
+		await Promise.all([
+			queryClient.prefetchQuery({
+				queryKey: ["product-detail", slug],
+				queryFn: () => productStore.getProductStoreDetailBySlug(slug.value),
+			}),
+			queryClient.prefetchQuery({
+				queryKey: ["product-attribute-labels"],
+				queryFn: () => productStore.getProductAttributeLabels(),
+			}),
+		]);
+	});
+}
 
-const { data: attributeLabelsData } = await useAsyncData(
-	"product-attribute-labels",
-	() => productStore.getProductAttributeLabels(),
-);
-
-// Vue Query Integration (Hydrate cache from SSR data)
+// Vue Query Integration
 const {
 	data: detail,
 	isLoading,
@@ -27,39 +32,41 @@ const {
 } = useQuery({
 	queryKey: ["product-detail", slug],
 	queryFn: () => productStore.getProductStoreDetailBySlug(slug.value),
-	initialData: detailData,
 	staleTime: 1000 * 60 * 5,
 });
 
 const { data: attributeLabels } = useQuery({
 	queryKey: ["product-attribute-labels"],
 	queryFn: () => productStore.getProductAttributeLabels(),
-	initialData: attributeLabelsData,
 	staleTime: 1000 * 60 * 60,
 });
 
 const currentVariant = computed(() => detail.value?.current_variant);
 
-const mainImage = ref("");
-const isPlaceholderActive = ref(false);
-
-watch(
-	() => detail.value,
-	(newDetail) => {
-		const variant = newDetail?.current_variant;
-		if (variant?.cover_image_url) {
-			mainImage.value = variant.cover_image_url;
-			isPlaceholderActive.value = false;
-		} else if (variant?.photo_collection?.length > 0) {
-			mainImage.value = variant.photo_collection[0];
-			isPlaceholderActive.value = false;
-		} else {
-			mainImage.value = "/assets/image/placeholder-product.webp";
-			isPlaceholderActive.value = true;
-		}
+const selectedImage = ref(null);
+const mainImage = computed({
+	get: () => {
+		if (selectedImage.value) return selectedImage.value;
+		const variant = detail.value?.current_variant;
+		if (variant?.cover_image_url) return variant.cover_image_url;
+		if (variant?.photo_collection?.length > 0)
+			return variant.photo_collection[0];
+		return "/assets/image/placeholder-product.webp";
 	},
-	{ immediate: true },
-);
+	set: (val) => {
+		selectedImage.value = val;
+	},
+});
+
+const isPlaceholderActive = computed(() => {
+	if (
+		selectedImage.value &&
+		selectedImage.value !== "/assets/image/placeholder-product.webp"
+	)
+		return false;
+	const variant = detail.value?.current_variant;
+	return !(variant?.cover_image_url || variant?.photo_collection?.length > 0);
+});
 
 const allPhotos = computed(() => {
 	const photos = [];

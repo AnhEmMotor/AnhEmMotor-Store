@@ -30,10 +30,15 @@ export const useCategoryStore = defineStore("category", () => {
 		}
 	};
 
+	const getProductCategories = async (params = {}) => {
+		return await categoryRepo.getProductCategories(params);
+	};
+
 	return {
 		categories,
 		isLoadingCategories,
 		categoriesError,
 		fetchCategories,
+		getProductCategories,
 	};
 });

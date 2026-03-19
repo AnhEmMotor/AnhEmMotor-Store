@@ -26,6 +26,10 @@ export const useProductStore = defineStore("product", () => {
 		}
 	};
 
+	const getOptions = async () => {
+		return await optionRepo.getOptions();
+	};
+
 	const getProducts = async (params) => {
 		return await productRepo.getProducts(params);
 	};
@@ -43,6 +47,7 @@ export const useProductStore = defineStore("product", () => {
 		isLoadingOptions,
 		optionsError,
 		fetchOptions,
+		getOptions,
 		getProducts,
 		getProductStoreDetailBySlug,
 		getProductAttributeLabels,
