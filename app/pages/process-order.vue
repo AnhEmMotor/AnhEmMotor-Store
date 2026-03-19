@@ -1,370 +1,544 @@
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useCart } from "~/composables/useCart";
+import { useAuthStore } from "~/stores/useAuthStore";
+import { useAxios } from "~/composables/useAxios";
 
 useSeoMeta({
-	title: "Giỏ Hàng | AnhEm Motor",
-	description: "Xem và quản lý giỏ hàng của bạn tại AnhEm Motor.",
+	title: "Thanh Toán",
+	description: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",
+	ogTitle: "Thanh Toán",
+	ogDescription: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",
+	ogImage: "/assets/image/index/index-banner-bg.webp",
+	twitterTitle: "Thanh Toán",
+	twitterDescription: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",
+	twitterImage: "/assets/image/index/index-banner-bg.webp",
 });
 
-const { cartItems, fetchCart, clearCart } = useCart();
-const cart = cartItems;
-const isCheckoutModalVisible = ref(false);
-const isConfirmationModalVisible = ref(false);
-const selectedPaymentMethod = ref(null);
-const paymentInfo = ref(null);
-const orderId = ref("");
-const invoiceData = ref(null);
+useHead({
+	link: [
+		{
+			rel: "icon",
+			type: "image/x-icon",
+			href: "/favicon.ico",
+		},
+	],
+});
 
-const totalCartItems = computed(() =>
-	cart.value.reduce((sum, item) => sum + item.quantity, 0),
-);
+const {
+	cartItems,
+	cartDetails,
+	isPending,
+	clearCart,
+	updateQuantity,
+	removeItem,
+} = useCart();
+const authStore = useAuthStore();
+const axios = useAxios();
+
+const isLoggedIn = computed(() => authStore.isLoggedIn);
+const user = computed(() => authStore.user);
+
+const isSubmitting = ref(false);
+const orderSuccess = ref(false);
+const confirmedOrder = ref(null);
+
+const shippingInfo = ref({
+	fullName: "",
+	phone: "",
+	address: "",
+	notes: "",
+});
+
+const errors = ref({
+	fullName: "",
+	phone: "",
+	address: "",
+});
+
+function validateForm() {
+	let isValid = true;
+	errors.value = { fullName: "", phone: "", address: "" };
+
+	if (!shippingInfo.value.fullName?.trim()) {
+		errors.value.fullName = "Vui lòng nhập họ và tên người nhận";
+		isValid = false;
+	}
+	if (!shippingInfo.value.phone?.trim()) {
+		errors.value.phone = "Vui lòng nhập số điện thoại nhận hàng";
+		isValid = false;
+	}
+	if (!shippingInfo.value.address?.trim()) {
+		errors.value.address = "Vui lòng nhập địa chỉ giao hàng chi tiết";
+		isValid = false;
+	}
+
+	return isValid;
+}
+
 const subtotal = computed(() =>
-	cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
+	cartDetails.value.reduce((sum, item) => sum + item.price * item.quantity, 0),
 );
 const shipping = computed(() => (subtotal.value > 10000000 ? 0 : 200000));
 const total = computed(() => subtotal.value + shipping.value);
-const codFee = computed(() =>
-	selectedPaymentMethod.value === "cod" ? 30000 : 0,
-);
-const checkoutTotal = computed(
-	() => subtotal.value + shipping.value + codFee.value,
-);
-const requiresDeposit = computed(() => subtotal.value > 15000000);
-const depositAmount = computed(() =>
-	requiresDeposit.value ? Math.round(subtotal.value * 0.1) : 0,
-);
 
 function formatCurrency(value) {
+	if (!value) return "0 ₫";
 	return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 }
 
-function updateQuantity(productId, newQuantity) {
-	const quantity = parseInt(newQuantity, 10);
-	if (isNaN(quantity)) return;
-	if (quantity > 3) {
-		alert(
-			"Số lượng mỗi sản phẩm chỉ có thể mua tối đa là 3. Để mua số lượng lớn hơn, vui lòng liên hệ trực tiếp tại cửa hàng.",
-		);
+async function handlePlaceOrder() {
+	const instance = useNuxtApp();
+
+	if (!isLoggedIn.value) {
+		instance.$toast.error("Vui lòng đăng nhập để đặt hàng!");
 		return;
 	}
-	if (quantity <= 0) {
-		removeFromCart(productId);
+
+	if (!validateForm()) {
+		instance.$toast.error("Vui lòng kiểm tra lại thông tin nhận hàng!");
 		return;
 	}
-	const item = cart.value.find((i) => i.id === productId);
-	if (item) item.quantity = quantity;
-}
 
-function removeFromCart(productId) {
-	const idx = cart.value.findIndex((i) => i.id === productId);
-	if (idx !== -1) cart.value.splice(idx, 1);
-}
+	isSubmitting.value = true;
 
-function proceedToCheckout() {
-	if (cart.value.length === 0) {
-		alert("Giỏ hàng của bạn đang trống!");
-		return;
+	try {
+		const payload = {
+			customerName: shippingInfo.value.fullName,
+			customerPhone: shippingInfo.value.phone,
+			customerAddress: shippingInfo.value.address,
+			notes: shippingInfo.value.notes,
+			products: cartItems.value.map((item) => ({
+				productId: item.id,
+				count: item.quantity,
+			})),
+		};
+
+		const { data } = await axios.post("/api/v1/SalesOrders", payload);
+
+		if (data) {
+			confirmedOrder.value = data;
+			orderSuccess.value = true;
+			clearCart();
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	} catch {
+		isSubmitting.value = false;
+	} finally {
+		isSubmitting.value = false;
 	}
-	orderId.value = `DH${Date.now()}`;
-	paymentInfo.value = null;
-	isCheckoutModalVisible.value = true;
 }
-
-function closeCheckoutModal() {
-	isCheckoutModalVisible.value = false;
-	selectedPaymentMethod.value = null;
-}
-
-function confirmPayment() {
-	if (!selectedPaymentMethod.value) {
-		alert("Vui lòng chọn phương thức thanh toán!");
-		return;
-	}
-	const totalWithFees = checkoutTotal.value;
-	let paymentInfoData = null;
-	switch (selectedPaymentMethod.value) {
-		case "bank": {
-			const bankAmount = requiresDeposit.value
-				? depositAmount.value
-				: totalWithFees;
-			paymentInfoData = {
-				title: "Thông tin chuyển khoản:",
-				method: "bank",
-				details: [
-					{ label: "Ngân hàng", value: "Vietcombank" },
-					{ label: "Số tài khoản", value: "1234567890" },
-					{ label: "Chủ tài khoản", value: "CONG TY TNHH ANHEM MOTOR" },
-					{ label: "Số tiền", value: formatCurrency(bankAmount) },
-					{ label: "Nội dung", value: orderId.value },
-				],
-			};
-			break;
-		}
-		case "momo": {
-			const momoAmount = requiresDeposit.value
-				? depositAmount.value
-				: totalWithFees;
-			paymentInfoData = {
-				title: "Thanh toán MoMo:",
-				method: "momo",
-				details: [
-					{ label: "Số điện thoại", value: "0123456789" },
-					{ label: "Tên", value: "AnhEm Motor" },
-					{ label: "Số tiền", value: formatCurrency(momoAmount) },
-					{ label: "Nội dung", value: orderId.value },
-				],
-			};
-			break;
-		}
-		case "zalopay": {
-			const zalopayAmount = requiresDeposit.value
-				? depositAmount.value
-				: totalWithFees;
-			paymentInfoData = {
-				title: "Thanh toán ZaloPay:",
-				method: "zalopay",
-				details: [
-					{ label: "Số điện thoại", value: "0123456789" },
-					{ label: "Tên", value: "AnhEm Motor" },
-					{ label: "Số tiền", value: formatCurrency(zalopayAmount) },
-					{ label: "Nội dung", value: orderId.value },
-				],
-			};
-			break;
-		}
-		case "cod": {
-			const codAmount = requiresDeposit.value
-				? totalWithFees - depositAmount.value
-				: totalWithFees;
-			paymentInfoData = {
-				title: "Thanh toán khi nhận hàng:",
-				method: "cod",
-				message: "Đơn hàng của bạn sẽ được giao trong 2-3 ngày làm việc.",
-				details: [
-					{ label: "Vui lòng chuẩn bị", value: formatCurrency(codAmount) },
-				],
-				footerMessage:
-					"Chúng tôi sẽ liên hệ xác nhận đơn hàng trong vòng 24 giờ.",
-			};
-			break;
-		}
-	}
-	paymentInfo.value = paymentInfoData;
-	closeCheckoutModal();
-	isConfirmationModalVisible.value = true;
-}
-
-function onPaymentConfirmationClose() {
-	isConfirmationModalVisible.value = false;
-	clearCart();
-	invoiceData.value = {
-		orderId: orderId.value,
-		date: new Date(),
-		cart: JSON.parse(JSON.stringify(cart.value)),
-		totals: {
-			subtotal: subtotal.value,
-			shipping: shipping.value,
-			codFee: codFee.value,
-			total: checkoutTotal.value,
-			requiresDeposit: requiresDeposit.value,
-			depositAmount: depositAmount.value,
-		},
-		paymentMethod: selectedPaymentMethod.value,
-	};
-}
-
-watch(
-	cart,
-	() => {
-		window.dispatchEvent(
-			new CustomEvent("cart-updated", { detail: totalCartItems.value }),
-		);
-	},
-	{ deep: true },
-);
 
 onMounted(async () => {
-	await fetchCart();
+	if (user.value) {
+		shippingInfo.value.fullName =
+			user.value.fullName || user.value.userName || "";
+		shippingInfo.value.phone = user.value.phoneNumber || "";
+		shippingInfo.value.address = user.value.address || "";
+	}
 });
 </script>
 
 <template>
-	<main
-		class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 min-h-[calc(100vh-150px)]"
-	>
-		<div class="bg-white p-4 sm:p-8 rounded-xl shadow mb-8 text-center">
-			<h1 class="text-xl sm:text-2xl font-semibold text-gray-800">
-				<i class="fas fa-shopping-cart text-red-600 mr-2" />Giỏ Hàng Của Bạn
-			</h1>
-			<p class="text-gray-500 text-sm sm:text-base mt-1">
-				Quản lý các sản phẩm trong giỏ hàng của bạn
-			</p>
-		</div>
-
-		<CartPaymentConfirmationModal
-			:show="isConfirmationModalVisible"
-			:order-id="orderId"
-			:payment-info="paymentInfo"
-			@close="onPaymentConfirmationClose"
-		/>
-
-		<CartCheckoutModal
-			:show="isCheckoutModalVisible"
-			:cart="cart"
-			:subtotal="subtotal"
-			:shipping="shipping"
-			:cod-fee="codFee"
-			:checkout-total="checkoutTotal"
-			:requires-deposit="requiresDeposit"
-			:deposit-amount="depositAmount"
-			:selected-method="selectedPaymentMethod"
-			@close="closeCheckoutModal"
-			@update:selected-method="(m) => (selectedPaymentMethod = m)"
-			@confirm="confirmPayment"
-		/>
-
-		<div class="cart-content">
-			<div v-if="cart.length === 0" class="text-center py-16 text-gray-500">
-				<i class="fas fa-shopping-cart text-4xl mb-4" />
-				<h3 class="text-lg sm:text-xl font-semibold mb-2">
-					Giỏ hàng của bạn đang trống
-				</h3>
-				<p class="mb-4 text-sm sm:text-base">
-					Hãy thêm một số sản phẩm vào giỏ hàng để tiếp tục mua sắm
-				</p>
-				<NuxtLink
-					to="/motorcycles"
-					class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full inline-flex items-center gap-2 text-sm sm:text-base"
+	<main class="min-h-screen bg-gray-50 py-12">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<ClientOnly>
+				<div
+					v-if="!orderSuccess && cartItems.length === 0"
+					class="py-20 text-center"
 				>
-					<i class="fas fa-shopping-bag" /> Tiếp tục mua sắm
-				</NuxtLink>
-			</div>
-			<table v-else class="w-full table-fixed">
-				<thead>
-					<tr class="text-sm sm:text-base">
-						<th class="p-2 sm:p-4 text-left">Sản phẩm</th>
-						<th class="p-2 sm:p-4 text-center">Giá</th>
-						<th class="p-2 sm:p-4 text-center">Số lượng</th>
-						<th class="p-2 sm:p-4 text-center">Tổng</th>
-						<th class="p-2 sm:p-4 text-center">Thao tác</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr
-						v-for="item in cart"
-						:key="item.id"
-						class="border-b last:border-b-0"
+					<div
+						class="w-24 h-24 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6"
 					>
-						<td class="py-2 sm:py-4 px-1 sm:px-2">
-							<div class="flex items-center gap-2 sm:gap-4">
-								<img
-									:src="item.image"
-									:alt="item.name"
-									class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg border border-gray-200"
+						<i class="fas fa-shopping-cart" />
+					</div>
+					<h2 class="text-2xl font-black text-gray-900 mb-2">
+						Giỏ hàng của bạn đang trống
+					</h2>
+					<p class="text-gray-500 mb-8">
+						Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.
+					</p>
+					<NuxtLink
+						to="/products"
+						class="inline-flex items-center px-8 py-4 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 transition-all shadow-lg shadow-red-600/20 uppercase text-sm tracking-widest"
+					>
+						Quay lại mua sắm
+					</NuxtLink>
+				</div>
+
+				<div v-else-if="!orderSuccess" class="flex flex-col lg:flex-row gap-8">
+					<div class="flex-1 space-y-6">
+						<div
+							class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+						>
+							<h1
+								class="text-2xl font-black text-gray-900 flex items-center gap-3"
+							>
+								<i class="fas fa-shipping-fast text-red-600" />
+								THÔNG TIN THANH TOÁN
+							</h1>
+						</div>
+
+						<div
+							class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6"
+						>
+							<h3
+								class="text-lg font-bold text-gray-800 flex items-center gap-2"
+							>
+								<span
+									class="w-8 h-8 bg-red-50 text-red-500 rounded-lg flex items-center justify-center text-sm"
+									>1</span
 								>
-								<div>
-									<h5 class="text-gray-800 font-semibold text-sm sm:text-base">
-										{{ item.name }}
-									</h5>
-									<small class="text-gray-500 text-xs sm:text-sm"
-										>Mã SP: {{ item.id.toUpperCase() }}</small
+								Thông tin nhận hàng
+							</h3>
+
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div class="space-y-2">
+									<label
+										class="text-xs font-black text-gray-400 uppercase tracking-widest"
+										>Họ và tên</label
+									>
+									<input
+										v-model="shippingInfo.fullName"
+										type="text"
+										placeholder="Nhập họ và tên người nhận"
+										class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+										:class="{ '!border-red-500 !bg-red-50': errors.fullName }"
+										@input="errors.fullName = ''"
+									>
+									<p
+										v-if="errors.fullName"
+										class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
+									>
+										{{ errors.fullName }}
+									</p>
+								</div>
+								<div class="space-y-2">
+									<label
+										class="text-xs font-black text-gray-400 uppercase tracking-widest"
+										>Số điện thoại</label
+									>
+									<input
+										v-model="shippingInfo.phone"
+										type="tel"
+										placeholder="Nhập số điện thoại"
+										class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+										:class="{ '!border-red-500 !bg-red-50': errors.phone }"
+										@input="errors.phone = ''"
+									>
+									<p
+										v-if="errors.phone"
+										class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
+									>
+										{{ errors.phone }}
+									</p>
+								</div>
+							</div>
+
+							<div class="space-y-2">
+								<label
+									class="text-xs font-black text-gray-400 uppercase tracking-widest"
+									>Địa chỉ giao hàng</label
+								>
+								<textarea
+									v-model="shippingInfo.address"
+									rows="3"
+									placeholder="Nhập địa chỉ nhận hàng chi tiết"
+									class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
+									:class="{ '!border-red-500 !bg-red-50': errors.address }"
+									@input="errors.address = ''"
+								/>
+								<p
+									v-if="errors.address"
+									class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
+								>
+									{{ errors.address }}
+								</p>
+							</div>
+
+							<div class="space-y-2">
+								<label
+									class="text-xs font-black text-gray-400 uppercase tracking-widest"
+									>Ghi chú (tùy chọn)</label
+								>
+								<textarea
+									v-model="shippingInfo.notes"
+									rows="2"
+									placeholder="Lưu ý cho người giao hàng..."
+									class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
+								/>
+							</div>
+						</div>
+
+						<div
+							class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6"
+						>
+							<h3
+								class="text-lg font-bold text-gray-800 flex items-center gap-2"
+							>
+								<span
+									class="w-8 h-8 bg-red-50 text-red-500 rounded-lg flex items-center justify-center text-sm"
+									>2</span
+								>
+								Phương thức thanh toán
+							</h3>
+
+							<div class="space-y-3">
+								<div
+									class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 bg-red-50 border-red-500 shadow-md shadow-red-500/10"
+								>
+									<div
+										class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm"
+									>
+										💵
+									</div>
+									<div class="flex-1">
+										<h5 class="font-bold text-gray-900">
+											Thanh toán khi nhận hàng (COD)
+										</h5>
+										<p class="text-xs text-gray-500 font-medium">
+											Bạn sẽ thanh toán bằng tiền mặt khi shipper giao hàng đến.
+										</p>
+									</div>
+									<div class="text-red-500">
+										<i class="fas fa-check-circle text-xl" />
+									</div>
+								</div>
+
+								<div
+									class="p-4 bg-gray-100 rounded-xl flex items-center gap-3 grayscale opacity-60 cursor-not-allowed"
+								>
+									<div
+										class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-lg"
+									>
+										🏦
+									</div>
+									<span class="text-sm font-bold text-gray-400"
+										>Chuyển khoản (Đang bảo trì)</span
 									>
 								</div>
 							</div>
-						</td>
-						<td class="py-2 sm:py-4 px-1 sm:px-2 align-top text-center">
-							<span class="text-red-600 font-bold text-base sm:text-lg">{{
-								formatCurrency(item.price)
-							}}</span>
-						</td>
-						<td class="py-2 sm:py-4 px-1 sm:px-2 align-top text-center">
-							<div
-								class="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-full px-1 sm:px-2 py-0.5 sm:py-1 w-max mx-auto"
-							>
-								<button
-									class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 text-xs sm:text-sm"
-									@click="updateQuantity(item.id, item.quantity - 1)"
-								>
-									<i class="fas fa-minus" />
-								</button>
-								<input
-									type="number"
-									class="w-10 sm:w-14 text-center bg-transparent outline-none text-sm sm:text-base"
-									:value="item.quantity"
-									min="1"
-									max="3"
-									@change="
-										updateQuantity(item.id, parseInt($event.target.value) || 1)
-									"
-								>
-								<button
-									class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 text-xs sm:text-sm"
-									@click="updateQuantity(item.id, item.quantity + 1)"
-								>
-									<i class="fas fa-plus" />
-								</button>
-							</div>
-						</td>
-						<td class="py-2 sm:py-4 px-1 sm:px-2 align-top text-center">
-							<span class="text-red-600 font-bold text-base sm:text-lg">{{
-								formatCurrency(item.price * item.quantity)
-							}}</span>
-						</td>
-						<td class="py-2 sm:py-4 px-1 sm:px-2 align-top text-center">
-							<button
-								class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full flex items-center gap-1 sm:gap-2 mx-auto text-xs sm:text-sm"
-								@click="removeFromCart(item.id)"
-							>
-								<i class="fas fa-trash" /> Xóa
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+						</div>
+					</div>
 
-		<div
-			v-if="cart.length > 0"
-			class="bg-gray-50 p-4 sm:p-6 rounded-xl mt-6 sm:mt-8"
-		>
-			<h4 class="text-base sm:text-lg font-semibold text-gray-800 mb-4">
-				<i class="fas fa-calculator text-red-600 mr-2" />Tổng kết đơn hàng
-			</h4>
-			<div class="flex justify-between py-2 border-b text-sm sm:text-base">
-				<span>Tạm tính:</span>
-				<span>{{ formatCurrency(subtotal) }}</span>
-			</div>
-			<div class="flex justify-between py-2 border-b text-sm sm:text-base">
-				<span>Phí vận chuyển:</span>
-				<span>{{
-					shipping === 0 ? "Miễn phí" : formatCurrency(shipping)
-				}}</span>
-			</div>
-			<small
-				v-if="shipping === 0"
-				class="text-green-600 block mb-2 mt-2 text-xs sm:text-sm"
-			>
-				<i class="fas fa-gift" /> Bạn được miễn phí vận chuyển!
-			</small>
-			<div class="flex justify-between py-4 border-b text-sm sm:text-base">
-				<span class="font-bold">Tổng cộng:</span>
-				<span class="font-bold text-red-600">{{ formatCurrency(total) }}</span>
-			</div>
-			<div class="flex gap-3 sm:gap-4 mt-4 sm:mt-6 flex-wrap justify-center">
-				<NuxtLink
-					to="/motorcycles"
-					class="border-2 border-red-600 text-red-600 px-4 py-2 sm:px-6 sm:py-3 rounded-full font-semibold hover:bg-red-50 inline-flex items-center gap-2 text-sm sm:text-base"
-				>
-					<i class="fas fa-arrow-left" /> Tiếp tục mua sắm
-				</NuxtLink>
-				<button
-					class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full font-semibold inline-flex items-center gap-2 text-sm sm:text-base"
-					@click.prevent="proceedToCheckout"
-				>
-					<i class="fas fa-credit-card" /> Thanh toán
-				</button>
-			</div>
+					<div class="lg:w-[400px] space-y-6">
+						<div
+							class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 sticky top-24"
+						>
+							<h3
+								class="text-lg font-black text-gray-900 mb-6 uppercase tracking-wider flex items-center gap-2"
+							>
+								<i class="fas fa-receipt text-red-600" />
+								Tóm tắt đơn hàng
+							</h3>
+
+							<div
+								class="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar mb-6"
+							>
+								<template v-if="isPending && cartItems.length > 0">
+									<div
+										v-for="i in cartItems.length"
+										:key="i"
+										class="flex gap-4 animate-pulse"
+									>
+										<div class="w-16 h-16 bg-gray-200 rounded-xl shrink-0" />
+										<div class="flex-1 space-y-2">
+											<div class="h-4 bg-gray-200 rounded w-3/4" />
+											<div class="h-4 bg-gray-200 rounded w-1/2" />
+										</div>
+									</div>
+								</template>
+								<template v-else>
+									<div
+										v-for="(item, index) in cartDetails"
+										:key="item.id"
+										class="flex gap-4"
+									>
+										<div
+											class="w-16 h-16 rounded-xl overflow-hidden border border-gray-100 shrink-0"
+										>
+											<img
+												:src="item.image"
+												:alt="item.name"
+												class="w-full h-full object-cover"
+												@error="
+													(e) =>
+														(e.target.src =
+															'/assets/image/placeholder-product.webp')
+												"
+											>
+										</div>
+										<div class="flex-1 min-w-0">
+											<div class="flex justify-between items-start">
+												<h5 class="text-sm font-bold text-gray-800 truncate">
+													{{ item.name }}
+												</h5>
+												<button
+													class="text-gray-400 hover:text-red-500 transition-colors ml-2"
+													@click="removeItem(index)"
+												>
+													<i class="fas fa-trash-alt text-xs" />
+												</button>
+											</div>
+											<div class="flex flex-col items-start mt-1">
+												<p class="text-sm font-black text-red-600">
+													{{ formatCurrency(item.price * item.quantity) }}
+												</p>
+											</div>
+											<div
+												class="flex items-center gap-2 mt-2 bg-gray-50 p-1.5 rounded-lg w-fit"
+											>
+												<button
+													class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black"
+													@click="updateQuantity(item.id, item.quantity - 1)"
+												>
+													-
+												</button>
+												<span class="text-xs font-bold w-4 text-center">{{
+													item.quantity
+												}}</span>
+												<button
+													class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black"
+													@click="updateQuantity(item.id, item.quantity + 1)"
+												>
+													+
+												</button>
+											</div>
+										</div>
+									</div>
+								</template>
+							</div>
+
+							<div class="space-y-3 pt-6 border-t border-gray-100">
+								<div class="flex justify-between text-sm">
+									<span class="text-gray-500 font-medium">Tạm tính</span>
+									<span class="font-bold text-gray-900">{{
+										formatCurrency(subtotal)
+									}}</span>
+								</div>
+								<div class="flex justify-between text-sm">
+									<span class="text-gray-500 font-medium">Phí giao hàng</span>
+									<span class="font-bold text-gray-900">{{
+										shipping === 0 ? "Miễn phí" : formatCurrency(shipping)
+									}}</span>
+								</div>
+								<div class="flex justify-between pt-4 border-t border-gray-100">
+									<span class="text-lg font-black text-gray-900 uppercase"
+										>Tổng cộng</span
+									>
+									<span class="text-xl font-black text-red-600">{{
+										formatCurrency(total)
+									}}</span>
+								</div>
+							</div>
+
+							<button
+								:disabled="isSubmitting || cartItems.length === 0"
+								class="w-full mt-8 py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-sm"
+								@click="handlePlaceOrder"
+							>
+								<i v-if="isSubmitting" class="fas fa-spinner fa-spin" />
+								<span v-else>Xác nhận đặt hàng</span>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div v-else class="max-w-2xl mx-auto text-center py-12">
+					<div
+						class="bg-white p-12 rounded-[3rem] shadow-2xl border border-gray-100 space-y-8 animate-in zoom-in duration-500"
+					>
+						<div
+							class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg shadow-green-500/20"
+						>
+							<i class="fas fa-check" />
+						</div>
+
+						<div class="space-y-2">
+							<h2 class="text-3xl font-black text-gray-900 uppercase">
+								Đặt hàng thành công!
+							</h2>
+							<p class="text-gray-500 font-medium">
+								Cảm ơn bạn đã tin tưởng và mua hàng tại AnhEm Motor.
+							</p>
+						</div>
+
+						<div
+							class="bg-gray-50 p-6 rounded-3xl border border-gray-100 text-left space-y-4"
+						>
+							<div
+								class="flex justify-between items-center text-sm border-b border-gray-200 pb-3"
+							>
+								<span class="text-gray-400 font-bold uppercase tracking-widest"
+									>Mã đơn hàng</span
+								>
+								<span class="font-black text-gray-900"
+									>#{{ confirmedOrder?.id || "N/A" }}</span
+								>
+							</div>
+							<div class="flex justify-between items-center text-sm">
+								<span class="text-gray-400 font-bold uppercase tracking-widest"
+									>Phương thức</span
+								>
+								<span class="font-black text-gray-900"
+									>Thanh toán khi nhận hàng (COD)</span
+								>
+							</div>
+							<div class="flex justify-between items-center text-sm">
+								<span class="text-gray-400 font-bold uppercase tracking-widest"
+									>Trạng thái</span
+								>
+								<span
+									class="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full font-bold text-[10px] uppercase"
+									>Chờ xác nhận</span
+								>
+							</div>
+						</div>
+
+						<div class="flex flex-col sm:flex-row gap-4 pt-4">
+							<NuxtLink
+								to="/category"
+								class="flex-1 py-4 bg-gray-100 text-gray-700 font-black rounded-2xl hover:bg-gray-200 transition-colors uppercase text-sm"
+							>
+								Tiếp tục mua sắm
+							</NuxtLink>
+							<NuxtLink
+								to="/orders"
+								class="flex-1 py-4 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 shadow-xl shadow-red-600/20 transition-all transform hover:-translate-y-1 uppercase text-sm"
+							>
+								Xem đơn hàng
+							</NuxtLink>
+						</div>
+					</div>
+				</div>
+				<template #fallback>
+					<div class="flex flex-col lg:flex-row gap-8 animate-pulse">
+						<div class="flex-1 space-y-6">
+							<div class="h-20 bg-gray-200 rounded-2xl" />
+							<div class="h-64 bg-gray-200 rounded-3xl" />
+							<div class="h-48 bg-gray-200 rounded-3xl" />
+						</div>
+						<div class="lg:w-[400px]">
+							<div class="h-[500px] bg-gray-200 rounded-3xl" />
+						</div>
+					</div>
+				</template>
+				<CommonFullLoading :show="isSubmitting" text="Đang xử lý đơn hàng..." />
+			</ClientOnly>
 		</div>
 	</main>
 </template>
+
+<style scoped>
+@reference "../assets/main.css";
+
+.custom-scrollbar::-webkit-scrollbar {
+	width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	@apply bg-gray-200 rounded-full;
+}
+</style>

@@ -73,23 +73,25 @@
 
 				<div class="flex-none flex items-center gap-2 sm:gap-4">
 					<div class="flex items-center gap-1 sm:gap-2">
-						<button
-							v-if="cartItemCount > 0"
-							class="header-icon-btn group"
-							aria-label="Xem giỏ hàng"
-							@click="toggleCart"
-						>
-							<div class="relative">
-								<IconCart
-									class="w-6 h-6 text-gray-700 group-hover:text-red-500 transition-colors"
-								/>
-								<span
-									class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white animate-in zoom-in duration-300"
-								>
-									{{ cartItemCount }}
-								</span>
-							</div>
-						</button>
+						<ClientOnly>
+							<button
+								v-if="cartItemCount > 0"
+								class="header-icon-btn group"
+								aria-label="Xem giỏ hàng"
+								@click="toggleCart"
+							>
+								<div class="relative">
+									<IconCart
+										class="w-6 h-6 text-gray-700 group-hover:text-red-500 transition-colors"
+									/>
+									<span
+										class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white animate-in zoom-in duration-300"
+									>
+										{{ cartItemCount }}
+									</span>
+								</div>
+							</button>
+						</ClientOnly>
 					</div>
 
 					<div class="hidden sm:flex items-center gap-3">
@@ -373,14 +375,17 @@
 			</nav>
 		</Teleport>
 
-		<CartPanel
-			:is-open="isCartOpen"
-			:cart-items="cartItems"
-			:cart-total="cartTotal"
-			@close="toggleCart"
-			@update-quantity="updateCartItemQuantity"
-			@remove-item="removeCartItem"
-		/>
+		<ClientOnly>
+			<CartPanel
+				:is-open="isCartOpen"
+				:cart-items="cartDetails"
+				:cart-total="cartTotal"
+				:is-pending="isPending"
+				@close="toggleCart"
+				@update-quantity="updateCartItemQuantity"
+				@remove-item="removeCartItem"
+			/>
+		</ClientOnly>
 	</header>
 </template>
 
@@ -439,14 +444,19 @@ const closeMobileNav = () => {
 	document.body.style.overflow = "";
 };
 
-const { cartItems, cartTotal, fetchCart, removeItem, updateQuantity } =
-	useCart();
+const {
+	cartItems,
+	cartDetails,
+	cartTotal,
+	isPending,
+	removeItem,
+	updateQuantity,
+} = useCart();
 const cartItemCount = computed(() =>
 	cartItems.value.reduce((s, i) => s + (i.quantity || 0), 0),
 );
 
-const toggleCart = async () => {
-	await fetchCart();
+const toggleCart = () => {
 	isCartOpen.value = !isCartOpen.value;
 };
 

@@ -15,6 +15,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
 		"/roles",
 		"/stats",
 		"/profile",
+		"/process-order",
+		"/orders",
 	];
 	const publicPages = ["/login", "/register"];
 

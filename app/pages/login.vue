@@ -60,7 +60,9 @@ async function handleLogin() {
 		identifier.value = "";
 		password.value = "";
 		const router = useRouter();
-		router.push("/");
+		const route = useRoute();
+		const redirect = (route.query.redirect as string) || "/";
+		router.push(redirect);
 	} catch (error: unknown) {
 		const err = error as {
 			response?: {
