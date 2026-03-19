@@ -171,7 +171,11 @@ useHead({
 <template>
 	<div class="min-h-screen bg-gray-50/50 py-5 lg:py-10">
 		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-			<nav class="flex mb-8 text-sm font-medium" aria-label="Breadcrumb">
+			<nav
+				v-if="detail?.product"
+				class="flex mb-8 text-sm font-medium"
+				aria-label="Breadcrumb"
+			>
 				<ol class="inline-flex items-center">
 					<li>
 						<NuxtLink
@@ -194,13 +198,10 @@ useHead({
 						<div class="flex items-center">
 							<i class="fas fa-chevron-right text-gray-400 mx-2 text-[10px]" />
 							<span class="text-gray-900 line-clamp-1">
-								<template v-if="detail?.product">
-									{{ detail.product.name }}
-									<span v-if="variantName" class="text-gray-500 font-medium">
-										({{ variantName }})</span
-									>
-								</template>
-								<template v-else>Đang tải...</template>
+								{{ detail.product.name }}
+								<span v-if="variantName" class="text-gray-500 font-medium">
+									({{ variantName }})</span
+								>
 							</span>
 						</div>
 					</li>
