@@ -94,6 +94,11 @@ export default defineNuxtConfig({
 			viewport: "width=device-width, initial-scale=1",
 			link: [
 				{
+					rel: "icon",
+					type: "image/x-icon",
+					href: "/favicon.ico",
+				},
+				{
 					rel: "stylesheet",
 					href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css",
 					integrity:
@@ -103,7 +108,6 @@ export default defineNuxtConfig({
 					media: "print",
 					onload: "this.media='all'",
 				},
-				// Google Fonts preconnect stays for gstatic as our URLs still point there for now
 				{
 					rel: "preconnect",
 					href: "https://fonts.gstatic.com",
@@ -115,10 +119,12 @@ export default defineNuxtConfig({
 
 	site: {
 		url: "https://anhemmotor.online",
-		name: "AnhEm Motor",
+		name: "Anh Em Motor",
 		description:
 			"Chuyên cung cấp xe máy, phụ tùng, phụ kiện chính hãng | AnhEm Motor",
 		defaultLocale: "vi",
+		twitterCard: "summary_large_image",
+		canonical: "https://anhemmotor.online",
 	},
 
 	runtimeConfig: {

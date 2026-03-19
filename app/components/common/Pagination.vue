@@ -3,7 +3,6 @@
 		<nav
 			class="flex items-center space-x-1 rounded-xl bg-gray-50 p-2 shadow-inner"
 		>
-			<!-- Previous Button -->
 			<button
 				:disabled="currentPage === 1"
 				class="px-3 md:px-4 py-2 text-gray-500 hover:text-primary-red hover:bg-white rounded-lg font-medium transition-colors duration-200 flex items-center text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
@@ -14,7 +13,6 @@
 				<span class="sm:hidden">Trước</span>
 			</button>
 
-			<!-- Page Numbers -->
 			<button
 				v-for="page in visiblePages"
 				:key="page"
@@ -29,7 +27,6 @@
 				{{ page === "..." ? "..." : page }}
 			</button>
 
-			<!-- Next Button -->
 			<button
 				:disabled="currentPage === totalPages"
 				class="px-3 md:px-4 py-2 text-gray-700 hover:text-primary-red hover:bg-white rounded-lg font-medium transition-colors duration-200 flex items-center text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
@@ -60,7 +57,7 @@ export default {
 	computed: {
 		visiblePages() {
 			const pages = [];
-			const delta = 1; // Number of pages to show on each side of current page
+			const delta = 1;
 
 			for (let i = 1; i <= this.totalPages; i++) {
 				if (

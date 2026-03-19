@@ -9,13 +9,13 @@
 				<router-link to="/" class="hover:text-red-600 transition-colors"
 					>Trang chủ</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]"/>
+				<i class="fas fa-chevron-right text-[10px]" />
 				<router-link
 					to="/spare-parts"
 					class="hover:text-red-600 transition-colors"
 					>Phụ tùng</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]"/>
+				<i class="fas fa-chevron-right text-[10px]" />
 				<span class="text-gray-900 font-medium truncate max-w-[200px]">{{
 					product.name
 				}}</span>
@@ -84,7 +84,7 @@
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-r border-gray-200 text-gray-600"
 											@click="changeQty(-1)"
 										>
-											<i class="fas fa-minus"/>
+											<i class="fas fa-minus" />
 										</button>
 										<input
 											v-model.number="quantity"
@@ -96,7 +96,7 @@
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"
 											@click="changeQty(1)"
 										>
-											<i class="fas fa-plus"/>
+											<i class="fas fa-plus" />
 										</button>
 									</div>
 									<span
@@ -115,7 +115,7 @@
 									class="w-full md:w-auto px-16 py-4 bg-[#de0000] text-white rounded-xl font-bold text-lg hover:bg-black hover:shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3"
 									@click="handleAddToCart"
 								>
-									<i class="fas fa-tools"/> THÊM VÀO GIỎ HÀNG
+									<i class="fas fa-tools" /> THÊM VÀO GIỎ HÀNG
 								</button>
 							</div>
 						</div>
@@ -128,7 +128,7 @@
 					class="flex items-center justify-between mb-8 border-b border-gray-200 pb-5"
 				>
 					<div class="flex items-center gap-3">
-						<div class="w-2 h-8 bg-[#de0000] rounded-full"/>
+						<div class="w-2 h-8 bg-[#de0000] rounded-full" />
 						<h2
 							class="text-2xl font-bold text-gray-800 uppercase tracking-tight"
 						>
@@ -173,7 +173,6 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-// Đảm bảo import đúng đường dẫn dữ liệu của bạn
 import { products } from "../components/spare-parts/products-data";
 import { useCart } from "~/composables/useCart";
 import ProductCard from "~/components/accessories/ProductCard.vue";

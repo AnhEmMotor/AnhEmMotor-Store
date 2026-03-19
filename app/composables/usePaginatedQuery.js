@@ -129,7 +129,6 @@ export function usePaginatedQuery(config) {
 		}
 		const clean = buildCleanFilters();
 
-		// Duyệt qua clean để nối chuỗi Array bằng dấu phẩy trước khi push lên URL
 		for (const [key, value] of Object.entries(clean)) {
 			if (Array.isArray(value)) {
 				if (value.length > 0) {

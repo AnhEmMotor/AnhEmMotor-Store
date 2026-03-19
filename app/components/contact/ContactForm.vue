@@ -1,7 +1,6 @@
 <script setup>
 import { reactive, ref } from "vue";
 
-// --- State ---
 const formData = reactive({
 	full_name: "",
 	phone_number: "",
@@ -21,21 +20,17 @@ const errors = reactive({
 
 const isLoading = ref(false);
 const statusMessage = ref("");
-const statusType = ref(""); // 'success' or 'error'
+const statusType = ref("");
 
-// --- Validation Helpers ---
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const isValidPhone = (phone) => /^0[3-9]\d{8,9}$/.test(phone);
 
-// --- Handle Submit ---
 const handleSubmit = async () => {
-	// 1. Reset Errors
 	Object.keys(errors).forEach((key) => (errors[key] = ""));
 	statusMessage.value = "";
 
 	let isValid = true;
 
-	// 2. Validate
 	if (!formData.full_name.trim()) {
 		errors.full_name = "Vui lòng nhập họ và tên.";
 		isValid = false;
@@ -61,7 +56,6 @@ const handleSubmit = async () => {
 
 	if (!isValid) return;
 
-	// 3. API Call
 	isLoading.value = true;
 	try {
 		const res = await fetch("https://backend-xolq.onrender.com/api/contacts", {
@@ -77,7 +71,6 @@ const handleSubmit = async () => {
 			statusMessage.value =
 				"🎉 Gửi liên hệ thành công! Chúng tôi sẽ sớm liên hệ với bạn.";
 
-			// Reset form
 			Object.keys(formData).forEach((key) => (formData[key] = ""));
 		} else {
 			statusType.value = "error";
@@ -88,7 +81,6 @@ const handleSubmit = async () => {
 		statusMessage.value = "Không thể kết nối server hoặc có lỗi mạng!";
 	} finally {
 		isLoading.value = false;
-		// Tự động ẩn thông báo sau 5s
 		if (statusType.value === "success") {
 			setTimeout(() => (statusMessage.value = ""), 5000);
 		}

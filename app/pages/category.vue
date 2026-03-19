@@ -3,8 +3,26 @@ import { ref } from "vue";
 
 useSeoMeta({
 	title: "Danh Mục Sản Phẩm | AnhEm Motor",
+	ogTitle: "Danh Mục Sản Phẩm | AnhEm Motor",
 	description:
 		"Khám phá đầy đủ danh mục xe máy, phụ tùng và phụ kiện chính hãng tại AnhEm Motor.",
+	ogDescription:
+		"Khám phá đầy đủ danh mục xe máy, phụ tùng và phụ kiện chính hãng tại AnhEm Motor.",
+	ogImage: "/assets/image/index/index-banner-bg.webp",
+	twitterTitle: "Danh Mục Sản Phẩm | AnhEm Motor",
+	twitterDescription:
+		"Khám phá đầy đủ danh mục xe máy, phụ tùng và phụ kiện chính hãng tại AnhEm Motor.",
+	twitterImage: "/assets/image/index/index-banner-bg.webp",
+});
+
+useHead({
+	link: [
+		{
+			rel: "icon",
+			type: "image/x-icon",
+			href: "/favicon.ico",
+		},
+	],
 });
 
 const categories = ref([
@@ -74,7 +92,7 @@ const categories = ref([
 						:src="category.imgSrc"
 						:alt="category.alt"
 						class="object-contain w-full h-full p-6 sm:p-8 md:p-12 transition-transform duration-300 group-hover:scale-105"
-					/>
+					>
 					<div
 						class="absolute bottom-4 right-4 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white text-lg transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110"
 					>

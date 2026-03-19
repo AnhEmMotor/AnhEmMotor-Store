@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 
+import { useRouter } from "#app";
+
 const currentPlaceholder = ref("");
 const phrases = [
 	"Nhập tên xe bạn muốn sở hữu...",
@@ -40,8 +42,6 @@ onMounted(() => {
 	typeEffect();
 });
 
-import { useRouter } from "#app";
-
 const router = useRouter();
 const searchQuery = ref("");
 
@@ -69,14 +69,14 @@ onUnmounted(() => {
 				đầu thế giới
 			</p>
 
-			<form @submit.prevent="handleSearch" class="search-bar">
+			<form class="search-bar" @submit.prevent="handleSearch">
 				<label for="searchInput" class="sr-only">Tìm kiếm sản phẩm</label>
 				<input
 					id="searchInput"
+					v-model="searchQuery"
 					type="text"
 					:placeholder="currentPlaceholder"
-					v-model="searchQuery"
-				/>
+				>
 				<button
 					id="searchButton"
 					type="submit"
@@ -109,7 +109,7 @@ onUnmounted(() => {
 				as="image"
 				href="/assets/image/index/index-banner-bg.webp"
 				fetchpriority="high"
-			/>
+			>
 		</Head>
 	</section>
 </template>

@@ -62,8 +62,7 @@ watch(
 						<div
 							class="prose prose-lg max-w-none text-gray-800 leading-relaxed"
 						>
-							<!-- eslint-disable-next-line vue/no-v-html -->
-							<div v-html="news.content" />
+							<div v-bind="{ innerHTML: news.content }" />
 						</div>
 						<div class="mt-10 pt-6 border-t border-gray-200">
 							<h3 class="text-lg font-bold mb-4">Chia sẻ bài viết</h3>

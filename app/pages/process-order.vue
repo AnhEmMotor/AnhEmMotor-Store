@@ -12,7 +12,7 @@ const cart = cartItems;
 const isCheckoutModalVisible = ref(false);
 const isConfirmationModalVisible = ref(false);
 const selectedPaymentMethod = ref(null);
-const paymentInfoHtml = ref("");
+const paymentInfo = ref(null);
 const orderId = ref("");
 const invoiceData = ref(null);
 
@@ -67,7 +67,7 @@ function proceedToCheckout() {
 		return;
 	}
 	orderId.value = `DH${Date.now()}`;
-	paymentInfoHtml.value = "";
+	paymentInfo.value = null;
 	isCheckoutModalVisible.value = true;
 }
 
@@ -82,38 +82,75 @@ function confirmPayment() {
 		return;
 	}
 	const totalWithFees = checkoutTotal.value;
-	let paymentInfo = "";
+	let paymentInfoData = null;
 	switch (selectedPaymentMethod.value) {
 		case "bank": {
 			const bankAmount = requiresDeposit.value
 				? depositAmount.value
 				: totalWithFees;
-			paymentInfo = `<h4>Thông tin chuyển khoản:</h4><div class="bank-info"><p><strong>Ngân hàng:</strong> Vietcombank</p><p><strong>Số tài khoản:</strong> 1234567890</p><p><strong>Chủ tài khoản:</strong> CONG TY TNHH ANHEM MOTOR</p><p><strong>Số tiền:</strong> ${formatCurrency(bankAmount)}</p><p><strong>Nội dung:</strong> ${orderId.value}</p></div>`;
+			paymentInfoData = {
+				title: "Thông tin chuyển khoản:",
+				method: "bank",
+				details: [
+					{ label: "Ngân hàng", value: "Vietcombank" },
+					{ label: "Số tài khoản", value: "1234567890" },
+					{ label: "Chủ tài khoản", value: "CONG TY TNHH ANHEM MOTOR" },
+					{ label: "Số tiền", value: formatCurrency(bankAmount) },
+					{ label: "Nội dung", value: orderId.value },
+				],
+			};
 			break;
 		}
 		case "momo": {
 			const momoAmount = requiresDeposit.value
 				? depositAmount.value
 				: totalWithFees;
-			paymentInfo = `<h4>Thanh toán MoMo:</h4><p>Số điện thoại: <strong>0123456789</strong></p><p>Tên: <strong>AnhEm Motor</strong></p><p>Số tiền: <strong>${formatCurrency(momoAmount)}</strong></p><p>Nội dung: <strong>${orderId.value}</strong></p>`;
+			paymentInfoData = {
+				title: "Thanh toán MoMo:",
+				method: "momo",
+				details: [
+					{ label: "Số điện thoại", value: "0123456789" },
+					{ label: "Tên", value: "AnhEm Motor" },
+					{ label: "Số tiền", value: formatCurrency(momoAmount) },
+					{ label: "Nội dung", value: orderId.value },
+				],
+			};
 			break;
 		}
 		case "zalopay": {
 			const zalopayAmount = requiresDeposit.value
 				? depositAmount.value
 				: totalWithFees;
-			paymentInfo = `<h4>Thanh toán ZaloPay:</h4><p>Số điện thoại: <strong>0123456789</strong></p><p>Tên: <strong>AnhEm Motor</strong></p><p>Số tiền: <strong>${formatCurrency(zalopayAmount)}</strong></p><p>Nội dung: <strong>${orderId.value}</strong></p>`;
+			paymentInfoData = {
+				title: "Thanh toán ZaloPay:",
+				method: "zalopay",
+				details: [
+					{ label: "Số điện thoại", value: "0123456789" },
+					{ label: "Tên", value: "AnhEm Motor" },
+					{ label: "Số tiền", value: formatCurrency(zalopayAmount) },
+					{ label: "Nội dung", value: orderId.value },
+				],
+			};
 			break;
 		}
 		case "cod": {
 			const codAmount = requiresDeposit.value
 				? totalWithFees - depositAmount.value
 				: totalWithFees;
-			paymentInfo = `<h4>Thanh toán khi nhận hàng:</h4><p>Đơn hàng của bạn sẽ được giao trong 2-3 ngày làm việc.</p><p>Vui lòng chuẩn bị: <strong>${formatCurrency(codAmount)}</strong></p><p>Chúng tôi sẽ liên hệ xác nhận đơn hàng trong vòng 24 giờ.</p>`;
+			paymentInfoData = {
+				title: "Thanh toán khi nhận hàng:",
+				method: "cod",
+				message: "Đơn hàng của bạn sẽ được giao trong 2-3 ngày làm việc.",
+				details: [
+					{ label: "Vui lòng chuẩn bị", value: formatCurrency(codAmount) },
+				],
+				footerMessage:
+					"Chúng tôi sẽ liên hệ xác nhận đơn hàng trong vòng 24 giờ.",
+			};
 			break;
 		}
 	}
-	paymentInfoHtml.value = paymentInfo;
+	paymentInfo.value = paymentInfoData;
 	closeCheckoutModal();
 	isConfirmationModalVisible.value = true;
 }
@@ -168,7 +205,7 @@ onMounted(async () => {
 		<CartPaymentConfirmationModal
 			:show="isConfirmationModalVisible"
 			:order-id="orderId"
-			:payment-info-html="paymentInfoHtml"
+			:payment-info="paymentInfo"
 			@close="onPaymentConfirmationClose"
 		/>
 
@@ -331,4 +368,3 @@ onMounted(async () => {
 		</div>
 	</main>
 </template>
-

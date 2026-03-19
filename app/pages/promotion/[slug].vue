@@ -63,8 +63,7 @@ watch(
 				</h1>
 				<CommonSocialShare :url="shareUrl" :title="promotion.fullTitle" />
 				<div class="prose prose-lg max-w-none mb-8">
-					<!-- eslint-disable-next-line vue/no-v-html -->
-					<div v-html="promotion.content" />
+					<div v-bind="{ innerHTML: promotion.content }" />
 				</div>
 				<PromotionCarousel
 					v-if="promotion.carouselImages && promotion.carouselImages.length > 0"

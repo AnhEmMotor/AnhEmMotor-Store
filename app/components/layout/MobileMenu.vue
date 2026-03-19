@@ -1,5 +1,4 @@
 <template>
-	<!-- Overlay -->
 	<div
 		v-show="isOpen"
 		class="fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-300"
@@ -7,7 +6,6 @@
 		@click="$emit('close')"
 	/>
 
-	<!-- Sidebar Menu -->
 	<nav
 		class="fixed top-0 left-0 w-85 max-w-xs h-full bg-white z-60 overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out flex flex-col p-6"
 		:class="{ '-translate-x-full': !isOpen, 'translate-x-0': isOpen }"
