@@ -30,7 +30,7 @@
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
 								width="40"
 								height="40"
-							>
+							/>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -117,20 +117,20 @@
 								@click="toggleUserMenu"
 							>
 								<div
-									class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-red-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm"
+									class="w-8 h-8 sm:w-9 sm:h-9 bg-red-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm rounded-full"
 								>
 									<img
 										v-if="user?.avatarUrl"
 										:src="user.avatarUrl"
 										alt="Avatar"
-										class="w-full h-full object-cover"
-									>
+										class="w-full h-full object-cover pointer-events-none"
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xs" />
 								</div>
 								<span
 									class="hidden md:block text-sm font-bold text-gray-800 max-w-[100px] truncate"
 								>
-									{{ user?.fullName || user?.userName }}
+									{{ user?.fullName || user?.userName || user?.email }}
 								</span>
 								<i
 									class="fas fa-chevron-down text-[10px] text-gray-400"
@@ -165,7 +165,7 @@
 										>
 											<i class="fas fa-user-circle" />
 										</div>
-										<span>Trang Cá Nhân</span>
+										<span>Sửa thông tin</span>
 									</RouterLink>
 									<RouterLink
 										to="/orders"
@@ -177,7 +177,7 @@
 										>
 											<i class="fas fa-shopping-bag" />
 										</div>
-										<span>Đơn Hàng Của Tôi</span>
+										<span>Đơn hàng của tôi</span>
 									</RouterLink>
 									<div class="h-px bg-gray-50 my-1 mx-3" />
 									<button
@@ -189,7 +189,7 @@
 										>
 											<i class="fas fa-sign-out-alt" />
 										</div>
-										<span class="font-bold">Đăng Xuất</span>
+										<span class="font-bold">Đăng xuất</span>
 									</button>
 								</div>
 							</div>
@@ -221,7 +221,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							>
+							/>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -261,21 +261,24 @@
 								class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm"
 							>
 								<div
-									class="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center overflow-hidden border-2 border-white shadow-inner shrink-0"
+									class="w-14 h-14 bg-red-50 flex items-center justify-center overflow-hidden border-2 border-white shadow-inner shrink-0"
 								>
 									<img
 										v-if="user?.avatarUrl"
 										:src="user.avatarUrl"
 										alt="Avatar"
-										class="w-full h-full object-cover"
-									>
+										class="w-full h-full object-cover pointer-events-none"
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xl" />
 								</div>
 								<div class="flex-1 min-w-0">
 									<p class="font-black text-gray-900 truncate leading-tight">
-										{{ user?.fullName || user?.userName }}
+										{{ user?.fullName || user?.userName || user?.email }}
 									</p>
-									<p class="text-xs font-medium text-gray-500 truncate mt-0.5">
+									<p
+										v-if="(user?.fullName || user?.userName) && user?.email"
+										class="text-xs font-medium text-gray-500 truncate mt-0.5"
+									>
 										{{ user?.email }}
 									</p>
 								</div>
@@ -356,7 +359,6 @@
 				</div>
 			</nav>
 		</Teleport>
-
 		<ClientOnly>
 			<CartPanel
 				:is-open="isCartOpen"
