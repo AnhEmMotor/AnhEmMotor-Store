@@ -2,7 +2,7 @@
 	<teleport to="body">
 		<div
 			:class="[
-				'fixed left-0 right-0 top-[100px] bottom-0 bg-black/40 transition-opacity duration-300',
+				'fixed inset-0 bg-black/40',
 				isOpen
 					? 'opacity-100 pointer-events-auto z-50'
 					: shouldRender
@@ -14,7 +14,7 @@
 
 		<div
 			:class="[
-				'fixed top-24 right-0 bottom-0 w-screen md:w-96 bg-white transform transition-transform flex flex-col overflow-hidden',
+				'fixed inset-y-0 right-0 w-screen md:w-96 bg-white transform flex flex-col overflow-hidden shadow-2xl',
 				isOpen ? 'translate-x-0' : 'translate-x-full',
 				isOpen || shouldRender ? 'z-50' : '-z-10',
 			]"
@@ -46,39 +46,30 @@
 					<i class="fas fa-shopping-cart text-4xl mb-4 opacity-30" />
 					<p>Giỏ hàng của bạn đang trống.</p>
 				</div>
-				<div
-					v-if="
-						isPending &&
-						cartItems.length > 0 &&
-						!cartItems[0].name.includes('...')
-					"
-				>
-					<div
-						v-for="i in cartItems.length"
-						:key="i"
-						class="flex items-center gap-3 mb-4 pb-4 border-b animate-pulse"
-					>
-						<div class="w-16 h-16 bg-gray-100 rounded-lg shrink-0" />
-						<div class="flex-1 space-y-2">
-							<div class="h-4 bg-gray-100 rounded w-3/4" />
-							<div class="h-4 bg-gray-100 rounded w-1/2" />
-						</div>
-					</div>
-				</div>
 				<div v-else>
 					<div
 						v-for="(item, index) in cartItems"
 						:key="item.id"
-						class="flex items-center gap-3 mb-4 pb-4 border-b last:border-b-0"
+						class="flex items-center gap-3 mb-4 pb-4 border-b last:border-b-0 transition-opacity duration-300"
+						:class="{ 'opacity-60': item.loading }"
 					>
-						<img
-							:src="item.image"
-							:alt="item.name"
-							class="w-16 h-16 object-contain rounded-lg border p-1 bg-gray-50"
-							@error="
-								(e) => (e.target.src = '/assets/image/placeholder-product.webp')
-							"
-						/>
+						<div class="relative">
+							<img
+								:src="item.image"
+								:alt="item.name"
+								class="w-16 h-16 object-contain rounded-lg border p-1 bg-gray-50"
+								@error="
+									(e) =>
+										(e.target.src = '/assets/image/placeholder-product.webp')
+								"
+							>
+							<div
+								v-if="item.loading"
+								class="absolute inset-0 flex items-center justify-center bg-white/40"
+							>
+								<i class="fas fa-circle-notch fa-spin text-red-500 text-xs" />
+							</div>
+						</div>
 						<div class="flex-1">
 							<div class="font-semibold text-sm text-gray-800">
 								{{ item.name }}
@@ -89,7 +80,7 @@
 							<div class="flex items-center gap-2 mt-2">
 								<NumberStepper
 									:model-value="item.quantity"
-									:min="1"
+									:min="0"
 									:max="999"
 									@increment="$emit('updateQuantity', { index, change: 1 })"
 									@decrement="$emit('updateQuantity', { index, change: -1 })"
@@ -144,7 +135,7 @@ import { ref, watch } from "vue";
 import BaseButton from "../ui/button/BaseButton.vue";
 import NumberStepper from "../ui/input/NumberStepper.vue";
 
-const { isOpen, cartItems, cartTotal, isPending } = defineProps({
+const { isOpen, cartItems, cartTotal } = defineProps({
 	isOpen: Boolean,
 	cartItems: {
 		type: Array,
@@ -153,10 +144,6 @@ const { isOpen, cartItems, cartTotal, isPending } = defineProps({
 	cartTotal: {
 		type: Number,
 		default: 0,
-	},
-	isPending: {
-		type: Boolean,
-		default: false,
 	},
 });
 const auth = useAuthStore();
@@ -175,10 +162,8 @@ watch(
 			shouldRender.value = true;
 		} else {
 			if (closeTimer) clearTimeout(closeTimer);
-			closeTimer = setTimeout(() => {
-				shouldRender.value = false;
-				closeTimer = null;
-			}, 320);
+			shouldRender.value = false;
+			closeTimer = null;
 		}
 	},
 	{ immediate: true },
