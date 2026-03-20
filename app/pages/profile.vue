@@ -27,7 +27,7 @@
 								alt="Avatar"
 								class="w-32 h-32 rounded-full object-cover ring-4 ring-gray-50 shadow-md pointer-events-none"
 								:class="{ 'opacity-50': isUploadingAvatar }"
-							>
+							/>
 							<div
 								class="absolute inset-0 bg-gray-900/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
 							>
@@ -48,7 +48,7 @@
 							accept="image/jpeg,image/png,image/webp,image/jpg"
 							:disabled="isUploadingAvatar"
 							@change="handleAvatarChange"
-						>
+						/>
 
 						<h2 class="mt-5 text-xl font-bold text-gray-900 text-center">
 							{{ user?.fullName || "Người dùng" }}
@@ -155,7 +155,7 @@
 											type="text"
 											class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập họ và tên của bạn"
-										>
+										/>
 									</div>
 								</div>
 
@@ -177,7 +177,7 @@
 											type="tel"
 											class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập số điện thoại"
-										>
+										/>
 									</div>
 								</div>
 
@@ -232,7 +232,7 @@
 											title="Bạn không thể thay đổi email"
 											class="block w-full pl-10 pr-4 py-2.5 bg-gray-100 border border-gray-200 text-gray-500 rounded-xl sm:text-sm cursor-not-allowed"
 											placeholder="Email chưa được cập nhật"
-										>
+										/>
 										<div
 											class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none"
 										>
@@ -302,7 +302,7 @@
 											:type="passwordFieldType.current"
 											class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập mật khẩu hiện tại"
-										>
+										/>
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
@@ -337,7 +337,7 @@
 											:type="passwordFieldType.new"
 											class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập mật khẩu mới"
-										>
+										/>
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
@@ -377,7 +377,7 @@
 											:type="passwordFieldType.confirm"
 											class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập lại mật khẩu mới"
-										>
+										/>
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
@@ -473,8 +473,6 @@ const passwordFieldType = ref({
 	new: "password",
 	confirm: "password",
 });
-
-// Removed initFormData in favor of watch with immediate: true
 
 function togglePassword(field) {
 	passwordFieldType.value[field] =

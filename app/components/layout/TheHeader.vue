@@ -30,7 +30,7 @@
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
 								width="40"
 								height="40"
-							>
+							/>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -124,7 +124,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
-									>
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xs" />
 								</div>
 								<span
@@ -221,7 +221,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							>
+							/>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -268,7 +268,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
-									>
+									/>
 									<i v-else class="fas fa-user text-red-500 text-xl" />
 								</div>
 								<div class="flex-1 min-w-0">
@@ -394,7 +394,6 @@ const handleLogout = async () => {
 	await authStore.logout();
 };
 
-// Handle scroll effect
 if (import.meta.client) {
 	const handleScroll = () => {
 		isScrolled.value = window.scrollY > 20;
@@ -402,7 +401,7 @@ if (import.meta.client) {
 
 	onMounted(() => {
 		window.addEventListener("scroll", handleScroll);
-		handleScroll(); // Initial check
+		handleScroll();
 
 		window.addEventListener("click", (e) => {
 			if (!e.target.closest(".user-menu-container")) {
@@ -479,7 +478,6 @@ onBeforeUnmount(() => {
 	@apply p-2.5 rounded-xl text-gray-700 hover:bg-gray-100 active:scale-95 transition-all outline-none;
 }
 
-/* Custom Scrollbar for Mobile Nav */
 .custom-scrollbar::-webkit-scrollbar {
 	width: 4px;
 }
