@@ -45,7 +45,10 @@ const emit = defineEmits(["view-detail"]);
 			<div
 				class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mb-6"
 			>
-				<i class="fas fa-search text-3xl text-gray-400" />
+				<Icon
+					name="fa6-solid:magnifying-glass"
+					class="text-3xl text-gray-400"
+				/>
 			</div>
 			<h3 class="text-xl font-bold text-gray-900 mb-2">
 				Không tìm thấy sản phẩm nào

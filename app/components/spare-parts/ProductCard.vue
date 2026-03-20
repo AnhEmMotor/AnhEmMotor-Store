@@ -22,7 +22,7 @@
 			</div>
 
 			<BaseButton @click.stop="$emit('addToCart', product)">
-				<i class="fas fa-shopping-cart"/>
+				<Icon name="fa6-solid:cart-shopping" />
 				Thêm vào giỏ hàng
 			</BaseButton>
 		</div>

@@ -76,14 +76,17 @@ onUnmounted(() => {
 					v-model="searchQuery"
 					type="text"
 					:placeholder="currentPlaceholder"
-				>
+				/>
 				<button
 					id="searchButton"
 					type="submit"
 					class="search-button"
 					aria-label="Tìm kiếm sản phẩm"
 				>
-					<i class="fas fa-search" /> Tìm Kiếm
+					<ClientOnly>
+						<Icon name="fa6-solid:magnifying-glass" />
+					</ClientOnly>
+					Tìm Kiếm
 				</button>
 			</form>
 
@@ -109,7 +112,7 @@ onUnmounted(() => {
 				as="image"
 				href="/assets/image/index/index-banner-bg.webp"
 				fetchpriority="high"
-			>
+			/>
 		</Head>
 	</section>
 </template>

@@ -5,7 +5,7 @@
 			:disabled="disabled || value <= min"
 			@click="decrement"
 		>
-			<i class="fas fa-minus text-[10px]" />
+			<Icon name="fa6-solid:minus" class="text-[10px]" />
 		</button>
 		<span class="font-bold text-sm min-w-[24px] text-center">{{ value }}</span>
 		<button
@@ -13,7 +13,7 @@
 			:disabled="disabled || value >= max"
 			@click="increment"
 		>
-			<i class="fas fa-plus text-[10px]" />
+			<Icon name="fa6-solid:plus" class="text-[10px]" />
 		</button>
 	</div>
 </template>

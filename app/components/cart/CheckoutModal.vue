@@ -4,7 +4,7 @@
 			<div class="checkout-modal-content" role="dialog" aria-modal="true">
 				<header class="checkout-header flex items-center justify-between">
 					<h3 class="text-lg font-semibold flex items-center gap-3">
-						<i class="fas fa-credit-card text-red-600 mr-2" />
+						<Icon name="fa6-solid:credit-card" class="text-red-600 mr-2" />
 						<span>Chọn phương thức thanh toán</span>
 					</h3>
 					<button class="close-btn" aria-label="Đóng" @click="$emit('close')">
@@ -32,9 +32,10 @@
 								<small class="text-sm text-gray-500">{{ method.note }}</small>
 							</div>
 							<div class="pm-check">
-								<i
+								<Icon
 									v-if="selectedMethod === method.key"
-									class="fas fa-check-circle text-red-600"
+									name="fa6-solid:circle-check"
+									class="text-red-600"
 								/>
 							</div>
 						</div>
@@ -42,7 +43,8 @@
 
 					<section class="order-summary bg-gray-50 p-4 rounded-lg mt-4">
 						<h5 class="font-semibold text-gray-800 mb-2">
-							<i class="fas fa-receipt text-red-600 mr-2" />Tóm tắt đơn hàng
+							<Icon name="fa6-solid:receipt" class="text-red-600 mr-2" />Tóm tắt
+							đơn hàng
 						</h5>
 
 						<div

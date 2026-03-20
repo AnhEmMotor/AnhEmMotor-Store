@@ -5,13 +5,13 @@
 		>
 			<div class="flex justify-between items-center border-b pb-2 mb-4">
 				<h3 class="text-xl font-bold text-[#de0000]">
-					<i class="fas fa-filter mr-2" />Bộ Lọc
+					<Icon name="fa6-solid:filter" class="mr-2" />Bộ Lọc
 				</h3>
 				<button
 					class="md:hidden text-gray-500 hover:text-[#de0000] p-2 transition-colors"
 					@click="$emit('close')"
 				>
-					<i class="fas fa-times text-xl" />
+					<Icon name="fa6-solid:xmark" class="text-xl" />
 				</button>
 			</div>
 
@@ -137,7 +137,7 @@
 				class="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-200 transition duration-200 mt-auto"
 				@click="$emit('clear-filters')"
 			>
-				<i class="fas fa-sync-alt mr-2" /> Xóa Bộ Lọc
+				<Icon name="fa6-solid:rotate" class="mr-2" /> Xóa Bộ Lọc
 			</button>
 		</div>
 	</aside>

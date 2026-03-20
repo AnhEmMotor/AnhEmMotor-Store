@@ -137,7 +137,7 @@ const handleViewDetail = (product) => {
 								class="lg:hidden flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"
 								@click="toggleSidebar"
 							>
-								<i class="fas fa-filter text-primary" />
+								<Icon name="fa6-solid:filter" class="text-primary" />
 								Lọc
 							</button>
 						</div>
@@ -159,7 +159,7 @@ const handleViewDetail = (product) => {
 							"
 						>
 							Xóa tất cả
-							<i class="fas fa-times" />
+							<Icon name="fa6-solid:xmark" />
 						</button>
 					</div>
 

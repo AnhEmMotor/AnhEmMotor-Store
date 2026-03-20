@@ -8,8 +8,12 @@
 				hoặc đã được di chuyển sang một cung đường khác.
 			</p>
 			<div class="action-container">
-				<button class="btn-primary back-home-btn" @click="handleError">
-					<i class="fas fa-home mr-2" /> Quay lại trang chủ
+				<button
+					class="btn-primary back-home-btn"
+					aria-label="Quay lại trang chủ"
+					@click="handleError"
+				>
+					<Icon name="fa6-solid:house" class="mr-2" /> Quay lại trang chủ
 				</button>
 			</div>
 		</div>

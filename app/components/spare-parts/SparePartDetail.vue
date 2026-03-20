@@ -9,13 +9,13 @@
 				<router-link to="/" class="hover:text-red-600 transition-colors"
 					>Trang chủ</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]" />
+				<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
 				<router-link
 					to="/spare-parts"
 					class="hover:text-red-600 transition-colors"
 					>Phụ tùng</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]" />
+				<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
 				<span class="text-gray-900 font-medium truncate max-w-[200px]">{{
 					product.name
 				}}</span>
@@ -84,7 +84,7 @@
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-r border-gray-200 text-gray-600"
 											@click="changeQty(-1)"
 										>
-											<i class="fas fa-minus" />
+											<Icon name="fa6-solid:minus" />
 										</button>
 										<input
 											v-model.number="quantity"
@@ -96,7 +96,7 @@
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"
 											@click="changeQty(1)"
 										>
-											<i class="fas fa-plus" />
+											<Icon name="fa6-solid:plus" />
 										</button>
 									</div>
 									<span
@@ -115,7 +115,7 @@
 									class="w-full md:w-auto px-16 py-4 bg-[#de0000] text-white rounded-xl font-bold text-lg hover:bg-black hover:shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3"
 									@click="handleAddToCart"
 								>
-									<i class="fas fa-tools" /> THÊM VÀO GIỎ HÀNG
+									<Icon name="fa6-solid:screwdriver-wrench" /> THÊM VÀO GIỎ HÀNG
 								</button>
 							</div>
 						</div>
@@ -140,8 +140,9 @@
 						class="text-[#de0000] font-bold hover:text-black transition-colors flex items-center gap-2 group"
 					>
 						Xem thêm
-						<i
-							class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"
+						<Icon
+							name="fa6-solid:arrow-right"
+							class="text-sm group-hover:translate-x-1 transition-transform"
 						/>
 					</router-link>
 				</div>

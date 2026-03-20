@@ -34,7 +34,7 @@
 				class="mt-auto hover:from-[#b30000] hover:to-[#800000] transform hover:-translate-y-0.5 transition-all"
 				@click.stop="$emit('addToCart', product)"
 			>
-				<i class="fas fa-shopping-cart" />
+				<Icon name="fa6-solid:cart-shopping" />
 				Thêm vào giỏ hàng
 			</BaseButton>
 		</div>

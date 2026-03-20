@@ -8,7 +8,7 @@
 				class="px-3 md:px-4 py-2 text-gray-500 hover:text-primary-red hover:bg-white rounded-lg font-medium transition-colors duration-200 flex items-center text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
 				@click="goToPrevious"
 			>
-				<i class="fas fa-chevron-left mr-1 md:mr-2 text-xs" />
+				<Icon name="fa6-solid:chevron-left" class="mr-1 md:mr-2 text-xs" />
 				<span class="hidden sm:inline">Previous</span>
 				<span class="sm:hidden">Trước</span>
 			</button>
@@ -34,7 +34,7 @@
 			>
 				<span class="hidden sm:inline">Next</span>
 				<span class="sm:hidden">Sau</span>
-				<i class="fas fa-chevron-right ml-1 md:ml-2 text-xs" />
+				<Icon name="fa6-solid:chevron-right" class="ml-1 md:ml-2 text-xs" />
 			</button>
 		</nav>
 	</div>

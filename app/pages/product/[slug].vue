@@ -191,7 +191,10 @@ const onAddToCart = () => {
 					</li>
 					<li>
 						<div class="flex items-center">
-							<i class="fas fa-chevron-right text-gray-400 mx-2 text-[10px]" />
+							<Icon
+								name="fa6-solid:chevron-right"
+								class="text-gray-400 mx-2 text-[10px]"
+							/>
 							<NuxtLink
 								to="/products"
 								class="text-gray-500 hover:text-primary transition-colors"
@@ -201,7 +204,10 @@ const onAddToCart = () => {
 					</li>
 					<li aria-current="page">
 						<div class="flex items-center">
-							<i class="fas fa-chevron-right text-gray-400 mx-2 text-[10px]" />
+							<Icon
+								name="fa6-solid:chevron-right"
+								class="text-gray-400 mx-2 text-[10px]"
+							/>
 							<span class="text-gray-900 line-clamp-1">
 								{{ detail.product.name }}
 								<span v-if="variantName" class="text-gray-500 font-medium">
@@ -217,7 +223,10 @@ const onAddToCart = () => {
 				<div
 					class="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-6"
 				>
-					<i class="fas fa-exclamation-triangle text-3xl text-red-600" />
+					<Icon
+						name="fa6-solid:triangle-exclamation"
+						class="text-3xl text-red-600"
+					/>
 				</div>
 				<h2 class="text-2xl font-bold text-gray-900 mb-2">
 					Không tìm thấy sản phẩm
@@ -354,7 +363,7 @@ const onAddToCart = () => {
 										<div
 											class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-xs"
 										>
-											<i class="fas fa-chevron-down" />
+											<Icon name="fa6-solid:chevron-down" />
 										</div>
 									</div>
 								</div>
@@ -364,20 +373,23 @@ const onAddToCart = () => {
 										class="w-full py-4 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/20 flex items-center justify-center gap-3"
 										@click="onAddToCart"
 									>
-										<i class="fas fa-shopping-cart" />
+										<Icon name="fa6-solid:cart-shopping" />
 										THÊM VÀO GIỎ HÀNG
 									</button>
 									<div class="grid grid-cols-2 gap-4">
 										<button
 											class="py-3 px-4 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 uppercase tracking-wider"
 										>
-											<i class="fas fa-heart text-red-500" />
+											<Icon name="fa6-solid:heart" class="text-red-500" />
 											Yêu thích
 										</button>
 										<button
 											class="py-3 px-4 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 uppercase tracking-wider"
 										>
-											<i class="fas fa-share text-blue-500" />
+											<Icon
+												name="fa6-solid:share-nodes"
+												class="text-blue-500"
+											/>
 											Chia sẻ
 										</button>
 									</div>

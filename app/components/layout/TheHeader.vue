@@ -14,7 +14,7 @@
 						aria-label="Mở menu điều hướng"
 						@click="openMobileNav"
 					>
-						<i class="fas fa-bars text-xl" />
+						<Icon name="fa6-solid:bars" class="text-xl" />
 					</button>
 
 					<RouterLink
@@ -125,17 +125,22 @@
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
 									/>
-									<i v-else class="fas fa-user text-red-500 text-xs" />
+									<ClientOnly v-else>
+										<Icon name="fa6-solid:user" class="text-red-500 text-xs" />
+									</ClientOnly>
 								</div>
 								<span
 									class="hidden md:block text-sm font-bold text-gray-800 max-w-[100px] truncate"
 								>
 									{{ user?.fullName || user?.userName || user?.email }}
 								</span>
-								<i
-									class="fas fa-chevron-down text-[10px] text-gray-400"
-									:class="{ 'rotate-180': isUserMenuOpen }"
-								/>
+								<ClientOnly>
+									<Icon
+										name="fa6-solid:chevron-down"
+										class="text-[10px] text-gray-400"
+										:class="{ 'rotate-180': isUserMenuOpen }"
+									/>
+								</ClientOnly>
 							</button>
 
 							<div
@@ -163,7 +168,9 @@
 										<div
 											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3"
 										>
-											<i class="fas fa-user-circle" />
+											<ClientOnly>
+												<Icon name="fa6-solid:circle-user" />
+											</ClientOnly>
 										</div>
 										<span>Sửa thông tin</span>
 									</RouterLink>
@@ -175,7 +182,9 @@
 										<div
 											class="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center mr-3"
 										>
-											<i class="fas fa-shopping-bag" />
+											<ClientOnly>
+												<Icon name="fa6-solid:bag-shopping" />
+											</ClientOnly>
 										</div>
 										<span>Đơn hàng của tôi</span>
 									</RouterLink>
@@ -187,7 +196,9 @@
 										<div
 											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3 group-hover:bg-red-500 group-hover:text-white transition-colors"
 										>
-											<i class="fas fa-sign-out-alt" />
+											<ClientOnly>
+												<Icon name="fa6-solid:right-from-bracket" />
+											</ClientOnly>
 										</div>
 										<span class="font-bold">Đăng xuất</span>
 									</button>
@@ -232,7 +243,9 @@
 						aria-label="Đóng menu điều hướng"
 						@click="closeMobileNav"
 					>
-						<i class="fas fa-times text-xl" />
+						<ClientOnly>
+							<Icon name="fa6-solid:xmark" class="text-xl" />
+						</ClientOnly>
 					</button>
 				</div>
 
@@ -269,7 +282,11 @@
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
 									/>
-									<i v-else class="fas fa-user text-red-500 text-xl" />
+									<Icon
+										v-else
+										name="fa6-solid:user"
+										class="text-red-500 text-xl"
+									/>
 								</div>
 								<div class="flex-1 min-w-0">
 									<p class="font-black text-gray-900 truncate leading-tight">
@@ -290,70 +307,101 @@
 									closeMobileNav();
 								"
 							>
-								<i class="fas fa-sign-out-alt" />
-								Đăng Xuất
+								<ClientOnly>
+									<Icon name="fa6-solid:right-from-bracket" />
+								</ClientOnly>
+								<span>Đăng Xuất</span>
 							</button>
 						</div>
 					</div>
 
 					<ul class="p-4 space-y-1">
 						<li>
-							<RouterLink to="/" class="mobile-nav-link" @click="closeMobileNav"
-								><i class="fas fa-home w-8 text-red-500" />Trang Chủ</RouterLink
+							<RouterLink
+								to="/"
+								class="mobile-nav-link"
+								@click="closeMobileNav"
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:house" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Trang Chủ</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/category"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-motorcycle w-8 text-red-500" />Sản
-								Phẩm</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:motorcycle" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Sản Phẩm</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/about"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-info-circle w-8 text-red-500" />Giới
-								Thiệu</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:circle-info" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Giới Thiệu</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/news"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-newspaper w-8 text-red-500" />Tin
-								Tức</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:newspaper" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Tin Tức</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/promotion"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-tags w-8 text-red-500" />Khuyến
-								Mãi</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:tags" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Khuyến Mãi</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/contact"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-paper-plane w-8 text-red-500" />Liên
-								Hệ</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:paper-plane" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Liên Hệ</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/service"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-tools w-8 text-red-500" />Dịch Vụ</RouterLink
 							>
+								<ClientOnly>
+									<Icon
+										name="fa6-solid:screwdriver-wrench"
+										class="w-8 text-red-500"
+									/>
+								</ClientOnly>
+								<span>Dịch Vụ</span>
+							</RouterLink>
 						</li>
 					</ul>
 				</div>

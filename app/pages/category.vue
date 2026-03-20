@@ -96,7 +96,7 @@ const categories = ref([
 					<div
 						class="absolute bottom-4 right-4 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white text-lg transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110"
 					>
-						<i class="fas fa-arrow-right" />
+						<Icon name="fa6-solid:arrow-right" />
 					</div>
 				</div>
 				<div class="p-4 bg-gray-50 text-center z-10">

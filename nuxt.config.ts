@@ -11,13 +11,31 @@ export default defineNuxtConfig({
 		"@pinia/nuxt",
 		"@nuxt/eslint-config",
 		"@nuxt/eslint",
+		"@nuxt/icon",
 	],
+	icon: {
+		clientBundle: {
+			scan: true,
+		},
+		serverBundle: "auto",
+	},
 
 	sitemap: {
 		zeroRuntime: true,
 	},
 
 	vite: {
+		optimizeDeps: {
+			include: [
+				"@vue/devtools-core",
+				"@vue/devtools-kit",
+				"@tanstack/vue-query",
+				"vue3-toastify",
+				"@microsoft/fetch-event-source",
+				"@tanstack/vue-query-devtools",
+				"axios",
+			],
+		},
 		plugins: [
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(tailwindcss as any)(),
@@ -97,16 +115,6 @@ export default defineNuxtConfig({
 					rel: "icon",
 					type: "image/x-icon",
 					href: "/favicon.ico",
-				},
-				{
-					rel: "stylesheet",
-					href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css",
-					integrity:
-						"sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==",
-					crossorigin: "anonymous",
-					referrerpolicy: "no-referrer",
-					media: "print",
-					onload: "this.media='all'",
 				},
 				{
 					rel: "preconnect",

@@ -119,14 +119,14 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 	<div class="flex flex-col h-full bg-white">
 		<div class="p-6 border-b border-gray-100 flex items-center justify-between">
 			<h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-				<i class="fas fa-sliders-h text-primary" />
+				<Icon name="fa6-solid:sliders" class="text-primary" />
 				Bộ lọc
 			</h2>
 			<button
 				class="lg:hidden text-gray-400 hover:text-gray-600"
 				@click="emit('close')"
 			>
-				<i class="fas fa-times text-xl" />
+				<Icon name="fa6-solid:xmark" class="text-xl" />
 			</button>
 		</div>
 
@@ -142,8 +142,9 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 						placeholder="Nhập tên sản phẩm..."
 						class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
 					>
-					<i
-						class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+					<Icon
+						name="fa6-solid:magnifying-glass"
+						class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
 					/>
 				</div>
 			</div>

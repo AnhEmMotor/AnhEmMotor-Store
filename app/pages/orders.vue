@@ -227,7 +227,10 @@ const formatPrice = (price) => {
 				<div
 					class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6"
 				>
-					<i class="fas fa-shopping-basket text-3xl text-gray-300" />
+					<Icon
+						name="fa6-solid:basket-shopping"
+						class="text-3xl text-gray-300"
+					/>
 				</div>
 				<h2 class="text-xl font-bold text-gray-900 mb-2">
 					Bạn chưa có đơn hàng nào
@@ -335,25 +338,32 @@ const formatPrice = (price) => {
 								<div
 									class="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest"
 								>
-									<i class="fas fa-truck text-red-500" />
+									<Icon name="fa6-solid:truck" class="text-red-500" />
 									Thông tin giao hàng
 								</div>
 								<div class="bg-gray-50/50 rounded-2xl p-4 space-y-2">
 									<div class="flex items-center gap-3">
-										<i class="fas fa-user text-[10px] text-gray-400" />
+										<Icon
+											name="fa6-solid:user"
+											class="text-[10px] text-gray-400"
+										/>
 										<span class="text-sm font-bold text-gray-900">{{
 											order.customerName || "Chưa có tên"
 										}}</span>
 									</div>
 									<div class="flex items-center gap-3">
-										<i class="fas fa-phone text-[10px] text-gray-400" />
+										<Icon
+											name="fa6-solid:phone"
+											class="text-[10px] text-gray-400"
+										/>
 										<span class="text-sm font-bold text-gray-700">{{
 											order.customerPhone || "Chưa có SĐT"
 										}}</span>
 									</div>
 									<div class="flex items-start gap-3">
-										<i
-											class="fas fa-map-marker-alt text-[10px] text-gray-400 mt-1"
+										<Icon
+											name="fa6-solid:location-dot"
+											class="text-[10px] text-gray-400 mt-1"
 										/>
 										<span
 											class="text-sm font-medium text-gray-600 leading-relaxed italic"
@@ -366,7 +376,7 @@ const formatPrice = (price) => {
 								<div
 									class="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest"
 								>
-									<i class="fas fa-sticky-note text-red-500" />
+									<Icon name="fa6-solid:note-sticky" class="text-red-500" />
 									Ghi chú khách hàng
 								</div>
 								<p class="text-sm font-bold text-gray-700 leading-relaxed px-2">
@@ -435,7 +445,7 @@ const formatPrice = (price) => {
 						class="text-gray-400 hover:text-gray-600 transition-colors"
 						@click="isEditing = false"
 					>
-						<i class="fas fa-times text-xl" />
+						<Icon name="fa6-solid:xmark" class="text-xl" />
 					</button>
 				</div>
 
@@ -563,7 +573,11 @@ const formatPrice = (price) => {
 						class="flex-1 py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest text-xs"
 						@click="handleUpdateOrder"
 					>
-						<i v-if="isSubmittingEdit" class="fas fa-spinner fa-spin" />
+						<Icon
+							v-if="isSubmittingEdit"
+							name="fa6-solid:spinner"
+							class="animate-spin"
+						/>
 						Lưu thay đổi
 					</button>
 				</div>
@@ -581,7 +595,10 @@ const formatPrice = (price) => {
 					<div
 						class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6"
 					>
-						<i class="fas fa-exclamation-triangle text-3xl text-red-500" />
+						<Icon
+							name="fa6-solid:triangle-exclamation"
+							class="text-3xl text-red-500"
+						/>
 					</div>
 					<h3 class="text-2xl font-black text-gray-900 mb-2 uppercase">
 						Hủy đơn hàng?
@@ -604,7 +621,11 @@ const formatPrice = (price) => {
 						class="flex-1 py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest text-xs"
 						@click="confirmCancel"
 					>
-						<i v-if="isSubmittingCancel" class="fas fa-spinner fa-spin" />
+						<Icon
+							v-if="isSubmittingCancel"
+							name="fa6-solid:spinner"
+							class="animate-spin"
+						/>
 						Xác nhận hủy
 					</button>
 				</div>

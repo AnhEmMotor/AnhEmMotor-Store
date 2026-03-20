@@ -23,7 +23,7 @@
 				class="flex justify-between items-center p-4 border-b bg-gradient-to-r from-gray-50 to-white"
 			>
 				<h3 class="text-xl font-bold flex items-center gap-2">
-					<i class="fas fa-shopping-cart text-honda-red" />
+					<Icon name="fa6-solid:cart-shopping" class="text-honda-red" />
 					Giỏ hàng của bạn
 				</h3>
 				<button
@@ -31,7 +31,7 @@
 					aria-label="Đóng giỏ hàng"
 					@click="$emit('close')"
 				>
-					<i class="fas fa-times" />
+					<Icon name="fa6-solid:xmark" />
 				</button>
 			</div>
 
@@ -43,7 +43,10 @@
 					v-if="cartItems.length === 0"
 					class="text-center py-8 text-gray-500"
 				>
-					<i class="fas fa-shopping-cart text-4xl mb-4 opacity-30" />
+					<Icon
+						name="fa6-solid:cart-shopping"
+						class="text-4xl mb-4 opacity-30"
+					/>
 					<p>Giỏ hàng của bạn đang trống.</p>
 				</div>
 				<div v-else>
@@ -67,7 +70,10 @@
 								v-if="item.loading"
 								class="absolute inset-0 flex items-center justify-center bg-white/40"
 							>
-								<i class="fas fa-circle-notch fa-spin text-red-500 text-xs" />
+								<Icon
+									name="fa6-solid:circle-notch"
+									class="animate-spin text-red-500 text-xs"
+								/>
 							</div>
 						</div>
 						<div class="flex-1">
@@ -92,7 +98,7 @@
 							aria-label="Xóa sản phẩm khỏi giỏ hàng"
 							@click="$emit('removeItem', index)"
 						>
-							<i class="fas fa-trash" />
+							<Icon name="fa6-solid:trash-can" />
 						</button>
 					</div>
 				</div>
@@ -112,7 +118,7 @@
 					:disabled="cartItems.length === 0"
 					@click="onCheckout"
 				>
-					<i class="fas fa-credit-card mr-2" />
+					<Icon name="fa6-solid:credit-card" class="mr-2" />
 					Tiến hành thanh toán
 				</BaseButton>
 				<BaseButton
@@ -122,7 +128,7 @@
 					:disabled="cartItems.length === 0"
 					@click="onCheckout"
 				>
-					<i class="fa-solid fa-right-to-bracket mr-2" />
+					<Icon name="fa6-solid:right-to-bracket" class="mr-2" />
 					Đăng nhập để thanh toán
 				</BaseButton>
 			</div>
