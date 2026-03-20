@@ -73,16 +73,19 @@ watch(
 							<div class="flex space-x-3">
 								<button
 									class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+									aria-label="Chia sẻ bài viết này lên Facebook"
 								>
 									<Icon name="fa6-brands:facebook-f" class="mr-2" />Facebook
 								</button>
 								<button
 									class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors"
+									aria-label="Chia sẻ bài viết này lên Twitter"
 								>
 									<Icon name="fa6-brands:x-twitter" class="mr-2" />Twitter
 								</button>
 								<button
 									class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+									aria-label="Sao chép liên kết bài viết này"
 								>
 									<Icon name="fa6-solid:link" class="mr-2" />Copy Link
 								</button>

@@ -9,6 +9,7 @@
 				</h3>
 				<button
 					class="md:hidden text-gray-500 hover:text-[#de0000] p-2 transition-colors"
+					aria-label="Đóng cửa sổ bộ lọc phụ tùng"
 					@click="$emit('close')"
 				>
 					<Icon name="fa6-solid:xmark" class="text-xl" />
@@ -135,6 +136,7 @@
 
 			<button
 				class="w-full bg-gray-100 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-200 transition duration-200 mt-auto"
+				aria-label="Xóa tất cả các bộ lọc phụ tùng hiện tại"
 				@click="$emit('clear-filters')"
 			>
 				<Icon name="fa6-solid:rotate" class="mr-2" /> Xóa Bộ Lọc

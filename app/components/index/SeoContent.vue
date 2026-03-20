@@ -51,9 +51,7 @@
 						class="absolute -bottom-6 -left-6 bg-red-600 text-white p-6 rounded-2xl shadow-xl hidden lg:block transform -rotate-6 hover:-rotate-3 transition-transform duration-300"
 					>
 						<p class="text-2xl font-black">5+ Năm</p>
-						<p class="text-sm opacity-80 uppercase tracking-widest">
-							Kinh nghiệm
-						</p>
+						<p class="text-sm uppercase tracking-widest">Kinh nghiệm</p>
 					</div>
 				</div>
 			</div>

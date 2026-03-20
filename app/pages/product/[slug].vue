@@ -285,6 +285,7 @@ const onAddToCart = () => {
 											? 'border-primary ring-4 ring-primary/10 scale-105 shadow-md'
 											: 'border-white hover:border-gray-200 shadow-sm opacity-80 hover:opacity-100'
 									"
+									:aria-label="'Xem ảnh sản phẩm ' + (index + 1)"
 									@click="mainImage = photo"
 								>
 									<img :src="photo" class="w-full h-full object-cover" >
@@ -293,12 +294,12 @@ const onAddToCart = () => {
 						</div>
 
 						<div class="space-y-4">
-							<h3
+							<h2
 								class="text-base font-black text-gray-900 uppercase tracking-wider flex items-center gap-3"
 							>
 								<span class="w-1.5 h-6 bg-primary rounded-full" />
 								Mô tả sản phẩm
-							</h3>
+							</h2>
 							<div
 								class="prose prose-sm max-w-none text-gray-500 font-medium leading-relaxed whitespace-pre-line text-sm"
 							>
@@ -371,6 +372,7 @@ const onAddToCart = () => {
 								<div class="space-y-4 pt-4 border-b border-gray-100 pb-8">
 									<button
 										class="w-full py-4 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/20 flex items-center justify-center gap-3"
+										aria-label="Thêm sản phẩm này vào giỏ hàng"
 										@click="onAddToCart"
 									>
 										<Icon name="fa6-solid:cart-shopping" />
@@ -379,12 +381,14 @@ const onAddToCart = () => {
 									<div class="grid grid-cols-2 gap-4">
 										<button
 											class="py-3 px-4 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 uppercase tracking-wider"
+											aria-label="Thêm vào danh sách yêu thích"
 										>
 											<Icon name="fa6-solid:heart" class="text-red-500" />
 											Yêu thích
 										</button>
 										<button
 											class="py-3 px-4 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 uppercase tracking-wider"
+											aria-label="Chia sẻ sản phẩm này"
 										>
 											<Icon
 												name="fa6-solid:share-nodes"
@@ -396,11 +400,11 @@ const onAddToCart = () => {
 								</div>
 
 								<div v-if="specifications.length > 0" class="space-y-4">
-									<h3
+									<h2
 										class="text-xs font-black text-gray-900 uppercase tracking-widest"
 									>
 										Thông số
-									</h3>
+									</h2>
 									<div
 										class="bg-gray-50/50 border border-gray-100 rounded-xl overflow-hidden shadow-sm"
 									>

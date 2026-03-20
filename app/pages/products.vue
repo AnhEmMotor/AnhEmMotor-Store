@@ -135,6 +135,7 @@ const handleViewDetail = (product) => {
 						<div class="flex items-center gap-3">
 							<button
 								class="lg:hidden flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"
+								aria-label="Mở bộ lọc sản phẩm"
 								@click="toggleSidebar"
 							>
 								<Icon name="fa6-solid:filter" class="text-primary" />
@@ -153,6 +154,7 @@ const handleViewDetail = (product) => {
 						>
 						<button
 							class="px-4 py-2 bg-primary/5 text-primary rounded-full text-xs font-bold border border-primary/10 hover:bg-primary/10 transition-colors flex items-center gap-2"
+							aria-label="Xóa tất cả bộ lọc đang chọn"
 							@click="
 								filters.optionValueIds = [];
 								filters.categoryId = null;

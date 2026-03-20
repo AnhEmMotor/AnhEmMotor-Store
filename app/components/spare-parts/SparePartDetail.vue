@@ -82,6 +82,7 @@
 									>
 										<button
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-r border-gray-200 text-gray-600"
+											aria-label="Giảm số lượng phụ tùng"
 											@click="changeQty(-1)"
 										>
 											<Icon name="fa6-solid:minus" />
@@ -94,6 +95,7 @@
 										>
 										<button
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"
+											aria-label="Tăng số lượng phụ tùng"
 											@click="changeQty(1)"
 										>
 											<Icon name="fa6-solid:plus" />
@@ -113,6 +115,7 @@
 							<div class="pt-8">
 								<button
 									class="w-full md:w-auto px-16 py-4 bg-[#de0000] text-white rounded-xl font-bold text-lg hover:bg-black hover:shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3"
+									aria-label="Thêm phụ tùng này vào giỏ hàng"
 									@click="handleAddToCart"
 								>
 									<Icon name="fa6-solid:screwdriver-wrench" /> THÊM VÀO GIỎ HÀNG

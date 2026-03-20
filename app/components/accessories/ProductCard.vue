@@ -32,6 +32,7 @@
 
 			<BaseButton
 				class="mt-auto hover:from-[#b30000] hover:to-[#800000] transform hover:-translate-y-0.5 transition-all"
+				:aria-label="'Thêm ' + product.name + ' vào giỏ hàng'"
 				@click.stop="$emit('addToCart', product)"
 			>
 				<Icon name="fa6-solid:cart-shopping" />

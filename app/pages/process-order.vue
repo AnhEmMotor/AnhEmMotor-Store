@@ -375,6 +375,7 @@ onMounted(async () => {
 												</h5>
 												<button
 													class="text-gray-400 hover:text-red-500 transition-colors ml-2"
+													aria-label="Xóa sản phẩm này khỏi đơn hàng"
 													@click="removeItem(index)"
 												>
 													<Icon name="fa6-solid:trash-can" class="text-xs" />
@@ -390,6 +391,7 @@ onMounted(async () => {
 											>
 												<button
 													class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black"
+													aria-label="Giảm số lượng sản phẩm"
 													@click="updateQuantity(item.id, item.quantity - 1)"
 												>
 													-
@@ -399,6 +401,7 @@ onMounted(async () => {
 												}}</span>
 												<button
 													class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black"
+													aria-label="Tăng số lượng sản phẩm"
 													@click="updateQuantity(item.id, item.quantity + 1)"
 												>
 													+
@@ -435,6 +438,7 @@ onMounted(async () => {
 							<button
 								:disabled="isSubmitting || cartItems.length === 0"
 								class="w-full mt-8 py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-sm"
+								aria-label="Xác nhận và đặt hàng ngay"
 								@click="handlePlaceOrder"
 							>
 								<Icon

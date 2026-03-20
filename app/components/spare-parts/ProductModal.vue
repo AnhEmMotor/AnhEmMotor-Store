@@ -17,6 +17,7 @@
 					<h3 class="text-xl font-bold text-white">{{ product.name }}</h3>
 					<button
 						class="text-white text-2xl rounded-full p-2 hover:bg-white/20 transition"
+						aria-label="Đóng cửa sổ chi tiết sản phẩm"
 						@click="$emit('close')"
 					>
 						<Icon name="fa6-solid:xmark" />
@@ -46,6 +47,7 @@
 						<div class="flex items-center border-2 border-gray-300 rounded-lg">
 							<button
 								class="px-3 py-1 hover:bg-gray-100"
+								aria-label="Giảm số lượng đặt mua"
 								@click="decreaseQuantity"
 							>
 								-
@@ -58,6 +60,7 @@
 							>
 							<button
 								class="px-3 py-1 hover:bg-gray-100"
+								aria-label="Tăng số lượng đặt mua"
 								@click="increaseQuantity"
 							>
 								+
@@ -67,6 +70,7 @@
 
 					<button
 						class="bg-gradient-to-r from-[#de0000] to-[#b30000] text-white w-full py-4 rounded-xl text-lg font-semibold hover:from-red-700 hover:to-red-800 transition duration-300 transform hover:scale-105"
+						aria-label="Thêm sản phẩm này vào giỏ hàng cá nhân"
 						@click="addToCart"
 					>
 						<Icon name="fa6-solid:cart-shopping" class="mr-2" /> Thêm vào giỏ

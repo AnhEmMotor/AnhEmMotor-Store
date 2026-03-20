@@ -3,6 +3,7 @@
 		<button
 			class="w-8 h-8 rounded-full bg-gradient-to-r from-[#de0000] to-[#b30000] text-white flex items-center justify-center transition-all active:scale-90 disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:active:scale-100 shadow-sm"
 			:disabled="disabled || value <= min"
+			aria-label="Giảm số lượng"
 			@click="decrement"
 		>
 			<Icon name="fa6-solid:minus" class="text-[10px]" />
@@ -11,6 +12,7 @@
 		<button
 			class="w-8 h-8 rounded-full bg-gradient-to-r from-[#de0000] to-[#b30000] text-white flex items-center justify-center transition-all active:scale-90 disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:active:scale-100 shadow-sm"
 			:disabled="disabled || value >= max"
+			aria-label="Tăng số lượng"
 			@click="increment"
 		>
 			<Icon name="fa6-solid:plus" class="text-[10px]" />

@@ -212,7 +212,13 @@ async function handleRegister() {
 					</span>
 				</div>
 
-				<button id="submitBtn" type="submit" class="btn" :disabled="isLoading">
+				<button
+					id="submitBtn"
+					type="submit"
+					class="btn"
+					:disabled="isLoading"
+					aria-label="Đăng ký tài khoản AnhEm Motor"
+				>
 					{{ isLoading ? "Đang xử lý..." : "Đăng Ký Ngay" }}
 				</button>
 			</form>

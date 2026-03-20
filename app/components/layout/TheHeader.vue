@@ -30,7 +30,7 @@
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
 								width="40"
 								height="40"
-							/>
+							>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -38,7 +38,7 @@
 								>ANHEM MOTOR</span
 							>
 							<span
-								class="hidden sm:block text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase leading-none"
+								class="hidden sm:block text-[10px] font-bold text-[#515267] tracking-[0.2em] uppercase leading-none"
 								>Racing & Lifestyle</span
 							>
 						</div>
@@ -124,7 +124,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
-									/>
+									>
 									<ClientOnly v-else>
 										<Icon name="fa6-solid:user" class="text-red-500 text-xs" />
 									</ClientOnly>
@@ -191,6 +191,7 @@
 									<div class="h-px bg-gray-50 my-1 mx-3" />
 									<button
 										class="dropdown-item text-red-600 hover:bg-red-50 group"
+										aria-label="Đăng xuất khỏi hệ thống"
 										@click="handleLogout"
 									>
 										<div
@@ -232,7 +233,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							/>
+							>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -281,7 +282,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
-									/>
+									>
 									<Icon
 										v-else
 										name="fa6-solid:user"
@@ -302,6 +303,7 @@
 							</div>
 							<button
 								class="w-full py-3.5 rounded-xl font-black text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+								aria-label="Đăng xuất tài khoản"
 								@click="
 									handleLogout();
 									closeMobileNav();
@@ -503,19 +505,19 @@ onBeforeUnmount(() => {
 @reference "../../assets/main.css";
 
 .nav-link {
-	@apply relative px-4 py-2 text-sm font-bold text-gray-600 no-underline transition-all duration-300 ease-in-out hover:text-red-500 rounded-full hover:bg-red-50/50;
+	@apply relative px-4 py-2 text-sm font-bold text-gray-600 no-underline transition-all duration-300 ease-in-out hover:text-[#A4040F] rounded-full hover:bg-red-50/50;
 }
 
 .nav-link.router-link-active {
-	@apply text-red-500 bg-red-50;
+	@apply text-[#A4040F] bg-red-50;
 }
 
 .mobile-nav-link {
-	@apply flex items-center rounded-xl py-4 px-4 text-sm font-bold text-gray-700 no-underline transition-all duration-300 hover:bg-red-50 hover:text-red-600 hover:pl-6 active:scale-[0.98];
+	@apply flex items-center rounded-xl py-4 px-4 text-sm font-bold text-gray-700 no-underline transition-all duration-300 hover:bg-red-50 hover:text-[#A4040F] hover:pl-6 active:scale-[0.98];
 }
 
 .mobile-nav-link.router-link-active {
-	@apply bg-red-50 text-red-600 pl-6 border-r-4 border-red-500;
+	@apply bg-red-50 text-[#A4040F] pl-6 border-r-4 border-[#A4040F];
 }
 
 .dropdown-item {

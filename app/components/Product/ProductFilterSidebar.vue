@@ -124,6 +124,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 			</h2>
 			<button
 				class="lg:hidden text-gray-400 hover:text-gray-600"
+				aria-label="Đóng cửa sổ bộ lọc"
 				@click="emit('close')"
 			>
 				<Icon name="fa6-solid:xmark" class="text-xl" />
@@ -173,6 +174,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 								? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
 								: 'bg-white border-gray-200 text-gray-600 hover:border-primary hover:text-primary',
 						]"
+						:aria-label="'Lọc theo danh mục ' + cat.name"
 						@click="toggleCategory(cat.id)"
 					>
 						{{ cat.name }}
@@ -195,6 +197,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 				</p>
 				<button
 					class="text-primary font-bold text-xs uppercase"
+					aria-label="Thử lại tải dữ liệu bộ lọc"
 					@click="fetchOptionsManual"
 				>
 					Thử lại
@@ -216,6 +219,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 									? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
 									: 'bg-white border-gray-200 text-gray-600 hover:border-primary hover:text-primary',
 							]"
+							:aria-label="'Lọc theo ' + val.name"
 							@click="toggleOption(val.id)"
 						>
 							{{ val.name }}
@@ -228,6 +232,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 		<div class="p-6 border-t border-gray-100 bg-gray-50/50">
 			<button
 				class="w-full py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]"
+				aria-label="Xóa tất cả các bộ lọc đang chọn"
 				@click="resetFilters"
 			>
 				Xóa tất cả bộ lọc

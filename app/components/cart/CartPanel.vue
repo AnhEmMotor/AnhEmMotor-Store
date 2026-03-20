@@ -116,6 +116,7 @@
 					id="checkout-button"
 					:to="{ path: '/process-order' }"
 					:disabled="cartItems.length === 0"
+					aria-label="Tiến hành đặt hàng và thanh toán"
 					@click="onCheckout"
 				>
 					<Icon name="fa6-solid:credit-card" class="mr-2" />
@@ -126,6 +127,7 @@
 					id="checkout-button"
 					:to="{ path: '/process-order' }"
 					:disabled="cartItems.length === 0"
+					aria-label="Đăng nhập để tiếp tục thanh toán"
 					@click="onCheckout"
 				>
 					<Icon name="fa6-solid:right-to-bracket" class="mr-2" />

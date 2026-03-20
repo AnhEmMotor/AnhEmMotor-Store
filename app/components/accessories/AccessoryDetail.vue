@@ -33,7 +33,7 @@
 								:src="product.image"
 								:alt="product.name"
 								class="max-w-full h-auto object-contain hover:scale-105 transition-transform duration-500 ease-out"
-							/>
+							>
 						</div>
 					</div>
 
@@ -92,7 +92,7 @@
 											type="number"
 											class="w-14 text-center font-bold text-lg focus:outline-none border-none pointer-events-none"
 											min="1"
-										/>
+										>
 										<button
 											aria-label="Cộng 1 số lượng cho biến thể này"
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"

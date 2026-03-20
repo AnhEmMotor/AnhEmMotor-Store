@@ -142,7 +142,13 @@ async function handleLogin() {
 					</span>
 				</div>
 
-				<button id="submitBtn" type="submit" class="btn" :disabled="isLoading">
+				<button
+					id="submitBtn"
+					type="submit"
+					class="btn"
+					:disabled="isLoading"
+					aria-label="Đăng nhập vào hệ thống AnhEm Motor"
+				>
 					{{ isLoading ? "Đang xử lý..." : "Đăng Nhập" }}
 				</button>
 			</form>

@@ -76,7 +76,7 @@ onUnmounted(() => {
 					v-model="searchQuery"
 					type="text"
 					:placeholder="currentPlaceholder"
-				/>
+				>
 				<button
 					id="searchButton"
 					type="submit"
@@ -112,7 +112,7 @@ onUnmounted(() => {
 				as="image"
 				href="/assets/image/index/index-banner-bg.webp"
 				fetchpriority="high"
-			/>
+			>
 		</Head>
 	</section>
 </template>

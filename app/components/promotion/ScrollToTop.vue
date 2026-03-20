@@ -3,7 +3,7 @@
 		<button
 			v-show="visible"
 			class="fixed bottom-6 right-6 bg-primary-red text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-red-700 hover:-translate-y-1 transition-all duration-300 z-50"
-			aria-label="Scroll to top"
+			aria-label="Cuộn lên đầu trang"
 			@click="scrollToTop"
 		>
 			<Icon name="fa6-solid:chevron-up" class="text-xl" />

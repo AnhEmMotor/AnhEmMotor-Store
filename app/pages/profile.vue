@@ -66,6 +66,7 @@
 						<button
 							class="mt-6 w-full py-2.5 px-4 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl border border-gray-200 transition-colors flex items-center justify-center gap-2"
 							:disabled="isUploadingAvatar"
+							aria-label="Tải lên ảnh đại diện mới"
 							@click="triggerAvatarUpload"
 						>
 							<Icon name="fa6-solid:cloud-arrow-up" />
@@ -84,6 +85,7 @@
 										? 'border-blue-600 bg-blue-50/50 text-blue-700'
 										: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
 								]"
+								aria-label="Xem thông tin hồ sơ cá nhân"
 								@click="activeTab = 'profile'"
 							>
 								<div
@@ -108,6 +110,7 @@
 										? 'border-blue-600 bg-blue-50/50 text-blue-700'
 										: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
 								]"
+								aria-label="Cài đặt bảo mật và mật khẩu"
 								@click="activeTab = 'security'"
 							>
 								<div
@@ -263,6 +266,7 @@
 									type="submit"
 									:disabled="isLoading"
 									class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-blue-500/30 text-sm font-semibold rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+									aria-label="Lưu các thay đổi thông tin cá nhân"
 								>
 									<Icon
 										v-if="isLoading"
@@ -313,6 +317,7 @@
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
+											aria-label="Hiện hoặc ẩn mật khẩu hiện tại"
 											@click="togglePassword('current')"
 										>
 											<Icon
@@ -348,6 +353,7 @@
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
+											aria-label="Hiện hoặc ẩn mật khẩu mới"
 											@click="togglePassword('new')"
 										>
 											<Icon
@@ -391,6 +397,7 @@
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
+											aria-label="Hiện hoặc ẩn mật khẩu xác nhận"
 											@click="togglePassword('confirm')"
 										>
 											<Icon
@@ -410,6 +417,7 @@
 									type="submit"
 									:disabled="isLoading"
 									class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-gray-900/20 text-sm font-semibold rounded-xl text-white bg-gray-900 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+									aria-label="Xác nhận đổi mật khẩu"
 								>
 									<Icon
 										v-if="isLoading"

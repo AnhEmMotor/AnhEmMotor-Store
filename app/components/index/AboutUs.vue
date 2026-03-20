@@ -9,7 +9,7 @@
 						width="380"
 						height="214"
 						loading="lazy"
-					/>
+					>
 				</div>
 
 				<div class="about-text">
