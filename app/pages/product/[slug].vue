@@ -1,45 +1,31 @@
 <script setup>
-import { ref, computed, onServerPrefetch } from "vue";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { ref, computed } from "vue";
 import { useProductStore } from "@/stores/useProductStore";
+import { useCart } from "~/composables/useCart";
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);
 const productStore = useProductStore();
-const queryClient = useQueryClient();
-
-if (import.meta.server) {
-	onServerPrefetch(async () => {
-		await Promise.all([
-			queryClient.prefetchQuery({
-				queryKey: ["product-detail", slug],
-				queryFn: () => productStore.getProductStoreDetailBySlug(slug.value),
-			}),
-			queryClient.prefetchQuery({
-				queryKey: ["product-attribute-labels"],
-				queryFn: () => productStore.getProductAttributeLabels(),
-			}),
-		]);
-	});
-}
 
 const {
 	data: detail,
-	isLoading,
+	pending: isLoading,
 	error,
-} = useQuery({
-	queryKey: ["product-detail", slug],
-	queryFn: () => productStore.getProductStoreDetailBySlug(slug.value),
-	staleTime: 1000 * 60 * 5,
-	retry: false,
-	refetchOnWindowFocus: (query) => query.state.status !== "error",
-});
+} = await useAsyncData(
+	"product-detail-" + slug.value,
+	() => productStore.getProductStoreDetailBySlug(slug.value),
+	{
+		watch: [slug],
+	},
+);
 
-const { data: attributeLabels } = useQuery({
-	queryKey: ["product-attribute-labels"],
-	queryFn: () => productStore.getProductAttributeLabels(),
-	staleTime: 1000 * 60 * 60,
-});
+const { data: attributeLabels } = await useAsyncData(
+	"product-attribute-labels",
+	() => productStore.getProductAttributeLabels(),
+	{
+		staleTime: 1000 * 60 * 60,
+	},
+);
 
 const currentVariant = computed(() => detail.value?.current_variant);
 
@@ -166,6 +152,25 @@ useHead({
 		},
 	],
 });
+
+const { addItem } = useCart();
+
+const onAddToCart = () => {
+	if (!currentVariant.value) return;
+
+	const productToAdd = {
+		id: currentVariant.value.id,
+		name:
+			detail.value.product.name +
+			(variantName.value ? ` - ${variantName.value}` : ""),
+		price: currentVariant.value.price,
+		image:
+			currentVariant.value.cover_image_url ||
+			"/assets/image/placeholder-product.webp",
+	};
+
+	addItem(productToAdd, 1);
+};
 </script>
 
 <template>
@@ -208,20 +213,7 @@ useHead({
 				</ol>
 			</nav>
 
-			<div
-				v-if="isLoading && !detail && !error"
-				class="flex flex-col lg:flex-row gap-8 animate-pulse"
-			>
-				<div class="lg:w-2/3 aspect-[16/9] bg-gray-200 rounded-3xl" />
-				<div class="lg:w-1/3 space-y-6">
-					<div class="h-8 bg-gray-200 rounded w-3/4" />
-					<div class="h-6 bg-gray-200 rounded w-1/2" />
-					<div class="h-20 bg-gray-200 rounded w-full" />
-					<div class="h-10 bg-gray-200 rounded w-1/3" />
-				</div>
-			</div>
-
-			<div v-else-if="error" class="text-center py-20">
+			<div v-if="error" class="text-center py-20">
 				<div
 					class="inline-flex items-center justify-center w-20 h-20 bg-red-100 rounded-full mb-6"
 				>
@@ -239,6 +231,19 @@ useHead({
 				>
 					Quay lại danh sách
 				</NuxtLink>
+			</div>
+
+			<div
+				v-else-if="isLoading && !detail"
+				class="flex flex-col lg:flex-row gap-8 animate-pulse"
+			>
+				<div class="lg:w-2/3 aspect-[16/9] bg-gray-200 rounded-3xl" />
+				<div class="lg:w-1/3 space-y-6">
+					<div class="h-8 bg-gray-200 rounded w-3/4" />
+					<div class="h-6 bg-gray-200 rounded w-1/2" />
+					<div class="h-20 bg-gray-200 rounded w-full" />
+					<div class="h-10 bg-gray-200 rounded w-1/3" />
+				</div>
 			</div>
 
 			<div
@@ -357,6 +362,7 @@ useHead({
 								<div class="space-y-4 pt-4 border-b border-gray-100 pb-8">
 									<button
 										class="w-full py-4 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/20 flex items-center justify-center gap-3"
+										@click="onAddToCart"
 									>
 										<i class="fas fa-shopping-cart" />
 										THÊM VÀO GIỎ HÀNG
