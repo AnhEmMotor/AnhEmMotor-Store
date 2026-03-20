@@ -68,9 +68,7 @@ export function useCart() {
 				name: item.name || "Sản phẩm",
 				price: item.price || 0,
 				image: item.image || "/assets/image/placeholder-product.webp",
-				loading:
-					isPending.value &&
-					(typeof item.id === "number" || !isNaN(Number(item.id))),
+				loading: false,
 			};
 		});
 	});

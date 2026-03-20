@@ -310,7 +310,7 @@ const formatPrice = (price) => {
 												(e.target.src =
 													'/assets/image/placeholder-product.webp')
 										"
-									/>
+									>
 								</div>
 								<div class="flex-1 min-w-0 flex flex-col justify-center">
 									<h4 class="font-bold text-gray-900 truncate">
@@ -463,7 +463,7 @@ const formatPrice = (price) => {
 									)
 								"
 								@input="editErrors.customerName = ''"
-							/>
+							>
 							<p
 								v-if="editErrors.customerName"
 								class="text-xs text-red-500 mt-1"
@@ -492,7 +492,7 @@ const formatPrice = (price) => {
 									)
 								"
 								@input="editErrors.customerPhone = ''"
-							/>
+							>
 							<p
 								v-if="editErrors.customerPhone"
 								class="text-xs text-red-500 mt-1"
