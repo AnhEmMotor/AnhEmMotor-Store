@@ -104,7 +104,7 @@ const handleUpdateOrder = async () => {
 	isSubmittingEdit.value = true;
 	try {
 		await axios.patch(
-			`/api/v1/SalesOrders/${selectedOrder.value.id}/user-update`,
+			`/api/v1/SalesOrders/${selectedOrder.value.id}`,
 			editForm.value,
 		);
 		toast.success("Cập nhật thông tin đơn hàng thành công!");
@@ -310,7 +310,7 @@ const formatPrice = (price) => {
 												(e.target.src =
 													'/assets/image/placeholder-product.webp')
 										"
-									>
+									/>
 								</div>
 								<div class="flex-1 min-w-0 flex flex-col justify-center">
 									<h4 class="font-bold text-gray-900 truncate">
@@ -328,7 +328,6 @@ const formatPrice = (price) => {
 							</div>
 						</div>
 
-						<!-- Delivery Info & Notes -->
 						<div
 							class="mt-6 pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6"
 						>
@@ -419,7 +418,6 @@ const formatPrice = (price) => {
 			</div>
 		</div>
 
-		<!-- Edit Modal -->
 		<div
 			v-if="isEditing"
 			class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity"
@@ -465,7 +463,7 @@ const formatPrice = (price) => {
 									)
 								"
 								@input="editErrors.customerName = ''"
-							>
+							/>
 							<p
 								v-if="editErrors.customerName"
 								class="text-xs text-red-500 mt-1"
@@ -494,7 +492,7 @@ const formatPrice = (price) => {
 									)
 								"
 								@input="editErrors.customerPhone = ''"
-							>
+							/>
 							<p
 								v-if="editErrors.customerPhone"
 								class="text-xs text-red-500 mt-1"
@@ -572,7 +570,6 @@ const formatPrice = (price) => {
 			</div>
 		</div>
 
-		<!-- Cancel Confirmation Modal -->
 		<div
 			v-if="isCancelModalOpen"
 			class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity"
