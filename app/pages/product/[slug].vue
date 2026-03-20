@@ -260,7 +260,7 @@ const onAddToCart = () => {
 									:src="mainImage"
 									:alt="detail.product.name"
 									class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-								/>
+								>
 							</div>
 
 							<div
@@ -278,7 +278,7 @@ const onAddToCart = () => {
 									"
 									@click="mainImage = photo"
 								>
-									<img :src="photo" class="w-full h-full object-cover" />
+									<img :src="photo" class="w-full h-full object-cover" >
 								</button>
 							</div>
 						</div>

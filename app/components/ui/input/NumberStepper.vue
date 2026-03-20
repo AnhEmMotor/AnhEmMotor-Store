@@ -1,19 +1,19 @@
 <template>
 	<div class="flex items-center gap-2">
 		<button
-			class="w-8 h-8 rounded-full bg-gradient-to-r from-[#de0000] to-[#b30000] text-white"
+			class="w-8 h-8 rounded-full bg-gradient-to-r from-[#de0000] to-[#b30000] text-white flex items-center justify-center transition-all active:scale-90 disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:active:scale-100 shadow-sm"
 			:disabled="disabled || value <= min"
 			@click="decrement"
 		>
-			-
+			<i class="fas fa-minus text-[10px]" />
 		</button>
-		<span class="font-semibold">{{ value }}</span>
+		<span class="font-bold text-sm min-w-[24px] text-center">{{ value }}</span>
 		<button
-			class="w-8 h-8 rounded-full bg-gradient-to-r from-[#de0000] to-[#b30000] text-white"
+			class="w-8 h-8 rounded-full bg-gradient-to-r from-[#de0000] to-[#b30000] text-white flex items-center justify-center transition-all active:scale-90 disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:active:scale-100 shadow-sm"
 			:disabled="disabled || value >= max"
 			@click="increment"
 		>
-			+
+			<i class="fas fa-plus text-[10px]" />
 		</button>
 	</div>
 </template>

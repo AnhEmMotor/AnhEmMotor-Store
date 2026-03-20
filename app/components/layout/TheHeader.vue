@@ -1,6 +1,6 @@
 <template>
 	<header
-		class="fixed top-0 w-full z-[1000] transition-all duration-300 ease-in-out border-b border-transparent bg-white/90 backdrop-blur-md"
+		class="fixed top-0 w-full z-40 transition-all duration-300 ease-in-out border-b border-transparent bg-white/90 backdrop-blur-md"
 		:class="{
 			'shadow-md border-gray-100 py-2': isScrolled,
 			'py-3': !isScrolled,
@@ -133,75 +133,66 @@
 									{{ user?.fullName || user?.userName }}
 								</span>
 								<i
-									class="fas fa-chevron-down text-[10px] text-gray-400 transition-transform duration-300"
+									class="fas fa-chevron-down text-[10px] text-gray-400"
 									:class="{ 'rotate-180': isUserMenuOpen }"
 								/>
 							</button>
 
-							<Transition
-								enter-active-class="transition duration-200 ease-out"
-								enter-from-class="transform scale-95 opacity-0 translate-y-2"
-								enter-to-class="transform scale-100 opacity-100 translate-y-0"
-								leave-active-class="transition duration-150 ease-in"
-								leave-from-class="transform scale-100 opacity-100 translate-y-0"
-								leave-to-class="transform scale-95 opacity-0 translate-y-2"
+							<div
+								v-if="isUserMenuOpen"
+								class="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 z-[60] overflow-hidden"
 							>
 								<div
-									v-if="isUserMenuOpen"
-									class="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 z-[60] overflow-hidden"
+									class="px-5 py-4 bg-gray-50/50 border-b border-gray-100 mb-1"
 								>
-									<div
-										class="px-5 py-4 bg-gray-50/50 border-b border-gray-100 mb-1"
+									<p
+										class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1"
 									>
-										<p
-											class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1"
-										>
-											Tài khoản
-										</p>
-										<p class="text-sm font-bold text-gray-900 truncate">
-											{{ user?.email }}
-										</p>
-									</div>
-									<div class="px-2">
-										<RouterLink
-											to="/profile"
-											class="dropdown-item"
-											@click="isUserMenuOpen = false"
-										>
-											<div
-												class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3"
-											>
-												<i class="fas fa-user-circle" />
-											</div>
-											<span>Trang Cá Nhân</span>
-										</RouterLink>
-										<RouterLink
-											to="/orders"
-											class="dropdown-item"
-											@click="isUserMenuOpen = false"
-										>
-											<div
-												class="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center mr-3"
-											>
-												<i class="fas fa-shopping-bag" />
-											</div>
-											<span>Đơn Hàng Của Tôi</span>
-										</RouterLink>
-										<div class="h-px bg-gray-50 my-1 mx-3" />
-										<button
-											class="dropdown-item text-red-600 hover:bg-red-50 group"
-											@click="handleLogout"
-										>
-											<div
-												class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3 group-hover:bg-red-500 group-hover:text-white transition-colors"
-											>
-												<i class="fas fa-sign-out-alt" />
-											</div>
-											<span class="font-bold">Đăng Xuất</span>
-										</button>
-									</div>
+										Tài khoản
+									</p>
+									<p class="text-sm font-bold text-gray-900 truncate">
+										{{ user?.email }}
+									</p>
 								</div>
-							</Transition>
+								<div class="px-2">
+									<RouterLink
+										to="/profile"
+										class="dropdown-item"
+										@click="isUserMenuOpen = false"
+									>
+										<div
+											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3"
+										>
+											<i class="fas fa-user-circle" />
+										</div>
+										<span>Trang Cá Nhân</span>
+									</RouterLink>
+									<RouterLink
+										to="/orders"
+										class="dropdown-item"
+										@click="isUserMenuOpen = false"
+									>
+										<div
+											class="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center mr-3"
+										>
+											<i class="fas fa-shopping-bag" />
+										</div>
+										<span>Đơn Hàng Của Tôi</span>
+									</RouterLink>
+									<div class="h-px bg-gray-50 my-1 mx-3" />
+									<button
+										class="dropdown-item text-red-600 hover:bg-red-50 group"
+										@click="handleLogout"
+									>
+										<div
+											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3 group-hover:bg-red-500 group-hover:text-white transition-colors"
+										>
+											<i class="fas fa-sign-out-alt" />
+										</div>
+										<span class="font-bold">Đăng Xuất</span>
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -209,23 +200,14 @@
 		</div>
 
 		<Teleport to="body">
-			<Transition
-				enter-active-class="transition duration-300 ease-out"
-				enter-from-class="opacity-0"
-				enter-to-class="opacity-100"
-				leave-active-class="transition duration-200 ease-in"
-				leave-from-class="opacity-100"
-				leave-to-class="opacity-0"
-			>
-				<div
-					v-if="mobileNavActive"
-					class="fixed inset-0 z-[2000] bg-gray-900/60 backdrop-blur-sm"
-					@click="closeMobileNav"
-				/>
-			</Transition>
+			<div
+				v-if="mobileNavActive"
+				class="fixed inset-0 z-[2000] bg-gray-900/60 backdrop-blur-sm"
+				@click="closeMobileNav"
+			/>
 
 			<nav
-				class="fixed top-0 bottom-0 left-0 w-[300px] sm:w-[350px] bg-white shadow-2xl z-[2100] flex flex-col transition-transform duration-500 ease-out transform"
+				class="fixed top-0 bottom-0 left-0 w-[300px] sm:w-[350px] bg-white shadow-2xl z-[2100] flex flex-col transform"
 				:class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'"
 			>
 				<div
@@ -380,7 +362,6 @@
 				:is-open="isCartOpen"
 				:cart-items="cartDetails"
 				:cart-total="cartTotal"
-				:is-pending="isPending"
 				@close="toggleCart"
 				@update-quantity="updateCartItemQuantity"
 				@remove-item="removeCartItem"
@@ -444,14 +425,8 @@ const closeMobileNav = () => {
 	document.body.style.overflow = "";
 };
 
-const {
-	cartItems,
-	cartDetails,
-	cartTotal,
-	isPending,
-	removeItem,
-	updateQuantity,
-} = useCart();
+const { cartItems, cartDetails, cartTotal, removeItem, updateQuantity } =
+	useCart();
 const cartItemCount = computed(() =>
 	cartItems.value.reduce((s, i) => s + (i.quantity || 0), 0),
 );

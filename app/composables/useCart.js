@@ -44,7 +44,7 @@ export function useCart() {
 			);
 			return data;
 		},
-		enabled: computed(() => variantIds.value.length > 0),
+		enabled: !!variantIds.value.length,
 		staleTime: 1000 * 60 * 10,
 	});
 
@@ -87,15 +87,16 @@ export function useCart() {
 		let newQuantity = quantity;
 
 		if (idx === -1) {
-			const itemToAdd = { id: product.id, quantity };
-			if (isNaN(Number(product.id))) {
-				itemToAdd.name = product.displayName || product.name;
-				itemToAdd.price = product.price;
-				itemToAdd.image =
+			const itemToAdd = {
+				id: product.id,
+				quantity,
+				name: product.displayName || product.name || "Sản phẩm",
+				price: product.price || 0,
+				image:
 					product.image ||
 					product.coverImageUrl ||
-					"/assets/image/placeholder-product.webp";
-			}
+					"/assets/image/placeholder-product.webp",
+			};
 			cartItems.value.push(itemToAdd);
 		} else {
 			cartItems.value[idx].quantity += quantity;

@@ -466,16 +466,6 @@ onMounted(async () => {
 						<div
 							class="bg-gray-50 p-6 rounded-3xl border border-gray-100 text-left space-y-4"
 						>
-							<div
-								class="flex justify-between items-center text-sm border-b border-gray-200 pb-3"
-							>
-								<span class="text-gray-400 font-bold uppercase tracking-widest"
-									>Mã đơn hàng</span
-								>
-								<span class="font-black text-gray-900"
-									>#{{ confirmedOrder?.id || "N/A" }}</span
-								>
-							</div>
 							<div class="flex justify-between items-center text-sm">
 								<span class="text-gray-400 font-bold uppercase tracking-widest"
 									>Phương thức</span
