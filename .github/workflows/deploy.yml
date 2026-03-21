@@ -50,9 +50,10 @@ jobs:
           key: ${{ secrets.SERVER_REMOTE_ACCESS_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT_FOR_PRODUCTION_SERVER }}
           script: |
-            cd /var/www/anhemmotor/frontend-store
-            export NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT=${{ secrets.PUBLIC_API_URL_FOR_BROWSER_CLIENT }}
-            export NUXT_INTERNAL_API_URL_FOR_SERVER=${{ secrets.INTERNAL_API_URL_FOR_SERVER }}
-            export PORT=5002
-            pm2 delete anhemmotor-store || true
-            pm2 start .output/server/index.mjs --name "anhemmotor-store"
+		        cd /var/www/anhemmotor/frontend-store
+		        export NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT=${{ secrets.PUBLIC_API_URL_FOR_BROWSER_CLIENT }}
+		        export NUXT_INTERNAL_API_URL_FOR_SERVER=${{ secrets.INTERNAL_API_URL_FOR_SERVER }}
+		        export PORT=5002
+		        pm2 startOrReload ecosystem.config.js --update-env
+		        pm2 save
+
