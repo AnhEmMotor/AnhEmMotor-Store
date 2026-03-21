@@ -1,4 +1,4 @@
-name: Deploy AnhEmMotor Store Website
+name: AnhEmMotor Store - Deploy
 
 on:
   push:
@@ -12,18 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "npm"
 
       - name: Install dependencies
-        run: |
-          rm -f package-lock.json
-          npm install
+        run: npm ci
 
       - name: Build project
         env:
@@ -38,6 +36,21 @@ jobs:
           username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
           key: ${{ secrets.SERVER_REMOTE_ACCESS_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT_FOR_PRODUCTION_SERVER }}
-          source: ".output/public/"
+          source: ".output/"
           target: "/var/www/anhemmotor/frontend-store"
-          strip_components: 2
+          strip_components: 0
+
+      - name: Restart Application via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_IP }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_REMOTE_ACCESS_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT_FOR_PRODUCTION_SERVER }}
+          script: |
+            cd /var/www/anhemmotor/frontend-store
+            export NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT=${{ secrets.PUBLIC_API_URL_FOR_BROWSER_CLIENT }}
+            export NUXT_INTERNAL_API_URL_FOR_SERVER=${{ secrets.INTERNAL_API_URL_FOR_SERVER }}
+            export PORT=5002
+            pm2 delete anhemmotor-store || true
+            pm2 start .output/server/index.mjs --name "anhemmotor-store"

@@ -1,4 +1,4 @@
-name: Store PR Check
+name: AnhEmMotor Store - Pull Request (Pre-deploy) check
 
 on:
   pull_request:
