@@ -52,7 +52,11 @@ watch(
 								news.category
 							}}</span>
 							<span class="text-gray-400">|</span>
-							<span><i class="far fa-clock mr-1" />{{ news.date }}</span>
+							<span
+								><Icon name="fa6-regular:clock" class="mr-1" />{{
+									news.date
+								}}</span
+							>
 						</div>
 						<img
 							:src="news.image"
@@ -69,18 +73,21 @@ watch(
 							<div class="flex space-x-3">
 								<button
 									class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+									aria-label="Chia sẻ bài viết này lên Facebook"
 								>
-									<i class="fab fa-facebook-f mr-2" />Facebook
+									<Icon name="fa6-brands:facebook-f" class="mr-2" />Facebook
 								</button>
 								<button
 									class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors"
+									aria-label="Chia sẻ bài viết này lên Twitter"
 								>
-									<i class="fab fa-twitter mr-2" />Twitter
+									<Icon name="fa6-brands:x-twitter" class="mr-2" />Twitter
 								</button>
 								<button
 									class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+									aria-label="Sao chép liên kết bài viết này"
 								>
-									<i class="fas fa-link mr-2" />Copy Link
+									<Icon name="fa6-solid:link" class="mr-2" />Copy Link
 								</button>
 							</div>
 						</div>
@@ -92,7 +99,10 @@ watch(
 			</main>
 		</div>
 		<div v-else class="container mx-auto px-4 py-20 text-center">
-			<i class="fas fa-exclamation-triangle text-6xl text-gray-400 mb-4" />
+			<Icon
+				name="fa6-solid:triangle-exclamation"
+				class="text-6xl text-gray-400 mb-4"
+			/>
 			<h2 class="text-2xl font-bold text-gray-800 mb-4">
 				Không tìm thấy tin tức
 			</h2>

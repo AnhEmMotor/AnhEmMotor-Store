@@ -21,8 +21,11 @@
 				{{ formatCurrency(product.price) }} VNĐ
 			</div>
 
-			<BaseButton @click.stop="$emit('addToCart', product)">
-				<i class="fas fa-shopping-cart"/>
+			<BaseButton
+				:aria-label="'Thêm ' + product.name + ' vào giỏ hàng'"
+				@click.stop="$emit('addToCart', product)"
+			>
+				<Icon name="fa6-solid:cart-shopping" />
 				Thêm vào giỏ hàng
 			</BaseButton>
 		</div>

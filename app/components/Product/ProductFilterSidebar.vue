@@ -60,9 +60,9 @@ const selectedOptions = computed({
 });
 
 const selectedCategories = computed({
-	get: () => props.modelValue.categoryIds || [],
+	get: () => props.modelValue.category_ids || [],
 	set: (val) => {
-		emit("update:modelValue", { ...props.modelValue, categoryIds: val });
+		emit("update:modelValue", { ...props.modelValue, category_ids: val });
 	},
 });
 
@@ -96,7 +96,7 @@ const resetFilters = () => {
 	emit("update:modelValue", {
 		search: "",
 		optionValueIds: [],
-		categoryIds: [],
+		category_ids: [],
 	});
 };
 
@@ -119,14 +119,15 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 	<div class="flex flex-col h-full bg-white">
 		<div class="p-6 border-b border-gray-100 flex items-center justify-between">
 			<h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-				<i class="fas fa-sliders-h text-primary" />
+				<Icon name="fa6-solid:sliders" class="text-primary" />
 				Bộ lọc
 			</h2>
 			<button
 				class="lg:hidden text-gray-400 hover:text-gray-600"
+				aria-label="Đóng cửa sổ bộ lọc"
 				@click="emit('close')"
 			>
-				<i class="fas fa-times text-xl" />
+				<Icon name="fa6-solid:xmark" class="text-xl" />
 			</button>
 		</div>
 
@@ -142,8 +143,9 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 						placeholder="Nhập tên sản phẩm..."
 						class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
 					>
-					<i
-						class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+					<Icon
+						name="fa6-solid:magnifying-glass"
+						class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
 					/>
 				</div>
 			</div>
@@ -172,6 +174,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 								? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
 								: 'bg-white border-gray-200 text-gray-600 hover:border-primary hover:text-primary',
 						]"
+						:aria-label="'Lọc theo danh mục ' + cat.name"
 						@click="toggleCategory(cat.id)"
 					>
 						{{ cat.name }}
@@ -194,6 +197,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 				</p>
 				<button
 					class="text-primary font-bold text-xs uppercase"
+					aria-label="Thử lại tải dữ liệu bộ lọc"
 					@click="fetchOptionsManual"
 				>
 					Thử lại
@@ -215,6 +219,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 									? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
 									: 'bg-white border-gray-200 text-gray-600 hover:border-primary hover:text-primary',
 							]"
+							:aria-label="'Lọc theo ' + val.name"
 							@click="toggleOption(val.id)"
 						>
 							{{ val.name }}
@@ -227,6 +232,7 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 		<div class="p-6 border-t border-gray-100 bg-gray-50/50">
 			<button
 				class="w-full py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]"
+				aria-label="Xóa tất cả các bộ lọc đang chọn"
 				@click="resetFilters"
 			>
 				Xóa tất cả bộ lọc

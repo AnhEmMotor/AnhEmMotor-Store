@@ -16,6 +16,7 @@
 		"@microsoft/fetch-event-source": "^2.0.1",
 		"@nuxt/content": "^3.12.0",
 		"@nuxt/eslint": "^1.15.2",
+		"@nuxt/icon": "^2.2.1",
 		"@nuxtjs/seo": "^3.4.0",
 		"@pinia/nuxt": "^0.11.3",
 		"@tailwindcss/vite": "^4.2.1",
@@ -38,6 +39,7 @@
 		"serialize-javascript": "^7.0.3"
 	},
 	"devDependencies": {
+		"@iconify-json/fa6-regular": "^1.2.4",
 		"@nuxt/eslint-config": "^1.15.2",
 		"cross-env": "^10.1.0"
 	}

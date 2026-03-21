@@ -7,14 +7,22 @@
 				<div class="footer-col">
 					<h3 class="footer-heading">Thông Tin Liên Hệ</h3>
 					<p class="contact-info-item">
-						<i class="fas fa-map-marker-alt mr-2" />193 Đỗ Văn Thi, Phường Trấn
-						Biên, TP. Biên Hoà, Tỉnh Đồng Nai
+						<ClientOnly>
+							<Icon name="fa6-solid:location-dot" class="mr-2" />
+						</ClientOnly>
+						193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai
 					</p>
 					<p class="contact-info-item">
-						<i class="fas fa-phone mr-2" />(024) 8582 0808
+						<ClientOnly>
+							<Icon name="fa6-solid:phone" class="mr-2" />
+						</ClientOnly>
+						(024) 8582 0808
 					</p>
 					<p class="contact-info-item">
-						<i class="fas fa-envelope mr-2" />anhemmotor@gmail.com
+						<ClientOnly>
+							<Icon name="fa6-solid:envelope" class="mr-2" />
+						</ClientOnly>
+						anhemmotor@gmail.com
 					</p>
 					<div class="flex gap-4 mt-5">
 						<RouterLink
@@ -22,28 +30,36 @@
 							class="social-icon"
 							aria-label="Theo dõi AnhEm Motor trên Facebook"
 						>
-							<i class="fab fa-facebook-f" />
+							<ClientOnly>
+								<Icon name="fa6-brands:facebook-f" />
+							</ClientOnly>
 						</RouterLink>
 						<RouterLink
 							to="#"
 							class="social-icon"
 							aria-label="Theo dõi AnhEm Motor trên Youtube"
 						>
-							<i class="fab fa-youtube" />
+							<ClientOnly>
+								<Icon name="fa6-brands:youtube" />
+							</ClientOnly>
 						</RouterLink>
 						<RouterLink
 							to="#"
 							class="social-icon"
 							aria-label="Theo dõi AnhEm Motor trên Instagram"
 						>
-							<i class="fab fa-instagram" />
+							<ClientOnly>
+								<Icon name="fa6-brands:instagram" />
+							</ClientOnly>
 						</RouterLink>
 						<RouterLink
 							to="#"
 							class="social-icon"
 							aria-label="Theo dõi AnhEm Motor trên Tiktok"
 						>
-							<i class="fab fa-tiktok" />
+							<ClientOnly>
+								<Icon name="fa6-brands:tiktok" />
+							</ClientOnly>
 						</RouterLink>
 					</div>
 				</div>

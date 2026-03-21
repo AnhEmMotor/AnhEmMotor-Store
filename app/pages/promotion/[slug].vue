@@ -74,7 +74,10 @@ watch(
 					class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6"
 				>
 					<p class="font-semibold text-gray-800">
-						<i class="far fa-calendar-alt mr-2 text-yellow-600" />
+						<Icon
+							name="fa6-regular:calendar-days"
+							class="mr-2 text-yellow-600"
+						/>
 						Thời gian áp dụng:
 						<span class="text-primary-red">{{ promotion.duration }}</span>
 					</p>
@@ -99,7 +102,10 @@ watch(
 									:key="optIndex"
 									class="flex items-start"
 								>
-									<i class="fas fa-gift text-primary-red mr-3 mt-1" />
+									<Icon
+										name="fa6-solid:gift"
+										class="text-primary-red mr-3 mt-1"
+									/>
 									<span>{{ option }}</span>
 								</li>
 							</ul>
@@ -117,7 +123,10 @@ watch(
 		</main>
 
 		<div v-else class="container mx-auto px-4 py-20 text-center">
-			<i class="fas fa-exclamation-triangle text-6xl text-gray-400 mb-4" />
+			<Icon
+				name="fa6-solid:triangle-exclamation"
+				class="text-6xl text-gray-400 mb-4"
+			/>
 			<h2 class="text-2xl font-bold text-gray-800 mb-4">
 				Không tìm thấy chương trình khuyến mãi
 			</h2>

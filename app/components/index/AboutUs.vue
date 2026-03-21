@@ -21,15 +21,21 @@
 
 					<ul class="feature-list">
 						<li>
-							<i class="fas fa-check-circle text-red-500" />
+							<ClientOnly>
+								<Icon name="fa6-solid:circle-check" class="text-red-500" />
+							</ClientOnly>
 							Bảo hành toàn quốc
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500" />
+							<ClientOnly>
+								<Icon name="fa6-solid:circle-check" class="text-red-500" />
+							</ClientOnly>
 							Dịch vụ hậu mãi chuyên nghiệp
 						</li>
 						<li>
-							<i class="fas fa-check-circle text-red-500" />
+							<ClientOnly>
+								<Icon name="fa6-solid:circle-check" class="text-red-500" />
+							</ClientOnly>
 							Giá cả cạnh tranh
 						</li>
 					</ul>

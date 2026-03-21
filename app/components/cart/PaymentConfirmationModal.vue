@@ -10,7 +10,7 @@
 		>
 			<div ref="content" class="payment-confirmation-content" tabindex="-1">
 				<div class="success-icon" aria-hidden="true">
-					<i class="fas fa-check-circle" />
+					<Icon name="fa6-solid:circle-check" />
 				</div>
 				<h3 id="pc-title">Đặt hàng thành công!</h3>
 				<p>

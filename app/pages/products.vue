@@ -45,7 +45,7 @@ const parseArrayQuery = (val) => {
 const filters = ref({
 	search: route.query.search || "",
 	optionValueIds: parseArrayQuery(route.query.optionValueIds),
-	categoryIds: parseArrayQuery(route.query.categoryIds),
+	category_ids: parseArrayQuery(route.query.category_ids),
 });
 
 const {
@@ -64,8 +64,9 @@ const {
 		if (filters.value.optionValueIds.length > 0) {
 			sieveParams.optionValueIds = filters.value.optionValueIds.join(",");
 		}
-		if (filters.value.categoryIds.length > 0) {
-			sieveParams.categoryIds = filters.value.categoryIds.join(",");
+		if (filters.value.category_ids.length > 0) {
+			sieveParams.categoryIds = filters.value.category_ids.join(",");
+			delete sieveParams.category_ids;
 		}
 
 		return productStore.getProducts(sieveParams);
@@ -135,16 +136,20 @@ const handleViewDetail = (product) => {
 						<div class="flex items-center gap-3">
 							<button
 								class="lg:hidden flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"
+								aria-label="Mở bộ lọc sản phẩm"
 								@click="toggleSidebar"
 							>
-								<i class="fas fa-filter text-primary" />
+								<Icon name="fa6-solid:filter" class="text-primary" />
 								Lọc
 							</button>
 						</div>
 					</div>
 
 					<div
-						v-if="filters.optionValueIds.length > 0 || filters.categoryId"
+						v-if="
+							filters.optionValueIds.length > 0 ||
+							filters.category_ids.length > 0
+						"
 						class="flex flex-wrap gap-2 mb-8"
 					>
 						<span
@@ -153,13 +158,14 @@ const handleViewDetail = (product) => {
 						>
 						<button
 							class="px-4 py-2 bg-primary/5 text-primary rounded-full text-xs font-bold border border-primary/10 hover:bg-primary/10 transition-colors flex items-center gap-2"
+							aria-label="Xóa tất cả bộ lọc đang chọn"
 							@click="
 								filters.optionValueIds = [];
-								filters.categoryId = null;
+								filters.category_ids = [];
 							"
 						>
 							Xóa tất cả
-							<i class="fas fa-times" />
+							<Icon name="fa6-solid:xmark" />
 						</button>
 					</div>
 

@@ -14,7 +14,7 @@
 						aria-label="Mở menu điều hướng"
 						@click="openMobileNav"
 					>
-						<i class="fas fa-bars text-xl" />
+						<Icon name="fa6-solid:bars" class="text-xl" />
 					</button>
 
 					<RouterLink
@@ -30,7 +30,7 @@
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
 								width="40"
 								height="40"
-							/>
+							>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -38,7 +38,7 @@
 								>ANHEM MOTOR</span
 							>
 							<span
-								class="hidden sm:block text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase leading-none"
+								class="hidden sm:block text-[10px] font-bold text-[#515267] tracking-[0.2em] uppercase leading-none"
 								>Racing & Lifestyle</span
 							>
 						</div>
@@ -124,18 +124,23 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
-									/>
-									<i v-else class="fas fa-user text-red-500 text-xs" />
+									>
+									<ClientOnly v-else>
+										<Icon name="fa6-solid:user" class="text-red-500 text-xs" />
+									</ClientOnly>
 								</div>
 								<span
 									class="hidden md:block text-sm font-bold text-gray-800 max-w-[100px] truncate"
 								>
 									{{ user?.fullName || user?.userName || user?.email }}
 								</span>
-								<i
-									class="fas fa-chevron-down text-[10px] text-gray-400"
-									:class="{ 'rotate-180': isUserMenuOpen }"
-								/>
+								<ClientOnly>
+									<Icon
+										name="fa6-solid:chevron-down"
+										class="text-[10px] text-gray-400"
+										:class="{ 'rotate-180': isUserMenuOpen }"
+									/>
+								</ClientOnly>
 							</button>
 
 							<div
@@ -163,7 +168,9 @@
 										<div
 											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3"
 										>
-											<i class="fas fa-user-circle" />
+											<ClientOnly>
+												<Icon name="fa6-solid:circle-user" />
+											</ClientOnly>
 										</div>
 										<span>Sửa thông tin</span>
 									</RouterLink>
@@ -175,19 +182,24 @@
 										<div
 											class="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center mr-3"
 										>
-											<i class="fas fa-shopping-bag" />
+											<ClientOnly>
+												<Icon name="fa6-solid:bag-shopping" />
+											</ClientOnly>
 										</div>
 										<span>Đơn hàng của tôi</span>
 									</RouterLink>
 									<div class="h-px bg-gray-50 my-1 mx-3" />
 									<button
 										class="dropdown-item text-red-600 hover:bg-red-50 group"
+										aria-label="Đăng xuất khỏi hệ thống"
 										@click="handleLogout"
 									>
 										<div
 											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3 group-hover:bg-red-500 group-hover:text-white transition-colors"
 										>
-											<i class="fas fa-sign-out-alt" />
+											<ClientOnly>
+												<Icon name="fa6-solid:right-from-bracket" />
+											</ClientOnly>
 										</div>
 										<span class="font-bold">Đăng xuất</span>
 									</button>
@@ -221,7 +233,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							/>
+							>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -232,7 +244,9 @@
 						aria-label="Đóng menu điều hướng"
 						@click="closeMobileNav"
 					>
-						<i class="fas fa-times text-xl" />
+						<ClientOnly>
+							<Icon name="fa6-solid:xmark" class="text-xl" />
+						</ClientOnly>
 					</button>
 				</div>
 
@@ -268,8 +282,12 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
+									>
+									<Icon
+										v-else
+										name="fa6-solid:user"
+										class="text-red-500 text-xl"
 									/>
-									<i v-else class="fas fa-user text-red-500 text-xl" />
 								</div>
 								<div class="flex-1 min-w-0">
 									<p class="font-black text-gray-900 truncate leading-tight">
@@ -285,75 +303,107 @@
 							</div>
 							<button
 								class="w-full py-3.5 rounded-xl font-black text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+								aria-label="Đăng xuất tài khoản"
 								@click="
 									handleLogout();
 									closeMobileNav();
 								"
 							>
-								<i class="fas fa-sign-out-alt" />
-								Đăng Xuất
+								<ClientOnly>
+									<Icon name="fa6-solid:right-from-bracket" />
+								</ClientOnly>
+								<span>Đăng Xuất</span>
 							</button>
 						</div>
 					</div>
 
 					<ul class="p-4 space-y-1">
 						<li>
-							<RouterLink to="/" class="mobile-nav-link" @click="closeMobileNav"
-								><i class="fas fa-home w-8 text-red-500" />Trang Chủ</RouterLink
+							<RouterLink
+								to="/"
+								class="mobile-nav-link"
+								@click="closeMobileNav"
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:house" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Trang Chủ</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/category"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-motorcycle w-8 text-red-500" />Sản
-								Phẩm</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:motorcycle" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Sản Phẩm</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/about"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-info-circle w-8 text-red-500" />Giới
-								Thiệu</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:circle-info" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Giới Thiệu</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/news"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-newspaper w-8 text-red-500" />Tin
-								Tức</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:newspaper" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Tin Tức</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/promotion"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-tags w-8 text-red-500" />Khuyến
-								Mãi</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:tags" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Khuyến Mãi</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/contact"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-paper-plane w-8 text-red-500" />Liên
-								Hệ</RouterLink
 							>
+								<ClientOnly>
+									<Icon name="fa6-solid:paper-plane" class="w-8 text-red-500" />
+								</ClientOnly>
+								<span>Liên Hệ</span>
+							</RouterLink>
 						</li>
 						<li>
 							<RouterLink
 								to="/service"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
-								><i class="fas fa-tools w-8 text-red-500" />Dịch Vụ</RouterLink
 							>
+								<ClientOnly>
+									<Icon
+										name="fa6-solid:screwdriver-wrench"
+										class="w-8 text-red-500"
+									/>
+								</ClientOnly>
+								<span>Dịch Vụ</span>
+							</RouterLink>
 						</li>
 					</ul>
 				</div>
@@ -455,19 +505,19 @@ onBeforeUnmount(() => {
 @reference "../../assets/main.css";
 
 .nav-link {
-	@apply relative px-4 py-2 text-sm font-bold text-gray-600 no-underline transition-all duration-300 ease-in-out hover:text-red-500 rounded-full hover:bg-red-50/50;
+	@apply relative px-4 py-2 text-sm font-bold text-gray-600 no-underline transition-all duration-300 ease-in-out hover:text-[#A4040F] rounded-full hover:bg-red-50/50;
 }
 
 .nav-link.router-link-active {
-	@apply text-red-500 bg-red-50;
+	@apply text-[#A4040F] bg-red-50;
 }
 
 .mobile-nav-link {
-	@apply flex items-center rounded-xl py-4 px-4 text-sm font-bold text-gray-700 no-underline transition-all duration-300 hover:bg-red-50 hover:text-red-600 hover:pl-6 active:scale-[0.98];
+	@apply flex items-center rounded-xl py-4 px-4 text-sm font-bold text-gray-700 no-underline transition-all duration-300 hover:bg-red-50 hover:text-[#A4040F] hover:pl-6 active:scale-[0.98];
 }
 
 .mobile-nav-link.router-link-active {
-	@apply bg-red-50 text-red-600 pl-6 border-r-4 border-red-500;
+	@apply bg-red-50 text-[#A4040F] pl-6 border-r-4 border-[#A4040F];
 }
 
 .dropdown-item {

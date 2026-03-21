@@ -1,0 +1,43 @@
+name: Deploy AnhEmMotor Store Website
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          rm -f package-lock.json
+          npm install
+
+      - name: Build project
+        env:
+          NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT: ${{ secrets.PUBLIC_API_URL_FOR_BROWSER_CLIENT }}
+          NUXT_INTERNAL_API_URL_FOR_SERVER: ${{ secrets.INTERNAL_API_URL_FOR_SERVER }}
+        run: npm run build
+
+      - name: Deploy to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_IP }}
+          username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_REMOTE_ACCESS_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT_FOR_PRODUCTION_SERVER }}
+          source: ".output/public/"
+          target: "/var/www/anhemmotor/frontend-store"
+          strip_components: 2

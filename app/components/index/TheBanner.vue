@@ -83,7 +83,10 @@ onUnmounted(() => {
 					class="search-button"
 					aria-label="Tìm kiếm sản phẩm"
 				>
-					<i class="fas fa-search" /> Tìm Kiếm
+					<ClientOnly>
+						<Icon name="fa6-solid:magnifying-glass" />
+					</ClientOnly>
+					Tìm Kiếm
 				</button>
 			</form>
 

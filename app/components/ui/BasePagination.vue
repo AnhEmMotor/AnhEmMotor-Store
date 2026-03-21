@@ -80,9 +80,10 @@ const pageNumbers = computed(() => {
 						? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
 						: 'bg-white text-gray-700 border-gray-200 hover:border-primary hover:text-primary hover:shadow-lg active:scale-95'
 				"
+				aria-label="Chuyển sang trang trước"
 				@click="prevPage"
 			>
-				<i class="fas fa-chevron-left sm:mr-2 text-[10px]" />
+				<Icon name="fa6-solid:chevron-left" class="sm:mr-2 text-[10px]" />
 				<span class="hidden sm:inline">Trước</span>
 			</button>
 
@@ -92,7 +93,7 @@ const pageNumbers = computed(() => {
 						v-if="page === '...'"
 						class="w-10 h-10 flex items-center justify-center text-gray-400 font-bold"
 					>
-						<i class="fas fa-ellipsis-h text-[10px]" />
+						<Icon name="fa6-solid:ellipsis" class="text-[10px]" />
 					</span>
 					<button
 						v-else
@@ -102,6 +103,7 @@ const pageNumbers = computed(() => {
 								? 'bg-primary border-primary text-white shadow-lg shadow-primary/20 scale-110'
 								: 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary hover:shadow-md'
 						"
+						:aria-label="'Đến trang ' + page"
 						@click="goToPage(page)"
 					>
 						{{ page }}
@@ -117,10 +119,11 @@ const pageNumbers = computed(() => {
 						? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
 						: 'bg-white text-gray-700 border-gray-200 hover:border-primary hover:text-primary hover:shadow-lg active:scale-95'
 				"
+				aria-label="Chuyển sang trang tiếp theo"
 				@click="nextPage"
 			>
 				<span class="hidden sm:inline">Sau</span>
-				<i class="fas fa-chevron-right sm:ml-2 text-[10px]" />
+				<Icon name="fa6-solid:chevron-right" class="sm:ml-2 text-[10px]" />
 			</button>
 		</div>
 	</div>

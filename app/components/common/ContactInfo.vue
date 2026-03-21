@@ -10,7 +10,9 @@
 			<p v-if="description" class="mb-4">{{ description }}</p>
 
 			<div v-if="contactInfo.hotline" class="flex items-start gap-3">
-				<i class="fas fa-phone-alt text-primary-red mt-1" />
+				<ClientOnly>
+					<Icon name="fa6-solid:phone" class="text-primary-red mt-1" />
+				</ClientOnly>
 				<div>
 					<strong>Số điện thoại chăm sóc khách hàng (miễn phí):</strong>
 					<span class="text-primary-red font-bold ml-2">{{
@@ -23,7 +25,9 @@
 			</div>
 
 			<div v-if="contactInfo.email" class="flex items-start gap-3">
-				<i class="fas fa-envelope text-primary-red mt-1" />
+				<ClientOnly>
+					<Icon name="fa6-solid:envelope" class="text-primary-red mt-1" />
+				</ClientOnly>
 				<div>
 					<strong>Email:</strong>
 					<a
@@ -36,7 +40,9 @@
 			</div>
 
 			<div v-if="contactInfo.website" class="flex items-start gap-3">
-				<i class="fas fa-globe text-primary-red mt-1" />
+				<ClientOnly>
+					<Icon name="fa6-solid:globe" class="text-primary-red mt-1" />
+				</ClientOnly>
 				<div>
 					<strong>Website:</strong>
 					<a
@@ -51,7 +57,9 @@
 			</div>
 
 			<div v-if="contactInfo.fanpage" class="flex items-start gap-3">
-				<i class="fab fa-facebook text-primary-red mt-1" />
+				<ClientOnly>
+					<Icon name="fa6-brands:facebook" class="text-primary-red mt-1" />
+				</ClientOnly>
 				<div>
 					<strong>Fanpage:</strong>
 					<a

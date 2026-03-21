@@ -9,13 +9,13 @@
 				<router-link to="/" class="hover:text-red-600 transition-colors"
 					>Trang chủ</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]" />
+				<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
 				<router-link
 					to="/accessories"
 					class="hover:text-red-600 transition-colors"
 					>Phụ kiện</router-link
 				>
-				<i class="fas fa-chevron-right text-[10px]" />
+				<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
 				<span class="text-gray-900 font-medium truncate max-w-[200px]">{{
 					product.name
 				}}</span>
@@ -81,10 +81,11 @@
 										class="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm"
 									>
 										<button
+											aria-label="Trừ 1 số lượng cho biến thể này"
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-r border-gray-200 text-gray-600"
 											@click="changeQty(-1)"
 										>
-											<i class="fas fa-minus" />
+											<Icon name="fa6-solid:minus" />
 										</button>
 										<input
 											v-model.number="quantity"
@@ -93,10 +94,11 @@
 											min="1"
 										>
 										<button
+											aria-label="Cộng 1 số lượng cho biến thể này"
 											class="px-5 py-3 bg-gray-50 hover:bg-gray-200 transition-colors border-l border-gray-200 text-gray-600"
 											@click="changeQty(1)"
 										>
-											<i class="fas fa-plus" />
+											<Icon name="fa6-solid:plus" />
 										</button>
 									</div>
 									<span
@@ -112,10 +114,11 @@
 
 							<div class="pt-8">
 								<button
+									aria-label="THÊM VÀO GIỎ HÀNG"
 									class="w-full md:w-auto px-16 py-4 bg-[#de0000] text-white rounded-xl font-bold text-lg hover:bg-black hover:shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3"
 									@click="handleAddToCart"
 								>
-									<i class="fas fa-cart-plus" /> THÊM VÀO GIỎ HÀNG
+									<Icon name="fa6-solid:cart-plus" /> THÊM VÀO GIỎ HÀNG
 								</button>
 							</div>
 						</div>
@@ -140,8 +143,9 @@
 						class="text-[#de0000] font-bold hover:text-black transition-colors flex items-center gap-2 group"
 					>
 						Xem tất cả
-						<i
-							class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"
+						<Icon
+							name="fa6-solid:arrow-right"
+							class="text-sm group-hover:translate-x-1 transition-transform"
 						/>
 					</router-link>
 				</div>

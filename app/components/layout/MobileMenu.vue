@@ -15,7 +15,7 @@
 				class="text-gray-600 text-3xl hover:text-primary-red transition-colors"
 				@click="$emit('close')"
 			>
-				<i class="fas fa-times" />
+				<Icon name="fa6-solid:xmark" />
 			</button>
 		</div>
 

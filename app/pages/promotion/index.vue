@@ -30,7 +30,7 @@ onMounted(() => {
 				</div>
 			</div>
 			<div v-if="promotions.length === 0" class="text-center py-20">
-				<i class="fas fa-tags text-6xl text-gray-300 mb-4" />
+				<Icon name="fa6-solid:tags" class="text-6xl text-gray-300 mb-4" />
 				<h3 class="text-2xl font-bold text-gray-600 mb-2">
 					Chưa có chương trình khuyến mãi
 				</h3>
@@ -60,4 +60,3 @@ onMounted(() => {
 	opacity: 0;
 }
 </style>
-

@@ -27,17 +27,20 @@
 								alt="Avatar"
 								class="w-32 h-32 rounded-full object-cover ring-4 ring-gray-50 shadow-md pointer-events-none"
 								:class="{ 'opacity-50': isUploadingAvatar }"
-							/>
+							>
 							<div
 								class="absolute inset-0 bg-gray-900/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
 							>
-								<i class="fa-solid fa-camera text-white text-xl" />
+								<Icon name="fa6-solid:camera" class="text-white text-xl" />
 							</div>
 							<div
 								v-if="isUploadingAvatar"
 								class="absolute inset-0 flex items-center justify-center"
 							>
-								<i class="fa-solid fa-spinner fa-spin text-white text-3xl" />
+								<Icon
+									name="fa6-solid:spinner"
+									class="animate-spin text-white text-3xl"
+								/>
 							</div>
 						</div>
 
@@ -48,7 +51,7 @@
 							accept="image/jpeg,image/png,image/webp,image/jpg"
 							:disabled="isUploadingAvatar"
 							@change="handleAvatarChange"
-						/>
+						>
 
 						<h2 class="mt-5 text-xl font-bold text-gray-900 text-center">
 							{{ user?.fullName || "Người dùng" }}
@@ -63,9 +66,10 @@
 						<button
 							class="mt-6 w-full py-2.5 px-4 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl border border-gray-200 transition-colors flex items-center justify-center gap-2"
 							:disabled="isUploadingAvatar"
+							aria-label="Tải lên ảnh đại diện mới"
 							@click="triggerAvatarUpload"
 						>
-							<i class="fa-solid fa-cloud-arrow-up" />
+							<Icon name="fa6-solid:cloud-arrow-up" />
 							{{ isUploadingAvatar ? "Đang tải lên..." : "Đổi ảnh đại diện" }}
 						</button>
 					</div>
@@ -81,6 +85,7 @@
 										? 'border-blue-600 bg-blue-50/50 text-blue-700'
 										: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
 								]"
+								aria-label="Xem thông tin hồ sơ cá nhân"
 								@click="activeTab = 'profile'"
 							>
 								<div
@@ -91,7 +96,7 @@
 											: 'bg-gray-100 text-gray-500',
 									]"
 								>
-									<i class="fa-regular fa-id-card text-lg" />
+									<Icon name="fa6-regular:id-card" class="text-lg" />
 								</div>
 								Hồ sơ cá nhân
 							</button>
@@ -105,6 +110,7 @@
 										? 'border-blue-600 bg-blue-50/50 text-blue-700'
 										: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
 								]"
+								aria-label="Cài đặt bảo mật và mật khẩu"
 								@click="activeTab = 'security'"
 							>
 								<div
@@ -115,7 +121,7 @@
 											: 'bg-gray-100 text-gray-500',
 									]"
 								>
-									<i class="fa-solid fa-shield-halved text-lg" />
+									<Icon name="fa6-solid:shield-halved" class="text-lg" />
 								</div>
 								Bảo mật & Mật khẩu
 							</button>
@@ -147,7 +153,7 @@
 										<div
 											class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-regular fa-user text-gray-400" />
+											<Icon name="fa6-regular:user" class="text-gray-400" />
 										</div>
 										<input
 											id="fullName"
@@ -155,7 +161,7 @@
 											type="text"
 											class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập họ và tên của bạn"
-										/>
+										>
 									</div>
 								</div>
 
@@ -169,7 +175,7 @@
 										<div
 											class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-solid fa-phone text-gray-400" />
+											<Icon name="fa6-solid:phone" class="text-gray-400" />
 										</div>
 										<input
 											id="phoneNumber"
@@ -177,7 +183,7 @@
 											type="tel"
 											class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập số điện thoại"
-										/>
+										>
 									</div>
 								</div>
 
@@ -191,7 +197,7 @@
 										<div
 											class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-solid fa-venus-mars text-gray-400" />
+											<Icon name="fa6-solid:venus-mars" class="text-gray-400" />
 										</div>
 										<select
 											id="gender"
@@ -210,7 +216,7 @@
 										<div
 											class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400"
 										>
-											<i class="fa-solid fa-chevron-down text-xs" />
+											<Icon name="fa6-solid:chevron-down" class="text-xs" />
 										</div>
 									</div>
 								</div>
@@ -223,7 +229,7 @@
 										<div
 											class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-regular fa-envelope text-gray-400" />
+											<Icon name="fa6-regular:envelope" class="text-gray-400" />
 										</div>
 										<input
 											type="email"
@@ -232,17 +238,20 @@
 											title="Bạn không thể thay đổi email"
 											class="block w-full pl-10 pr-4 py-2.5 bg-gray-100 border border-gray-200 text-gray-500 rounded-xl sm:text-sm cursor-not-allowed"
 											placeholder="Email chưa được cập nhật"
-										/>
+										>
 										<div
 											class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-solid fa-lock text-gray-300" />
+											<Icon name="fa6-solid:lock" class="text-gray-300" />
 										</div>
 									</div>
 									<p
 										class="mt-2 text-xs text-gray-500 flex items-start gap-1.5"
 									>
-										<i class="fa-solid fa-circle-info mt-0.5 text-blue-500" />
+										<Icon
+											name="fa6-solid:circle-info"
+											class="mt-0.5 text-blue-500"
+										/>
 										<span
 											>Email là thông tin định danh không thể thay đổi. Quý
 											khách vui lòng liên hệ CSKH nếu có nhu cầu chuyển đổi tài
@@ -257,12 +266,14 @@
 									type="submit"
 									:disabled="isLoading"
 									class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-blue-500/30 text-sm font-semibold rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+									aria-label="Lưu các thay đổi thông tin cá nhân"
 								>
-									<i
+									<Icon
 										v-if="isLoading"
-										class="fa-solid fa-spinner fa-spin mr-2"
+										name="fa6-solid:spinner"
+										class="animate-spin mr-2"
 									/>
-									<i v-else class="fa-solid fa-check mr-2" />
+									<Icon v-else name="fa6-solid:check" class="mr-2" />
 									Lưu thông tin
 								</button>
 							</div>
@@ -294,7 +305,7 @@
 										<div
 											class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-solid fa-lock text-gray-400" />
+											<Icon name="fa6-solid:lock" class="text-gray-400" />
 										</div>
 										<input
 											id="currentPassword"
@@ -302,17 +313,18 @@
 											:type="passwordFieldType.current"
 											class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập mật khẩu hiện tại"
-										/>
+										>
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
+											aria-label="Hiện hoặc ẩn mật khẩu hiện tại"
 											@click="togglePassword('current')"
 										>
-											<i
-												:class="
+											<Icon
+												:name="
 													passwordFieldType.current === 'password'
-														? 'fa-regular fa-eye-slash'
-														: 'fa-regular fa-eye'
+														? 'fa6-regular:eye-slash'
+														: 'fa6-regular:eye'
 												"
 											/>
 										</button>
@@ -329,7 +341,7 @@
 										<div
 											class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-solid fa-key text-gray-400" />
+											<Icon name="fa6-solid:key" class="text-gray-400" />
 										</div>
 										<input
 											id="newPassword"
@@ -337,17 +349,18 @@
 											:type="passwordFieldType.new"
 											class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập mật khẩu mới"
-										/>
+										>
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
+											aria-label="Hiện hoặc ẩn mật khẩu mới"
 											@click="togglePassword('new')"
 										>
-											<i
-												:class="
+											<Icon
+												:name="
 													passwordFieldType.new === 'password'
-														? 'fa-regular fa-eye-slash'
-														: 'fa-regular fa-eye'
+														? 'fa6-regular:eye-slash'
+														: 'fa6-regular:eye'
 												"
 											/>
 										</button>
@@ -369,7 +382,10 @@
 										<div
 											class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
 										>
-											<i class="fa-solid fa-shield-halved text-gray-400" />
+											<Icon
+												name="fa6-solid:shield-halved"
+												class="text-gray-400"
+											/>
 										</div>
 										<input
 											id="confirmPassword"
@@ -377,17 +393,18 @@
 											:type="passwordFieldType.confirm"
 											class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
 											placeholder="Nhập lại mật khẩu mới"
-										/>
+										>
 										<button
 											type="button"
 											class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
+											aria-label="Hiện hoặc ẩn mật khẩu xác nhận"
 											@click="togglePassword('confirm')"
 										>
-											<i
-												:class="
+											<Icon
+												:name="
 													passwordFieldType.confirm === 'password'
-														? 'fa-regular fa-eye-slash'
-														: 'fa-regular fa-eye'
+														? 'fa6-regular:eye-slash'
+														: 'fa6-regular:eye'
 												"
 											/>
 										</button>
@@ -400,10 +417,12 @@
 									type="submit"
 									:disabled="isLoading"
 									class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-gray-900/20 text-sm font-semibold rounded-xl text-white bg-gray-900 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+									aria-label="Xác nhận đổi mật khẩu"
 								>
-									<i
+									<Icon
 										v-if="isLoading"
-										class="fa-solid fa-spinner fa-spin mr-2"
+										name="fa6-solid:spinner"
+										class="animate-spin mr-2"
 									/>
 									Cập nhật mật khẩu
 								</button>

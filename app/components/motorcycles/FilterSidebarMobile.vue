@@ -8,14 +8,14 @@
 				<h3
 					class="text-base sm:text-lg font-bold text-red-600 flex items-center gap-2"
 				>
-					<i class="fas fa-filter" />
+					<Icon name="fa6-solid:filter" />
 					<span>Bộ Lọc Sản Phẩm</span>
 				</h3>
 				<button
 					class="text-gray-600 hover:text-gray-900 text-xl p-2"
 					@click="handleClose"
 				>
-					<i class="fas fa-times" />
+					<Icon name="fa6-solid:xmark" />
 				</button>
 			</div>
 			<FilterSidebarContent
