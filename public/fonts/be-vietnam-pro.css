@@ -1,4 +1,3 @@
-/* Be Vietnam Pro - Normal */
 @font-face {
 	font-family: "Be Vietnam Pro";
 	font-style: normal;
@@ -41,8 +40,6 @@
 	font-display: swap;
 	src: url(/fonts/be-vietnam-pro/normal-900.woff2) format("woff2");
 }
-
-/* Be Vietnam Pro - Italic */
 @font-face {
 	font-family: "Be Vietnam Pro";
 	font-style: italic;
