@@ -136,10 +136,10 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
-		apiServerUrl: process.env.API_SERVER_URL || "http://localhost:7001",
+		internalApiUrlForServer: process.env.NUXT_INTERNAL_API_URL_FOR_SERVER,
 		public: {
-			apiBaseUrl:
-				process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:7001",
+			apiUrlForBrowserClient:
+				process.env.NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT,
 		},
 	},
 });

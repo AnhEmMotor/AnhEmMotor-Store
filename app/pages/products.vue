@@ -45,7 +45,7 @@ const parseArrayQuery = (val) => {
 const filters = ref({
 	search: route.query.search || "",
 	optionValueIds: parseArrayQuery(route.query.optionValueIds),
-	categoryIds: parseArrayQuery(route.query.categoryIds),
+	category_ids: parseArrayQuery(route.query.category_ids),
 });
 
 const {
@@ -64,8 +64,9 @@ const {
 		if (filters.value.optionValueIds.length > 0) {
 			sieveParams.optionValueIds = filters.value.optionValueIds.join(",");
 		}
-		if (filters.value.categoryIds.length > 0) {
-			sieveParams.categoryIds = filters.value.categoryIds.join(",");
+		if (filters.value.category_ids.length > 0) {
+			sieveParams.categoryIds = filters.value.category_ids.join(",");
+			delete sieveParams.category_ids;
 		}
 
 		return productStore.getProducts(sieveParams);
@@ -145,7 +146,10 @@ const handleViewDetail = (product) => {
 					</div>
 
 					<div
-						v-if="filters.optionValueIds.length > 0 || filters.categoryId"
+						v-if="
+							filters.optionValueIds.length > 0 ||
+							filters.category_ids.length > 0
+						"
 						class="flex flex-wrap gap-2 mb-8"
 					>
 						<span
@@ -157,7 +161,7 @@ const handleViewDetail = (product) => {
 							aria-label="Xóa tất cả bộ lọc đang chọn"
 							@click="
 								filters.optionValueIds = [];
-								filters.categoryId = null;
+								filters.category_ids = [];
 							"
 						>
 							Xóa tất cả

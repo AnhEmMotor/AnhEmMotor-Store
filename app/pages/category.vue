@@ -27,19 +27,19 @@ useHead({
 
 const categories = ref([
 	{
-		href: "/products?page=1&categoryIds=1",
+		href: "/products?page=1&category_ids=1",
 		imgSrc: "/assets/image/categories/xe.webp",
 		alt: "Xe",
 		title: "Xe",
 	},
 	{
-		href: "/products?page=1&categoryIds=3",
+		href: "/products?page=1&category_ids=3",
 		imgSrc: "/assets/image/categories/spare-parts.webp",
 		alt: "Phụ tùng",
 		title: "Phụ Tùng",
 	},
 	{
-		href: "/products?page=1&categoryIds=2",
+		href: "/products?page=1&category_ids=2",
 		imgSrc: "/assets/image/categories/accessories.webp",
 		alt: "Phụ kiện",
 		title: "Phụ Kiện",

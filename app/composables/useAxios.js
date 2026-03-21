@@ -19,7 +19,9 @@ const processQueue = (error, token = null) => {
 export const useAxios = () => {
 	const config = useRuntimeConfig();
 	const baseURL =
-		(import.meta.server ? config.apiServerUrl : config.public.apiBaseUrl) || "";
+		(import.meta.server
+			? config.internalApiUrlForServer
+			: config.public.apiUrlForBrowserClient) || "";
 
 	const axiosInstance = axios.create({
 		baseURL,

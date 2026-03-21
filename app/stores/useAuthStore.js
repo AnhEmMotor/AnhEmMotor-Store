@@ -93,7 +93,7 @@ export const useAuthStore = defineStore("auth", () => {
 		if (!token) return;
 
 		abortController = new AbortController();
-		const sseUrl = `${config.public.apiBaseUrl}/api/v1/user/me`;
+		const sseUrl = `${config.public.apiUrlForBrowserClient}/api/v1/user/me`;
 
 		sseStatus.value = "connecting";
 
@@ -270,8 +270,8 @@ export const useAuthStore = defineStore("auth", () => {
 			}
 
 			const serverBaseUrl = import.meta.server
-				? config.apiServerUrl
-				: config.public.apiBaseUrl;
+				? config.internalApiUrlForServer
+				: config.public.apiUrlForBrowserClient;
 			const userData = await $fetch("/api/v1/user/me", {
 				baseURL: serverBaseUrl,
 				method: "GET",
@@ -309,8 +309,9 @@ export const useAuthStore = defineStore("auth", () => {
 		try {
 			let headers = {};
 			const backendUrl =
-				(import.meta.server ? config.apiServerUrl : config.public.apiBaseUrl) ||
-				"";
+				(import.meta.server
+					? config.internalApiUrlForServer
+					: config.public.apiUrlForBrowserClient) || "";
 
 			let mainRequestEvent = null;
 			if (import.meta.server) {

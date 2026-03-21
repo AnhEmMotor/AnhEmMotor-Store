@@ -60,9 +60,9 @@ const selectedOptions = computed({
 });
 
 const selectedCategories = computed({
-	get: () => props.modelValue.categoryIds || [],
+	get: () => props.modelValue.category_ids || [],
 	set: (val) => {
-		emit("update:modelValue", { ...props.modelValue, categoryIds: val });
+		emit("update:modelValue", { ...props.modelValue, category_ids: val });
 	},
 });
 
@@ -96,7 +96,7 @@ const resetFilters = () => {
 	emit("update:modelValue", {
 		search: "",
 		optionValueIds: [],
-		categoryIds: [],
+		category_ids: [],
 	});
 };
 

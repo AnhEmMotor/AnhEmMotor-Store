@@ -105,6 +105,18 @@
 - Tiêu chuẩn: Bắt buộc sử dụng usePaginatedQuery.js cho mọi tính năng có phân trang hoặc quản lý danh sách nhiều trang.
 - AI không được phép tự ý viết nội dung, sửa đổi hoặc tạo mới file usePaginatedQuery.js. Nếu chưa có file này, AI phải yêu cầu người dùng cung cấp hoặc copy từ dự án mẫu. Tuyệt đối không tự sinh code thay thế cho công cụ này.
 
+# Quy tắc quản lý biến môi trường (khi có thêm biến môi trường trong file .env)
+
+- Mọi biến mới phải được thêm vào .env.template với giá trị trống hoặc giá trị mẫu không nhạy cảm. Phải có comment ngay phía trên biến đó để giải thích chức năng.
+- Mọi biến dùng trong .env và .env.template phải có tiền tố NUXT\_.
+- Tuyệt đối không lưu giá trị thật (Production keys) vào bất kỳ file nào được push lên Git (trừ file .env đã được .gitignore).
+- Secret trên GitHub phải đặt tên khớp hoàn toàn với file .env (BẮT BUỘC KHÔNG CÓ TIỀN TỐ NUXT\_) để tối ưu hóa việc tự động hóa CI/CD. Khi thêm biến vào GitHub Secrets, phải kiểm tra xem biến đó có cần thiết cho quá trình Build hay không. Nếu có, phải liệt kê vào file .github/workflows/deploy.yml.
+- Phải thêm vào trong file README.md:
+
+* Nếu cần thiết chỉnh sửa hoặc ghi chú, phải ghi vào phần "Environment Configuration" (tiếng Anh) và "Cấu hình Môi trường" (tiếng Việt)
+
+* Nếu có thêm biến cần cấu hình trong Github Secret thì cần ghi thêm vào trong bảng "Deployment & CI/CD" cả bản tiếng Anh và tiếng Việt, bao gồm cả mô tả và ví dụ rõ ràng.
+
 # Build dự án
 
 Khi có sự thay đổi trong dự án, chạy "npm run lint" để kiểm tra xem còn lỗi cú pháp thừa nào hay không, sau đó thì yêu cầu người dùng kiểm tra thủ công. Với dự án NuxtJS, tuyệt đối không chạy "npm run build".
