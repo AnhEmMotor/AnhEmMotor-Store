@@ -5,6 +5,10 @@ export default defineNuxtConfig({
 	compatibilityDate: "2025-07-15",
 	devtools: { enabled: true },
 
+	build: {
+		transpile: ["@tanstack/vue-query"],
+	},
+
 	modules: [
 		"@nuxtjs/seo",
 		"@nuxt/content",
@@ -35,6 +39,9 @@ export default defineNuxtConfig({
 				"@tanstack/vue-query-devtools",
 				"axios",
 			],
+		},
+		ssr: {
+			noExternal: ["@tanstack/vue-query"],
 		},
 		plugins: [
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
