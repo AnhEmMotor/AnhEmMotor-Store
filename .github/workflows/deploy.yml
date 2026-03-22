@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
           key: ${{ secrets.SERVER_REMOTE_ACCESS_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT_FOR_PRODUCTION_SERVER }}
-          source: ".output/"
+          source: ".output/,ecosystem.config.js"
           target: "/var/www/anhemmotor/frontend-store"
           strip_components: 0
 
