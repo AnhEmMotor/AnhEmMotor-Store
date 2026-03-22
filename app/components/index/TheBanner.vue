@@ -66,7 +66,7 @@ onUnmounted(() => {
 			<h1>Tìm Chiếc Xe Máy Mơ Ước Của Bạn</h1>
 			<p>
 				Khám phá bộ sưu tập xe máy chính hãng đa dạng từ các thương hiệu hàng
-				đầu thế giới
+				đầu
 			</p>
 
 			<form class="search-bar" @submit.prevent="handleSearch">
@@ -76,7 +76,7 @@ onUnmounted(() => {
 					v-model="searchQuery"
 					type="text"
 					:placeholder="currentPlaceholder"
-				>
+				/>
 				<button
 					id="searchButton"
 					type="submit"
@@ -112,7 +112,7 @@ onUnmounted(() => {
 				as="image"
 				href="/assets/image/index/index-banner-bg.webp"
 				fetchpriority="high"
-			>
+			/>
 		</Head>
 	</section>
 </template>

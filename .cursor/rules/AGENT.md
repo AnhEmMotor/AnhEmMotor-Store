@@ -108,6 +108,8 @@
 # Quy tắc quản lý biến môi trường (khi có thêm biến môi trường trong file .env)
 
 - Mọi biến mới phải được thêm vào .env.template với giá trị trống hoặc giá trị mẫu không nhạy cảm. Phải có comment ngay phía trên biến đó để giải thích chức năng.
+- Mọi biến mới phải được thêm vào ecosystem.config.js
+- Mọi biến mới phải được thêm vào .github/workflows/deploy.yml mục "Restart Application via SSH"
 - Mọi biến dùng trong .env và .env.template phải có tiền tố NUXT\_.
 - Tuyệt đối không lưu giá trị thật (Production keys) vào bất kỳ file nào được push lên Git (trừ file .env đã được .gitignore).
 - Secret trên GitHub phải đặt tên khớp hoàn toàn với file .env (BẮT BUỘC KHÔNG CÓ TIỀN TỐ NUXT\_) để tối ưu hóa việc tự động hóa CI/CD. Khi thêm biến vào GitHub Secrets, phải kiểm tra xem biến đó có cần thiết cho quá trình Build hay không. Nếu có, phải liệt kê vào file .github/workflows/deploy.yml.

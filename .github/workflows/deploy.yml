@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
           key: ${{ secrets.SERVER_REMOTE_ACCESS_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT_FOR_PRODUCTION_SERVER }}
-          script: |
+          script: script: |
             cd /var/www/anhemmotor/frontend-store
             export NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT=${{ secrets.PUBLIC_API_URL_FOR_BROWSER_CLIENT }}
             export NUXT_INTERNAL_API_URL_FOR_SERVER=${{ secrets.INTERNAL_API_URL_FOR_SERVER }}
