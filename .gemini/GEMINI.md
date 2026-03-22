@@ -18,6 +18,7 @@
   - Typography (font, line-height, color, text-align...)
   - Visual (background, opacity, transition...)
   - Misc (cursor, pointer-events...)
+- Phải có responsive cho giao diện với mọi kích thước, từ điện thoại đến máy tính bảng đến máy tính bàn.
 
 # Tailwind CSS
 
@@ -27,6 +28,7 @@
   - Sử dụng tailwind-merge hoặc clsx khi cần xử lý class động.
   - Không viết trùng lặp các class ghi đè nhau (ví dụ: đã có px-4 thì không viết thêm pl-2).
   - Responsive: Ưu tiên Mobile-first.
+- Phải có responsive cho giao diện với mọi kích thước, từ điện thoại đến máy tính bảng đến máy tính bàn.
 
 # JavaScript
 
@@ -47,14 +49,8 @@
 
 ## Cấu trúc File (.vue)
 
-> [!IMPORTANT]
-> **Thứ tự ưu tiên:** `<script setup>` -> `<template>` -> `<style>`.
-> **Lý do:** Bạn cần đọc logic và dữ liệu trước khi xem giao diện. Để `<style>` ở giữa là một sai lầm về trải nghiệm lập trình (DX) vì nó thường rất dài, khiến bạn phải scroll mỏi tay để nhảy giữa logic và template.
-
-## Đặt tên
-
-- **Component & File:** Đồng nhất sử dụng **PascalCase** (ví dụ: `UserCard.vue`).
-- **Tại sao?** Trong Vue, Component là một class/object đặc biệt. Việc dùng `kebab-case` cho tên file chỉ làm khó hệ thống tự động import và gây mất đồng nhất khi gọi Component trong template.
+- Thứ tự ưu tiên trong mỗi file .vue: `<script setup>` -> `<template>` -> `<style>`.
+- Đặt tên Component & File: Đồng nhất sử dụng PascalCase (ví dụ: `UserCard.vue`).
 
 ## Phân chia nhiệm vụ (The Quadruple-Contract)
 
