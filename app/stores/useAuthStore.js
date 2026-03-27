@@ -6,9 +6,8 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { parseCookies, appendResponseHeader } from "h3";
 import { useRouter } from "vue-router";
 
-let refreshTokenPromise = null;
-
 export const useAuthStore = defineStore("auth", () => {
+	let refreshTokenPromise = null;
 	const router = useRouter();
 	const config = useRuntimeConfig();
 	const user = ref(null);
@@ -32,6 +31,13 @@ export const useAuthStore = defineStore("auth", () => {
 		if (import.meta.server) {
 			ssrEvent.value = event;
 		}
+	}
+
+	function setAuthResult(result) {
+		user.value = result.user ?? null;
+		accessToken.value = result.accessToken ?? null;
+		expiresAt.value = result.expiresAt ?? null;
+		status.value = result.status ?? "idle";
 	}
 
 	const cleanState = () => {
@@ -315,17 +321,24 @@ export const useAuthStore = defineStore("auth", () => {
 
 			let mainRequestEvent = null;
 			if (import.meta.server) {
-				mainRequestEvent = ssrEvent.value || useRequestEvent();
-				if (mainRequestEvent) {
-					const allCookies = parseCookies(mainRequestEvent);
-					const refreshToken = allCookies["refreshToken"];
-
-					if (!refreshToken) {
-						return { error: "No refresh token available" };
-					}
-
-					headers.Cookie = `refreshToken=${refreshToken}`;
+				mainRequestEvent = ssrEvent.value;
+				if (!mainRequestEvent) {
+					return { error: "No SSR event available" };
 				}
+
+				if (mainRequestEvent.context._authCalculated) {
+					const cached = mainRequestEvent.context._authCalculated;
+					setAuthResult(cached);
+					return { data: cached };
+				}
+
+				const refreshTokenCookie =
+					mainRequestEvent.context._freshRefreshToken ||
+					parseCookies(mainRequestEvent)["refreshToken"];
+				if (!refreshTokenCookie) {
+					return { error: "No refresh token available" };
+				}
+				headers.Cookie = `refreshToken=${refreshTokenCookie}`;
 			}
 
 			const response = await $fetch.raw(
@@ -353,6 +366,10 @@ export const useAuthStore = defineStore("auth", () => {
 			if (data && data.accessToken) {
 				accessToken.value = data.accessToken;
 				expiresAt.value = data.expiresAt;
+				if (import.meta.server && mainRequestEvent?.context) {
+					mainRequestEvent.context._freshRefreshToken =
+						data.refreshToken || null;
+				}
 				return { data, newCookieString };
 			} else {
 				throw new Error("Refresh token failed: No new AT received");
@@ -364,15 +381,6 @@ export const useAuthStore = defineStore("auth", () => {
 				accessToken.value = null;
 				user.value = null;
 				status.value = "idle";
-
-				const event = ssrEvent.value;
-				if (event) {
-					appendResponseHeader(
-						event,
-						"Set-Cookie",
-						"refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Lax",
-					);
-				}
 			}
 			return { error };
 		}
@@ -477,6 +485,7 @@ export const useAuthStore = defineStore("auth", () => {
 		initAuth,
 		refreshToken,
 		setSsrEvent,
+		setAuthResult,
 		sseStatus,
 		successRedirectMessage: computed(() => successRedirectMessage.value),
 		setSuccessMessage: (msg) => {

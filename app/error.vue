@@ -1,29 +1,28 @@
 <template>
-	<NuxtLayout name="default">
-		<div class="error-page">
-			<div class="error-content">
-				<div class="error-code">404</div>
-				<h1 class="error-title">Lạc đường rồi, Biker ơi!</h1>
-				<p class="error-message">
-					Có vẻ như bạn đã rẽ nhầm hướng. Trang bạn đang tìm kiếm không tồn tại
-					hoặc đã được di chuyển sang một cung đường khác.
-				</p>
-				<div class="action-container">
-					<button
-						class="btn-primary back-home-btn"
-						aria-label="Quay lại trang chủ"
-						@click="handleError"
-					>
-						<Icon name="fa6-solid:house" class="mr-2" /> Quay lại trang chủ
-					</button>
-				</div>
+	<div class="error-page">
+		<div class="error-content">
+			<div class="error-code">404</div>
+			<h1 class="error-title">Lạc đường rồi, Biker ơi!</h1>
+			<p class="error-message">
+				Có vẻ như bạn đã rẽ nhầm hướng. Trang bạn đang tìm kiếm không tồn tại
+				hoặc đã được di chuyển sang một cung đường khác.
+			</p>
+			<div class="action-container">
+				<button
+					class="btn-primary back-home-btn"
+					aria-label="Quay lại trang chủ"
+					@click="handleError"
+				>
+					<Icon name="fa6-solid:house" class="mr-2" /> Quay lại trang chủ
+				</button>
 			</div>
 		</div>
-	</NuxtLayout>
+	</div>
 </template>
 
 <script setup>
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuthStore } from "~/stores/useAuthStore";
+import { useLayoutStore } from "~/stores/useLayoutStore";
 
 defineProps({
 	error: {
@@ -33,7 +32,13 @@ defineProps({
 });
 
 const authStore = useAuthStore();
-await authStore.initAuth();
+const layoutStore = useLayoutStore();
+
+if (import.meta.server) {
+	const event = useRequestEvent();
+	authStore.setSsrEvent(event);
+}
+await Promise.all([authStore.initAuth(), layoutStore.fetchLayoutData()]);
 
 const handleError = () => clearError({ redirect: "/" });
 
