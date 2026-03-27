@@ -98,6 +98,51 @@ const productMapper = {
 			specifications,
 		};
 	},
+
+	formatPrice(price) {
+		if (!price) return "Liên hệ";
+		return new Intl.NumberFormat("vi-VN", {
+			style: "currency",
+			currency: "VND",
+		}).format(price);
+	},
+
+	toSeoMeta(detail) {
+		if (!detail || !detail.product) return {};
+		const product = detail.product;
+		const variant = detail.currentVariant;
+		const name = product.metaTitle || product.name || "Chi tiết sản phẩm";
+		const title = variant?.name ? `${name} - ${variant.name}` : name;
+		const description =
+			product.metaDescription ||
+			product.shortDescription ||
+			product.description ||
+			"Thông tin chi tiết sản phẩm tại AnhEm Motor.";
+
+		return {
+			title: `${title} | AnhEm Motor`,
+			ogTitle: `${title} | AnhEm Motor`,
+			description,
+			ogDescription: description,
+			ogImage: variant?.image || "/assets/image/index/index-banner-bg.webp",
+			twitterTitle: `${title} | AnhEm Motor`,
+			twitterDescription: description,
+			twitterImage:
+				variant?.image || "/assets/image/index/index-banner-bg.webp",
+		};
+	},
+
+	toCartItem(detail) {
+		if (!detail || !detail.product || !detail.currentVariant) return null;
+		const product = detail.product;
+		const variant = detail.currentVariant;
+		return {
+			id: variant.id,
+			name: product.name + (variant.name ? ` - ${variant.name}` : ""),
+			price: variant.price,
+			image: variant.image,
+		};
+	},
 };
 
 export default productMapper;

@@ -2,19 +2,11 @@
 import { ref, computed } from "vue";
 import { useProductStore } from "@/stores/useProductStore";
 import { useCart } from "~/composables/useCart";
+import productMapper from "@/mappers/productMapper";
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);
 const productStore = useProductStore();
-
-// Fetch labels first to use in mapping
-const { data: attributeLabels } = await useAsyncData(
-	"product-attribute-labels",
-	() => productStore.getProductAttributeLabels(),
-	{
-		staleTime: 1000 * 60 * 60,
-	},
-);
 
 const {
 	data: detail,
@@ -22,15 +14,13 @@ const {
 	error,
 } = await useAsyncData(
 	"product-detail-" + slug.value,
-	() =>
-		productStore.getProductStoreDetailBySlug(slug.value, attributeLabels.value),
+	() => productStore.fetchFullProductDetail(slug.value),
 	{
 		watch: [slug],
 	},
 );
 
 const currentVariant = computed(() => detail.value?.currentVariant);
-
 const selectedImage = ref(null);
 const mainImage = computed({
 	get: () => {
@@ -55,83 +45,27 @@ const isPlaceholderActive = computed(() => {
 });
 
 const allPhotos = computed(() => detail.value?.currentVariant?.photos || []);
-
-const formattedPrice = computed(() => {
-	if (!currentVariant.value?.price) return "Liên hệ";
-	return new Intl.NumberFormat("vi-VN", {
-		style: "currency",
-		currency: "VND",
-	}).format(currentVariant.value.price);
-});
-
+const formattedPrice = computed(() =>
+	productMapper.formatPrice(currentVariant.value?.price),
+);
 const variantName = computed(() => currentVariant.value?.name || "");
-
 const specifications = computed(() => detail.value?.specifications || []);
 
 const handleVariantChange = (event) => {
 	const targetSlug = event.target.value;
-	if (targetSlug) {
-		navigateTo(`/product/${targetSlug}`);
-	}
+	if (targetSlug) navigateTo(`/product/${targetSlug}`);
 };
 
-const seoTitle = computed(() => {
-	const name =
-		detail.value?.product?.metaTitle ||
-		detail.value?.product?.name ||
-		"Chi tiết sản phẩm";
-	return variantName.value ? `${name} - ${variantName.value}` : name;
-});
-
-const seoDescription = computed(() => {
-	return (
-		detail.value?.product?.metaDescription ||
-		detail.value?.product?.shortDescription ||
-		detail.value?.product?.description ||
-		"Thông tin chi tiết sản phẩm tại AnhEm Motor."
-	);
-});
-
-useSeoMeta({
-	title: () => `${seoTitle.value} | AnhEm Motor`,
-	ogTitle: () => `${seoTitle.value} | AnhEm Motor`,
-	description: () => seoDescription.value,
-	ogDescription: () => seoDescription.value,
-	ogImage: () =>
-		detail.value?.currentVariant?.image ||
-		"/assets/image/index/index-banner-bg.webp",
-	twitterTitle: () => `${seoTitle.value} | AnhEm Motor`,
-	twitterDescription: () => seoDescription.value,
-	twitterImage: () =>
-		detail.value?.currentVariant?.image ||
-		"/assets/image/index/index-banner-bg.webp",
-});
+useSeoMeta(productMapper.toSeoMeta(detail.value));
 
 useHead({
-	link: [
-		{
-			rel: "icon",
-			type: "image/x-icon",
-			href: "/favicon.ico",
-		},
-	],
+	link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
 
 const { addItem } = useCart();
-
 const onAddToCart = () => {
-	if (!currentVariant.value) return;
-
-	const productToAdd = {
-		id: currentVariant.value.id,
-		name:
-			detail.value.product.name +
-			(variantName.value ? ` - ${variantName.value}` : ""),
-		price: currentVariant.value.price,
-		image: currentVariant.value.image,
-	};
-
-	addItem(productToAdd, 1);
+	const cartItem = productMapper.toCartItem(detail.value);
+	if (cartItem) addItem(cartItem, 1);
 };
 </script>
 

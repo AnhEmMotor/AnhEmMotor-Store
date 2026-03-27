@@ -1,7 +1,6 @@
-import axiosInstance from "../api/axios";
 import { USER_ENDPOINTS } from "../constants/endpoints/user";
 
-export const userService = {
+export default (axiosInstance) => ({
 	async updateProfile(payload) {
 		const { data } = await axiosInstance.put(USER_ENDPOINTS.ME, payload);
 		return data;
@@ -23,4 +22,4 @@ export const userService = {
 		);
 		return data;
 	},
-};
+});

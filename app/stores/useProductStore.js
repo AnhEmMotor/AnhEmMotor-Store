@@ -47,6 +47,18 @@ export const useProductStore = defineStore("product", () => {
 		return await service.getAttributeLabels();
 	};
 
+	const attributeLabels = ref(null);
+	const fetchAttributeLabels = async () => {
+		if (attributeLabels.value) return attributeLabels.value;
+		attributeLabels.value = await getProductAttributeLabels();
+		return attributeLabels.value;
+	};
+
+	const fetchFullProductDetail = async (slug) => {
+		const labels = await fetchAttributeLabels();
+		return await getProductStoreDetailBySlug(slug, labels);
+	};
+
 	return {
 		options,
 		isLoadingOptions,
@@ -56,5 +68,6 @@ export const useProductStore = defineStore("product", () => {
 		getProducts,
 		getProductStoreDetailBySlug,
 		getProductAttributeLabels,
+		fetchFullProductDetail,
 	};
 });

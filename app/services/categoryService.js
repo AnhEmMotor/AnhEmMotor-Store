@@ -1,8 +1,7 @@
-import axiosInstance from "../api/axios";
 import { STATIC_CATEGORIES } from "../constants/categories";
 import { PRODUCT_ENDPOINTS } from "../constants/endpoints/product";
 
-export const categoryService = {
+export default (axiosInstance) => ({
 	async getStaticCategories() {
 		// Trả về dữ liệu tĩnh cho trang category.vue theo yêu cầu
 		return Promise.resolve(STATIC_CATEGORIES);
@@ -15,4 +14,4 @@ export const categoryService = {
 		});
 		return data;
 	},
-};
+});

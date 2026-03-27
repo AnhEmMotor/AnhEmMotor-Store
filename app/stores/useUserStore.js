@@ -1,19 +1,42 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { userService } from "../services/userService";
+import userServiceFactory from "../services/userService";
 import { userMapper } from "../mappers/userMapper";
 import { useAuthStore } from "./useAuthStore";
+import { useAxios } from "../composables/useAxios";
 
 export const useUserStore = defineStore("user", () => {
+	const axios = useAxios();
+	const userService = userServiceFactory(axios);
 	const authStore = useAuthStore();
 	const isLoading = ref(false);
 	const isUploadingAvatar = ref(false);
 
-	async function updateProfile(formData) {
+	const formData = ref({
+		fullName: "",
+		phoneNumber: "",
+		gender: "",
+	});
+
+	const passwordData = ref({
+		currentPassword: "",
+		newPassword: "",
+		confirmPassword: "",
+	});
+
+	function initProfileForm(user) {
+		if (user) {
+			formData.value.fullName = user.fullName || "";
+			formData.value.phoneNumber = user.phoneNumber || "";
+			formData.value.gender = user.gender || "";
+		}
+	}
+
+	async function updateProfile() {
 		if (isLoading.value) return;
 		isLoading.value = true;
 		try {
-			const payload = userMapper.toUpdateProfilePayload(formData);
+			const payload = userMapper.toUpdateProfilePayload(formData.value);
 			await userService.updateProfile(payload);
 			await authStore.fetchUser();
 			return { success: true };
@@ -49,12 +72,50 @@ export const useUserStore = defineStore("user", () => {
 		}
 	}
 
-	async function changePassword(passwordData) {
+	function validatePassword() {
+		const data = passwordData.value;
+		if (!data.currentPassword || !data.newPassword || !data.confirmPassword) {
+			return {
+				success: false,
+				error: "Vui lòng nhập đầy đủ thông tin mật khẩu!",
+			};
+		}
+		if (data.newPassword.length < 6) {
+			return { success: false, error: "Mật khẩu mới phải có ít nhất 6 ký tự!" };
+		}
+		if (!/[^a-zA-Z0-9]/.test(data.newPassword)) {
+			return {
+				success: false,
+				error: "Mật khẩu mới phải chứa ít nhất 1 ký tự đặc biệt!",
+			};
+		}
+		if (data.newPassword !== data.confirmPassword) {
+			return { success: false, error: "Mật khẩu xác nhận không khớp!" };
+		}
+		if (data.newPassword === data.currentPassword) {
+			return {
+				success: false,
+				error: "Mật khẩu mới không được trùng với mật khẩu hiện tại!",
+			};
+		}
+		return { success: true };
+	}
+
+	async function changePassword() {
 		if (isLoading.value) return;
+
+		const validation = validatePassword();
+		if (!validation.success) return validation;
+
 		isLoading.value = true;
 		try {
-			const payload = userMapper.toChangePasswordPayload(passwordData);
+			const payload = userMapper.toChangePasswordPayload(passwordData.value);
 			await userService.changePassword(payload);
+			passwordData.value = {
+				currentPassword: "",
+				newPassword: "",
+				confirmPassword: "",
+			};
 			return { success: true };
 		} catch (error) {
 			return {
@@ -72,6 +133,9 @@ export const useUserStore = defineStore("user", () => {
 	return {
 		isLoading,
 		isUploadingAvatar,
+		formData,
+		passwordData,
+		initProfileForm,
 		updateProfile,
 		uploadAvatar,
 		changePassword,

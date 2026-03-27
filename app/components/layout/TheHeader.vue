@@ -65,7 +65,8 @@
 								@click="toggleCart"
 							>
 								<div class="relative">
-									<IconCart
+									<Icon
+										name="fa6-solid:cart-shopping"
 										class="w-6 h-6 text-gray-700 group-hover:text-red-500 transition-colors"
 									/>
 									<span
@@ -359,7 +360,6 @@
 
 <script setup>
 import { ref, onBeforeUnmount, computed, watch, onMounted } from "vue";
-import IconCart from "~/assets/icons/cart.svg";
 import CartPanel from "../cart/CartPanel.vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/useAuthStore";

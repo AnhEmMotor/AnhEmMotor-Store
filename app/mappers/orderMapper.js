@@ -76,6 +76,28 @@ const orderMapper = {
 			notes: raw.notes || [],
 		};
 	},
+
+	formatPrice(value) {
+		if (!value) return "0 ₫";
+		return value.toLocaleString("vi-VN", {
+			style: "currency",
+			currency: "VND",
+		});
+	},
+
+	calculateSummary(cartDetails) {
+		const subtotal = cartDetails.reduce(
+			(sum, item) => sum + item.price * item.quantity,
+			0,
+		);
+		const shipping = subtotal > 10000000 ? 0 : 200000;
+		const total = subtotal + shipping;
+		return {
+			subtotal,
+			shipping,
+			total,
+		};
+	},
 };
 
 export default orderMapper;

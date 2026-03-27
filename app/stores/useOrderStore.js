@@ -62,14 +62,55 @@ export const useOrderStore = defineStore("order", () => {
 		});
 	};
 
-	const createOrder = async (shippingInfo, cartItems) => {
+	const shippingInfo = ref({
+		fullName: "",
+		phone: "",
+		address: "",
+		notes: "",
+	});
+
+	const errors = ref({
+		fullName: "",
+		phone: "",
+		address: "",
+	});
+
+	const initShippingInfo = (user) => {
+		if (user) {
+			shippingInfo.value.fullName = user.fullName || user.userName || "";
+			shippingInfo.value.phone = user.phoneNumber || "";
+			shippingInfo.value.address = user.address || "";
+		}
+	};
+
+	const validateShippingInfo = () => {
+		let isValid = true;
+		errors.value = { fullName: "", phone: "", address: "" };
+
+		if (!shippingInfo.value.fullName?.trim()) {
+			errors.value.fullName = "Vui lòng nhập họ và tên người nhận";
+			isValid = false;
+		}
+		if (!shippingInfo.value.phone?.trim()) {
+			errors.value.phone = "Vui lòng nhập số điện thoại nhận hàng";
+			isValid = false;
+		}
+		if (!shippingInfo.value.address?.trim()) {
+			errors.value.address = "Vui lòng nhập địa chỉ giao hàng chi tiết";
+			isValid = false;
+		}
+
+		return isValid;
+	};
+
+	const createOrder = async (cartItems) => {
 		isLoading.value = true;
 		error.value = null;
 		try {
 			const authStore = useAuthStore();
 			const userId = authStore.user?.id || authStore.user?.sub;
 			const payload = orderMapper.mapOrderPayload(
-				shippingInfo,
+				shippingInfo.value,
 				cartItems,
 				userId,
 			);
@@ -136,6 +177,7 @@ export const useOrderStore = defineStore("order", () => {
 	const clearOrder = () => {
 		currentOrder.value = null;
 		lastCreatedOrderId.value = null;
+		errors.value = { fullName: "", phone: "", address: "" };
 	};
 
 	return {
@@ -146,7 +188,11 @@ export const useOrderStore = defineStore("order", () => {
 		cancellableStatuses,
 		isLoading,
 		error,
+		shippingInfo,
+		errors,
 		initStatuses,
+		initShippingInfo,
+		validateShippingInfo,
 		createOrder,
 		getMyPurchases,
 		fetchOrderDetail,

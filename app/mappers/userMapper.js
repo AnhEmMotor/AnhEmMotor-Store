@@ -13,4 +13,10 @@ export const userMapper = {
 			newPassword: passwordData.newPassword,
 		};
 	},
+
+	genderOptions: [
+		{ value: "Male", label: "Nam" },
+		{ value: "Female", label: "Nữ" },
+		{ value: "Other", label: "Khác" },
+	],
 };

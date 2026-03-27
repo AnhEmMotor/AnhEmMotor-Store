@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { useOrderStore } from "~/stores/useOrderStore";
+import { formatCurrency } from "~/utils/currency";
 
 const route = useRoute();
 const orderStore = useOrderStore();
@@ -44,10 +45,10 @@ useSeoMeta({
 	description: "Cảm ơn bạn đã mua hàng tại AnhEm Motor.",
 });
 
-const formatCurrency = (value) => {
-	if (!value) return "0 ₫";
-	return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-};
+// const formatCurrency = (value) => {
+// 	if (!value) return "0 ₫";
+// 	return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+// };
 </script>
 
 <template>
