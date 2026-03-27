@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, computed } from "vue";
+import { useCategoryStore } from "@/stores/useCategoryStore";
 
 useSeoMeta({
 	title: "Danh Mục Sản Phẩm | AnhEm Motor",
@@ -25,26 +26,12 @@ useHead({
 	],
 });
 
-const categories = ref([
-	{
-		href: "/products?page=1&category_ids=1",
-		imgSrc: "/assets/image/categories/xe.webp",
-		alt: "Xe",
-		title: "Xe",
-	},
-	{
-		href: "/products?page=1&category_ids=3",
-		imgSrc: "/assets/image/categories/spare-parts.webp",
-		alt: "Phụ tùng",
-		title: "Phụ Tùng",
-	},
-	{
-		href: "/products?page=1&category_ids=2",
-		imgSrc: "/assets/image/categories/accessories.webp",
-		alt: "Phụ kiện",
-		title: "Phụ Kiện",
-	},
-]);
+const categoryStore = useCategoryStore();
+const categories = computed(() => categoryStore.categories);
+
+onMounted(() => {
+	categoryStore.fetchStaticCategories();
+});
 </script>
 
 <template>

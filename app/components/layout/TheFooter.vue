@@ -1,5 +1,12 @@
+<script setup>
+import { useLayoutStore } from "@/stores/useLayoutStore";
+const layoutStore = useLayoutStore();
+const footerData = computed(() => layoutStore.footerData);
+</script>
+
 <template>
 	<footer
+		v-if="footerData"
 		class="bg-gradient-to-br from-gray-800 to-slate-800 text-white pt-16 pb-5"
 	>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -10,130 +17,47 @@
 						<ClientOnly>
 							<Icon name="fa6-solid:location-dot" class="mr-2" />
 						</ClientOnly>
-						193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai
+						{{ footerData.contact.address }}
 					</p>
 					<p class="contact-info-item">
 						<ClientOnly>
 							<Icon name="fa6-solid:phone" class="mr-2" />
 						</ClientOnly>
-						(024) 8582 0808
+						{{ footerData.contact.phone }}
 					</p>
 					<p class="contact-info-item">
 						<ClientOnly>
 							<Icon name="fa6-solid:envelope" class="mr-2" />
 						</ClientOnly>
-						anhemmotor@gmail.com
+						{{ footerData.contact.email }}
 					</p>
 					<div class="flex gap-4 mt-5">
 						<RouterLink
-							to="#"
+							v-for="social in footerData.contact.socials"
+							:key="social.name"
+							:to="social.url"
 							class="social-icon"
-							aria-label="Theo dõi AnhEm Motor trên Facebook"
+							:aria-label="`Theo dõi AnhEm Motor trên ${social.name}`"
 						>
 							<ClientOnly>
-								<Icon name="fa6-brands:facebook-f" />
-							</ClientOnly>
-						</RouterLink>
-						<RouterLink
-							to="#"
-							class="social-icon"
-							aria-label="Theo dõi AnhEm Motor trên Youtube"
-						>
-							<ClientOnly>
-								<Icon name="fa6-brands:youtube" />
-							</ClientOnly>
-						</RouterLink>
-						<RouterLink
-							to="#"
-							class="social-icon"
-							aria-label="Theo dõi AnhEm Motor trên Instagram"
-						>
-							<ClientOnly>
-								<Icon name="fa6-brands:instagram" />
-							</ClientOnly>
-						</RouterLink>
-						<RouterLink
-							to="#"
-							class="social-icon"
-							aria-label="Theo dõi AnhEm Motor trên Tiktok"
-						>
-							<ClientOnly>
-								<Icon name="fa6-brands:tiktok" />
+								<Icon :name="social.icon" />
 							</ClientOnly>
 						</RouterLink>
 					</div>
 				</div>
 
-				<div class="footer-col">
-					<h3 class="footer-heading">Sản Phẩm</h3>
+				<div
+					v-for="section in footerData.sections"
+					:key="section.title"
+					class="footer-col"
+				>
+					<h3 class="footer-heading">{{ section.title }}</h3>
 					<ul class="space-y-2">
-						<li>
-							<RouterLink to="#" class="footer-link">Xe máy Honda</RouterLink>
+						<li v-for="link in section.links" :key="link.name">
+							<RouterLink :to="link.url" class="footer-link">{{
+								link.name
+							}}</RouterLink>
 						</li>
-						<li>
-							<RouterLink to="#" class="footer-link">Xe máy Yamaha</RouterLink>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link">Xe máy Suzuki</RouterLink>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link"
-								>Xe máy Kawasaki</RouterLink
-							>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link"
-								>Phụ kiện xe máy</RouterLink
-							>
-						</li>
-					</ul>
-				</div>
-
-				<div class="footer-col">
-					<h3 class="footer-heading">Dịch Vụ</h3>
-					<ul class="space-y-2">
-						<li>
-							<RouterLink to="#" class="footer-link"
-								>Bảo dưỡng định kỳ</RouterLink
-							>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link"
-								>Sửa chữa xe máy</RouterLink
-							>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link">Đăng ký xe</RouterLink>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link"
-								>Bảo hiểm xe máy</RouterLink
-							>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link">Tư vấn mua xe</RouterLink>
-						</li>
-					</ul>
-				</div>
-
-				<div class="footer-col">
-					<h3 class="footer-heading">Hỗ Trợ</h3>
-					<ul class="space-y-2">
-						<li>
-							<RouterLink to="#" class="footer-link"
-								>Chính sách bảo hành</RouterLink
-							>
-						</li>
-						<li>
-							<RouterLink to="#" class="footer-link"
-								>Hướng dẫn sử dụng</RouterLink
-							>
-						</li>
-						<li><RouterLink to="#" class="footer-link">FAQ</RouterLink></li>
-						<li>
-							<RouterLink to="#" class="footer-link">Liên hệ hỗ trợ</RouterLink>
-						</li>
-						<li><RouterLink to="#" class="footer-link">Sitemap</RouterLink></li>
 					</ul>
 				</div>
 			</div>

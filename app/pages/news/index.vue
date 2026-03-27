@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getFeaturedNews, getAllNews } from "~/data/newsData";
+import { getFeaturedNews, getAllNews } from "~/constants/news";
 
 useSeoMeta({
 	title: "Tin Tức, Sự Kiện | AnhEm Motor",
@@ -100,4 +100,3 @@ onMounted(() => {
 	opacity: 0;
 }
 </style>
-

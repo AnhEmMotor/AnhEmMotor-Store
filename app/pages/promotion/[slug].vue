@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { getPromotionBySlug } from "~/data/promotionData";
+import { getPromotionBySlug } from "~/constants/promotion";
 
 const route = useRoute();
 const promotion = ref(null);

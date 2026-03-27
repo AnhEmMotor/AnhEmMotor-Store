@@ -16,30 +16,43 @@
 						class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center"
 					>
 						<div
-							class="relative group cursor-pointer"
+							class="w-32 h-32 rounded-full bg-red-50 flex items-center justify-center overflow-hidden ring-4 ring-white shadow-md transition-all relative group cursor-pointer"
+							:class="{ 'opacity-50 blur-[2px]': isUploadingAvatar }"
 							@click="triggerAvatarUpload"
 						>
 							<img
-								:src="
-									user?.avatarUrl ||
-									`https://ui-avatars.com/api/?name=${user?.fullName || 'User'}&background=random&size=128`
-								"
+								v-if="user?.avatarUrl"
+								:src="user.avatarUrl"
 								alt="Avatar"
-								class="w-32 h-32 rounded-full object-cover ring-4 ring-gray-50 shadow-md pointer-events-none"
-								:class="{ 'opacity-50': isUploadingAvatar }"
+								class="w-full h-full object-cover pointer-events-none"
 							>
+							<ClientOnly v-else>
+								<Icon name="fa6-solid:user" class="text-red-500 text-4xl" />
+								<template #fallback>
+									<svg
+										viewBox="0 0 448 512"
+										class="w-9 h-9 text-red-500 fill-current"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 32C79.8 288 0 367.8 0 466.7v45.3h448v-45.3c0-98.9-79.8-178.7-178.3-178.7h-91.4z"
+										/>
+									</svg>
+								</template>
+							</ClientOnly>
+
 							<div
-								class="absolute inset-0 bg-gray-900/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+								class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
 							>
-								<Icon name="fa6-solid:camera" class="text-white text-xl" />
+								<Icon name="fa6-solid:camera" class="text-white text-2xl" />
 							</div>
 							<div
 								v-if="isUploadingAvatar"
-								class="absolute inset-0 flex items-center justify-center"
+								class="absolute inset-0 flex items-center justify-center z-10"
 							>
 								<Icon
 									name="fa6-solid:spinner"
-									class="animate-spin text-white text-3xl"
+									class="animate-spin text-red-600 text-3xl"
 								/>
 							</div>
 						</div>
@@ -438,7 +451,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useAuthStore } from "../stores/useAuthStore";
-import { useAxios } from "~/composables/useAxios";
+import { useUserStore } from "../stores/useUserStore";
 
 useSeoMeta({
 	title: "Chỉnh sửa hồ sơ | AnhEm Motor",
@@ -448,14 +461,14 @@ useSeoMeta({
 
 const instance = useNuxtApp();
 const authStore = useAuthStore();
-const axios = useAxios();
+const userStore = useUserStore();
 
 const activeTab = ref("profile");
-const isLoading = ref(false);
-const isUploadingAvatar = ref(false);
 const fileInput = ref(null);
 
 const user = computed(() => authStore.user);
+const isLoading = computed(() => userStore.isLoading);
+const isUploadingAvatar = computed(() => userStore.isUploadingAvatar);
 
 const genderOptions = [
 	{ value: "Male", label: "Nam" },
@@ -464,9 +477,21 @@ const genderOptions = [
 ];
 
 const formData = ref({
-	fullName: user.value?.fullName || "",
-	phoneNumber: user.value?.phoneNumber || "",
-	gender: user.value?.gender || "",
+	fullName: "",
+	phoneNumber: "",
+	gender: "",
+});
+
+const passwordData = ref({
+	currentPassword: "",
+	newPassword: "",
+	confirmPassword: "",
+});
+
+const passwordFieldType = ref({
+	current: "password",
+	new: "password",
+	confirm: "password",
 });
 
 watch(
@@ -480,18 +505,6 @@ watch(
 	},
 	{ immediate: true },
 );
-
-const passwordData = ref({
-	currentPassword: "",
-	newPassword: "",
-	confirmPassword: "",
-});
-
-const passwordFieldType = ref({
-	current: "password",
-	new: "password",
-	confirm: "password",
-});
 
 function togglePassword(field) {
 	passwordFieldType.value[field] =
@@ -515,52 +528,22 @@ async function handleAvatarChange(event) {
 		);
 	}
 
-	isUploadingAvatar.value = true;
-	const uploadData = new FormData();
-	uploadData.append("file", file);
-
-	try {
-		await axios.post("/api/v1/user/avatar", uploadData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
-
+	const { success, error } = await userStore.uploadAvatar(file);
+	if (success) {
 		instance.$toast.success("Cập nhật ảnh đại diện thành công!");
-
-		if (authStore.fetchUser) {
-			await authStore.fetchUser();
-		}
-	} catch {
-		instance.$toast.error("Lỗi khi cập nhật ảnh đại diện!");
-	} finally {
-		isUploadingAvatar.value = false;
-		if (fileInput.value) fileInput.value.value = "";
+	} else {
+		instance.$toast.error(error);
 	}
+
+	if (fileInput.value) fileInput.value.value = "";
 }
 
 async function handleUpdateInfo() {
-	isLoading.value = true;
-	try {
-		await axios.put("/api/v1/user/me", {
-			fullName: formData.value.fullName,
-			phoneNumber: formData.value.phoneNumber,
-			gender: formData.value.gender,
-		});
-
+	const { success, error } = await userStore.updateProfile(formData.value);
+	if (success) {
 		instance.$toast.success("Cập nhật thông tin thành công!");
-
-		if (authStore.fetchUser) {
-			await authStore.fetchUser();
-		}
-	} catch (error) {
-		const errorMessage =
-			error.response?.data?.message ||
-			error.response?.data?.errors?.[0]?.message ||
-			"Đã xảy ra lỗi khi cập nhật thông tin.";
-		instance.$toast.error(errorMessage);
-	} finally {
-		isLoading.value = false;
+	} else {
+		instance.$toast.error(error);
 	}
 }
 
@@ -586,27 +569,16 @@ async function handleUpdatePassword() {
 		);
 	}
 
-	isLoading.value = true;
-	try {
-		await axios.post("/api/v1/user/change-password", {
-			currentPassword: data.currentPassword,
-			newPassword: data.newPassword,
-		});
-
+	const { success, error } = await userStore.changePassword(data);
+	if (success) {
 		instance.$toast.success("Đổi mật khẩu thành công!");
 		passwordData.value = {
 			currentPassword: "",
 			newPassword: "",
 			confirmPassword: "",
 		};
-	} catch (error) {
-		const errorMessage =
-			error.response?.data?.message ||
-			error.response?.data?.errors?.[0]?.message ||
-			"Mật khẩu hiện tại không chính xác hoặc không đủ điều kiện.";
-		instance.$toast.error(errorMessage);
-	} finally {
-		isLoading.value = false;
+	} else {
+		instance.$toast.error(error);
 	}
 }
 </script>

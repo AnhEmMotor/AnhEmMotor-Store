@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { getNewsBySlug, getAllNews } from "~/data/newsData";
+import { getNewsBySlug, getAllNews } from "~/constants/news";
 
 const route = useRoute();
 const news = ref(null);

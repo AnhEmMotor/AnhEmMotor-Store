@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { getAllPromotions } from "~/data/promotionData";
+import { getAllPromotions } from "~/constants/promotion";
 
 useSeoMeta({
 	title: "Chương Trình Khuyến Mãi Xe Máy | AnhEm Motor",

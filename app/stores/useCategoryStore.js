@@ -1,44 +1,37 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useAxios } from "@/composables/useAxios";
-import { ProductCategoryRepository } from "@/repositories/ProductCategoryRepository";
+import { categoryService } from "../services/categoryService";
+import { categoryMapper } from "../mappers/categoryMapper";
 
 export const useCategoryStore = defineStore("category", () => {
-	const axios = useAxios();
-	const categoryRepo = ProductCategoryRepository(axios);
-
 	const categories = ref([]);
-	const isLoadingCategories = ref(false);
-	const categoriesError = ref(null);
+	const isLoading = ref(false);
+	const error = ref(null);
 
-	const fetchCategories = async (params = {}) => {
-		isLoadingCategories.value = true;
-		categoriesError.value = null;
+	// Tác vụ cho trang category.vue (Dữ liệu tĩnh)
+	const fetchStaticCategories = async () => {
+		isLoading.value = true;
+		error.value = null;
 		try {
-			const res = await categoryRepo.getProductCategories(params);
-			if (res && res.items) {
-				categories.value = res.items;
-			} else if (Array.isArray(res)) {
-				categories.value = res;
-			} else {
-				categoriesError.value = "Failed to load categories";
-			}
-		} catch (error) {
-			categoriesError.value = error.message || "An error occurred";
+			const data = await categoryService.getStaticCategories();
+			categories.value = categoryMapper.toUIList(data);
+		} catch (err) {
+			error.value = err.message || "Failed to load static categories";
 		} finally {
-			isLoadingCategories.value = false;
+			isLoading.value = false;
 		}
 	};
 
+	// Tác vụ cho Sidebar Filter (Dữ liệu API)
 	const getProductCategories = async (params = {}) => {
-		return await categoryRepo.getProductCategories(params);
+		return await categoryService.getApiCategories(params);
 	};
 
 	return {
 		categories,
-		isLoadingCategories,
-		categoriesError,
-		fetchCategories,
+		isLoading,
+		error,
+		fetchStaticCategories,
 		getProductCategories,
 	};
 });

@@ -65,7 +65,7 @@
 									(e) =>
 										(e.target.src = '/assets/image/placeholder-product.webp')
 								"
-							>
+							/>
 							<div
 								v-if="item.loading"
 								class="absolute inset-0 flex items-center justify-center bg-white/40"
@@ -140,8 +140,8 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import BaseButton from "../ui/button/BaseButton.vue";
-import NumberStepper from "../ui/input/NumberStepper.vue";
+import BaseButton from "../ui/BaseButton.vue";
+import NumberStepper from "../ui/NumberStepper.vue";
 
 const { isOpen, cartItems, cartTotal } = defineProps({
 	isOpen: Boolean,
