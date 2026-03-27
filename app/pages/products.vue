@@ -87,9 +87,8 @@ const toggleSidebar = () => {
 };
 
 const handleViewDetail = (product) => {
-	const slug = product.variants?.[0]?.url;
-	if (slug) {
-		navigateTo(`/product/${slug}`);
+	if (product.slug) {
+		navigateTo(`/product/${product.slug}`);
 	}
 };
 </script>

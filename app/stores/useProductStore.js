@@ -1,13 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAxios } from "@/composables/useAxios";
-import { ProductRepository } from "@/repositories/ProductRepository";
-import { OptionRepository } from "@/repositories/OptionRepository";
+import productService from "@/services/productService";
+import productMapper from "@/mappers/productMapper";
 
 export const useProductStore = defineStore("product", () => {
 	const axios = useAxios();
-	const productRepo = ProductRepository(axios);
-	const optionRepo = OptionRepository(axios);
+	const service = productService(axios);
 
 	const options = ref([]);
 	const isLoadingOptions = ref(false);
@@ -17,8 +16,8 @@ export const useProductStore = defineStore("product", () => {
 		isLoadingOptions.value = true;
 		optionsError.value = null;
 		try {
-			const res = await optionRepo.getOptions();
-			options.value = res || [];
+			const res = await service.getOptions();
+			options.value = productMapper.mapOptions(res);
 		} catch (error) {
 			optionsError.value = error.message || "An error occurred";
 		} finally {
@@ -27,19 +26,25 @@ export const useProductStore = defineStore("product", () => {
 	};
 
 	const getOptions = async () => {
-		return await optionRepo.getOptions();
+		const res = await service.getOptions();
+		return productMapper.mapOptions(res);
 	};
 
 	const getProducts = async (params) => {
-		return await productRepo.getProducts(params);
+		const res = await service.getProducts(params);
+		return {
+			...res,
+			items: productMapper.mapProductList(res.items),
+		};
 	};
 
-	const getProductStoreDetailBySlug = async (slug) => {
-		return await productRepo.getProductStoreDetailBySlug(slug);
+	const getProductStoreDetailBySlug = async (slug, attributeLabels = null) => {
+		const res = await service.getProductDetail(slug);
+		return productMapper.mapProductDetail(res, attributeLabels);
 	};
 
 	const getProductAttributeLabels = async () => {
-		return await productRepo.getProductAttributeLabels();
+		return await service.getAttributeLabels();
 	};
 
 	return {

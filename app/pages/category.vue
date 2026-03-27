@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, computed } from "vue";
+import { computed } from "vue";
 import { useCategoryStore } from "@/stores/useCategoryStore";
 
 useSeoMeta({
@@ -29,8 +29,10 @@ useHead({
 const categoryStore = useCategoryStore();
 const categories = computed(() => categoryStore.categories);
 
-onMounted(() => {
-	categoryStore.fetchStaticCategories();
+// Sử dụng useAsyncData để render danh mục từ server
+await useAsyncData("categories-static", async () => {
+	await categoryStore.fetchStaticCategories();
+	return true;
 });
 </script>
 

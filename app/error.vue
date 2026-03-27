@@ -1,32 +1,39 @@
 <template>
-	<div class="error-page">
-		<div class="error-content">
-			<div class="error-code">404</div>
-			<h1 class="error-title">Lạc đường rồi, Biker ơi!</h1>
-			<p class="error-message">
-				Có vẻ như bạn đã rẽ nhầm hướng. Trang bạn đang tìm kiếm không tồn tại
-				hoặc đã được di chuyển sang một cung đường khác.
-			</p>
-			<div class="action-container">
-				<button
-					class="btn-primary back-home-btn"
-					aria-label="Quay lại trang chủ"
-					@click="handleError"
-				>
-					<Icon name="fa6-solid:house" class="mr-2" /> Quay lại trang chủ
-				</button>
+	<NuxtLayout name="default">
+		<div class="error-page">
+			<div class="error-content">
+				<div class="error-code">404</div>
+				<h1 class="error-title">Lạc đường rồi, Biker ơi!</h1>
+				<p class="error-message">
+					Có vẻ như bạn đã rẽ nhầm hướng. Trang bạn đang tìm kiếm không tồn tại
+					hoặc đã được di chuyển sang một cung đường khác.
+				</p>
+				<div class="action-container">
+					<button
+						class="btn-primary back-home-btn"
+						aria-label="Quay lại trang chủ"
+						@click="handleError"
+					>
+						<Icon name="fa6-solid:house" class="mr-2" /> Quay lại trang chủ
+					</button>
+				</div>
 			</div>
 		</div>
-	</div>
+	</NuxtLayout>
 </template>
 
 <script setup>
+import { useAuthStore } from "@/stores/useAuthStore";
+
 defineProps({
 	error: {
 		type: Object,
 		required: true,
 	},
 });
+
+const authStore = useAuthStore();
+await authStore.initAuth();
 
 const handleError = () => clearError({ redirect: "/" });
 

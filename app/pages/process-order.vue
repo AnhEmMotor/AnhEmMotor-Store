@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/useAuthStore";
-import { useAxios } from "~/composables/useAxios";
+import { useOrderStore } from "~/stores/useOrderStore";
 
 useSeoMeta({
 	title: "Thanh Toán",
@@ -28,20 +28,18 @@ useHead({
 const {
 	cartItems,
 	cartDetails,
-	isPending,
 	clearCart,
 	updateQuantity,
 	removeItem,
+	isPending,
 } = useCart();
 const authStore = useAuthStore();
-const axios = useAxios();
+const orderStore = useOrderStore();
 
 const isLoggedIn = computed(() => authStore.isLoggedIn);
 const user = computed(() => authStore.user);
 
-const isSubmitting = ref(false);
-const orderSuccess = ref(false);
-const confirmedOrder = ref(null);
+const isSubmitting = computed(() => orderStore.isLoading);
 
 const shippingInfo = ref({
 	fullName: "",
@@ -100,36 +98,24 @@ async function handlePlaceOrder() {
 		return;
 	}
 
-	isSubmitting.value = true;
-
 	try {
-		const payload = {
-			customerName: shippingInfo.value.fullName,
-			customerPhone: shippingInfo.value.phone,
-			customerAddress: shippingInfo.value.address,
-			notes: shippingInfo.value.notes,
-			products: cartItems.value.map((item) => ({
-				productId: item.id,
-				count: item.quantity,
-			})),
-		};
-
-		const { data } = await axios.post("/api/v1/SalesOrders", payload);
-
-		if (data) {
-			confirmedOrder.value = data;
-			orderSuccess.value = true;
+		const order = await orderStore.createOrder(
+			shippingInfo.value,
+			cartItems.value,
+		);
+		if (order && order.id) {
 			clearCart();
-			window.scrollTo({ top: 0, behavior: "smooth" });
+			navigateTo(`/order-success?id=${order.id}`);
 		}
 	} catch {
-		isSubmitting.value = false;
-	} finally {
-		isSubmitting.value = false;
+		const errorMessage =
+			orderStore.error || "Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại!";
+		instance.$toast.error(errorMessage);
 	}
 }
 
 onMounted(async () => {
+	orderStore.clearOrder(); // Reset pre-existing order result
 	if (user.value) {
 		shippingInfo.value.fullName =
 			user.value.fullName || user.value.userName || "";
@@ -143,10 +129,7 @@ onMounted(async () => {
 	<main class="min-h-screen bg-gray-50 py-12">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<ClientOnly>
-				<div
-					v-if="!orderSuccess && cartItems.length === 0"
-					class="py-20 text-center"
-				>
+				<div v-if="cartItems.length === 0" class="py-20 text-center">
 					<div
 						class="w-24 h-24 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6"
 					>
@@ -166,7 +149,7 @@ onMounted(async () => {
 					</NuxtLink>
 				</div>
 
-				<div v-else-if="!orderSuccess" class="flex flex-col lg:flex-row gap-8">
+				<div v-else class="flex flex-col lg:flex-row gap-8">
 					<div class="flex-1 space-y-6">
 						<div
 							class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
@@ -335,9 +318,9 @@ onMounted(async () => {
 							<div
 								class="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar mb-6"
 							>
-								<template v-if="isPending && cartItems.length > 0">
+								<template v-if="isPending && cartDetails.length === 0">
 									<div
-										v-for="i in cartItems.length"
+										v-for="i in cartItems.length || 3"
 										:key="i"
 										class="flex gap-4 animate-pulse"
 									>
@@ -452,63 +435,6 @@ onMounted(async () => {
 					</div>
 				</div>
 
-				<div v-else class="max-w-2xl mx-auto text-center py-12">
-					<div
-						class="bg-white p-12 rounded-[3rem] shadow-2xl border border-gray-100 space-y-8 animate-in zoom-in duration-500"
-					>
-						<div
-							class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg shadow-green-500/20"
-						>
-							<Icon name="fa6-solid:check" />
-						</div>
-
-						<div class="space-y-2">
-							<h2 class="text-3xl font-black text-gray-900 uppercase">
-								Đặt hàng thành công!
-							</h2>
-							<p class="text-gray-500 font-medium">
-								Cảm ơn bạn đã tin tưởng và mua hàng tại AnhEm Motor.
-							</p>
-						</div>
-
-						<div
-							class="bg-gray-50 p-6 rounded-3xl border border-gray-100 text-left space-y-4"
-						>
-							<div class="flex justify-between items-center text-sm">
-								<span class="text-gray-400 font-bold uppercase tracking-widest"
-									>Phương thức</span
-								>
-								<span class="font-black text-gray-900"
-									>Thanh toán khi nhận hàng (COD)</span
-								>
-							</div>
-							<div class="flex justify-between items-center text-sm">
-								<span class="text-gray-400 font-bold uppercase tracking-widest"
-									>Trạng thái</span
-								>
-								<span
-									class="px-3 py-1 bg-yellow-100 text-yellow-600 rounded-full font-bold text-[10px] uppercase"
-									>Chờ xác nhận</span
-								>
-							</div>
-						</div>
-
-						<div class="flex flex-col sm:flex-row gap-4 pt-4">
-							<NuxtLink
-								to="/category"
-								class="flex-1 py-4 bg-gray-100 text-gray-700 font-black rounded-2xl hover:bg-gray-200 transition-colors uppercase text-sm"
-							>
-								Tiếp tục mua sắm
-							</NuxtLink>
-							<NuxtLink
-								to="/orders"
-								class="flex-1 py-4 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 shadow-xl shadow-red-600/20 transition-all transform hover:-translate-y-1 uppercase text-sm"
-							>
-								Xem đơn hàng
-							</NuxtLink>
-						</div>
-					</div>
-				</div>
 				<template #fallback>
 					<div class="flex flex-col lg:flex-row gap-8 animate-pulse">
 						<div class="flex-1 space-y-6">

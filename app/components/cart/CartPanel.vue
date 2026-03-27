@@ -65,7 +65,7 @@
 									(e) =>
 										(e.target.src = '/assets/image/placeholder-product.webp')
 								"
-							/>
+							>
 							<div
 								v-if="item.loading"
 								class="absolute inset-0 flex items-center justify-center bg-white/40"

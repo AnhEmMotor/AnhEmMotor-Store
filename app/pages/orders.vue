@@ -1,8 +1,6 @@
 <script setup>
-import { ref, onMounted } from "vue";
 import { useOrderStore } from "@/stores/useOrderStore";
 import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
-import { useAxios } from "@/composables/useAxios";
 import { toast } from "vue3-toastify";
 import { useQueryClient } from "@tanstack/vue-query";
 import BasePagination from "@/components/ui/BasePagination.vue";
@@ -14,11 +12,11 @@ useSeoMeta({
 });
 
 const orderStore = useOrderStore();
-const axios = useAxios();
 const queryClient = useQueryClient();
 
-onMounted(async () => {
+useAsyncData("order-statuses", async () => {
 	await orderStore.initStatuses();
+	return true;
 });
 
 const isEditing = ref(false);
@@ -71,18 +69,19 @@ const validateEditForm = () => {
 };
 
 const canEdit = (statusId) => {
+	if (!orderStore.lockedStatuses) return true;
 	const deliveryLocked =
-		orderStore.lockedStatuses?.deliveryInfo?.includes(statusId);
-	const notesLocked = orderStore.lockedStatuses?.notes?.includes(statusId);
+		orderStore.lockedStatuses.deliveryInfo?.includes(statusId);
+	const notesLocked = orderStore.lockedStatuses.notes?.includes(statusId);
 	return !deliveryLocked || !notesLocked;
 };
 
 const openEditModal = (order) => {
 	selectedOrder.value = order;
 	editForm.value = {
-		customerName: order.customerName || "",
-		customerPhone: order.customerPhone || "",
-		customerAddress: order.customerAddress || "",
+		customerName: order.customer?.name || "",
+		customerPhone: order.customer?.phone || "",
+		customerAddress: order.customer?.address || "",
 		notes: order.notes || "",
 	};
 	editErrors.value = {
@@ -103,26 +102,18 @@ const handleUpdateOrder = async () => {
 
 	isSubmittingEdit.value = true;
 	try {
-		await axios.patch(
-			`/api/v1/SalesOrders/${selectedOrder.value.id}`,
-			editForm.value,
-		);
+		const payload = {
+			customerName: editForm.value.customerName,
+			customerPhone: editForm.value.customerPhone,
+			customerAddress: editForm.value.customerAddress,
+			notes: editForm.value.notes,
+		};
+
+		await orderStore.updateOrderInfo(selectedOrder.value.id, payload);
 		toast.success("Cập nhật thông tin đơn hàng thành công!");
 		isEditing.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
 	} catch (error) {
-		if (error.response?.data?.Errors) {
-			const apiErrors = error.response.data.Errors;
-			apiErrors.forEach((err) => {
-				const field = err.Field?.toLowerCase();
-				if (field === "customername")
-					editErrors.value.customerName = err.Message;
-				if (field === "customerphone")
-					editErrors.value.customerPhone = err.Message;
-				if (field === "customeraddress")
-					editErrors.value.customerAddress = err.Message;
-			});
-		}
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi cập nhật đơn hàng.";
@@ -137,6 +128,7 @@ const filters = ref({});
 const {
 	data: orders,
 	isLoading,
+	isInitialLoading,
 	pagination,
 } = usePaginatedQuery({
 	queryKey: ["my-orders"],
@@ -145,30 +137,19 @@ const {
 	},
 	itemsPerPage: 10,
 	filters: filters,
-	dataKey: (res) => res.Items || res.items || [],
+	dataKey: (res) => res.items || [],
 });
 
 const isCancellable = (statusId) => {
 	return orderStore.cancellableStatuses.includes(statusId);
 };
 
-const calculateTotal = (outputInfos) => {
-	if (!outputInfos) return 0;
-	return outputInfos.reduce(
-		(sum, item) => sum + (item.count || 0) * (item.price || 0),
+const calculateTotal = (items) => {
+	if (!items) return 0;
+	return items.reduce(
+		(sum, item) => sum + (item.quantity || 0) * (item.price || 0),
 		0,
 	);
-};
-
-const formatDateSimple = (dateString) => {
-	if (!dateString) return "---";
-	return new Date(dateString).toLocaleDateString("vi-VN", {
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit",
-		hour: "2-digit",
-		minute: "2-digit",
-	});
 };
 
 const handleCancelOrder = (orderId) => {
@@ -214,9 +195,15 @@ const formatPrice = (price) => {
 				</p>
 			</div>
 
-			<div v-if="isLoading" class="flex justify-center py-20">
+			<div v-if="isInitialLoading" class="flex justify-center py-20">
 				<div
 					class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"
+				/>
+			</div>
+
+			<div v-else-if="isLoading" class="flex justify-center py-10">
+				<div
+					class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500"
 				/>
 			</div>
 
@@ -239,7 +226,7 @@ const formatPrice = (price) => {
 					Hãy khám phá các sản phẩm tuyệt vời của chúng tôi và đặt hàng ngay!
 				</p>
 				<RouterLink
-					to="/category"
+					to="/products"
 					class="inline-flex items-center px-8 py-3 bg-red-500 text-white font-black rounded-full shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all active:scale-95"
 				>
 					Mua sắm ngay
@@ -259,10 +246,8 @@ const formatPrice = (price) => {
 							<div
 								class="text-xs text-gray-400 font-bold uppercase tracking-widest"
 							>
-								Ngày đặt:
-								<span class="text-gray-900 ml-1">{{
-									formatDateSimple(order.createdAt)
-								}}</span>
+								Mã đơn hàng:
+								<span class="text-gray-900 ml-1">#{{ order.orderCode }}</span>
 							</div>
 						</div>
 
@@ -283,11 +268,10 @@ const formatPrice = (price) => {
 									'bg-green-50 text-green-600': order.statusId === 'completed',
 									'bg-red-50 text-red-600': order.statusId === 'cancelled',
 									'bg-orange-50 text-orange-600':
-										order.statusId === 'refunding' ||
-										order.statusId === 'refunded',
+										order.status === 'refunding' || order.status === 'refunded',
 								}"
 							>
-								{{ orderStore.getStatusName(order.statusId) }}
+								{{ orderStore.getStatusName(order.status) }}
 							</span>
 						</div>
 					</div>
@@ -295,7 +279,7 @@ const formatPrice = (price) => {
 					<div class="px-6 py-4">
 						<div class="space-y-4">
 							<div
-								v-for="(item, index) in order.outputInfos"
+								v-for="(item, index) in order.items"
 								:key="index"
 								class="flex gap-4"
 							>
@@ -304,8 +288,7 @@ const formatPrice = (price) => {
 								>
 									<img
 										:src="
-											item.coverImageUrl ||
-											'/assets/image/placeholder-product.webp'
+											item.image || '/assets/image/placeholder-product.webp'
 										"
 										class="w-full h-full object-cover"
 										@error="
@@ -317,11 +300,12 @@ const formatPrice = (price) => {
 								</div>
 								<div class="flex-1 min-w-0 flex flex-col justify-center">
 									<h4 class="font-bold text-gray-900 truncate">
-										{{ item.productName || "Sản phẩm" }}
+										{{ item.name || "Sản phẩm" }}
 									</h4>
 									<div class="flex items-center justify-between">
 										<p class="text-xs text-gray-500">
-											Số lượng: <span class="font-bold">{{ item.count }}</span>
+											Số lượng:
+											<span class="font-bold">{{ item.quantity }}</span>
 										</p>
 										<p class="text-sm font-black text-red-500">
 											{{ formatPrice(item.price) }}
@@ -348,7 +332,7 @@ const formatPrice = (price) => {
 											class="text-[10px] text-gray-400"
 										/>
 										<span class="text-sm font-bold text-gray-900">{{
-											order.customerName || "Chưa có tên"
+											order.customer?.name || "Chưa có tên"
 										}}</span>
 									</div>
 									<div class="flex items-center gap-3">
@@ -357,7 +341,7 @@ const formatPrice = (price) => {
 											class="text-[10px] text-gray-400"
 										/>
 										<span class="text-sm font-bold text-gray-700">{{
-											order.customerPhone || "Chưa có SĐT"
+											order.customer?.phone || "Chưa có SĐT"
 										}}</span>
 									</div>
 									<div class="flex items-start gap-3">
@@ -367,7 +351,7 @@ const formatPrice = (price) => {
 										/>
 										<span
 											class="text-sm font-medium text-gray-600 leading-relaxed italic"
-											>{{ order.customerAddress || "Chưa có địa chỉ" }}</span
+											>{{ order.customer?.address || "Chưa có địa chỉ" }}</span
 										>
 									</div>
 								</div>
@@ -391,7 +375,7 @@ const formatPrice = (price) => {
 					>
 						<div class="flex items-center gap-3">
 							<button
-								v-if="isCancellable(order.statusId)"
+								v-if="isCancellable(order.status)"
 								class="px-6 py-2 bg-white border border-red-100 text-red-500 text-xs font-black rounded-full hover:bg-red-50 transition-all active:scale-95 shadow-sm uppercase tracking-wider"
 								aria-label="Yêu cầu hủy đơn hàng này"
 								@click="handleCancelOrder(order.id)"
@@ -399,7 +383,7 @@ const formatPrice = (price) => {
 								Hủy đơn
 							</button>
 							<button
-								v-if="canEdit(order.statusId)"
+								v-if="canEdit(order.status)"
 								class="px-6 py-2 bg-gray-900 text-white text-xs font-black rounded-full hover:bg-gray-800 transition-all active:scale-95 shadow-sm uppercase tracking-wider"
 								aria-label="Sửa thông tin nhận hàng"
 								@click="openEditModal(order)"
@@ -414,7 +398,9 @@ const formatPrice = (price) => {
 								Tổng cộng:
 							</p>
 							<p class="text-2xl font-black text-red-500">
-								{{ formatPrice(calculateTotal(order.outputInfos)) }}
+								{{
+									formatPrice(order.totalAmount || calculateTotal(order.items))
+								}}
 							</p>
 						</div>
 					</div>
@@ -472,7 +458,7 @@ const formatPrice = (price) => {
 								}"
 								:disabled="
 									orderStore.lockedStatuses?.deliveryInfo?.includes(
-										selectedOrder?.statusId,
+										selectedOrder?.status,
 									)
 								"
 								@input="editErrors.customerName = ''"
@@ -501,7 +487,7 @@ const formatPrice = (price) => {
 								}"
 								:disabled="
 									orderStore.lockedStatuses?.deliveryInfo?.includes(
-										selectedOrder?.statusId,
+										selectedOrder?.status,
 									)
 								"
 								@input="editErrors.customerPhone = ''"
@@ -530,7 +516,7 @@ const formatPrice = (price) => {
 								}"
 								:disabled="
 									orderStore.lockedStatuses?.deliveryInfo?.includes(
-										selectedOrder?.statusId,
+										selectedOrder?.status,
 									)
 								"
 								@input="editErrors.customerAddress = ''"
@@ -556,7 +542,7 @@ const formatPrice = (price) => {
 								class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
 								:disabled="
 									orderStore.lockedStatuses?.notes?.includes(
-										selectedOrder?.statusId,
+										selectedOrder?.status,
 									)
 								"
 							/>

@@ -32,7 +32,7 @@ export function useCart() {
 		isPending,
 		refetch,
 	} = useQuery({
-		queryKey: ["cart-details-batch", variantIds],
+		queryKey: ["cart-details-batch"],
 		queryFn: async () => {
 			const numericIds = variantIds.value
 				.filter((id) => typeof id === "number" || !isNaN(Number(id)))
@@ -52,22 +52,14 @@ export function useCart() {
 		return cartItems.value.map((item) => {
 			const detail = batchDetails.value?.find((d) => d.id === Number(item.id));
 
-			if (detail) {
-				return {
-					...item,
-					name: detail.displayName,
-					price: detail.price,
-					image:
-						detail.coverImageUrl || "/assets/image/placeholder-product.webp",
-					loading: false,
-				};
-			}
-
 			return {
 				...item,
-				name: item.name || "Sản phẩm",
-				price: item.price || 0,
-				image: item.image || "/assets/image/placeholder-product.webp",
+				name: detail?.displayName || item.name || "Sản phẩm",
+				price: detail?.price ?? item.price ?? 0,
+				image:
+					detail?.coverImageUrl ||
+					item.image ||
+					"/assets/image/placeholder-product.webp",
 				loading: false,
 			};
 		});
@@ -87,13 +79,10 @@ export function useCart() {
 		if (idx === -1) {
 			const itemToAdd = {
 				id: product.id,
+				name: product.displayName || product.name,
+				price: product.price,
+				image: product.image || product.coverImageUrl,
 				quantity,
-				name: product.displayName || product.name || "Sản phẩm",
-				price: product.price || 0,
-				image:
-					product.image ||
-					product.coverImageUrl ||
-					"/assets/image/placeholder-product.webp",
 			};
 			cartItems.value.push(itemToAdd);
 		} else {

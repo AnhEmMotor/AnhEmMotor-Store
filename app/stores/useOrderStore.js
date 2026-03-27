@@ -1,62 +1,158 @@
 import { defineStore } from "pinia";
-import { computed } from "vue";
+import { ref } from "vue";
+import { useQueryClient } from "@tanstack/vue-query";
 import { useAxios } from "@/composables/useAxios";
-import { useQuery } from "@tanstack/vue-query";
-import { OrderRepository } from "@/repositories/OrderRepository";
+import orderService from "@/services/orderService";
+import orderMapper from "@/mappers/orderMapper";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export const useOrderStore = defineStore("order", () => {
 	const axios = useAxios();
-	const orderRepo = OrderRepository(axios);
+	const service = orderService(axios);
+	const queryClient = useQueryClient();
 
-	const { data: statusMapRaw = [] } = useQuery({
-		queryKey: ["order-status-map"],
-		queryFn: () => orderRepo.getStatusMap(),
-		staleTime: 1000 * 60 * 60,
+	const currentOrder = ref(null);
+	const lastCreatedOrderId = ref(null);
+	const isLoading = ref(false);
+	const error = ref(null);
+
+	const statusMap = ref({
+		pending: "Chờ xác nhận",
+		waiting_deposit: "Chờ đặt cọc",
+		deposit_paid: "Đã đặt cọc",
+		confirmed_cod: "Đã xác nhận (COD)",
+		paid_processing: "Đang xử lý",
+		waiting_pickup: "Chờ lấy hàng",
+		delivering: "Đang giao hàng",
+		completed: "Đã hoàn tất",
+		cancelled: "Đã hủy",
+		refunding: "Đang hoàn tiền",
+		refunded: "Đã hoàn tiền",
 	});
-
-	const statusMap = computed(() => statusMapRaw.value || []);
-
-	const { data: cancellableStatusesRaw = [] } = useQuery({
-		queryKey: ["cancellable-statuses"],
-		queryFn: () => orderRepo.getCancellableStatuses(),
-		staleTime: 1000 * 60 * 60,
+	const lockedStatuses = ref({
+		deliveryInfo: ["delivering", "completed", "cancelled"],
+		notes: ["completed", "cancelled"],
 	});
+	const cancellableStatuses = ref(["pending", "waiting_deposit"]);
 
-	const cancellableStatuses = computed(
-		() => cancellableStatusesRaw.value || [],
-	);
+	const initStatuses = async () => {
+		try {
+			const [mapRes, cancellableRes] = await Promise.all([
+				service.getStatusMap(),
+				service.getCancellableStatuses(),
+			]);
 
-	const { data: lockedStatusesRaw = {} } = useQuery({
-		queryKey: ["order-locked-statuses"],
-		queryFn: () =>
-			axios.get("/api/v1/SalesOrders/locked-statuses").then((r) => r.data),
-		staleTime: 1000 * 60 * 60,
-	});
+			statusMap.value = orderMapper.mapStatusMap(mapRes);
+			cancellableStatuses.value = cancellableRes || [];
 
-	const lockedStatuses = computed(() => lockedStatusesRaw.value || {});
-
-	const getMyPurchases = async (params) => {
-		return await orderRepo.getMyPurchases(params);
+			lockedStatuses.value = {
+				deliveryInfo: ["delivering", "completed", "cancelled"],
+				notes: ["completed", "cancelled"],
+			};
+		} catch {
+			null;
+		}
 	};
 
-	const initStatuses = async () => {};
+	const _refreshMyOrders = async () => {
+		const params = { page: 1, pageSize: 10 };
+		await queryClient.prefetchQuery({
+			queryKey: ["my-orders", params],
+			queryFn: () => getMyPurchases(params),
+		});
+	};
 
-	const cancelOrder = async (id) => {
-		return await orderRepo.cancelMyOrder(id);
+	const createOrder = async (shippingInfo, cartItems) => {
+		isLoading.value = true;
+		error.value = null;
+		try {
+			const authStore = useAuthStore();
+			const userId = authStore.user?.id || authStore.user?.sub;
+			const payload = orderMapper.mapOrderPayload(
+				shippingInfo,
+				cartItems,
+				userId,
+			);
+			const res = await service.createOrder(payload);
+			lastCreatedOrderId.value = res.id;
+			currentOrder.value = orderMapper.mapOrderResponse(res);
+
+			queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+			_refreshMyOrders();
+
+			return currentOrder.value;
+		} catch (e) {
+			const data = e.response?.data;
+			if (data?.type === "Validation" && data?.errors) {
+				error.value = data.errors.map((err) => err.message).join(" ");
+			} else {
+				error.value = data?.message || "Đã có lỗi xảy ra";
+			}
+			throw e;
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
+	const getMyPurchases = async (params) => {
+		const res = await service.getMyPurchases(params);
+		return {
+			...res,
+			items: orderMapper.mapOrderList(res),
+		};
+	};
+
+	const fetchOrderDetail = async (id) => {
+		isLoading.value = true;
+		error.value = null;
+		try {
+			const res = await service.getOrderDetail(id);
+			currentOrder.value = orderMapper.mapOrderResponse(res);
+			return currentOrder.value;
+		} catch (e) {
+			error.value = "Không tìm thấy thông tin đơn hàng";
+			throw e;
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
+	const cancelOrder = async (orderId) => {
+		await service.cancelOrder(orderId);
+		queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+		_refreshMyOrders();
+	};
+
+	const updateOrderInfo = async (orderId, payload) => {
+		await service.updateOrder(orderId, payload);
+		queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+		_refreshMyOrders();
 	};
 
 	const getStatusName = (statusId) => {
-		const status = statusMap.value.find((s) => s.id === statusId);
-		return status ? status.name : statusId;
+		return statusMap.value[statusId] || statusId || "Đang xử lý";
+	};
+
+	const clearOrder = () => {
+		currentOrder.value = null;
+		lastCreatedOrderId.value = null;
 	};
 
 	return {
-		cancellableStatuses,
+		currentOrder,
+		lastCreatedOrderId,
 		statusMap,
 		lockedStatuses,
-		getMyPurchases,
+		cancellableStatuses,
+		isLoading,
+		error,
 		initStatuses,
+		createOrder,
+		getMyPurchases,
+		fetchOrderDetail,
 		cancelOrder,
+		updateOrderInfo,
 		getStatusName,
+		clearOrder,
 	};
 });
