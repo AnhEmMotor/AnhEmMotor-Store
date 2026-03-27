@@ -1,4 +1,4 @@
-import { useAuthStore } from "~/stores/useAuthStore";
+import { useAuthStore } from "~/stores/auth.store";
 import { parseCookies } from "h3";
 
 export default defineNuxtPlugin(async (nuxtApp) => {

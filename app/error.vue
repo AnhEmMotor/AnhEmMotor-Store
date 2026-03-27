@@ -21,8 +21,8 @@
 </template>
 
 <script setup>
-import { useAuthStore } from "~/stores/useAuthStore";
-import { useLayoutStore } from "~/stores/useLayoutStore";
+import { useAuthStore } from "~/stores/auth.store";
+import { useLayoutStore } from "~/stores/layout.store";
 
 defineProps({
 	error: {

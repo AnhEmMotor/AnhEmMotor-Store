@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { useCartStore } from "@/stores/useCartStore";
-import { orderMapper } from "@/mappers/orderMapper";
+import { orderMapper } from "@/mappers/order.mapper";
 
 const cartStore = useCartStore();
 const cartItems = computed(() => cartStore.cartItems);

@@ -1,4 +1,4 @@
-import { ORDER_ENDPOINTS } from "@/constants/endpoints/order";
+import { ORDER_ENDPOINTS } from "@/constants/endpoints/order.endpoint";
 
 const orderService = (axios) => ({
 	async createOrder(payload) {

@@ -1,5 +1,5 @@
 <script setup>
-import { useNewsStore } from "@/stores/useNewsStore";
+import { useNewsStore } from "@/stores/news.store";
 
 const route = useRoute();
 const newsStore = useNewsStore();

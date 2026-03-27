@@ -1,5 +1,5 @@
 <script setup>
-import { useMaintenanceStore } from "@/stores/useMaintenanceStore";
+import { useMaintenanceStore } from "@/stores/maintenance.store";
 
 useSeoMeta({
 	title: "Dịch vụ | AnhEm Motor",

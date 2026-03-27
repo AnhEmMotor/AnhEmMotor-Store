@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import userServiceFactory from "../services/userService";
-import { userMapper } from "../mappers/userMapper";
-import { useAuthStore } from "./useAuthStore";
+import userServiceFactory from "../services/user.service";
+import { userMapper } from "../mappers/user.mapper";
+import { useAuthStore } from "./auth.store";
 import { useAxios } from "../composables/useAxios";
 
 export const useUserStore = defineStore("user", () => {

@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useProductStore } from "@/stores/useProductStore";
+import { useProductStore } from "@/stores/product.store";
 import { useCart } from "~/composables/useCart";
-import productMapper from "@/mappers/productMapper";
+import productMapper from "@/mappers/product.mapper";
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);

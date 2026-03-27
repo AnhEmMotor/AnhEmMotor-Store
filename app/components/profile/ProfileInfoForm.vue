@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import { useUserStore } from "@/stores/useUserStore";
-import { userMapper } from "@/mappers/userMapper";
+import { useUserStore } from "@/stores/user.store";
+import { userMapper } from "@/mappers/user.mapper";
 
 const instance = useNuxtApp();
 const userStore = useUserStore();

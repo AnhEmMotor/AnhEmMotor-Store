@@ -1,5 +1,5 @@
 import { STATIC_CATEGORIES } from "../constants/categories";
-import { PRODUCT_ENDPOINTS } from "../constants/endpoints/product";
+import { PRODUCT_ENDPOINTS } from "../constants/endpoints/product.endpoint";
 
 export default (axiosInstance) => ({
 	async getStaticCategories() {

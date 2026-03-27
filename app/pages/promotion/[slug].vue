@@ -1,5 +1,5 @@
 <script setup>
-import { usePromotionStore } from "@/stores/usePromotionStore";
+import { usePromotionStore } from "@/stores/promotion.store";
 
 const route = useRoute();
 const promotionStore = usePromotionStore();

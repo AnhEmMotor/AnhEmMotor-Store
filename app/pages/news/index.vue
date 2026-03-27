@@ -1,6 +1,6 @@
 <script setup>
-import { useNewsStore } from "@/stores/useNewsStore";
-import { newsService } from "@/services/newsService";
+import { useNewsStore } from "@/stores/news.store";
+import { newsService } from "@/services/news.service";
 import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
 
 useSeoMeta({

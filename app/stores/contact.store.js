@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { contactService } from "@/services/contactService";
+import { contactService } from "@/services/contact.service";
 
 export const useContactStore = defineStore("contact", {
 	state: () => ({

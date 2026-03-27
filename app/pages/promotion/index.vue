@@ -1,5 +1,5 @@
 <script setup>
-import { usePromotionStore } from "@/stores/usePromotionStore";
+import { usePromotionStore } from "@/stores/promotion.store";
 
 useSeoMeta({
 	title: "Chương Trình Khuyến Mãi Xe Máy | AnhEm Motor",

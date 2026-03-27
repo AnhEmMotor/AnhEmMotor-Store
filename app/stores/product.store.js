@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAxios } from "@/composables/useAxios";
-import productService from "@/services/productService";
-import productMapper from "@/mappers/productMapper";
+import productService from "@/services/product.service";
+import productMapper from "@/mappers/product.mapper";
 
 export const useProductStore = defineStore("product", () => {
 	const axios = useAxios();

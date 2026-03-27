@@ -1,4 +1,4 @@
-import { USER_ENDPOINTS } from "../constants/endpoints/user";
+import { USER_ENDPOINTS } from "../constants/endpoints/user.endpoint";
 
 export default (axiosInstance) => ({
 	async updateProfile(payload) {

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { newsService } from "@/services/newsService";
+import { newsService } from "@/services/news.service";
 
 export const useNewsStore = defineStore("news", {
 	state: () => ({

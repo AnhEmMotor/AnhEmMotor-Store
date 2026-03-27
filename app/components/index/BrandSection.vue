@@ -50,7 +50,7 @@
 
 <script setup lang="js">
 import { ref, onMounted, onBeforeUnmount, computed } from "vue";
-import { useHomeStore } from "@/stores/useHomeStore";
+import { useHomeStore } from "@/stores/home.store";
 
 const homeStore = useHomeStore();
 const carouselRef = ref(null);

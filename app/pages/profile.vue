@@ -29,8 +29,8 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useAuthStore } from "../stores/useAuthStore";
-import { useUserStore } from "../stores/useUserStore";
+import { useAuthStore } from "../stores/auth.store";
+import { useUserStore } from "../stores/user.store";
 
 // Components
 import ProfileSidebar from "@/components/profile/ProfileSidebar.vue";

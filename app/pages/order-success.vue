@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { useOrderStore } from "~/stores/useOrderStore";
+import { useOrderStore } from "~/stores/order.store";
 import { formatCurrency } from "~/utils/currency";
 
 const route = useRoute();

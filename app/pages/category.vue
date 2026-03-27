@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue";
-import { useCategoryStore } from "@/stores/useCategoryStore";
+import { useCategoryStore } from "@/stores/category.store";
 
 useSeoMeta({
 	title: "Danh Mục Sản Phẩm | AnhEm Motor",

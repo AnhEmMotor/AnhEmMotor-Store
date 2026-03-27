@@ -1,5 +1,5 @@
 <script setup>
-import { useOrderStore } from "@/stores/useOrderStore";
+import { useOrderStore } from "@/stores/order.store";
 import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
 import { toast } from "vue3-toastify";
 import { useQueryClient } from "@tanstack/vue-query";

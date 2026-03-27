@@ -1,5 +1,5 @@
 <script setup>
-import { useLayoutStore } from "@/stores/useLayoutStore";
+import { useLayoutStore } from "@/stores/layout.store";
 const layoutStore = useLayoutStore();
 const footerData = computed(() => layoutStore.footerData);
 </script>

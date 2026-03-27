@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import categoryServiceFactory from "../services/categoryService";
-import { categoryMapper } from "../mappers/categoryMapper";
+import categoryServiceFactory from "../services/category.service";
+import { categoryMapper } from "../mappers/category.mapper";
 import { useAxios } from "../composables/useAxios";
 
 export const useCategoryStore = defineStore("category", () => {

@@ -362,8 +362,8 @@
 import { ref, onBeforeUnmount, computed, watch, onMounted } from "vue";
 import CartPanel from "../cart/CartPanel.vue";
 import { useCart } from "~/composables/useCart";
-import { useAuthStore } from "~/stores/useAuthStore";
-import { useLayoutStore } from "~/stores/useLayoutStore";
+import { useAuthStore } from "~/stores/auth.store";
+import { useLayoutStore } from "~/stores/layout.store";
 
 const authStore = useAuthStore();
 const layoutStore = useLayoutStore();

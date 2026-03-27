@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import layoutService from "@/services/layoutService";
-import layoutMapper from "@/mappers/layoutMapper";
+import layoutService from "@/services/layout.service";
+import layoutMapper from "@/mappers/layout.mapper";
 
 export const useLayoutStore = defineStore("layout", () => {
 	const navItems = ref([]);

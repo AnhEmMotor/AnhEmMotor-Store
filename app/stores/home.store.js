@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import homeService from "@/services/homeService";
-import homeMapper from "@/mappers/homeMapper";
+import homeService from "@/services/home.service";
+import homeMapper from "@/mappers/home.mapper";
 
 export const useHomeStore = defineStore("home", () => {
 	const brands = ref([]);

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useAuthStore } from "./useAuthStore";
+import { useAuthStore } from "./auth.store";
 
 export const useRegisterStore = defineStore("register", () => {
 	const formData = ref({

@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 
 import { useRouter } from "#app";
-import { useHomeStore } from "@/stores/useHomeStore";
+import { useHomeStore } from "@/stores/home.store";
 
 const homeStore = useHomeStore();
 const currentPlaceholder = ref("");

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useHomeStore } from "@/stores/useHomeStore";
+import { useHomeStore } from "@/stores/home.store";
 
 const homeStore = useHomeStore();
 await homeStore.fetchHomeData();
