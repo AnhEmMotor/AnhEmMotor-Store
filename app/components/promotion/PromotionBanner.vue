@@ -1,41 +1,69 @@
+<script setup>
+// PromotionBanner có thể là component tĩnh hoặc nhận cấu hình qua props nếu cần.
+// Hiện tại chúng ta giữ cấu trúc hiện có nhưng bỏ script cũ.
+</script>
+
 <template>
-  <section class="text-center py-16 md:py-20 bg-gradient-to-br from-red-50 to-orange-50">
-    <div 
-      class="container mx-auto px-4 transition-all duration-1000"
-      :class="{ 'opacity-0 translate-y-5': !isVisible, 'opacity-100 translate-y-0': isVisible }"
-    >
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
-        {{ title }}
-      </h1>
-      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
-        {{ subtitle }}
-      </p>
-    </div>
-  </section>
+	<section
+		class="relative h-[250px] md:h-[400px] flex items-center justify-center overflow-hidden"
+	>
+		<!-- Background Image with Overlay -->
+		<div
+			class="absolute inset-0 bg-[url('https://cdn.honda.com.vn/news-motorbike/July2025/PC.webp')] bg-cover bg-center"
+		>
+			<div
+				class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"
+			/>
+		</div>
+
+		<!-- Content -->
+		<div class="container mx-auto px-4 relative z-10">
+			<div class="max-w-2xl animate-fade-in-left">
+				<span
+					class="inline-block bg-primary-red text-white text-xs md:text-sm font-bold px-4 py-1 rounded-full mb-4 uppercase tracking-widest"
+				>
+					Chương trình đặc biệt
+				</span>
+				<h1
+					class="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight drop-shadow-lg"
+				>
+					TỔNG HỢP <span class="text-primary-red">KHUYẾN MÃI</span><br >
+					ANHEM MOTOR
+				</h1>
+				<p class="text-gray-200 text-lg md:text-xl font-medium max-w-xl">
+					Cập nhật những ưu đãi hấp dẫn nhất dành cho các dòng xe Honda & Yamaha
+					mới nhất trong tháng.
+				</p>
+			</div>
+		</div>
+
+		<!-- Decorative Elements -->
+		<div
+			class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-gray-50 to-transparent"
+		/>
+	</section>
 </template>
 
-<script>
-export default {
-  name: 'PromotionBanner',
-  props: {
-    title: {
-      type: String,
-      default: 'Ưu Đãi Hấp Dẫn'
-    },
-    subtitle: {
-      type: String,
-      default: 'Đừng bỏ lỡ các chương trình khuyến mãi đặc biệt từ AnhEm Motor. Cập nhật ngay để nhận nhiều quà tặng giá trị!'
-    }
-  },
-  data() {
-    return {
-      isVisible: false
-    };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.isVisible = true;
-    }, 100);
-  }
-};
-</script>
+<style scoped>
+.bg-primary-red {
+	background-color: #e65151;
+}
+.text-primary-red {
+	color: #e65151;
+}
+
+@keyframes fadeInLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-50px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.animate-fade-in-left {
+	animation: fadeInLeft 1s ease-out forwards;
+}
+</style>

@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { getFeaturedNews, getAllNews } from "~/constants/news";
+import { useNewsStore } from "@/stores/useNewsStore";
+import { newsService } from "@/services/newsService";
+import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
 
 useSeoMeta({
 	title: "Tin Tức, Sự Kiện | AnhEm Motor",
@@ -8,28 +9,21 @@ useSeoMeta({
 		"Cập nhật tin tức mới nhất về xe máy, sự kiện và chương trình ưu đãi từ AnhEm Motor.",
 });
 
-const featuredNews = ref([]);
-const allNews = ref([]);
-const currentPage = ref(1);
-const itemsPerPage = 5;
+const newsStore = useNewsStore();
 
-const totalPages = computed(() =>
-	Math.ceil(allNews.value.length / itemsPerPage),
-);
+// 1. Featured News (Fetch via Store)
+await useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
 
-const paginatedNews = computed(() => {
-	const start = (currentPage.value - 1) * itemsPerPage;
-	return allNews.value.slice(start, start + itemsPerPage);
-});
-
-const handlePageChange = (page) => {
-	currentPage.value = page;
-	window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-onMounted(() => {
-	featuredNews.value = getFeaturedNews();
-	allNews.value = getAllNews();
+// 2. All News (Fetch via usePaginatedQuery)
+const {
+	data: allNews,
+	pagination,
+	isLoading,
+} = usePaginatedQuery({
+	queryKey: ["news-list"],
+	queryFn: (params) => newsService.getAllNews(params),
+	itemsPerPage: 5,
+	useLocalPagination: false, // Đồng bộ với URL ?page=x
 });
 </script>
 
@@ -37,7 +31,11 @@ onMounted(() => {
 	<div class="bg-white min-h-screen">
 		<NewsBanner />
 		<main class="pt-12 md:pt-16 pb-12">
-			<section class="container mx-auto px-4 mb-12 md:mb-16">
+			<!-- Featured News Section -->
+			<section
+				v-if="newsStore.featuredNews.length"
+				class="container mx-auto px-4 mb-12 md:mb-16"
+			>
 				<h2
 					class="text-3xl md:text-4xl font-extrabold text-center text-primary-red mb-8 md:mb-12 border-b-2 border-primary-light pb-4"
 				>
@@ -47,7 +45,7 @@ onMounted(() => {
 					class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
 				>
 					<div
-						v-for="(news, index) in featuredNews"
+						v-for="(news, index) in newsStore.featuredNews"
 						:key="news.id"
 						class="animate-fade-in-up"
 						:style="{ animationDelay: `${index * 100}ms` }"
@@ -57,27 +55,40 @@ onMounted(() => {
 				</div>
 			</section>
 
+			<!-- All News Section -->
 			<section class="container mx-auto px-4">
 				<h2
 					class="text-3xl md:text-4xl font-extrabold text-center text-primary-red mb-8 md:mb-12 border-b-2 border-primary-light pb-4"
 				>
 					TẤT CẢ TIN TỨC
 				</h2>
-				<div class="space-y-6">
-					<div
-						v-for="(news, index) in paginatedNews"
-						:key="news.id"
-						class="animate-fade-in-up"
-						:style="{ animationDelay: `${index * 100}ms` }"
-					>
-						<NewsCardHorizontal :news="news" />
-					</div>
+
+				<div v-if="isLoading" class="flex justify-center py-12">
+					<Icon
+						name="fa6-solid:circle-notch"
+						class="text-4xl animate-spin text-primary-red"
+					/>
 				</div>
-				<UiBasePagination
-					:current-page="currentPage"
-					:total-pages="totalPages"
-					@page-change="handlePageChange"
-				/>
+
+				<template v-else>
+					<div class="space-y-6">
+						<div
+							v-for="(news, index) in allNews"
+							:key="news.id"
+							class="animate-fade-in-up"
+							:style="{ animationDelay: `${index * 100}ms` }"
+						>
+							<NewsCardHorizontal :news="news" />
+						</div>
+					</div>
+
+					<UiBasePagination
+						v-if="pagination.totalPages > 1"
+						:current-page="pagination.currentPage"
+						:total-pages="pagination.totalPages"
+						@page-change="pagination.goToPage"
+					/>
+				</template>
 			</section>
 		</main>
 	</div>

@@ -1,3 +1,17 @@
+<script setup>
+const heroImage = "/assets/image/index/service-page/hero-image.webp";
+
+const scrollToServices = (e) => {
+	e.preventDefault();
+	if (import.meta.client) {
+		const target = document.querySelector("#services");
+		if (target) {
+			target.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	}
+};
+</script>
+
 <template>
 	<section
 		id="home"
@@ -29,13 +43,24 @@
 	</section>
 </template>
 
-<script setup>
-const heroImage = "/assets/image/index/service-page/hero-image.webp";
-const scrollToServices = (e) => {
-	e.preventDefault();
-	const target = document.querySelector("#services");
-	if (target) {
-		target.scrollIntoView({ behavior: "smooth", block: "start" });
+<style scoped>
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
 	}
-};
-</script>
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fadeInUp {
+	animation: fadeInUp 1s;
+}
+
+.animation-delay-200 {
+	animation-delay: 0.2s;
+	animation-fill-mode: both;
+}
+</style>

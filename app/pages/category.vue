@@ -58,18 +58,7 @@ await useAsyncData("categories-static", async () => {
 				class="group relative bg-white rounded-xl overflow-hidden shadow-md transform transition-transform duration-300 hover:-translate-y-2"
 			>
 				<div class="absolute inset-0 pointer-events-none z-20 overflow-hidden">
-					<div
-						class="absolute inset-0"
-						style="
-							background: linear-gradient(
-								135deg,
-								transparent,
-								rgba(231, 76, 60, 0.06),
-								transparent
-							);
-							opacity: 0;
-						"
-					/>
+					<div class="absolute inset-0 gradient-overlay" />
 					<div
 						class="absolute top-0 h-full group-hover:translate-x-[60%] transition-transform duration-900 ease-in-out opacity-80"
 					/>
@@ -97,3 +86,15 @@ await useAsyncData("categories-static", async () => {
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.gradient-overlay {
+	background: linear-gradient(
+		135deg,
+		transparent,
+		rgba(231, 76, 60, 0.06),
+		transparent
+	);
+	opacity: 0;
+}
+</style>

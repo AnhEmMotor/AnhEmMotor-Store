@@ -1,10 +1,17 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
-import { getPromotionBySlug } from "~/constants/promotion";
+import { usePromotionStore } from "@/stores/usePromotionStore";
 
 const route = useRoute();
-const promotion = ref(null);
+const promotionStore = usePromotionStore();
+
+// SSR Fetching
+const { data: promotion } = await useAsyncData(
+	`promotion-detail-${route.params.slug}`,
+	() => promotionStore.fetchPromotionBySlug(route.params.slug),
+	{
+		watch: [() => route.params.slug],
+	},
+);
 
 const shareUrl = computed(() => {
 	if (import.meta.client) return window.location.href;
@@ -12,6 +19,7 @@ const shareUrl = computed(() => {
 });
 
 const formatDate = (dateString) => {
+	if (!dateString) return "";
 	const parts = dateString.split("/");
 	if (parts.length === 3) {
 		return `${parts[0]} tháng ${parts[1]} năm ${parts[2]}`;
@@ -19,9 +27,8 @@ const formatDate = (dateString) => {
 	return dateString;
 };
 
-const loadPromotion = () => {
-	const slug = route.params.slug;
-	promotion.value = getPromotionBySlug(slug);
+// SEO Meta
+watchEffect(() => {
 	if (promotion.value) {
 		useSeoMeta({
 			title: `${promotion.value.fullTitle} | AnhEm Motor`,
@@ -30,16 +37,15 @@ const loadPromotion = () => {
 				"Chi tiết chương trình khuyến mãi từ AnhEm Motor.",
 		});
 	}
-};
-
-onMounted(() => {
-	loadPromotion();
 });
+
+// Scroll to top on slug change
 watch(
 	() => route.params.slug,
 	() => {
-		loadPromotion();
-		window.scrollTo({ top: 0, behavior: "smooth" });
+		if (import.meta.client) {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 	},
 );
 </script>
@@ -61,39 +67,47 @@ watch(
 				>
 					{{ promotion.fullTitle }}
 				</h1>
+
 				<CommonSocialShare :url="shareUrl" :title="promotion.fullTitle" />
+
 				<div class="prose prose-lg max-w-none mb-8">
-					<div v-bind="{ innerHTML: promotion.content }" />
+					<div v-html="promotion.content" />
 				</div>
+
 				<PromotionCarousel
 					v-if="promotion.carouselImages && promotion.carouselImages.length > 0"
 					:images="promotion.carouselImages"
 				/>
+
 				<div
 					v-if="promotion.duration"
-					class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6"
+					class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6 rounded-r-lg"
 				>
-					<p class="font-semibold text-gray-800">
+					<p class="font-semibold text-gray-800 flex items-center">
 						<Icon
 							name="fa6-regular:calendar-days"
-							class="mr-2 text-yellow-600"
+							class="mr-3 text-yellow-600 text-xl"
 						/>
 						Thời gian áp dụng:
-						<span class="text-primary-red">{{ promotion.duration }}</span>
+						<span class="text-primary-red ml-2">{{ promotion.duration }}</span>
 					</p>
 				</div>
+
 				<div
 					v-if="promotion.benefits && promotion.benefits.length > 0"
 					class="my-8"
 				>
-					<h3 class="text-xl font-bold text-gray-800 mb-4">Chi tiết ưu đãi:</h3>
+					<h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+						<Icon name="fa6-solid:gift" class="mr-3 text-primary-red" />
+						Chi tiết ưu đãi:
+					</h3>
 					<div class="space-y-6">
 						<div
 							v-for="(benefit, index) in promotion.benefits"
 							:key="index"
-							class="border-l-4 border-primary-red pl-4"
+							class="bg-gray-50 p-5 rounded-xl border-t-2 border-primary-red shadow-sm"
 						>
-							<h4 class="font-bold text-lg text-primary-red mb-2">
+							<h4 class="font-bold text-lg text-primary-red mb-3">
 								{{ benefit.model }}
 							</h4>
 							<ul class="space-y-2">
@@ -103,21 +117,22 @@ watch(
 									class="flex items-start"
 								>
 									<Icon
-										name="fa6-solid:gift"
-										class="text-primary-red mr-3 mt-1"
+										name="fa6-solid:circle-check"
+										class="text-green-500 mr-3 mt-1"
 									/>
-									<span>{{ option }}</span>
+									<span class="text-gray-700">{{ option }}</span>
 								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
+
 				<CommonContactInfo
 					v-if="promotion.contactInfo"
 					:contact-info="promotion.contactInfo"
 					:financial-companies="promotion.financialCompanies"
 					description="Mọi thông tin liên quan đến Chương trình khuyến mại, khách hàng vui lòng liên hệ theo thông tin sau để được hướng dẫn, giải đáp:"
-					closing-text="Xin trân trọng cảm ơn, Công ty Honda Việt Nam."
+					closing-text="Xin trân trọng cảm ơn!"
 				/>
 			</div>
 		</main>
@@ -161,15 +176,13 @@ watch(
 	animation: fadeIn 0.8s ease-out;
 }
 
-.prose {
-	color: #374151;
-}
-.prose p {
-	margin-bottom: 1rem;
+.prose :deep(p) {
+	margin-bottom: 1.25rem;
 	line-height: 1.75;
 	text-align: justify;
 }
-.prose strong {
+
+.prose :deep(strong) {
 	font-weight: 700;
 	color: #1f2937;
 }

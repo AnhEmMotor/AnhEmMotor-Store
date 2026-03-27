@@ -1,3 +1,7 @@
+<script setup>
+// ContactInfo hiện tại là tĩnh, chúng ta chỉ cần chuyển sang script setup
+</script>
+
 <template>
 	<div class="info-section">
 		<h2>Liên Hệ Với Chúng Tôi</h2>
@@ -8,27 +12,19 @@
 
 		<div class="contact-info">
 			<div class="contact-item">
-				<ClientOnly>
-					<Icon name="fa6-solid:location-dot" />
-				</ClientOnly>
+				<Icon name="fa6-solid:location-dot" />
 				<span>123 Đường ABC, Quận 1, TP.HCM</span>
 			</div>
 			<div class="contact-item">
-				<ClientOnly>
-					<Icon name="fa6-solid:phone" />
-				</ClientOnly>
+				<Icon name="fa6-solid:phone" />
 				<span>0901 234 567</span>
 			</div>
 			<div class="contact-item">
-				<ClientOnly>
-					<Icon name="fa6-solid:envelope" />
-				</ClientOnly>
+				<Icon name="fa6-solid:envelope" />
 				<span>info@anhemmotor.vn</span>
 			</div>
 			<div class="contact-item">
-				<ClientOnly>
-					<Icon name="fa6-solid:clock" />
-				</ClientOnly>
+				<Icon name="fa6-solid:clock" />
 				<span>8:00 - 22:00 (Hàng ngày)</span>
 			</div>
 		</div>
