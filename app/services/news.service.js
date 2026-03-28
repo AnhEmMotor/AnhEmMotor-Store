@@ -1,18 +1,10 @@
 import { newsData } from "@/constants/news";
 
 export const newsService = {
-	/**
-	 * Lấy danh sách tin tức nổi bật
-	 */
 	getFeaturedNews: async () => {
-		// Giả lập gọi API
 		return newsData.filter((news) => news.featured);
 	},
 
-	/**
-	 * Lấy tất cả tin tức có phân trang
-	 * @param {Object} params - { page, pageSize }
-	 */
 	getAllNews: async (params = {}) => {
 		const { page = 1, pageSize = 10 } = params;
 		const start = (page - 1) * pageSize;
@@ -33,14 +25,10 @@ export const newsService = {
 		};
 	},
 
-	/**
-	 * Lấy chi tiết tin tức theo slug
-	 */
 	getNewsBySlug: async (slug) => {
 		const news = newsData.find((n) => n.slug === slug);
 		if (!news) return null;
 
-		// Lấy tin liên quan (loại trừ tin hiện tại)
 		const related = newsData.filter((n) => n.id !== news.id).slice(0, 4);
 
 		return {

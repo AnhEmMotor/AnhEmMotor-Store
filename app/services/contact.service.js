@@ -1,7 +1,4 @@
 export const contactService = {
-	/**
-	 * Gửi yêu cầu liên hệ tới API
-	 */
 	submitContact: async (formData) => {
 		const res = await fetch("https://backend-xolq.onrender.com/api/contacts", {
 			method: "POST",

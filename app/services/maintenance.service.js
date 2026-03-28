@@ -1,9 +1,5 @@
 export const maintenanceService = {
-	/**
-	 * Lấy danh sách các dịch vụ bảo dưỡng/sửa chữa
-	 */
 	getMaintenanceServices: async () => {
-		// Giả lập dữ liệu từ API hoặc Hằng số
 		return [
 			{
 				icon: "🔧",

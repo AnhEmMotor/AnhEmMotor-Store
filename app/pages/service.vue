@@ -9,7 +9,6 @@ useSeoMeta({
 
 const maintenanceStore = useMaintenanceStore();
 
-// SSR Fetching
 await useAsyncData("maintenance-services", () =>
 	maintenanceStore.fetchServices(),
 );
@@ -63,7 +62,6 @@ onMounted(() => {
 	animation-fill-mode: both;
 }
 
-/* Các class fade-in được quản lý bởi IntersectionObserver trong script setup hoặc component con */
 :deep(.fade-in) {
 	opacity: 0;
 	transform: translateY(30px);

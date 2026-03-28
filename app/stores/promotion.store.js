@@ -9,24 +9,17 @@ export const usePromotionStore = defineStore("promotion", {
 	}),
 
 	actions: {
-		/**
-		 * Fetch tất cả khuyến mãi
-		 */
 		async fetchAllPromotions() {
 			this.isLoading = true;
 			try {
 				const data = await promotionService.getAllPromotions();
 				this.promotions = data;
 			} catch {
-				// Xử lý lỗi
 			} finally {
 				this.isLoading = false;
 			}
 		},
 
-		/**
-		 * Fetch chi tiết khuyến mãi theo slug
-		 */
 		async fetchPromotionBySlug(slug) {
 			this.isLoading = true;
 			try {

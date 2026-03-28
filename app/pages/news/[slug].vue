@@ -4,7 +4,6 @@ import { useNewsStore } from "@/stores/news.store";
 const route = useRoute();
 const newsStore = useNewsStore();
 
-// SSR Fetching
 const { data: news } = await useAsyncData(
 	`news-detail-${route.params.slug}`,
 	async () => {
@@ -15,7 +14,6 @@ const { data: news } = await useAsyncData(
 	},
 );
 
-// SEO Meta based on news data
 watchEffect(() => {
 	if (news.value) {
 		useSeoMeta({
@@ -25,7 +23,6 @@ watchEffect(() => {
 	}
 });
 
-// Scroll to top on slug change
 watch(
 	() => route.params.slug,
 	() => {
@@ -64,7 +61,7 @@ watch(
 							:src="news.image"
 							:alt="news.title"
 							class="w-full rounded-xl shadow-lg mb-8 object-cover max-h-[500px]"
-						>
+						/>
 						<div
 							class="prose prose-lg max-w-none text-gray-800 leading-relaxed"
 						>

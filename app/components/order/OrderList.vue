@@ -11,7 +11,6 @@ defineProps({
 		type: Object,
 		required: true,
 	},
-	// Helpers passed from Smart Component to keep these components 'dumb'
 	getStatusName: {
 		type: Function,
 		required: true,

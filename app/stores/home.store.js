@@ -22,7 +22,6 @@ export const useHomeStore = defineStore("home", () => {
 			stats.value = homeMapper.mapHeroStats(rawStats);
 			searchPhrases.value = rawPhrases;
 		} catch {
-			// console.error("Error fetching home data:", error);
 		} finally {
 			isLoading.value = false;
 		}

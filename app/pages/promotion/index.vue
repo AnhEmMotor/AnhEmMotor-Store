@@ -8,7 +8,6 @@ useSeoMeta({
 
 const promotionStore = usePromotionStore();
 
-// SSR Fetching
 await useAsyncData("promotions", () => promotionStore.fetchAllPromotions());
 </script>
 

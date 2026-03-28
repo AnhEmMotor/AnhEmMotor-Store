@@ -66,7 +66,7 @@ const orderMapper = {
 				return acc;
 			}, {});
 		}
-		return raw; // Giả định là object map sẵn
+		return raw;
 	},
 
 	mapLockedStatuses(raw) {

@@ -65,7 +65,7 @@
 									(e) =>
 										(e.target.src = '/assets/image/placeholder-product.webp')
 								"
-							>
+							/>
 							<div
 								v-if="item.loading"
 								class="absolute inset-0 flex items-center justify-center bg-white/40"
@@ -181,9 +181,4 @@ watch(
 function onCheckout() {
 	emit("close");
 }
-
-// const formatCurrency = (amount) => {
-// 	if (typeof amount !== "number") return amount;
-// 	return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-// };
 </script>

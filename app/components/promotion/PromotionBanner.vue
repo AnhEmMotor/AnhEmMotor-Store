@@ -1,13 +1,9 @@
-<script setup>
-// PromotionBanner có thể là component tĩnh hoặc nhận cấu hình qua props nếu cần.
-// Hiện tại chúng ta giữ cấu trúc hiện có nhưng bỏ script cũ.
-</script>
+<script setup></script>
 
 <template>
 	<section
 		class="relative h-[250px] md:h-[400px] flex items-center justify-center overflow-hidden"
 	>
-		<!-- Background Image with Overlay -->
 		<div
 			class="absolute inset-0 bg-[url('https://cdn.honda.com.vn/news-motorbike/July2025/PC.webp')] bg-cover bg-center"
 		>
@@ -16,7 +12,6 @@
 			/>
 		</div>
 
-		<!-- Content -->
 		<div class="container mx-auto px-4 relative z-10">
 			<div class="max-w-2xl animate-fade-in-left">
 				<span
@@ -27,7 +22,7 @@
 				<h1
 					class="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight drop-shadow-lg"
 				>
-					TỔNG HỢP <span class="text-primary-red">KHUYẾN MÃI</span><br >
+					TỔNG HỢP <span class="text-primary-red">KHUYẾN MÃI</span><br />
 					ANHEM MOTOR
 				</h1>
 				<p class="text-gray-200 text-lg md:text-xl font-medium max-w-xl">
@@ -37,7 +32,6 @@
 			</div>
 		</div>
 
-		<!-- Decorative Elements -->
 		<div
 			class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-gray-50 to-transparent"
 		/>

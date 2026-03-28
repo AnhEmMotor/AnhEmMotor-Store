@@ -19,7 +19,6 @@ export const useLayoutStore = defineStore("layout", () => {
 			navItems.value = layoutMapper.mapNavItems(rawNav);
 			footerData.value = layoutMapper.mapFooterData(rawFooter);
 		} catch {
-			// console.error("Error fetching layout data");
 		} finally {
 			isLoading.value = false;
 		}

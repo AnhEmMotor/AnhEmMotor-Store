@@ -9,9 +9,6 @@ useSeoMeta({
 
 const contactStore = useContactStore();
 
-/**
- * Xử lý khi nhận sự kiện submit từ ContactForm
- */
 const handleContactSubmit = async (data) => {
 	const { resetForm, ...formData } = data;
 	const success = await contactStore.submitContact(formData);

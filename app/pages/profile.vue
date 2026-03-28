@@ -11,15 +11,11 @@
 			</div>
 
 			<div class="flex flex-col lg:flex-row gap-8">
-				<!-- Sidebar: Avatar & Navigation -->
 				<ProfileSidebar v-model="activeTab" />
 
-				<!-- Main Content -->
 				<div class="lg:w-2/3 xl:w-3/4">
-					<!-- Profile Info Tab -->
 					<ProfileInfoForm v-if="activeTab === 'profile'" />
 
-					<!-- Security Tab -->
 					<ProfileSecurityForm v-if="activeTab === 'security'" />
 				</div>
 			</div>
@@ -32,7 +28,6 @@ import { ref, watch } from "vue";
 import { useAuthStore } from "../stores/auth.store";
 import { useUserStore } from "../stores/user.store";
 
-// Components
 import ProfileSidebar from "@/components/profile/ProfileSidebar.vue";
 import ProfileInfoForm from "@/components/profile/ProfileInfoForm.vue";
 import ProfileSecurityForm from "@/components/profile/ProfileSecurityForm.vue";
@@ -48,7 +43,6 @@ const userStore = useUserStore();
 
 const activeTab = ref("profile");
 
-// Initialize form when user data is available
 watch(
 	() => authStore.user,
 	(newUser) => {

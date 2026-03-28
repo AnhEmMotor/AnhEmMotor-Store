@@ -4,7 +4,6 @@ import { usePromotionStore } from "@/stores/promotion.store";
 const route = useRoute();
 const promotionStore = usePromotionStore();
 
-// SSR Fetching
 const { data: promotion } = await useAsyncData(
 	`promotion-detail-${route.params.slug}`,
 	() => promotionStore.fetchPromotionBySlug(route.params.slug),
@@ -27,7 +26,6 @@ const formatDate = (dateString) => {
 	return dateString;
 };
 
-// SEO Meta
 watchEffect(() => {
 	if (promotion.value) {
 		useSeoMeta({
@@ -39,7 +37,6 @@ watchEffect(() => {
 	}
 });
 
-// Scroll to top on slug change
 watch(
 	() => route.params.slug,
 	() => {

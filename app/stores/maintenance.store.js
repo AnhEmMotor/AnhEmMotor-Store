@@ -8,16 +8,12 @@ export const useMaintenanceStore = defineStore("maintenance", {
 	}),
 
 	actions: {
-		/**
-		 * Fetch danh sách dịch vụ
-		 */
 		async fetchServices() {
 			this.isLoading = true;
 			try {
 				const data = await maintenanceService.getMaintenanceServices();
 				this.services = data;
 			} catch {
-				// Xử lý lỗi
 			} finally {
 				this.isLoading = false;
 			}

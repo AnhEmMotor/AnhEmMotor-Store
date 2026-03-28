@@ -4,7 +4,6 @@ import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";
 
-// Components
 import CheckoutCartEmpty from "@/components/checkout/CheckoutCartEmpty.vue";
 import CheckoutShippingForm from "@/components/checkout/CheckoutShippingForm.vue";
 import CheckoutPaymentMethod from "@/components/checkout/CheckoutPaymentMethod.vue";
@@ -41,13 +40,10 @@ onMounted(() => {
 	<main class="min-h-screen bg-gray-50 py-12">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<ClientOnly>
-				<!-- Giỏ hàng trống -->
 				<CheckoutCartEmpty v-if="cartItems.length === 0" />
 
-				<!-- Giao diện thanh toán -->
 				<div v-else class="flex flex-col lg:flex-row gap-8">
 					<div class="flex-1 space-y-6">
-						<!-- Header -->
 						<div
 							class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
 						>
@@ -59,18 +55,14 @@ onMounted(() => {
 							</h1>
 						</div>
 
-						<!-- Step 1: Shipping Info -->
 						<CheckoutShippingForm />
 
-						<!-- Step 2: Payment Method -->
 						<CheckoutPaymentMethod />
 					</div>
 
-					<!-- Sidebar: Order Summary & Cart Details -->
 					<CheckoutOrderSummary />
 				</div>
 
-				<!-- Fallback Loading -->
 				<template #fallback>
 					<div class="flex flex-col lg:flex-row gap-8 animate-pulse">
 						<div class="flex-1 space-y-6">
@@ -84,7 +76,6 @@ onMounted(() => {
 					</div>
 				</template>
 
-				<!-- Overlay Loading -->
 				<CommonFullLoading :show="isSubmitting" text="Đang xử lý đơn hàng..." />
 			</ClientOnly>
 		</div>

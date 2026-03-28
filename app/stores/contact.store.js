@@ -5,13 +5,10 @@ export const useContactStore = defineStore("contact", {
 	state: () => ({
 		isSubmitting: false,
 		statusMessage: "",
-		statusType: "", // 'success' | 'error'
+		statusType: "",
 	}),
 
 	actions: {
-		/**
-		 * Xử lý gửi form liên hệ
-		 */
 		async submitContact(formData) {
 			this.isSubmitting = true;
 			this.statusMessage = "";
@@ -36,8 +33,6 @@ export const useContactStore = defineStore("contact", {
 				return false;
 			} finally {
 				this.isSubmitting = false;
-
-				// Tự động xóa thông báo thành công sau 5 giây
 				if (this.statusType === "success") {
 					setTimeout(() => {
 						this.statusMessage = "";

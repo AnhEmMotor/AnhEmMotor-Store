@@ -11,7 +11,6 @@ export const useCategoryStore = defineStore("category", () => {
 	const isLoading = ref(false);
 	const error = ref(null);
 
-	// Tác vụ cho trang category.vue (Dữ liệu tĩnh)
 	const fetchStaticCategories = async () => {
 		isLoading.value = true;
 		error.value = null;
@@ -25,7 +24,6 @@ export const useCategoryStore = defineStore("category", () => {
 		}
 	};
 
-	// Tác vụ cho Sidebar Filter (Dữ liệu API)
 	const getProductCategories = async (params = {}) => {
 		return await categoryService.getApiCategories(params);
 	};

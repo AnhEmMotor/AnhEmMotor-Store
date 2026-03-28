@@ -1,6 +1,4 @@
-<script setup>
-// ContactInfo hiện tại là tĩnh, chúng ta chỉ cần chuyển sang script setup
-</script>
+<script setup></script>
 
 <template>
 	<div class="info-section">

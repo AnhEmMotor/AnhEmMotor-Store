@@ -32,7 +32,6 @@ const productMapper = {
 
 	mapProductDetail(raw, attributeLabels = null) {
 		if (!raw || !raw.product) return null;
-
 		const product = raw.product;
 		const currentVariant = raw.current_variant || {};
 		const otherVariants = (raw.other_variants || []).map((v) => ({
@@ -40,8 +39,6 @@ const productMapper = {
 			display_name: v.display_name,
 			price: v.price,
 		}));
-
-		// Handle photos collection
 		const photos = [];
 		if (currentVariant.cover_image_url) {
 			photos.push(currentVariant.cover_image_url);
@@ -52,8 +49,6 @@ const productMapper = {
 			);
 			photos.push(...otherPhotos);
 		}
-
-		// Handle specifications
 		let specifications = [];
 		if (attributeLabels) {
 			specifications = Object.entries(product)
@@ -70,7 +65,6 @@ const productMapper = {
 					value: value,
 				}));
 		}
-
 		return {
 			product: {
 				id: product.id,

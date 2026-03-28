@@ -44,11 +44,6 @@ useSeoMeta({
 	title: "Đặt hàng thành công",
 	description: "Cảm ơn bạn đã mua hàng tại AnhEm Motor.",
 });
-
-// const formatCurrency = (value) => {
-// 	if (!value) return "0 ₫";
-// 	return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
-// };
 </script>
 
 <template>

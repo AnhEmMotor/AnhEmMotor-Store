@@ -9,7 +9,6 @@ useSeoMeta({
 
 const aboutStore = useAboutStore();
 
-// SSR Fetching
 await useAsyncData("about-content", async () => {
 	await Promise.all([
 		aboutStore.fetchAboutContent(),

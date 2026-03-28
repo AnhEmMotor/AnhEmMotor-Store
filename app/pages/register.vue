@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRegisterStore } from "@/stores/register.store";
 
-// Components
 import RegisterHeader from "@/components/auth/RegisterHeader.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";
 
@@ -16,13 +15,10 @@ const registerStore = useRegisterStore();
 <template>
 	<div class="register-container">
 		<div class="card">
-			<!-- Tiêu đề đăng ký -->
 			<RegisterHeader />
 
-			<!-- Form đăng ký -->
 			<RegisterForm />
 
-			<!-- Overlay Loading -->
 			<CommonFullLoading
 				:show="registerStore.isLoading"
 				text="Đang xử lý đăng ký..."

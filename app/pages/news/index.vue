@@ -11,10 +11,8 @@ useSeoMeta({
 
 const newsStore = useNewsStore();
 
-// 1. Featured News (Fetch via Store)
 await useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
 
-// 2. All News (Fetch via usePaginatedQuery)
 const {
 	data: allNews,
 	pagination,
@@ -23,7 +21,7 @@ const {
 	queryKey: ["news-list"],
 	queryFn: (params) => newsService.getAllNews(params),
 	itemsPerPage: 5,
-	useLocalPagination: false, // Đồng bộ với URL ?page=x
+	useLocalPagination: false,
 });
 </script>
 
@@ -31,7 +29,6 @@ const {
 	<div class="bg-white min-h-screen">
 		<NewsBanner />
 		<main class="pt-12 md:pt-16 pb-12">
-			<!-- Featured News Section -->
 			<section
 				v-if="newsStore.featuredNews.length"
 				class="container mx-auto px-4 mb-12 md:mb-16"
@@ -55,7 +52,6 @@ const {
 				</div>
 			</section>
 
-			<!-- All News Section -->
 			<section class="container mx-auto px-4">
 				<h2
 					class="text-3xl md:text-4xl font-extrabold text-center text-primary-red mb-8 md:mb-12 border-b-2 border-primary-light pb-4"

@@ -1,6 +1,5 @@
 export const aboutService = {
 	getAboutContent: async () => {
-		// Giả lập gọi API, hiện tại trả về dữ liệu tĩnh nhưng cấu trúc đã sẵn sàng cho CMS
 		return {
 			mission: {
 				title: "Sứ Mệnh Của Chúng Tôi",
