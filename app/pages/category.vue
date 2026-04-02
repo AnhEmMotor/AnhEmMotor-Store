@@ -69,7 +69,7 @@ await useAsyncData("categories-static", async () => {
 						:src="category.imgSrc"
 						:alt="category.alt"
 						class="object-contain w-full h-full p-6 sm:p-8 md:p-12 transition-transform duration-300 group-hover:scale-105"
-					/>
+					>
 					<div
 						class="absolute bottom-4 right-4 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white text-lg transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110"
 					>

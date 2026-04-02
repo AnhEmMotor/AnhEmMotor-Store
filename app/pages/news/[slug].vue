@@ -61,7 +61,7 @@ watch(
 							:src="news.image"
 							:alt="news.title"
 							class="w-full rounded-xl shadow-lg mb-8 object-cover max-h-[500px]"
-						/>
+						>
 						<div
 							class="prose prose-lg max-w-none text-gray-800 leading-relaxed"
 						>

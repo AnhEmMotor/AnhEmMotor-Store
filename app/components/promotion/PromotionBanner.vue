@@ -22,7 +22,7 @@
 				<h1
 					class="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight drop-shadow-lg"
 				>
-					TỔNG HỢP <span class="text-primary-red">KHUYẾN MÃI</span><br />
+					TỔNG HỢP <span class="text-primary-red">KHUYẾN MÃI</span><br >
 					ANHEM MOTOR
 				</h1>
 				<p class="text-gray-200 text-lg md:text-xl font-medium max-w-xl">
