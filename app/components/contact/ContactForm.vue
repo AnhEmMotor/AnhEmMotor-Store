@@ -1,5 +1,22 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
+
+defineProps({
+	isSubmitting: {
+		type: Boolean,
+		default: false,
+	},
+	statusMessage: {
+		type: String,
+		default: "",
+	},
+	statusType: {
+		type: String,
+		default: "",
+	},
+});
+
+const emit = defineEmits(["submit"]);
 
 const formData = reactive({
 	full_name: "",
@@ -18,17 +35,11 @@ const errors = reactive({
 	request_type: "",
 });
 
-const isLoading = ref(false);
-const statusMessage = ref("");
-const statusType = ref("");
-
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const isValidPhone = (phone) => /^0[3-9]\d{8,9}$/.test(phone);
 
-const handleSubmit = async () => {
+const validateForm = () => {
 	Object.keys(errors).forEach((key) => (errors[key] = ""));
-	statusMessage.value = "";
-
 	let isValid = true;
 
 	if (!formData.full_name.trim()) {
@@ -54,36 +65,16 @@ const handleSubmit = async () => {
 		isValid = false;
 	}
 
-	if (!isValid) return;
+	return isValid;
+};
 
-	isLoading.value = true;
-	try {
-		const res = await fetch("https://backend-xolq.onrender.com/api/contacts", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(formData),
-		});
+const resetForm = () => {
+	Object.keys(formData).forEach((key) => (formData[key] = ""));
+};
 
-		const data = await res.json();
-
-		if (data.success) {
-			statusType.value = "success";
-			statusMessage.value =
-				"🎉 Gửi liên hệ thành công! Chúng tôi sẽ sớm liên hệ với bạn.";
-
-			Object.keys(formData).forEach((key) => (formData[key] = ""));
-		} else {
-			statusType.value = "error";
-			statusMessage.value = data.message || "Có lỗi xảy ra.";
-		}
-	} catch {
-		statusType.value = "error";
-		statusMessage.value = "Không thể kết nối server hoặc có lỗi mạng!";
-	} finally {
-		isLoading.value = false;
-		if (statusType.value === "success") {
-			setTimeout(() => (statusMessage.value = ""), 5000);
-		}
+const handleOnSubmit = () => {
+	if (validateForm()) {
+		emit("submit", { ...formData, resetForm });
 	}
 };
 </script>
@@ -93,7 +84,7 @@ const handleSubmit = async () => {
 		<h3>Gửi Yêu Cầu Tư Vấn</h3>
 		<p class="subtitle">Điền thông tin để nhận tư vấn miễn phí</p>
 
-		<form novalidate @submit.prevent="handleSubmit">
+		<form novalidate @submit.prevent="handleOnSubmit">
 			<div class="form-row">
 				<div class="form-group" :class="{ invalid: errors.full_name }">
 					<label for="full_name" class="required">Họ và tên</label>
@@ -182,9 +173,9 @@ const handleSubmit = async () => {
 				/>
 			</div>
 
-			<button type="submit" class="submit-btn" :disabled="isLoading">
-				<span v-if="isLoading" class="loading-spinner" />
-				<span>{{ isLoading ? "ĐANG GỬI..." : "GỬI YÊU CẦU TƯ VẤN" }}</span>
+			<button type="submit" class="submit-btn" :disabled="isSubmitting">
+				<span v-if="isSubmitting" class="loading-spinner" />
+				<span>{{ isSubmitting ? "ĐANG GỬI..." : "GỬI YÊU CẦU TƯ VẤN" }}</span>
 			</button>
 
 			<div v-if="statusMessage" class="form-status" :class="statusType">

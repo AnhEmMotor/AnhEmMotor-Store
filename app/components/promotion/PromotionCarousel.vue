@@ -1,41 +1,63 @@
+<script setup>
+defineProps({
+	images: {
+		type: Array,
+		required: true,
+	},
+});
+</script>
+
 <template>
-  <section class="text-center py-16 md:py-20 bg-gradient-to-br from-red-50 to-orange-50">
-    <div 
-      class="container mx-auto px-4 transition-all duration-1000"
-      :class="{ 'opacity-0 translate-y-5': !isVisible, 'opacity-100 translate-y-0': isVisible }"
-    >
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
-        {{ title }}
-      </h1>
-      <p class="text-lg text-gray-500 max-w-2xl mx-auto">
-        {{ subtitle }}
-      </p>
-    </div>
-  </section>
+	<div class="promotion-carousel my-10">
+		<Swiper
+			:modules="[SwiperAutoplay, SwiperNavigation, SwiperPagination]"
+			:slides-per-view="1"
+			:loop="true"
+			:autoplay="{
+				delay: 4000,
+				disableOnInteraction: false,
+			}"
+			:pagination="{ clickable: true }"
+			:navigation="true"
+			class="rounded-2xl shadow-2xl overflow-hidden border-4 border-white"
+		>
+			<SwiperSlide v-for="(image, index) in images" :key="index">
+				<div class="aspect-video relative group">
+					<img
+						:src="image"
+						alt="Promotion Detail Image"
+						class="w-full h-full object-cover"
+					>
+					<div
+						class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"
+					/>
+				</div>
+			</SwiperSlide>
+		</Swiper>
+	</div>
 </template>
 
-<script>
-export default {
-  name: 'PromotionBanner',
-  props: {
-    title: {
-      type: String,
-      default: 'Ưu Đãi Hấp Dẫn'
-    },
-    subtitle: {
-      type: String,
-      default: 'Đừng bỏ lỡ các chương trình khuyến mãi đặc biệt từ AnhEm Motor. Cập nhật ngay để nhận nhiều quà tặng giá trị!'
-    }
-  },
-  data() {
-    return {
-      isVisible: false
-    };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.isVisible = true;
-    }, 100);
-  }
-};
-</script>
+<style scoped>
+:deep(.swiper-button-next),
+:deep(.swiper-button-prev) {
+	color: #e65151;
+	background: white;
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+:deep(.swiper-button-next:after),
+:deep(.swiper-button-prev:after) {
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+:deep(.swiper-pagination-bullet-active) {
+	background: #e65151;
+	width: 25px;
+	border-radius: 5px;
+	transition: all 0.3s;
+}
+</style>

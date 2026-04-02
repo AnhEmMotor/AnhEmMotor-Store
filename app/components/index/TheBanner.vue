@@ -2,12 +2,10 @@
 import { ref, onMounted, onUnmounted } from "vue";
 
 import { useRouter } from "#app";
+import { useHomeStore } from "@/stores/home.store";
 
+const homeStore = useHomeStore();
 const currentPlaceholder = ref("");
-const phrases = [
-	"Nhập tên xe bạn muốn sở hữu...",
-	'Tìm "Winner X v4", "Vario 160" hoặc hãng xe...',
-];
 
 let phraseIndex = 0;
 let charIndex = 0;
@@ -15,6 +13,11 @@ let isDeleting = false;
 let timeoutId = null;
 
 const typeEffect = () => {
+	const phrases = homeStore.searchPhrases;
+	if (phrases.length === 0) {
+		timeoutId = setTimeout(typeEffect, 500);
+		return;
+	}
 	const currentPhrase = phrases[phraseIndex];
 	let typingSpeed = isDeleting ? 20 : 30;
 
@@ -31,7 +34,7 @@ const typeEffect = () => {
 		typingSpeed = 2000;
 	} else if (isDeleting && charIndex === 0) {
 		isDeleting = false;
-		phraseIndex = (phraseIndex + 1) % phrases.length;
+		phraseIndex = (phraseIndex + 1) % homeStore.searchPhrases.length;
 		typingSpeed = 500;
 	}
 
@@ -76,7 +79,7 @@ onUnmounted(() => {
 					v-model="searchQuery"
 					type="text"
 					:placeholder="currentPlaceholder"
-				/>
+				>
 				<button
 					id="searchButton"
 					type="submit"
@@ -91,17 +94,13 @@ onUnmounted(() => {
 			</form>
 
 			<div class="hero-stats">
-				<div class="stat-item">
-					<span class="stat-number">50+</span>
-					<span class="stat-label">Mẫu xe</span>
-				</div>
-				<div class="stat-item">
-					<span class="stat-number">1K+</span>
-					<span class="stat-label">Khách hàng</span>
-				</div>
-				<div class="stat-item">
-					<span class="stat-number">5+</span>
-					<span class="stat-label">Năm kinh nghiệm</span>
+				<div
+					v-for="(stat, index) in homeStore.stats"
+					:key="index"
+					class="stat-item"
+				>
+					<span class="stat-number">{{ stat.number }}</span>
+					<span class="stat-label">{{ stat.label }}</span>
 				</div>
 			</div>
 		</div>
@@ -112,7 +111,7 @@ onUnmounted(() => {
 				as="image"
 				href="/assets/image/index/index-banner-bg.webp"
 				fetchpriority="high"
-			/>
+			>
 		</Head>
 	</section>
 </template>

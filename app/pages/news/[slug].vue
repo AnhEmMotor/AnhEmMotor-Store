@@ -1,35 +1,34 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
-import { getNewsBySlug, getAllNews } from "~/data/newsData";
+import { useNewsStore } from "@/stores/news.store";
 
 const route = useRoute();
-const news = ref(null);
-const relatedNews = ref([]);
+const newsStore = useNewsStore();
 
-const loadNews = () => {
-	const slug = route.params.slug;
-	news.value = getNewsBySlug(slug);
+const { data: news } = await useAsyncData(
+	`news-detail-${route.params.slug}`,
+	async () => {
+		return await newsStore.fetchNewsBySlug(route.params.slug);
+	},
+	{
+		watch: [() => route.params.slug],
+	},
+);
+
+watchEffect(() => {
 	if (news.value) {
 		useSeoMeta({
 			title: `${news.value.title} | AnhEm Motor`,
 			description: news.value.excerpt ?? "Tin tức mới nhất từ AnhEm Motor.",
 		});
-		const allNewsData = getAllNews();
-		relatedNews.value = allNewsData
-			.filter((n) => n.id !== news.value.id)
-			.slice(0, 4);
 	}
-};
-
-onMounted(() => {
-	loadNews();
 });
+
 watch(
 	() => route.params.slug,
 	() => {
-		loadNews();
-		window.scrollTo({ top: 0, behavior: "smooth" });
+		if (import.meta.client) {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
 	},
 );
 </script>
@@ -66,7 +65,7 @@ watch(
 						<div
 							class="prose prose-lg max-w-none text-gray-800 leading-relaxed"
 						>
-							<div v-bind="{ innerHTML: news.content }" />
+							<div v-html="news.content" />
 						</div>
 						<div class="mt-10 pt-6 border-t border-gray-200">
 							<h3 class="text-lg font-bold mb-4">Chia sẻ bài viết</h3>
@@ -93,7 +92,7 @@ watch(
 						</div>
 					</article>
 					<aside class="lg:w-1/3">
-						<NewsSidebar :related-news="relatedNews" />
+						<NewsSidebar :related-news="news.related" />
 					</aside>
 				</div>
 			</main>
@@ -119,19 +118,19 @@ watch(
 	line-height: 1.75;
 }
 
-.prose p {
+.prose :deep(p) {
 	margin-bottom: 1.25rem;
 	text-align: justify;
 }
 
-.prose img {
+.prose :deep(img) {
 	width: 100%;
 	margin: 1.5rem 0;
 	border-radius: 0.5rem;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.prose strong {
+.prose :deep(strong) {
 	font-weight: 700;
 	color: #1f2937;
 }

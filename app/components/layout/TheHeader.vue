@@ -47,26 +47,10 @@
 
 				<nav class="hidden xl:flex flex-1 justify-center px-8">
 					<ul class="flex items-center gap-1">
-						<li><RouterLink to="/" class="nav-link">Trang Chủ</RouterLink></li>
-						<li>
-							<RouterLink to="/category" class="nav-link">Sản Phẩm</RouterLink>
-						</li>
-						<li>
-							<RouterLink to="/about" class="nav-link">Giới Thiệu</RouterLink>
-						</li>
-						<li>
-							<RouterLink to="/news" class="nav-link">Tin Tức</RouterLink>
-						</li>
-						<li>
-							<RouterLink to="/promotion" class="nav-link"
-								>Khuyến Mãi</RouterLink
-							>
-						</li>
-						<li>
-							<RouterLink to="/contact" class="nav-link">Liên Hệ</RouterLink>
-						</li>
-						<li>
-							<RouterLink to="/service" class="nav-link">Dịch Vụ</RouterLink>
+						<li v-for="item in navItems" :key="item.path">
+							<RouterLink :to="item.path" class="nav-link">{{
+								item.name
+							}}</RouterLink>
 						</li>
 					</ul>
 				</nav>
@@ -81,7 +65,8 @@
 								@click="toggleCart"
 							>
 								<div class="relative">
-									<IconCart
+									<Icon
+										name="fa6-solid:cart-shopping"
 										class="w-6 h-6 text-gray-700 group-hover:text-red-500 transition-colors"
 									/>
 									<span
@@ -127,6 +112,17 @@
 									>
 									<ClientOnly v-else>
 										<Icon name="fa6-solid:user" class="text-red-500 text-xs" />
+										<template #fallback>
+											<svg
+												viewBox="0 0 448 512"
+												class="w-3 h-3 text-red-500 fill-current"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<path
+													d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 32C79.8 288 0 367.8 0 466.7v45.3h448v-45.3c0-98.9-79.8-178.7-178.3-178.7h-91.4z"
+												/>
+											</svg>
+										</template>
 									</ClientOnly>
 								</div>
 								<span
@@ -140,6 +136,9 @@
 										class="text-[10px] text-gray-400"
 										:class="{ 'rotate-180': isUserMenuOpen }"
 									/>
+									<template #fallback>
+										<div class="w-2.5 h-2.5" />
+									</template>
 								</ClientOnly>
 							</button>
 
@@ -283,11 +282,20 @@
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
 									>
-									<Icon
-										v-else
-										name="fa6-solid:user"
-										class="text-red-500 text-xl"
-									/>
+									<ClientOnly v-else>
+										<Icon name="fa6-solid:user" class="text-red-500 text-xl" />
+										<template #fallback>
+											<svg
+												viewBox="0 0 448 512"
+												class="w-5 h-5 text-red-500 fill-current"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<path
+													d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 32C79.8 288 0 367.8 0 466.7v45.3h448v-45.3c0-98.9-79.8-178.7-178.3-178.7h-91.4z"
+												/>
+											</svg>
+										</template>
+									</ClientOnly>
 								</div>
 								<div class="flex-1 min-w-0">
 									<p class="font-black text-gray-900 truncate leading-tight">
@@ -318,91 +326,19 @@
 					</div>
 
 					<ul class="p-4 space-y-1">
-						<li>
+						<li v-for="item in navItems" :key="item.path">
 							<RouterLink
-								to="/"
-								class="mobile-nav-link"
-								@click="closeMobileNav"
-							>
-								<ClientOnly>
-									<Icon name="fa6-solid:house" class="w-8 text-red-500" />
-								</ClientOnly>
-								<span>Trang Chủ</span>
-							</RouterLink>
-						</li>
-						<li>
-							<RouterLink
-								to="/category"
-								class="mobile-nav-link"
-								@click="closeMobileNav"
-							>
-								<ClientOnly>
-									<Icon name="fa6-solid:motorcycle" class="w-8 text-red-500" />
-								</ClientOnly>
-								<span>Sản Phẩm</span>
-							</RouterLink>
-						</li>
-						<li>
-							<RouterLink
-								to="/about"
-								class="mobile-nav-link"
-								@click="closeMobileNav"
-							>
-								<ClientOnly>
-									<Icon name="fa6-solid:circle-info" class="w-8 text-red-500" />
-								</ClientOnly>
-								<span>Giới Thiệu</span>
-							</RouterLink>
-						</li>
-						<li>
-							<RouterLink
-								to="/news"
-								class="mobile-nav-link"
-								@click="closeMobileNav"
-							>
-								<ClientOnly>
-									<Icon name="fa6-solid:newspaper" class="w-8 text-red-500" />
-								</ClientOnly>
-								<span>Tin Tức</span>
-							</RouterLink>
-						</li>
-						<li>
-							<RouterLink
-								to="/promotion"
-								class="mobile-nav-link"
-								@click="closeMobileNav"
-							>
-								<ClientOnly>
-									<Icon name="fa6-solid:tags" class="w-8 text-red-500" />
-								</ClientOnly>
-								<span>Khuyến Mãi</span>
-							</RouterLink>
-						</li>
-						<li>
-							<RouterLink
-								to="/contact"
-								class="mobile-nav-link"
-								@click="closeMobileNav"
-							>
-								<ClientOnly>
-									<Icon name="fa6-solid:paper-plane" class="w-8 text-red-500" />
-								</ClientOnly>
-								<span>Liên Hệ</span>
-							</RouterLink>
-						</li>
-						<li>
-							<RouterLink
-								to="/service"
+								:to="item.path"
 								class="mobile-nav-link"
 								@click="closeMobileNav"
 							>
 								<ClientOnly>
 									<Icon
-										name="fa6-solid:screwdriver-wrench"
+										:name="getIconForPath(item.path)"
 										class="w-8 text-red-500"
 									/>
 								</ClientOnly>
-								<span>Dịch Vụ</span>
+								<span>{{ item.name }}</span>
 							</RouterLink>
 						</li>
 					</ul>
@@ -424,12 +360,14 @@
 
 <script setup>
 import { ref, onBeforeUnmount, computed, watch, onMounted } from "vue";
-import IconCart from "~/assets/icons/cart.svg";
 import CartPanel from "../cart/CartPanel.vue";
 import { useCart } from "~/composables/useCart";
-import { useAuthStore } from "~/stores/useAuthStore";
+import { useAuthStore } from "~/stores/auth.store";
+import { useLayoutStore } from "~/stores/layout.store";
 
 const authStore = useAuthStore();
+const layoutStore = useLayoutStore();
+const navItems = computed(() => layoutStore.navItems);
 const isLoggedIn = computed(() => authStore.isLoggedIn);
 const user = computed(() => authStore.user);
 const isUserMenuOpen = ref(false);
@@ -499,6 +437,18 @@ const removeCartItem = (index) => {
 onBeforeUnmount(() => {
 	document.body.style.overflow = "";
 });
+const getIconForPath = (path) => {
+	const icons = {
+		"/": "fa6-solid:house",
+		"/category": "fa6-solid:motorcycle",
+		"/about": "fa6-solid:circle-info",
+		"/news": "fa6-solid:newspaper",
+		"/promotion": "fa6-solid:tags",
+		"/contact": "fa6-solid:paper-plane",
+		"/service": "fa6-solid:screwdriver-wrench",
+	};
+	return icons[path] || "fa6-solid:link";
+};
 </script>
 
 <style scoped>

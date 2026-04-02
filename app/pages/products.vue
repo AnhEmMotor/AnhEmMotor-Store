@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useProductStore } from "@/stores/useProductStore";
+import { useProductStore } from "@/stores/product.store";
 import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
 import BasePagination from "@/components/ui/BasePagination.vue";
 
@@ -87,9 +87,8 @@ const toggleSidebar = () => {
 };
 
 const handleViewDetail = (product) => {
-	const slug = product.variants?.[0]?.url;
-	if (slug) {
-		navigateTo(`/product/${slug}`);
+	if (product.slug) {
+		navigateTo(`/product/${product.slug}`);
 	}
 };
 </script>

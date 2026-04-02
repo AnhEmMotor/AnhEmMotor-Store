@@ -1,16 +1,33 @@
 <script setup>
+import { useContactStore } from "@/stores/contact.store";
+
 useSeoMeta({
 	title: "Liên hệ | AnhEm Motor",
 	description:
 		"Liên hệ với AnhEm Motor để được tư vấn về xe máy, phụ tùng và dịch vụ bảo dưỡng.",
 });
+
+const contactStore = useContactStore();
+
+const handleContactSubmit = async (data) => {
+	const { resetForm, ...formData } = data;
+	const success = await contactStore.submitContact(formData);
+	if (success && resetForm) {
+		resetForm();
+	}
+};
 </script>
 
 <template>
 	<div class="main-container">
 		<div class="form-wrapper">
 			<ContactInfo />
-			<ContactForm />
+			<ContactForm
+				:is-submitting="contactStore.isSubmitting"
+				:status-message="contactStore.statusMessage"
+				:status-type="contactStore.statusType"
+				@submit="handleContactSubmit"
+			/>
 		</div>
 	</div>
 </template>
@@ -22,6 +39,7 @@ useSeoMeta({
 	justify-content: center;
 	align-items: center;
 	padding: 40px 20px;
+	background-color: #f9fafb;
 }
 
 .form-wrapper {
@@ -55,4 +73,3 @@ useSeoMeta({
 	}
 }
 </style>
-

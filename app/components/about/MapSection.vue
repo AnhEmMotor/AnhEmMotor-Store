@@ -1,3 +1,18 @@
+<script setup>
+defineProps({
+	locations: {
+		type: Array,
+		required: true,
+	},
+});
+
+const searchLocation = (address) => {
+	const encodedAddress = encodeURIComponent(address);
+	const searchUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+	window.open(searchUrl, "_blank");
+};
+</script>
+
 <template>
 	<section class="bg-white py-10 sm:py-16 px-4 sm:px-6 md:px-8 mb-6 sm:mb-10">
 		<div class="max-w-7xl mx-auto">
@@ -17,7 +32,7 @@
 					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d251637.95196238213!2d106.36556092593408!3d10.755292865496954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529292e8d3dd1%3A0xf15f5aad773c112b!2zVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1709123456789!5m2!1svi!2s"
 					allowfullscreen=""
 					loading="lazy"
-					referrerpolicy="no-referrer-when-dowrade"
+					referrerpolicy="no-referrer-when-downgrade"
 				/>
 			</div>
 
@@ -55,34 +70,3 @@
 		</div>
 	</section>
 </template>
-
-<script setup>
-import { ref } from "vue";
-
-const locations = ref([
-	{ title: "Cơ Sở 1 - TP.HCM", address: "123 Nguyễn Văn Cừ, Quận 5, TP.HCM" },
-	{
-		title: "Cơ Sở 2 - Hà Nội",
-		address: "456 Giải Phóng, Hai Bà Trưng, Hà Nội",
-	},
-	{
-		title: "Cơ Sở 3 - Đà Nẵng",
-		address: "789 Nguyễn Văn Linh, Thanh Khê, Đà Nẵng",
-	},
-	{ title: "Cơ Sở 4 - Cần Thơ", address: "321 3 Tháng 2, Ninh Kiều, Cần Thơ" },
-	{
-		title: "Cơ Sở 5 - Nha Trang",
-		address: "654 Trần Phú, Nha Trang, Khánh Hòa",
-	},
-	{
-		title: "Cơ Sở 6 - Hải Phòng",
-		address: "147 Lê Hồng Phong, Ngô Quyền, Hải Phòng",
-	},
-]);
-
-const searchLocation = (address) => {
-	const encodedAddress = encodeURIComponent(address);
-	const searchUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
-	window.open(searchUrl, "_blank");
-};
-</script>

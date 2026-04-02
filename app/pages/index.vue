@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { useHomeStore } from "@/stores/home.store";
+
+const homeStore = useHomeStore();
+await homeStore.fetchHomeData();
+
 useSeoMeta({
 	title: "Trang chủ",
 	ogImage: "/assets/image/index/index-banner-bg.webp",

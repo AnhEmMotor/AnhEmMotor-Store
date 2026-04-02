@@ -1,12 +1,16 @@
 <template>
 	<NuxtLayout>
-		<NuxtRouteAnnouncer />
 		<NuxtPage />
-		<VueQueryDevtools v-if="isDevelopment" />
+		<ClientOnly>
+			<VueQueryDevtools v-if="isDevelopment" />
+		</ClientOnly>
 	</NuxtLayout>
 </template>
 
 <script setup>
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools";
-const isDevelopment = process.env.NODE_ENV === "development";
+import { useLayoutStore } from "@/stores/layout.store";
+const isDevelopment = import.meta.dev;
+const layoutStore = useLayoutStore();
+await layoutStore.fetchLayoutData();
 </script>

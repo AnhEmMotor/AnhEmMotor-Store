@@ -1,9 +1,11 @@
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuthStore } from "@/stores/auth.store";
 export default defineNuxtPlugin((nuxtApp) => {
 	const authStore = useAuthStore();
 	if (nuxtApp.payload.auth) {
-		authStore.accessToken = nuxtApp.payload.auth.accessToken;
-		authStore.user = nuxtApp.payload.auth.user;
-		authStore.status = nuxtApp.payload.auth.status;
+		authStore.$patch({
+			accessToken: nuxtApp.payload.auth.accessToken,
+			user: nuxtApp.payload.auth.user,
+			status: nuxtApp.payload.auth.status,
+		});
 	}
 });

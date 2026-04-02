@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useProductStore } from "@/stores/useProductStore";
+import { useProductStore } from "@/stores/product.store";
 import { useCart } from "~/composables/useCart";
+import productMapper from "@/mappers/product.mapper";
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);
@@ -13,31 +14,21 @@ const {
 	error,
 } = await useAsyncData(
 	"product-detail-" + slug.value,
-	() => productStore.getProductStoreDetailBySlug(slug.value),
+	() => productStore.fetchFullProductDetail(slug.value),
 	{
 		watch: [slug],
 	},
 );
 
-const { data: attributeLabels } = await useAsyncData(
-	"product-attribute-labels",
-	() => productStore.getProductAttributeLabels(),
-	{
-		staleTime: 1000 * 60 * 60,
-	},
-);
-
-const currentVariant = computed(() => detail.value?.current_variant);
-
+const currentVariant = computed(() => detail.value?.currentVariant);
 const selectedImage = ref(null);
 const mainImage = computed({
 	get: () => {
 		if (selectedImage.value) return selectedImage.value;
-		const variant = detail.value?.current_variant;
-		if (variant?.cover_image_url) return variant.cover_image_url;
-		if (variant?.photo_collection?.length > 0)
-			return variant.photo_collection[0];
-		return "/assets/image/placeholder-product.webp";
+		return (
+			detail.value?.currentVariant?.image ||
+			"/assets/image/placeholder-product.webp"
+		);
 	},
 	set: (val) => {
 		selectedImage.value = val;
@@ -50,126 +41,31 @@ const isPlaceholderActive = computed(() => {
 		selectedImage.value !== "/assets/image/placeholder-product.webp"
 	)
 		return false;
-	const variant = detail.value?.current_variant;
-	return !(variant?.cover_image_url || variant?.photo_collection?.length > 0);
+	return detail.value?.currentVariant?.image?.includes("placeholder-product");
 });
 
-const allPhotos = computed(() => {
-	const photos = [];
-	const variant = detail.value?.current_variant;
-
-	if (variant?.cover_image_url) {
-		photos.push(variant.cover_image_url);
-	}
-
-	if (variant?.photo_collection?.length > 0) {
-		const otherPhotos = variant.photo_collection.filter(
-			(p) => p !== variant.cover_image_url,
-		);
-		photos.push(...otherPhotos);
-	}
-
-	return photos;
-});
-
-const formattedPrice = computed(() => {
-	if (!currentVariant.value?.price) return "Liên hệ";
-	return new Intl.NumberFormat("vi-VN", {
-		style: "currency",
-		currency: "VND",
-	}).format(currentVariant.value.price);
-});
-
-const variantName = computed(() => {
-	return currentVariant.value?.display_name || "";
-});
-
-const specifications = computed(() => {
-	if (!detail.value?.product || !attributeLabels.value) return [];
-
-	const product = detail.value.product;
-	const labels = attributeLabels.value;
-
-	return Object.entries(product)
-		.filter(
-			([key, value]) =>
-				labels[key] && value !== null && value !== undefined && value !== "",
-		)
-		.map(([key, value]) => ({
-			key,
-			label: labels[key],
-			value: value,
-		}));
-});
+const allPhotos = computed(() => detail.value?.currentVariant?.photos || []);
+const formattedPrice = computed(() =>
+	productMapper.formatPrice(currentVariant.value?.price),
+);
+const variantName = computed(() => currentVariant.value?.name || "");
+const specifications = computed(() => detail.value?.specifications || []);
 
 const handleVariantChange = (event) => {
 	const targetSlug = event.target.value;
-	if (targetSlug) {
-		navigateTo(`/product/${targetSlug}`);
-	}
+	if (targetSlug) navigateTo(`/product/${targetSlug}`);
 };
 
-const seoTitle = computed(() => {
-	const name =
-		detail.value?.product?.meta_title ||
-		detail.value?.product?.name ||
-		"Chi tiết sản phẩm";
-	return variantName.value ? `${name} - ${variantName.value}` : name;
-});
-
-const seoDescription = computed(() => {
-	return (
-		detail.value?.product?.meta_description ||
-		detail.value?.product?.short_description ||
-		detail.value?.product?.description ||
-		"Thông tin chi tiết sản phẩm tại AnhEm Motor."
-	);
-});
-
-useSeoMeta({
-	title: () => `${seoTitle.value} | AnhEm Motor`,
-	ogTitle: () => `${seoTitle.value} | AnhEm Motor`,
-	description: () => seoDescription.value,
-	ogDescription: () => seoDescription.value,
-	ogImage: () =>
-		detail.value?.current_variant?.cover_image_url ||
-		detail.value?.current_variant?.photo_collection?.[0] ||
-		"/assets/image/index/index-banner-bg.webp",
-	twitterTitle: () => `${seoTitle.value} | AnhEm Motor`,
-	twitterDescription: () => seoDescription.value,
-	twitterImage: () =>
-		detail.value?.current_variant?.cover_image_url ||
-		detail.value?.current_variant?.photo_collection?.[0] ||
-		"/assets/image/index/index-banner-bg.webp",
-});
+useSeoMeta(productMapper.toSeoMeta(detail.value));
 
 useHead({
-	link: [
-		{
-			rel: "icon",
-			type: "image/x-icon",
-			href: "/favicon.ico",
-		},
-	],
+	link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
 
 const { addItem } = useCart();
-
 const onAddToCart = () => {
-	if (!currentVariant.value) return;
-
-	const productToAdd = {
-		id: currentVariant.value.id,
-		name:
-			detail.value.product.name +
-			(variantName.value ? ` - ${variantName.value}` : ""),
-		price: currentVariant.value.price,
-		image:
-			currentVariant.value.cover_image_url ||
-			"/assets/image/placeholder-product.webp",
-	};
-
-	addItem(productToAdd, 1);
+	const cartItem = productMapper.toCartItem(detail.value);
+	if (cartItem) addItem(cartItem, 1);
 };
 </script>
 
@@ -316,10 +212,10 @@ const onAddToCart = () => {
 										{{ detail.product.name }}
 									</h1>
 									<p
-										v-if="detail.product.short_description"
+										v-if="detail.product.shortDescription"
 										class="text-gray-500 text-sm font-medium"
 									>
-										{{ detail.product.short_description }}
+										{{ detail.product.shortDescription }}
 									</p>
 									<div class="flex items-baseline gap-2 pt-2">
 										<span class="text-2xl font-black text-primary">
@@ -329,9 +225,7 @@ const onAddToCart = () => {
 								</div>
 
 								<div
-									v-if="
-										detail.other_variants && detail.other_variants.length > 0
-									"
+									v-if="detail.otherVariants && detail.otherVariants.length > 0"
 									class="space-y-3"
 								>
 									<label
@@ -348,7 +242,7 @@ const onAddToCart = () => {
 												Chọn một phiên bản khác...
 											</option>
 											<option
-												v-for="v in detail.other_variants"
+												v-for="v in detail.otherVariants"
 												:key="v.slug"
 												:value="v.slug"
 											>

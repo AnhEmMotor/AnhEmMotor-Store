@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useAuthStore } from "../stores/useAuthStore";
+import { useAuthStore } from "../stores/auth.store";
 
 useSeoMeta({
 	title: "Đăng Nhập",

@@ -1,5 +1,14 @@
+<script setup>
+defineProps({
+	news: {
+		type: Object,
+		required: true,
+	},
+});
+</script>
+
 <template>
-	<router-link
+	<NuxtLink
 		:to="`/news/${news.slug}`"
 		class="block flex flex-col md:flex-row bg-white rounded-xl shadow-lg border border-gray-100 transform hover:scale-[1.01] hover:shadow-xl transition-all duration-300 group"
 	>
@@ -27,17 +36,5 @@
 				{{ news.excerpt }}
 			</p>
 		</div>
-	</router-link>
+	</NuxtLink>
 </template>
-
-<script>
-export default {
-	name: "NewsCardHorizontal",
-	props: {
-		news: {
-			type: Object,
-			required: true,
-		},
-	},
-};
-</script>

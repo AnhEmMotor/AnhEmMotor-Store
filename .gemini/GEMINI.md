@@ -18,6 +18,7 @@
   - Typography (font, line-height, color, text-align...)
   - Visual (background, opacity, transition...)
   - Misc (cursor, pointer-events...)
+- Phải có responsive cho giao diện với mọi kích thước, từ điện thoại đến máy tính bảng đến máy tính bàn.
 
 # Tailwind CSS
 
@@ -27,6 +28,7 @@
   - Sử dụng tailwind-merge hoặc clsx khi cần xử lý class động.
   - Không viết trùng lặp các class ghi đè nhau (ví dụ: đã có px-4 thì không viết thêm pl-2).
   - Responsive: Ưu tiên Mobile-first.
+- Phải có responsive cho giao diện với mọi kích thước, từ điện thoại đến máy tính bảng đến máy tính bàn.
 
 # JavaScript
 
@@ -43,49 +45,30 @@
   - Single Responsibility: Một hàm chỉ thực hiện duy nhất một nhiệm vụ. Nếu hàm dài quá 20 dòng, phải cân nhắc tách hàm.
   - Formatting: Tuân thủ chặt chẽ cấu hình Prettier. Không để lại code thừa hoặc comment rác.
 
-# Vue.js & Pinia (Kiến trúc & Quản lý State)
+# Kiến trúc & Quản lý State
 
-## Cấu trúc File (.vue)
+- Để tối ưu hóa tìm kiếm và phân tách trách nhiệm, mọi file trong các folder endpoints, services, store và mappers phải tuân thủ định dạng:
+  [name].[type].js (Ví dụ: brand.service.js, brand.mapper.js).
 
-> [!IMPORTANT]
-> **Thứ tự ưu tiên:** `<script setup>` -> `<template>` -> `<style>`.
-> **Lý do:** Bạn cần đọc logic và dữ liệu trước khi xem giao diện. Để `<style>` ở giữa là một sai lầm về trải nghiệm lập trình (DX) vì nó thường rất dài, khiến bạn phải scroll mỏi tay để nhảy giữa logic và template.
-
-## Đặt tên
-
-- **Component & File:** Đồng nhất sử dụng **PascalCase** (ví dụ: `UserCard.vue`).
-- **Tại sao?** Trong Vue, Component là một class/object đặc biệt. Việc dùng `kebab-case` cho tên file chỉ làm khó hệ thống tự động import và gây mất đồng nhất khi gọi Component trong template.
-
-## Phân chia nhiệm vụ (The Quadruple-Contract)
-
-1. **API Service (Tầng giao tiếp):**
-
-- Nằm trong thư mục `services/` hoặc `api/`.
-- Là nơi duy nhất chứa các hàm gọi `axios` hoặc `fetch`.
-- Định nghĩa kiểu dữ liệu (Interfaces/Types) cho Response và Request.
-- **Nhiệm vụ:** Trả về dữ liệu thô hoặc ném lỗi kỹ thuật. Không xử lý State hay Logic ở đây.
-
-2. **Pinia Store (Tầng điều phối & Logic):**
-
-- Nơi duy nhất gọi đến **API Service**.
-- Xử lý logic nghiệp vụ (Business Logic): validation, biến đổi dữ liệu thô từ API thành định dạng UI cần, quản lý trạng thái loading/error.
-- Tuyệt đối không để logic nghiệp vụ trong Component.
-
-3. **Component Cha (Smart Component):**
-
-- Kết nối với Store, nhận dữ liệu và phân phối cho các con qua `props`.
-- Quản lý bố cục (Layout) và các logic mang tính điều hướng.
-
-4. **Component Con (Dumb/Presentational Component):**
-
-- Chỉ nhận dữ liệu qua `props` và phát sự kiện qua `emit`.
-- Không được phép biết đến sự tồn tại của Store hay API.
-- Giữ cho component nhỏ, tập trung và có khả năng tái sử dụng cao.
-
-## Quy tắc "Không rò rỉ"
-
-- Không viết các hàm tính toán phức tạp bên trong `.vue` nếu nó có thể tái sử dụng hoặc thuộc về bản chất của dữ liệu (hãy đưa vào Store hoặc Composable).
-- Mọi biến mang tính chất "trạng thái tính năng" (ví dụ: `isLoggedIn`, `userPermissions`) phải nằm ở Store.
+- Mỗi tính năng sẽ cần phải chia ở các tầng khác nhau với từng chức năng nhiệm vụ khác nhau:
+  - Endpoints (nằm trong app\constants\endpoints): Quản lý tập trung tất cả các "đường dẫn" (URLs). Mỗi module là một file riêng (Ví dụ: product.endpoint.js). Sử dụng hàm cho các URL có tham số: DETAIL: (id) => \/api/v1/product/${id}``. Tuyệt đối không hardcode URL trong Service hay Component.
+  - Constants (nằm trong app\constants): Nhiệm vụ: Lưu trữ các giá trị "tĩnh" và không thay đổi, ví dụ: các Enums, mã trạng thái (Status), hoặc các quyền (Permissions). Thay vì viết if (status === 1), hãy viết if (status === ORDER_STATUS.PENDING).
+  - Mappers (nằm trong app\mappers): Chuyển đổi dữ liệu giữa Frontend và Backend. Tuyệt đối không dùng this trong Mapper để tránh rò rỉ ngữ cảnh. Mỗi tính năng lớn chứa 3 hàm thuần túy (Pure Functions), ngoài ra có thể chứa các hàm khác hỗ trợ việc chuyển đổi dữ liệu: -
+    - toModel: Chuyển DTO từ API về định dạng UI cần (camelCase, format dữ liệu).
+    - toDTO: Chuyển Model từ UI về định dạng API yêu cầu (PascalCase, xử lý logic gửi đi).
+    - toParams: Chuyển Query Object từ UI thành URL Parameters cho Backend (Filter, Sort).
+  - Services (nằm trong app\services): Thực hiện các cuộc gọi mạng "thô". Chỉ sử dụng axiosInstance để gửi request, Nhận vào dữ liệu đã được Map (DTO) và trả về dữ liệu thô từ API. Không lưu trữ bất kỳ trạng thái nào trong Service. Service không được biết đến sự tồn tại của Component.
+  - Tầng Pinia Stores (nằm trong app\stores): "Nhạc trưởng" điều phối toàn bộ luồng dữ liệu, có nhiệm vụ gọi Mapper để biến đổi dữ liệu -> Gọi Service để lấy kết quả, quản lý trạng thái UI (Loading, Error) và dữ liệu toàn cục. Phối hợp với Tanstack Query để quản lý Server State (Caching, Invalidation). Không viết logic mapping trực tiếp trong Action của Store.
+  - Component: Component không được biết đến sự tồn tại của Service hay Endpoint. Gồm 2 loại:
+    - Smart Component (Views):
+      - Nằm trong app\pages.
+      - Kết nối trực tiếp với Store hoặc Tanstack Query.
+      - Phân phối dữ liệu xuống các con và xử lý các sự kiện cấp cao (Save, Delete).
+      - Nếu vượt quá 300 dòng, phải cân nhắc đưa code sang các tầng khác.
+    - Dumb Component (UI Components):
+      - Nằm trong app\components.
+      - Chỉ giao tiếp qua props và emit.
+      - Logic bên trong chỉ phục vụ hiển thị hoặc validate form tại chỗ.
 
 # Tanstack Query (Quy trình CRUD Chuẩn)
 

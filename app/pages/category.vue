@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue";
+import { computed } from "vue";
+import { useCategoryStore } from "@/stores/category.store";
 
 useSeoMeta({
 	title: "Danh Mục Sản Phẩm | AnhEm Motor",
@@ -25,26 +26,13 @@ useHead({
 	],
 });
 
-const categories = ref([
-	{
-		href: "/products?page=1&category_ids=1",
-		imgSrc: "/assets/image/categories/xe.webp",
-		alt: "Xe",
-		title: "Xe",
-	},
-	{
-		href: "/products?page=1&category_ids=3",
-		imgSrc: "/assets/image/categories/spare-parts.webp",
-		alt: "Phụ tùng",
-		title: "Phụ Tùng",
-	},
-	{
-		href: "/products?page=1&category_ids=2",
-		imgSrc: "/assets/image/categories/accessories.webp",
-		alt: "Phụ kiện",
-		title: "Phụ Kiện",
-	},
-]);
+const categoryStore = useCategoryStore();
+const categories = computed(() => categoryStore.categories);
+
+await useAsyncData("categories-static", async () => {
+	await categoryStore.fetchStaticCategories();
+	return true;
+});
 </script>
 
 <template>
@@ -69,18 +57,7 @@ const categories = ref([
 				class="group relative bg-white rounded-xl overflow-hidden shadow-md transform transition-transform duration-300 hover:-translate-y-2"
 			>
 				<div class="absolute inset-0 pointer-events-none z-20 overflow-hidden">
-					<div
-						class="absolute inset-0"
-						style="
-							background: linear-gradient(
-								135deg,
-								transparent,
-								rgba(231, 76, 60, 0.06),
-								transparent
-							);
-							opacity: 0;
-						"
-					/>
+					<div class="absolute inset-0 gradient-overlay" />
 					<div
 						class="absolute top-0 h-full group-hover:translate-x-[60%] transition-transform duration-900 ease-in-out opacity-80"
 					/>
@@ -108,3 +85,15 @@ const categories = ref([
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.gradient-overlay {
+	background: linear-gradient(
+		135deg,
+		transparent,
+		rgba(231, 76, 60, 0.06),
+		transparent
+	);
+	opacity: 0;
+}
+</style>

@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { useProductStore } from "@/stores/useProductStore";
-import { useCategoryStore } from "@/stores/useCategoryStore";
+import { useProductStore } from "@/stores/product.store";
+import { useCategoryStore } from "@/stores/category.store";
 
 const props = defineProps({
 	modelValue: {

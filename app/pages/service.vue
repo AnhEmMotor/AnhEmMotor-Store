@@ -1,9 +1,17 @@
 <script setup>
+import { useMaintenanceStore } from "@/stores/maintenance.store";
+
 useSeoMeta({
 	title: "Dịch vụ | AnhEm Motor",
 	description:
 		"Các dịch vụ bảo dưỡng, sửa chữa xe máy chuyên nghiệp tại AnhEm Motor.",
 });
+
+const maintenanceStore = useMaintenanceStore();
+
+await useAsyncData("maintenance-services", () =>
+	maintenanceStore.fetchServices(),
+);
 
 onMounted(() => {
 	const observer = new IntersectionObserver(
@@ -16,16 +24,20 @@ onMounted(() => {
 		},
 		{ threshold: 0.1 },
 	);
-	document.querySelectorAll(".fade-in").forEach((el) => {
-		observer.observe(el);
-	});
+
+	if (import.meta.client) {
+		document.querySelectorAll(".fade-in").forEach((el) => {
+			observer.observe(el);
+		});
+	}
 });
 </script>
 
 <template>
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-		<ServicePageServiceHero />
-		<ServicePageServiceList />
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 bg-white min-h-screen">
+		<ServiceHero />
+		<ServiceList :services="maintenanceStore.services" />
+		<CommonScrollToTop />
 	</div>
 </template>
 
@@ -50,15 +62,14 @@ onMounted(() => {
 	animation-fill-mode: both;
 }
 
-.fade-in {
+:deep(.fade-in) {
 	opacity: 0;
 	transform: translateY(30px);
-	transition: all 0.6s;
+	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.fade-in.visible {
+:deep(.fade-in.visible) {
 	opacity: 1;
 	transform: translateY(0);
 }
 </style>
-

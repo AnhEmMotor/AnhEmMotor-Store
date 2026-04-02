@@ -36,7 +36,7 @@
 
 				<div class="carousel-dots">
 					<span
-						v-for="(_, index) in brands"
+						v-for="(_, index) in homeStore.brands"
 						:key="index"
 						class="dot"
 						:class="{ active: activeDotIndex === index }"
@@ -50,30 +50,9 @@
 
 <script setup lang="js">
 import { ref, onMounted, onBeforeUnmount, computed } from "vue";
+import { useHomeStore } from "@/stores/home.store";
 
-const brands = ref([
-	{
-		img: "/assets/image/index/brand/honda.webp",
-		alt: "Honda Logo",
-		text: "Thương hiệu xe máy số 1 thế giới với chất lượng và độ bền vượt trội",
-	},
-	{
-		img: "/assets/image/index/brand/yamaha.webp",
-		alt: "Yamaha Logo",
-		text: "Thiết kế thể thao, công nghệ tiên tiến và âm thanh động cơ đầy sức hút",
-	},
-	{
-		img: "/assets/image/index/brand/suzuki.webp",
-		alt: "Suzuki Logo",
-		text: "Nâng cao chất lượng, an toàn và thoải mái, nhân rộng niềm vui của tất cả mọi người",
-	},
-	{
-		img: "/assets/image/index/brand/kawasaki.webp",
-		alt: "Kawasaki Logo",
-		text: "Phong cách mạnh mẽ, hiệu suất vượt trội, tốc độ đỉnh cao và công nghệ đột phá",
-	},
-]);
-
+const homeStore = useHomeStore();
 const carouselRef = ref(null);
 const currentSlide = ref(0);
 const useTransition = ref(true);
@@ -83,14 +62,20 @@ const slideWidth = ref(0);
 
 const AUTOPLAY_DELAY = 3000;
 
-const carouselBrands = computed(() => [...brands.value, ...brands.value]);
+const carouselBrands = computed(() => {
+	const brands = homeStore.brands;
+	return [...brands, ...brands];
+});
 
 const carouselStyle = computed(() => ({
 	transform: `translateX(-${currentSlide.value * slideWidth.value}px)`,
 	transition: useTransition.value ? "transform 0.5s ease-in-out" : "none",
 }));
 
-const activeDotIndex = computed(() => currentSlide.value % brands.value.length);
+const activeDotIndex = computed(() => {
+	if (homeStore.brands.length === 0) return 0;
+	return currentSlide.value % homeStore.brands.length;
+});
 
 const nextSlide = () => {
 	currentSlide.value++;
@@ -102,9 +87,10 @@ const goToSlide = (slideIndex) => {
 };
 
 const handleTransitionEnd = () => {
-	if (currentSlide.value >= brands.value.length) {
+	const brandsCount = homeStore.brands.length;
+	if (brandsCount > 0 && currentSlide.value >= brandsCount) {
 		useTransition.value = false;
-		currentSlide.value = currentSlide.value % brands.value.length;
+		currentSlide.value = currentSlide.value % brandsCount;
 
 		setTimeout(() => {
 			useTransition.value = true;

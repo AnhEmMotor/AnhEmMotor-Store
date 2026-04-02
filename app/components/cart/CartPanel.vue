@@ -140,8 +140,9 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import BaseButton from "../ui/button/BaseButton.vue";
-import NumberStepper from "../ui/input/NumberStepper.vue";
+import BaseButton from "../ui/BaseButton.vue";
+import NumberStepper from "../ui/NumberStepper.vue";
+import { formatCurrency } from "~/utils/currency";
 
 const { isOpen, cartItems, cartTotal } = defineProps({
 	isOpen: Boolean,
@@ -180,9 +181,4 @@ watch(
 function onCheckout() {
 	emit("close");
 }
-
-const formatCurrency = (amount) => {
-	if (typeof amount !== "number") return amount;
-	return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-};
 </script>

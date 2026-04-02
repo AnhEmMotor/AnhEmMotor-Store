@@ -21,12 +21,24 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "~/stores/auth.store";
+import { useLayoutStore } from "~/stores/layout.store";
+
 defineProps({
 	error: {
 		type: Object,
 		required: true,
 	},
 });
+
+const authStore = useAuthStore();
+const layoutStore = useLayoutStore();
+
+if (import.meta.server) {
+	const event = useRequestEvent();
+	authStore.setSsrEvent(event);
+}
+await Promise.all([authStore.initAuth(), layoutStore.fetchLayoutData()]);
 
 const handleError = () => clearError({ redirect: "/" });
 
