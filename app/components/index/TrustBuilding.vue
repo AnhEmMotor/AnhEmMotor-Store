@@ -16,7 +16,6 @@ const selectedShowroom = ref(SHOWROOMS[0]);
 <template>
 	<section class="py-24 bg-white overflow-hidden relative">
 		<div class="container mx-auto px-4 relative z-10">
-			<!-- Perks Section -->
 			<div
 				class="bg-white rounded-[60px] p-10 md:p-16 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] mb-24 border border-slate-100"
 			>
@@ -42,7 +41,6 @@ const selectedShowroom = ref(SHOWROOMS[0]);
 			</div>
 
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-				<!-- Testimonials Section -->
 				<div class="space-y-12">
 					<div class="space-y-4">
 						<h2
@@ -74,7 +72,6 @@ const selectedShowroom = ref(SHOWROOMS[0]);
 					</div>
 				</div>
 
-				<!-- Showrooms Section -->
 				<div class="space-y-12">
 					<div class="space-y-8">
 						<h2
