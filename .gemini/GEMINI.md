@@ -69,6 +69,7 @@
       - Nằm trong app\components.
       - Chỉ giao tiếp qua props và emit.
       - Logic bên trong chỉ phục vụ hiển thị hoặc validate form tại chỗ.
+  - Ngoài ra còn có app\composables và app\utils chứa các hàm tiện ích chung xài nhiều lần trong dự án. Đưa vào composables nếu file chứa logic sử dụng Composition API của Vue hoặc các hooks của Nuxt (useFetch, useRouter, useCookie). Đưa vào utils khi file chỉ chứa các hàm thuần túy (pure functions).
 
 # Tanstack Query (Quy trình CRUD Chuẩn)
 
@@ -104,7 +105,7 @@
 
 # Build dự án
 
-Khi có sự thay đổi trong dự án, chạy "npm run lint" để kiểm tra xem còn lỗi cú pháp thừa nào hay không, sau đó thì yêu cầu người dùng kiểm tra thủ công. Với dự án NuxtJS, tuyệt đối không chạy "npm run build".
+Khi có sự thay đổi trong dự án, chạy "npm run lint" để kiểm tra xem còn lỗi cú pháp thừa nào hay không, sau đó thì yêu cầu người dùng kiểm tra thủ công. Tuyệt đối không chạy "npm run build".
 
 # Tuyệt đối không tự ý Commit Dự án
 
