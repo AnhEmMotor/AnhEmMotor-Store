@@ -12,14 +12,19 @@ defineProps({
 		type: String,
 		default: "fa6-solid:paper-plane",
 	},
+	to: {
+		type: [String, Object],
+		default: null,
+	},
 });
 </script>
 
 <template>
-	<button
-		:type="type"
+	<component
+		:is="to ? 'NuxtLink' : 'button'"
+		v-bind="to ? { to } : { type }"
 		:disabled="loading"
-		class="w-full md:w-48 h-16 bg-red-600 hover:bg-white hover:text-red-600 border-2 border-transparent rounded-2xl font-black uppercase tracking-widest text-sm transition-all shadow-xl shadow-red-600/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group"
+		class="w-full md:w-48 h-12 bg-red-600 hover:bg-white hover:text-red-600 border-2 border-transparent rounded-2xl font-black uppercase tracking-widest text-sm transition-all shadow-xl shadow-red-600/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group text-white inline-flex items-center justify-center"
 	>
 		<span v-if="!loading" class="flex items-center justify-center gap-2">
 			<slot />
@@ -30,5 +35,5 @@ defineProps({
 			/>
 		</span>
 		<Icon v-else name="fa6-solid:circle-notch" class="animate-spin text-xl" />
-	</button>
+	</component>
 </template>

@@ -10,7 +10,7 @@ import CheckoutPaymentMethod from "@/components/checkout/CheckoutPaymentMethod.v
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary.vue";
 
 useSeoMeta({
-	title: "Thanh Toán | AnhEm Motor",
+	title: "Thanh Toán",
 	description: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",
 	ogTitle: "Thanh Toán",
 	ogDescription: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",

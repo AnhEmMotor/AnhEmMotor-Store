@@ -115,7 +115,7 @@ export const useOrderStore = defineStore("order", () => {
 				userId,
 			);
 			const res = await service.createOrder(payload);
-			lastCreatedOrderId.value = res.id;
+			lastCreatedOrderId.value = res.id || res.Id;
 			currentOrder.value = orderMapper.mapOrderResponse(res);
 
 			queryClient.invalidateQueries({ queryKey: ["my-orders"] });
