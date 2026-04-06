@@ -25,3 +25,4 @@ logs
 !.env.template
 
 *.txt
+*.md

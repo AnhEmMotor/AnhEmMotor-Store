@@ -16,7 +16,7 @@ const orderMapper = {
 	mapOrderResponse(raw) {
 		if (!raw) return null;
 		return {
-			id: raw.id,
+			id: raw.id || raw.Id,
 			orderCode: raw.orderCode || raw.id,
 			totalAmount:
 				raw.totalAmount ||

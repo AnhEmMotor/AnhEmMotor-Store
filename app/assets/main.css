@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @import "./styles.css";
 
+html,
+body {
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+#__nuxt {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
 @font-face {
 	font-family: "Be Vietnam Pro";
 	font-style: normal;

@@ -4,9 +4,9 @@
 			:class="[
 				'fixed inset-0 bg-black/40',
 				isOpen
-					? 'opacity-100 pointer-events-auto z-50'
+					? 'opacity-100 pointer-events-auto z-[200]'
 					: shouldRender
-						? 'opacity-0 pointer-events-none z-50'
+						? 'opacity-0 pointer-events-none z-[200]'
 						: 'opacity-0 pointer-events-none -z-10',
 			]"
 			@click="$emit('close')"
@@ -16,7 +16,7 @@
 			:class="[
 				'fixed inset-y-0 right-0 w-screen md:w-96 bg-white transform flex flex-col overflow-hidden shadow-2xl',
 				isOpen ? 'translate-x-0' : 'translate-x-full',
-				isOpen || shouldRender ? 'z-50' : '-z-10',
+				isOpen || shouldRender ? 'z-[200]' : '-z-10',
 			]"
 		>
 			<div
@@ -114,10 +114,10 @@
 				<BaseButton
 					v-if="auth.isLoggedIn"
 					id="checkout-button"
-					:to="{ path: '/process-order' }"
 					:disabled="cartItems.length === 0"
 					aria-label="Tiến hành đặt hàng và thanh toán"
-					@click="onCheckout"
+					class="!w-full"
+					@click="handleCheckout"
 				>
 					<Icon name="fa6-solid:credit-card" class="mr-2" />
 					Tiến hành thanh toán
@@ -125,9 +125,10 @@
 				<BaseButton
 					v-if="!auth.isLoggedIn"
 					id="checkout-button"
-					:to="{ path: '/process-order' }"
+					:to="{ path: '/login', query: { redirect: '/process-order' } }"
 					:disabled="cartItems.length === 0"
 					aria-label="Đăng nhập để tiếp tục thanh toán"
+					class="!w-full"
 					@click="onCheckout"
 				>
 					<Icon name="fa6-solid:right-to-bracket" class="mr-2" />
@@ -180,5 +181,10 @@ watch(
 
 function onCheckout() {
 	emit("close");
+}
+
+function handleCheckout() {
+	emit("close");
+	navigateTo("/process-order");
 }
 </script>

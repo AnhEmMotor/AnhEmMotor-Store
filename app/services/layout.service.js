@@ -2,7 +2,7 @@ const layoutService = {
 	async getNavItems() {
 		return [
 			{ name: "Trang Chủ", path: "/" },
-			{ name: "Sản Phẩm", path: "/category" },
+			{ name: "Sản Phẩm", path: "/products" },
 			{ name: "Giới Thiệu", path: "/about" },
 			{ name: "Tin Tức", path: "/news" },
 			{ name: "Khuyến Mãi", path: "/promotion" },

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { useHomeStore } from "@/stores/home.store";
 
 const homeStore = useHomeStore();
@@ -25,10 +25,25 @@ useHead({
 </script>
 
 <template>
-	<main class="home-page">
-		<IndexTheBanner />
-		<IndexSeoContent />
-		<IndexBrandSection />
-		<IndexAboutUs />
-	</main>
+	<div class="home-page">
+		<IndexHeroSection />
+		<IndexQuickSearch />
+		<IndexStatsSection />
+		<IndexProductCategories />
+		<IndexFeaturedProducts />
+		<IndexReelsShowcase />
+		<IndexSalesEnablers />
+		<IndexTrustBuilding />
+		<IndexNewsSEO />
+		<IndexLeadFooter />
+		<IndexCompareBar />
+	</div>
 </template>
+
+<style scoped>
+@reference "../assets/main.css";
+
+.home-page {
+	@apply bg-white text-slate-900;
+}
+</style>

@@ -6,6 +6,10 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
+	showAction: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const selectedVariant = ref(
@@ -64,7 +68,7 @@ const currentUrl = computed(() => {
 			<div
 				v-if="product.variants && product.variants.length > 1"
 				class="mb-4"
-				@click.prevent
+				@click.stop.prevent
 			>
 				<label class="block text-xs font-semibold text-gray-500 uppercase mb-1"
 					>Phiên bản</label
@@ -83,6 +87,13 @@ const currentUrl = computed(() => {
 				<div class="flex flex-col">
 					<span class="text-xs text-gray-400 uppercase font-semibold">Giá</span>
 					<span class="text-primary font-bold text-xl">{{ currentPrice }}</span>
+				</div>
+				<div
+					v-if="showAction"
+					class="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest group-hover:bg-red-600 transition-all duration-300 shadow-lg shadow-black/5 hover:shadow-red-600/20 active:scale-95 flex items-center gap-2"
+				>
+					Xem chi tiết
+					<Icon name="fa6-solid:chevron-right" class="text-[8px]" />
 				</div>
 			</div>
 		</div>

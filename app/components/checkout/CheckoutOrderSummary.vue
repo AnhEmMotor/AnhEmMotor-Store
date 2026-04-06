@@ -1,11 +1,19 @@
 <script setup>
 import { computed } from "vue";
+import { toast } from "vue3-toastify";
 import { useCart } from "~/composables/useCart";
 import { useOrderStore } from "~/stores/order.store";
 import orderMapper from "~/mappers/order.mapper";
+import "vue3-toastify/dist/index.css";
 
-const { cartItems, cartDetails, removeItem, updateQuantity, isPending } =
-	useCart();
+const {
+	cartItems,
+	cartDetails,
+	removeItem,
+	updateQuantity,
+	isPending,
+	clearCart,
+} = useCart();
 const orderStore = useOrderStore();
 
 const isSubmitting = computed(() => orderStore.isLoading);
@@ -33,12 +41,12 @@ async function handlePlaceOrder() {
 	try {
 		const order = await orderStore.createOrder(cartItems.value);
 		if (order?.id) {
-			const { clearCart } = useCart();
 			clearCart();
+			toast.success("Đặt hàng thành công!");
 			navigateTo(`/order-success?id=${order.id}`);
 		}
 	} catch {
-		instance.$toast.error(orderStore.error || "Có lỗi xảy ra khi đặt hàng.");
+		toast.error(orderStore.error || "Có lỗi xảy ra khi đặt hàng.");
 	}
 }
 </script>

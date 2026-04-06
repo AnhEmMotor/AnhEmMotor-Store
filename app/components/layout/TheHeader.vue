@@ -440,7 +440,7 @@ onBeforeUnmount(() => {
 const getIconForPath = (path) => {
 	const icons = {
 		"/": "fa6-solid:house",
-		"/category": "fa6-solid:motorcycle",
+		"/products": "fa6-solid:motorcycle",
 		"/about": "fa6-solid:circle-info",
 		"/news": "fa6-solid:newspaper",
 		"/promotion": "fa6-solid:tags",

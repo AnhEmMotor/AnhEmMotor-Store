@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 import { useAuthStore } from "../stores/auth.store";
 
@@ -41,16 +41,10 @@ async function handleLogin() {
 	isLoading.value = true;
 	const authStore = useAuthStore();
 	try {
-		const result = (await authStore.login({
+		const result = await authStore.login({
 			UsernameOrEmail: identifier.value,
 			Password: password.value,
-		})) as {
-			error?: {
-				response?: {
-					data?: { message?: string; errors?: { message: string }[] };
-				};
-			};
-		};
+		});
 
 		if (result?.error) {
 			throw result.error;
@@ -61,17 +55,12 @@ async function handleLogin() {
 		password.value = "";
 		const router = useRouter();
 		const route = useRoute();
-		const redirect = (route.query.redirect as string) || "/";
+		const redirect = route.query.redirect || "/";
 		router.push(redirect);
-	} catch (error: unknown) {
-		const err = error as {
-			response?: {
-				data?: { message?: string; errors?: { message: string }[] };
-			};
-		};
+	} catch (error) {
 		const errorMessage =
-			err.response?.data?.message ||
-			err.response?.data?.errors?.[0]?.message ||
+			error.response?.data?.message ||
+			error.response?.data?.errors?.[0]?.message ||
 			"Email hoặc mật khẩu không đúng!";
 		instance.$toast.error(errorMessage);
 	} finally {

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import homeService from "@/services/home.service";
 import homeMapper from "@/mappers/home.mapper";
 
@@ -8,6 +8,38 @@ export const useHomeStore = defineStore("home", () => {
 	const stats = ref([]);
 	const searchPhrases = ref([]);
 	const isLoading = ref(false);
+
+	const activeCategory = ref("");
+	const searchFilters = ref({
+		keyword: "",
+		model: "",
+		priceRange: "",
+	});
+
+	const featuredProducts = ref([]);
+
+	const filteredProducts = computed(() => {
+		return featuredProducts.value.filter((p) => {
+			const matchesCategory =
+				!activeCategory.value || p.category === activeCategory.value;
+			const matchesKeyword =
+				!searchFilters.value.keyword ||
+				p.name
+					.toLowerCase()
+					.includes(searchFilters.value.keyword.toLowerCase());
+			const matchesPrice =
+				!searchFilters.value.priceRange ||
+				checkPriceRange(p.price, searchFilters.value.priceRange);
+			return matchesCategory && matchesKeyword && matchesPrice;
+		});
+	});
+
+	const checkPriceRange = (price, range) => {
+		const [min, max] = range
+			.split("-")
+			.map((v) => (v === "plus" ? Infinity : parseInt(v) * 1000000));
+		return price >= min && price <= (max || Infinity);
+	};
 
 	const fetchHomeData = async () => {
 		isLoading.value = true;
@@ -32,6 +64,10 @@ export const useHomeStore = defineStore("home", () => {
 		stats,
 		searchPhrases,
 		isLoading,
+		featuredProducts,
+		filteredProducts,
+		activeCategory,
+		searchFilters,
 		fetchHomeData,
 	};
 });
