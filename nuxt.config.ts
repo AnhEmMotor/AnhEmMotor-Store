@@ -104,6 +104,11 @@ export default defineNuxtConfig({
 			},
 		},
 		routeRules: {
+			"/**": {
+				headers: {
+					"Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+				},
+			},
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
 			},
@@ -129,6 +134,7 @@ export default defineNuxtConfig({
 					crossorigin: "anonymous",
 				},
 			],
+			script: [],
 		},
 	},
 

@@ -21,6 +21,19 @@ useHead({
 			href: "/favicon.ico",
 		},
 	],
+	script: [
+		{
+			src: "https://accounts.google.com/gsi/client",
+			async: true,
+			defer: true,
+		},
+		{
+			src: "https://connect.facebook.net/vi_VN/sdk.js",
+			async: true,
+			defer: true,
+			crossorigin: "anonymous",
+		},
+	],
 });
 
 const instance = useNuxtApp();
@@ -130,17 +143,12 @@ async function handleLogin() {
 						</svg>
 					</span>
 				</div>
-
-				<button
-					id="submitBtn"
-					type="submit"
-					class="btn"
-					:disabled="isLoading"
-					aria-label="Đăng nhập vào hệ thống AnhEm Motor"
-				>
-					{{ isLoading ? "Đang xử lý..." : "Đăng Nhập" }}
+				<button :disabled="isLoading" type="submit" class="btn">
+					{{ isLoading ? "ĐANG ĐĂNG NHẬP..." : "ĐĂNG NHẬP" }}
 				</button>
 			</form>
+
+			<AuthSocialLogin @loading="(val) => (isLoading = val)" />
 
 			<CommonFullLoading :show="isLoading" text="Đang xử lý đăng nhập..." />
 

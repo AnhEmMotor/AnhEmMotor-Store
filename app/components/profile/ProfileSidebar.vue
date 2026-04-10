@@ -64,6 +64,7 @@ function setActiveTab(tab) {
 					v-if="user?.avatarUrl"
 					:src="user.avatarUrl"
 					alt="Avatar"
+					referrerpolicy="no-referrer"
 					class="w-full h-full object-cover pointer-events-none"
 				>
 				<ClientOnly v-else>

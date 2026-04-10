@@ -117,6 +117,8 @@ const registerStore = useRegisterStore();
 		>
 			{{ registerStore.isLoading ? "Đang xử lý..." : "Đăng Ký Ngay" }}
 		</button>
+
+		<AuthSocialLogin mode="register" />
 	</form>
 </template>
 
