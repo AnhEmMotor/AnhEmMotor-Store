@@ -14,6 +14,7 @@ defineProps({
 		<Transition name="fade" mode="out-in">
 			<iframe
 				:key="showroom.city"
+				:title="`Bản đồ showroom tại ${showroom.city}`"
 				:src="showroom.map"
 				width="100%"
 				height="100%"
@@ -46,6 +47,7 @@ defineProps({
 					<a
 						:href="`tel:${showroom.phone}`"
 						class="w-14 h-14 bg-red-600 text-white rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all"
+						aria-label="Gọi điện thoại liên hệ"
 					>
 						<Icon name="fa6-solid:phone" />
 					</a>

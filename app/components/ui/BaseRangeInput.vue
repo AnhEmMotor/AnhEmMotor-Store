@@ -31,15 +31,18 @@ defineProps({
 });
 
 defineEmits(["update:modelValue"]);
+
+const inputId = useId();
 </script>
 
 <template>
 	<div class="space-y-4">
 		<div class="flex justify-between items-center text-sm font-bold">
-			<span class="text-gray-500 uppercase">{{ label }}</span>
+			<label :for="inputId" class="text-gray-500 uppercase">{{ label }}</label>
 			<span class="text-red-600 text-xl">{{ displayValue }}</span>
 		</div>
 		<input
+			:id="inputId"
 			:value="modelValue"
 			type="range"
 			:min="min"

@@ -38,6 +38,8 @@ const currentUrl = computed(() => {
 		? `/product/${selectedVariant.value.url}`
 		: "#";
 });
+
+const variantSelectId = useId();
 </script>
 
 <template>
@@ -70,10 +72,13 @@ const currentUrl = computed(() => {
 				class="mb-4"
 				@click.stop.prevent
 			>
-				<label class="block text-xs font-semibold text-gray-500 uppercase mb-1"
+				<label
+					:for="variantSelectId"
+					class="block text-xs font-semibold text-gray-500 uppercase mb-1"
 					>Phiên bản</label
 				>
 				<select
+					:id="variantSelectId"
 					v-model="selectedVariant"
 					class="w-full px-3 py-2 border rounded-lg text-sm bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
 				>
