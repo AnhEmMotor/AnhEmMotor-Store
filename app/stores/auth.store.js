@@ -76,6 +76,62 @@ export const useAuthStore = defineStore("auth", () => {
 		}
 	}
 
+	async function loginWithGoogle(idToken) {
+		if (status.value === "pending") return;
+		status.value = "pending";
+		isLoggingOut = false;
+		const axios = useAxios();
+		try {
+			const { data } = await axios.post("/api/v1/auth/google", { idToken });
+
+			if (data && data.accessToken) {
+				accessToken.value = data.accessToken;
+				expiresAt.value = data.expiresAt;
+				await fetchUserSSR({ skipRetry: true });
+				closeSSE();
+				connectSSE();
+				status.value = "success";
+			} else {
+				throw new Error("Login failed: No access token received");
+			}
+			return { success: true };
+		} catch (error) {
+			status.value = "error";
+			accessToken.value = null;
+			user.value = null;
+			return { error };
+		}
+	}
+
+	async function loginWithFacebook(accessTokenInput) {
+		if (status.value === "pending") return;
+		status.value = "pending";
+		isLoggingOut = false;
+		const axios = useAxios();
+		try {
+			const { data } = await axios.post("/api/v1/auth/facebook", {
+				accessToken: accessTokenInput,
+			});
+
+			if (data && data.accessToken) {
+				accessToken.value = data.accessToken;
+				expiresAt.value = data.expiresAt;
+				await fetchUserSSR({ skipRetry: true });
+				closeSSE();
+				connectSSE();
+				status.value = "success";
+			} else {
+				throw new Error("Login failed: No access token received");
+			}
+			return { success: true };
+		} catch (error) {
+			status.value = "error";
+			accessToken.value = null;
+			user.value = null;
+			return { error };
+		}
+	}
+
 	async function register(userInfo) {
 		if (status.value === "pending") return;
 		status.value = "pending";
@@ -288,15 +344,9 @@ export const useAuthStore = defineStore("auth", () => {
 			user.value = userData;
 			status.value = "success";
 		} catch (error) {
-			if (options.skipRetry) {
-				user.value = null;
-				status.value = "error";
-				return;
-			}
-
 			const statusCode = error.response?.status || error.statusCode;
 
-			if (statusCode === 401) {
+			if (statusCode === 401 && !options.skipRetry) {
 				const { error: refreshError } = await refreshToken();
 				if (!refreshError) {
 					await fetchUserSSR({ ...options, skipRetry: true });
@@ -375,13 +425,9 @@ export const useAuthStore = defineStore("auth", () => {
 				throw new Error("Refresh token failed: No new AT received");
 			}
 		} catch (error) {
-			if (import.meta.client) {
-				await logout();
-			} else {
-				accessToken.value = null;
-				user.value = null;
-				status.value = "idle";
-			}
+			accessToken.value = null;
+			user.value = null;
+			status.value = "unauthenticated";
 			return { error };
 		}
 	}
@@ -411,7 +457,7 @@ export const useAuthStore = defineStore("auth", () => {
 
 			accessToken.value = null;
 			user.value = null;
-			status.value = "idle";
+			status.value = "unauthenticated";
 
 			if (shouldRedirect && import.meta.client) {
 				await navigateTo("/");
@@ -479,6 +525,8 @@ export const useAuthStore = defineStore("auth", () => {
 		hasAnyPermission,
 		hasAllPermissions,
 		login,
+		loginWithGoogle,
+		loginWithFacebook,
 		register,
 		logout,
 		fetchUser: fetchUserSSR,
@@ -495,6 +543,15 @@ export const useAuthStore = defineStore("auth", () => {
 			const msg = successRedirectMessage.value;
 			successRedirectMessage.value = null;
 			return msg;
+		},
+		getExternalAuthConfig: async () => {
+			const backendUrl =
+				(import.meta.server
+					? config.internalApiUrlForServer
+					: config.public.apiUrlForBrowserClient) || "";
+			return await $fetch(`${backendUrl}/api/v1/auth/external-config`, {
+				method: "GET",
+			});
 		},
 		reconnectSSE: () => {
 			closeSSE();

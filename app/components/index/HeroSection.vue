@@ -82,7 +82,7 @@ onMounted(() => {
 						to="/products"
 						class="px-10 py-5 bg-red-600 hover:bg-black text-white rounded-2xl font-black uppercase tracking-widest transition-all shadow-2xl shadow-red-600/40 hover:-translate-y-1 flex items-center gap-3 group"
 					>
-						Bảng giá mới nhất
+						Xem danh sách sản phẩm
 						<Icon
 							name="fa6-solid:chevron-right"
 							class="text-xs transition-transform group-hover:translate-x-1"

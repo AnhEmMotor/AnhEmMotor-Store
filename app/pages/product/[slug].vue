@@ -67,6 +67,8 @@ const onAddToCart = () => {
 	const cartItem = productMapper.toCartItem(detail.value);
 	if (cartItem) addItem(cartItem, 1);
 };
+
+const variantSelectId = useId();
 </script>
 
 <template>
@@ -229,12 +231,14 @@ const onAddToCart = () => {
 									class="space-y-3"
 								>
 									<label
+										:for="variantSelectId"
 										class="block text-[10px] font-black text-gray-400 uppercase tracking-widest"
 									>
 										Các phiên bản khác
 									</label>
 									<div class="relative">
 										<select
+											:id="variantSelectId"
 											class="w-full pl-5 pr-10 py-3.5 bg-gray-50/50 border-2 border-transparent focus:border-primary/20 focus:bg-white rounded-xl text-gray-900 font-bold text-xs appearance-none transition-all outline-none"
 											@change="handleVariantChange"
 										>

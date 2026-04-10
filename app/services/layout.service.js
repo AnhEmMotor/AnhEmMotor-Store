@@ -49,11 +49,9 @@ const layoutService = {
 				{
 					title: "Hỗ Trợ",
 					links: [
-						{ name: "Chính sách bảo hành", url: "#" },
-						{ name: "Hướng dẫn sử dụng", url: "#" },
-						{ name: "FAQ", url: "#" },
-						{ name: "Liên hệ hỗ trợ", url: "#" },
-						{ name: "Sitemap", url: "#" },
+						{ name: "Chính sách bảo mật", url: "/privacy" },
+						{ name: "Điều khoản dịch vụ", url: "/terms" },
+						{ name: "Yêu cầu xóa dữ liệu", url: "/data-deletion" },
 					],
 				},
 			],
