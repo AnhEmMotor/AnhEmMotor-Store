@@ -110,7 +110,7 @@ const triggerGoogleLogin = () => {
 
 onMounted(() => {
 	let retryCount = 0;
-	const maxRetries = 30; // Đợi tối đa 15 giây
+	const maxRetries = 30;
 
 	const initSocials = async () => {
 		const configData = await authStore.getExternalAuthConfig();
@@ -120,7 +120,6 @@ onMounted(() => {
 			configData.googleClientId || configData.GoogleClientId;
 		const facebookAppId = configData.facebookAppId || configData.FacebookAppId;
 
-		// Initialize Facebook ngay lập tức nếu có appId và SDK
 		const initFB = () => {
 			if (window.FB && facebookAppId && !window.__fb_initialized) {
 				window.FB.init({
@@ -134,7 +133,6 @@ onMounted(() => {
 		};
 
 		const checkSocials = setInterval(() => {
-			// Init Google
 			if (window.google && googleClientId) {
 				if (!window.__google_initialized) {
 					window.google.accounts.id.initialize({
@@ -146,7 +144,6 @@ onMounted(() => {
 					window.__google_initialized = true;
 				}
 
-				// Luôn luôn thử render button nếu element tồn tại và chưa có con (tránh render đè nhiều lần)
 				const targetElem = document.getElementById("google-login-hidden");
 				if (targetElem && targetElem.children.length === 0) {
 					window.google.accounts.id.renderButton(targetElem, {
@@ -158,11 +155,8 @@ onMounted(() => {
 				}
 			}
 
-			// Init Facebook
 			initFB();
 
-			// Kiểm tra điều kiện thoát: Google đã init VÀ Facebook đã init (nếu có config)
-			// Và quan trọng nhất là nút Google đã được render nếu element tồn tại
 			const isGoogleReady =
 				window.__google_initialized &&
 				(!document.getElementById("google-login-hidden") ||
