@@ -1,24 +1,24 @@
 export const FLOATING_BUTTONS = [
 	{
-		label: "Hotline",
+		label: "Gọi ngay",
 		icon: "fa6-solid:phone",
 		color: "bg-red-600 shadow-red-600/30",
-		action: "tel:0123456789",
+		action: "tel:0901234567",
 	},
 	{
-		label: "Zalo",
-		icon: "fa6-solid:z",
-		color: "bg-blue-500 shadow-blue-500/30",
-		action: "https://zalo.me/0123456789",
+		label: "Chat Zalo",
+		icon: "fa6-solid:message",
+		color: "bg-blue-600 shadow-blue-600/30",
+		action: "https://zalo.me/0901234567",
 	},
 	{
-		label: "Messenger",
-		icon: "fa6-solid:comment",
-		color:
-			"bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-500 shadow-pink-500/30",
-		action: "https://m.me/anhemmotor",
+		label: "Nhận báo giá",
+		icon: "fa6-solid:file-invoice-dollar",
+		color: "bg-emerald-600 shadow-emerald-600/30",
+		action: "/#lead-footer",
 	},
 ];
+
 
 export const HERO_BIKE_MODELS = [
 	"Honda SH 160i",

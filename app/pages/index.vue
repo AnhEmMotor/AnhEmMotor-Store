@@ -25,19 +25,49 @@ useHead({
 </script>
 
 <template>
-	<div class="home-page">
+	<div class="home-page space-y-0">
+		<!-- 1. HERO BANNER -->
 		<IndexHeroSection />
-		<IndexQuickSearch />
-		<IndexStatsSection />
+		
+		<!-- 2. USP / LÝ DO CHỌN BẠN -->
+		<IndexUSPSection />
+		
+		<!-- 3. DANH MỤC SẢN PHẨM -->
 		<IndexProductCategories />
+		
+		<!-- 4. SẢN PHẨM NỔI BẬT -->
 		<IndexFeaturedProducts />
-		<IndexReelsShowcase />
+		
+		<!-- 5. CHƯƠNG TRÌNH TRẢ GÓP -->
 		<IndexSalesEnablers />
-		<IndexTrustBuilding />
+		
+		<!-- 6. ƯU ĐÃI / KHUYẾN MÃI -->
+		<IndexPromotionsSection />
+		
+		<!-- 7. VIDEO / REVIEW THỰC TẾ -->
+		<IndexReelsShowcase />
+		
+		<!-- 8. LÝ DO / CAM KẾT DOANH NGHIỆP -->
+		<IndexCommitmentSection />
+		
+		<!-- 9. REVIEW KHÁCH HÀNG -->
+		<IndexTestimonialSection />
+		
+		<!-- 10. HỆ THỐNG SHOWROOM -->
+		<IndexShowroomSection />
+		
+		<!-- 11. BLOG / KIẾN THỨC -->
 		<IndexNewsSEO />
+		
+		<!-- 12. CTA CUỐI -->
 		<IndexLeadFooter />
+		
+		<!-- 13. FLOATING COMPONENTS -->
 		<IndexCompareBar />
 	</div>
+
+
+
 </template>
 
 <style scoped>

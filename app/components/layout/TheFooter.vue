@@ -11,27 +11,23 @@ const footerData = computed(() => layoutStore.footerData);
 	>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-10">
-				<div class="footer-col">
-					<h3 class="footer-heading">Thông Tin Liên Hệ</h3>
-					<p class="contact-info-item">
-						<ClientOnly>
-							<Icon name="fa6-solid:location-dot" class="mr-2" />
-						</ClientOnly>
-						{{ footerData.contact.address }}
-					</p>
-					<p class="contact-info-item">
-						<ClientOnly>
-							<Icon name="fa6-solid:phone" class="mr-2" />
-						</ClientOnly>
-						{{ footerData.contact.phone }}
-					</p>
-					<p class="contact-info-item">
-						<ClientOnly>
-							<Icon name="fa6-solid:envelope" class="mr-2" />
-						</ClientOnly>
-						{{ footerData.contact.email }}
-					</p>
-					<div class="flex gap-4 mt-5">
+				<div class="footer-col col-span-1 lg:col-span-1">
+					<h3 class="footer-heading">AnhEm Motor</h3>
+					<div class="space-y-4">
+						<div class="contact-info-item flex items-start gap-3">
+							<Icon name="fa6-solid:location-dot" class="mt-1 text-red-500" />
+							<span>{{ footerData.contact.address }}</span>
+						</div>
+						<a :href="`tel:${footerData.contact.phone}`" class="contact-info-item flex items-center gap-3 group">
+							<Icon name="fa6-solid:phone" class="text-red-500 group-hover:animate-bounce" />
+							<span class="text-xl font-black text-white group-hover:text-red-500 transition-colors">{{ footerData.contact.phone }}</span>
+						</a>
+						<div class="contact-info-item flex items-center gap-3">
+							<Icon name="fa6-solid:envelope" class="text-red-500" />
+							<span>{{ footerData.contact.email }}</span>
+						</div>
+					</div>
+					<div class="flex gap-4 mt-8">
 						<RouterLink
 							v-for="social in footerData.contact.socials"
 							:key="social.name"
@@ -45,6 +41,7 @@ const footerData = computed(() => layoutStore.footerData);
 						</RouterLink>
 					</div>
 				</div>
+
 
 				<div
 					v-for="section in footerData.sections"

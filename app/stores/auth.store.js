@@ -309,8 +309,9 @@ export const useAuthStore = defineStore("auth", () => {
 			await navigateTo("/");
 		}
 
-		const axios = useAxios();
-		axios.post("/api/v1/auth/logout").catch(() => {});
+		// Skip API call in performLogout if it's already triggered by a logout failure
+		// or if we just want to clean state locally.
+
 
 		setTimeout(() => {
 			isLoggingOut = false;
@@ -447,7 +448,7 @@ export const useAuthStore = defineStore("auth", () => {
 		closeSSE();
 		const axios = useAxios();
 		try {
-			await axios.post("/api/v1/auth/logout");
+			await axios.post("/api/v1/auth/logout").catch(() => {});
 		} finally {
 			if (import.meta.client) {
 				queryClient.cancelQueries();

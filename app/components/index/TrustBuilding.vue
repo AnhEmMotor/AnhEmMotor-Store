@@ -1,17 +1,10 @@
 <script setup>
 import { ref } from "vue";
-import {
-	TRUST_SERVICES,
-	TESTIMONIALS,
-	SHOWROOMS,
-} from "@/constants/trust.constant";
+import { TRUST_SERVICES, TESTIMONIALS } from "@/constants/trust.constant";
 import TrustServiceCard from "@/components/ui/TrustServiceCard.vue";
 import TestimonialCard from "@/components/ui/TestimonialCard.vue";
-import ShowroomItem from "@/components/ui/ShowroomItem.vue";
-import ShowroomMap from "@/components/ui/ShowroomMap.vue";
-
-const selectedShowroom = ref(SHOWROOMS[0]);
 </script>
+
 
 <template>
 	<section class="py-24 bg-white overflow-hidden relative">
@@ -40,8 +33,8 @@ const selectedShowroom = ref(SHOWROOMS[0]);
 				</div>
 			</div>
 
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-				<div class="space-y-12">
+			<div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+				<div class="lg:col-span-1 space-y-6">
 					<div class="space-y-4">
 						<h2
 							class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-slate-900"
@@ -56,45 +49,22 @@ const selectedShowroom = ref(SHOWROOMS[0]);
 								class="text-sm text-yellow-400"
 							/>
 						</div>
-					</div>
-
-					<div class="space-y-6 relative">
-						<div
-							class="absolute left-6 top-8 bottom-8 w-px bg-slate-100 hidden md:block"
-						/>
-
-						<TestimonialCard
-							v-for="(t, idx) in TESTIMONIALS"
-							:key="t.name"
-							:testimonial="t"
-							:index="idx"
-						/>
+						<p class="text-slate-400 font-medium">
+							Hàng nghìn khách hàng đã tin tưởng và đồng hành cùng chúng tôi.
+						</p>
 					</div>
 				</div>
 
-				<div class="space-y-12">
-					<div class="space-y-8">
-						<h2
-							class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-slate-900"
-						>
-							Hệ thống <span class="text-red-600">Showroom</span>
-						</h2>
-						<div
-							class="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar"
-						>
-							<ShowroomItem
-								v-for="s in SHOWROOMS"
-								:key="s.city"
-								:showroom="s"
-								:is-selected="selectedShowroom.city === s.city"
-								@select="selectedShowroom = $event"
-							/>
-						</div>
-					</div>
-
-					<ShowroomMap :showroom="selectedShowroom" />
+				<div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+					<TestimonialCard
+						v-for="(t, idx) in TESTIMONIALS"
+						:key="t.name"
+						:testimonial="t"
+						:index="idx"
+					/>
 				</div>
 			</div>
+
 		</div>
 	</section>
 </template>

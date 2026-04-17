@@ -1,13 +1,15 @@
 <template>
+
 	<header
-		class="fixed top-0 w-full z-40 transition-all duration-300 ease-in-out border-b border-transparent bg-white/90 backdrop-blur-md"
+		class="fixed top-0 w-full z-40 transition-all duration-300 ease-in-out border-b border-transparent bg-white/95 backdrop-blur-md"
 		:class="{
-			'shadow-md border-gray-100 py-2': isScrolled,
-			'py-3': !isScrolled,
+			'shadow-md border-gray-100 py-1': isScrolled,
+			'py-2': !isScrolled,
 		}"
 	>
 		<div class="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="relative flex h-16 sm:h-20 items-center justify-between">
+			<div class="relative flex h-14 sm:h-16 items-center justify-between">
+
 				<div class="flex-none flex items-center">
 					<button
 						class="xl:hidden mr-3 p-2 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors"

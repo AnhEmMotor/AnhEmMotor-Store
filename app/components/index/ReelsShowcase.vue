@@ -20,7 +20,7 @@ const closeVideo = () => {
 </script>
 
 <template>
-	<section class="py-24 bg-white relative overflow-hidden">
+	<section class="py-16 bg-white relative overflow-hidden">
 		<div class="container mx-auto px-4">
 			<BaseSectionHeader
 				title="Video"
@@ -29,6 +29,7 @@ const closeVideo = () => {
 				link-text="Xem toàn bộ video"
 				link-to="https://youtube.com/@anhemmotor"
 			/>
+
 
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 				<ReelCard

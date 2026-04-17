@@ -41,7 +41,7 @@ const handleSubmit = () => {
 </script>
 
 <template>
-	<section class="py-20 bg-gray-900 text-white relative overflow-hidden">
+	<section id="lead-footer" class="py-20 bg-gray-900 text-white relative overflow-hidden">
 		<div
 			class="absolute -top-1/2 -left-1/4 w-[1000px] h-[1000px] bg-red-600/10 blur-[150px] rounded-full pointer-events-none"
 		/>
@@ -56,15 +56,22 @@ const handleSubmit = () => {
 					>
 						TƯ VẤN <span class="text-red-600">LĂN BÁNH</span>
 					</h2>
-					<p
-						class="text-gray-400 text-sm max-w-sm mx-auto uppercase tracking-widest font-black opacity-50"
-					>
-						Để lại thông tin, nhận giá tốt nhất sau 5 phút
-					</p>
+					<div class="flex flex-col items-center gap-2">
+						<p
+							class="text-gray-400 text-sm uppercase tracking-widest font-black opacity-50"
+						>
+							Để lại thông tin, nhận giá tốt nhất sau 5 phút
+						</p>
+						<a href="tel:0901234567" class="flex items-center gap-2 text-red-500 font-black text-xl hover:scale-105 transition-transform">
+							<Icon name="fa6-solid:phone-volume" />
+							Hotline: 0901.234.567
+						</a>
+					</div>
+
 				</div>
 
 				<form
-					class="flex flex-col md:flex-row gap-6 items-end justify-center w-full"
+					class="flex flex-col md:flex-row gap-6 items-stretch md:items-end justify-center w-full"
 					@submit.prevent="handleSubmit"
 				>
 					<div class="w-full md:w-1/2">
@@ -90,10 +97,11 @@ const handleSubmit = () => {
 						</datalist>
 					</div>
 
-					<BaseButton type="submit" :loading="isSubmitting">
+					<BaseButton type="submit" :loading="isSubmitting" class="w-full md:w-auto h-[52px]">
 						Gửi Ngay
 					</BaseButton>
 				</form>
+
 
 				<div
 					class="mt-12 flex flex-col md:flex-row items-center justify-center gap-8 text-white/40 uppercase font-black text-[10px] tracking-widest border-t border-white/5 pt-8"

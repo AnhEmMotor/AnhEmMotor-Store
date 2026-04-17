@@ -5,18 +5,52 @@ const productMapper = {
 	},
 
 	mapProductItem(raw) {
+		const price = raw.variants?.[0]?.price || 0;
+		const installmentAmount = Math.floor(price * 0.1 / 1000000) * 1000000;
+		const remaining = price - installmentAmount;
+		const monthlyInstallment = Math.round((remaining / 36) + (remaining * 0.008)); // 36 months, ~0.8% interest
+
+		const isHot = raw.has_been_booked > 10;
+		const isBestSeller = raw.has_been_booked > 15;
+		const isGoodPrice = price < 50000000 && price > 0;
+		const isNew = raw.id > 10;
+		
+		const nameLower = raw.name?.toLowerCase() || "";
+		const hasABS = nameLower.includes("abs") || raw.displacement > 150;
+		const isEco = nameLower.includes("vision") || nameLower.includes("sh") || raw.fuel_consumption < 2;
+		const hasPGMFI = true; // Most modern bikes have it
+
 		return {
 			id: raw.id,
 			name: raw.name,
 			slug: raw.variants?.[0]?.url || "",
-			price: raw.variants?.[0]?.price || 0,
-			image:
-				raw.variants?.[0]?.image || "/assets/image/placeholder-product.webp",
-			category: raw.category?.name || "",
+			price,
+			installmentAmount: installmentAmount || 5000000,
+			monthlyInstallment: Math.round(monthlyInstallment / 100000) * 100000,
+			originalPrice: 0,
+			discountPercent: 0,
+			image: raw.variants?.[0]?.image || "/assets/image/placeholder-product.webp",
+			category: raw.category?.name || "XE MÁY",
+			brand: raw.brand?.name || "HONDA",
 			type: raw.type || "",
-			variants: raw.variants || [],
+			variants: (raw.variants || []).map(v => ({
+				...v,
+				propertyName: v.display_name || v.name || "Tiêu chuẩn",
+				originalPrice: 0,
+				discountPercent: 0
+			})),
+			isHot,
+			isBestSeller,
+			isGoodPrice,
+			isNew,
+			displacement: raw.displacement || 110,
+			hasABS,
+			isEco,
+			hasPGMFI,
+			inStock: raw.id % 2 === 0 // Dynamic stock for demo
 		};
 	},
+
 
 	mapOptions(rawOptions) {
 		if (!rawOptions || !Array.isArray(rawOptions)) return [];
@@ -26,6 +60,7 @@ const productMapper = {
 			values: (option.values || []).map((val) => ({
 				id: val.id,
 				name: val.value || val.name || "",
+				colorCode: val.colorCode || val.color_code || null,
 			})),
 		}));
 	},

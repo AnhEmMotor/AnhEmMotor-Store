@@ -1,7 +1,7 @@
 export const REELS = [
 	{
 		id: 1,
-		title: "Trên tay Honda SH 160i 2024 - Đẳng cấp xe ga",
+		title: "Review Honda SH 160i sau 1 năm sử dụng - Có bền như lời đồn?",
 		thumbnail:
 			"/assets/image/index/products/honda_sh160i_silver_studio_1775283413251.webp",
 		videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
@@ -10,7 +10,7 @@ export const REELS = [
 	},
 	{
 		id: 2,
-		title: " Winner X v4 Review - Có thực sự đáng mua?",
+		title: "So sánh Winner X v4 vs Exciter 155 - Kẻ tám lạng người nửa cân",
 		thumbnail:
 			"/assets/image/index/products/honda_winnerx_red_studio_1775283433602.webp",
 		videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
@@ -19,7 +19,7 @@ export const REELS = [
 	},
 	{
 		id: 3,
-		title: "Yamaha NVX 155 - Sức mạnh động cơ VVA",
+		title: "Yamaha NVX 155 - Chiếc siêu xe ga thể thao mạnh nhất phân khúc?",
 		thumbnail:
 			"/assets/image/index/products/yamaha_nvx155_blue_studio_1775283455711.webp",
 		videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
@@ -28,7 +28,7 @@ export const REELS = [
 	},
 	{
 		id: 4,
-		title: "Honda Vision 2024 - Xe ga quốc dân",
+		title: "Hướng dẫn thủ tục trả góp Winner X tại AnhEm Motor chỉ trong 15 phút",
 		thumbnail:
 			"/assets/image/index/products/honda_vision_white_studio_1775283476521.webp",
 		videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
@@ -36,3 +36,4 @@ export const REELS = [
 		duration: "0:30",
 	},
 ];
+

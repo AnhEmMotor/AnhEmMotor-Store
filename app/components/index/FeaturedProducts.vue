@@ -29,22 +29,22 @@ const handleViewDetail = (product) => {
 <template>
 	<section
 		id="featured-products"
-		class="py-24 bg-white relative overflow-hidden"
+		class="py-16 bg-white relative overflow-hidden"
 	>
 		<div
 			class="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"
 		/>
-
 		<div class="container mx-auto px-4 relative z-10">
 			<div
-				class="flex flex-col md:flex-row justify-between items-center gap-10 mb-16 px-4"
+				class="flex flex-col md:flex-row justify-between items-center gap-10 mb-12 px-4"
 			>
-				<div class="space-y-4">
+				<div class="space-y-2">
 					<h2
-						class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-slate-900 leading-none"
+						class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-slate-900 leading-none"
 					>
 						Sản phẩm <span class="text-red-600">Nổi Bật</span>
 					</h2>
+
 					<p class="text-gray-500 text-lg max-w-2xl mx-auto lg:mx-0">
 						Khám phá các mẫu xe mới nhất với giá lăn bánh minh bạch.
 					</p>

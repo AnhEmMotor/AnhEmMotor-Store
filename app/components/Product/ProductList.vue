@@ -60,7 +60,7 @@ const emit = defineEmits(["view-detail"]);
 
 		<div
 			v-else
-			class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8"
+			class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-8 justify-center items-stretch"
 		>
 			<ProductCard
 				v-for="product in products"
