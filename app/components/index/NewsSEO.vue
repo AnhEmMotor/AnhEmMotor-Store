@@ -1,8 +1,10 @@
 <script setup>
-import { NEWS_ITEMS } from "@/constants/news.constant";
+import { useNewsStore } from "@/stores/news.store";
 import BaseSectionHeader from "@/components/ui/BaseSectionHeader.vue";
 import NewsCard from "@/components/ui/NewsCard.vue";
 import YoutubeReview from "@/components/ui/YoutubeReview.vue";
+
+const newsStore = useNewsStore();
 </script>
 
 <template>
@@ -17,7 +19,11 @@ import YoutubeReview from "@/components/ui/YoutubeReview.vue";
 
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
 			<div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
-				<NewsCard v-for="news in NEWS_ITEMS" :key="news.title" :news="news" />
+				<NewsCard
+					v-for="news in newsStore.featuredNews"
+					:key="news.id"
+					:news="news"
+				/>
 			</div>
 
 			<div class="space-y-8">
@@ -26,3 +32,4 @@ import YoutubeReview from "@/components/ui/YoutubeReview.vue";
 		</div>
 	</section>
 </template>
+

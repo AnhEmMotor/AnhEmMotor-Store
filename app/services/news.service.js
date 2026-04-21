@@ -1,39 +1,60 @@
-import { newsData } from "@/constants/news";
+import { useAxios } from "~/composables/useAxios";
+import newsMapper from "@/mappers/news.mapper";
 
 export const newsService = {
 	getFeaturedNews: async () => {
-		return newsData.filter((news) => news.featured);
+		const axios = useAxios();
+		try {
+			const { data } = await axios.get("/api/v1/News", {
+				params: {
+					pageSize: 3,
+					isFeatured: true,
+					sorts: "-createdAt",
+				},
+			});
+			return data.items || [];
+		} catch (error) {
+			console.error("Failed to fetch featured news:", error);
+			return [];
+		}
 	},
 
 	getAllNews: async (params = {}) => {
-		const { page = 1, pageSize = 10 } = params;
-		const start = (page - 1) * pageSize;
-		const end = start + pageSize;
-
-		const data = newsData.slice(start, end);
-		const totalCount = newsData.length;
-		const totalPages = Math.ceil(totalCount / pageSize);
-
-		return {
-			data,
-			pagination: {
-				totalCount,
-				totalPages,
-				pageNumber: page,
-				pageSize,
-			},
-		};
+		const axios = useAxios();
+		try {
+			const { data } = await axios.get("/api/v1/News", {
+				params: {
+					page: params.page || 1,
+					pageSize: params.pageSize || 10,
+					sorts: "-createdAt",
+					...params,
+				},
+			});
+			return {
+				data: newsMapper.mapNewsList(data.items || []),
+				pagination: {
+					totalCount: data.totalCount,
+					totalPages: data.totalPages,
+					pageNumber: data.pageNumber,
+					pageSize: data.pageSize,
+				},
+			};
+		} catch (error) {
+			console.error("Failed to fetch news list:", error);
+			return { data: [], pagination: {} };
+		}
 	},
 
 	getNewsBySlug: async (slug) => {
-		const news = newsData.find((n) => n.slug === slug);
-		if (!news) return null;
-
-		const related = newsData.filter((n) => n.id !== news.id).slice(0, 4);
-
-		return {
-			...news,
-			related,
-		};
+		const axios = useAxios();
+		try {
+			const { data } = await axios.get(`/api/v1/News/${slug}`);
+			return data;
+		} catch (error) {
+			console.error(`Failed to fetch news detail for ${slug}:`, error);
+			return null;
+		}
 	},
 };
+
+

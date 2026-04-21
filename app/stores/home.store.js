@@ -17,6 +17,7 @@ export const useHomeStore = defineStore("home", () => {
 	});
 
 	const featuredProducts = ref([]);
+	const banners = ref([]);
 
 	const filteredProducts = computed(() => {
 		return featuredProducts.value.filter((p) => {
@@ -42,18 +43,25 @@ export const useHomeStore = defineStore("home", () => {
 	};
 
 	const fetchHomeData = async () => {
+		if (isLoading.value) return;
 		isLoading.value = true;
 		try {
-			const [rawBrands, rawStats, rawPhrases] = await Promise.all([
-				homeService.getBrands(),
-				homeService.getHeroStats(),
-				homeService.getSearchPhrases(),
-			]);
+			const [rawBrands, rawStats, rawPhrases, rawProducts, rawBanners] =
+				await Promise.all([
+					homeService.getBrands(),
+					homeService.getHeroStats(),
+					homeService.getSearchPhrases(),
+					homeService.getFeaturedProducts(),
+					homeService.getBanners(),
+				]);
 
 			brands.value = homeMapper.mapBrands(rawBrands);
 			stats.value = homeMapper.mapHeroStats(rawStats);
 			searchPhrases.value = rawPhrases;
-		} catch {
+			featuredProducts.value = homeMapper.mapProducts(rawProducts);
+			banners.value = homeMapper.mapBanners(rawBanners);
+		} catch (error) {
+			console.error("Home data fetch error:", error);
 		} finally {
 			isLoading.value = false;
 		}
@@ -68,6 +76,8 @@ export const useHomeStore = defineStore("home", () => {
 		filteredProducts,
 		activeCategory,
 		searchFilters,
+		banners,
 		fetchHomeData,
 	};
 });
+

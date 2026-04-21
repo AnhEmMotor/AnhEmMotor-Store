@@ -1,9 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useLayoutStore } from "../../stores/layout.store";
+import { useHomeStore } from "../../stores/home.store";
 
 const layoutStore = useLayoutStore();
+const homeStore = useHomeStore();
 const { heroBikeModels: bikeModels } = storeToRefs(layoutStore);
 
 const currentBikeModel = ref("");
@@ -11,7 +13,18 @@ let modelIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
 
+const activeBanner = computed(() => {
+	return homeStore.banners && homeStore.banners.length > 0
+		? homeStore.banners[0]
+		: null;
+});
+
+const heroBg = computed(() => {
+	return activeBanner.value?.image || "/assets/image/index/index-banner-bg.webp";
+});
+
 const typeEffect = () => {
+	if (!bikeModels.value || bikeModels.value.length === 0) return;
 	const currentFullText = bikeModels.value[modelIndex];
 
 	if (isDeleting) {
@@ -45,9 +58,9 @@ onMounted(() => {
 	<section class="relative h-[70vh] flex items-center overflow-hidden">
 		<div
 			class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105 active:scale-100"
-			style="
-				background-image: url(&quot;/assets/image/index/index-banner-bg.webp&quot;);
-			"
+			:style="{
+				backgroundImage: `url('${heroBg}')`,
+			}"
 		>
 			<div
 				class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"
@@ -59,36 +72,47 @@ onMounted(() => {
 				<h1
 					class="text-3xl md:text-5xl lg:text-7xl font-black leading-[1.1] drop-shadow-2xl uppercase italic tracking-tighter"
 				>
-					Lướt <span class="text-red-600">Xe Sang</span>,<br >
-					Nhận Báo <span class="text-red-600">Giá&nbsp;Tốt.</span>
+					<template v-if="activeBanner?.title">
+						{{ activeBanner.title }}
+					</template>
+					<template v-else>
+						Lướt <span class="text-red-600">Xe Sang</span>,<br >
+						Nhận Báo <span class="text-red-600">Giá&nbsp;Tốt.</span>
+					</template>
 				</h1>
 
 				<p
 					class="text-lg md:text-xl text-white/80 max-w-2xl drop-shadow-md font-medium leading-relaxed"
 				>
-					Tìm ngay các dòng xe
-					<span
-						class="text-red-500 font-bold border-r-2 border-red-500 pr-1 animate-typing inline-block"
-					>
-						{{ currentBikeModel }}
-					</span>
-					<br >
-					Hệ thống phân phối xe máy chính hãng uy tín nhất khu vực.<br >
-					Cam kết giá lăn bánh tốt nhất, thủ tục trả góp 15 phút.
+					<template v-if="activeBanner?.description">
+						{{ activeBanner.description }}
+					</template>
+					<template v-else>
+						Tìm ngay các dòng xe
+						<span
+							class="text-red-500 font-bold border-r-2 border-red-500 pr-1 animate-typing inline-block"
+						>
+							{{ currentBikeModel }}
+						</span>
+						<br >
+						Hệ thống phân phối xe máy chính hãng uy tín nhất khu vực.<br >
+						Cam kết giá lăn bánh tốt nhất, thủ tục trả góp 15 phút.
+					</template>
 				</p>
 
 				<div class="flex flex-wrap gap-4 pt-4">
 					<NuxtLink
-						to="/products"
+						:to="activeBanner?.link || '/products'"
 						class="px-10 py-5 bg-red-600 hover:bg-black text-white rounded-2xl font-black uppercase tracking-widest transition-all shadow-2xl shadow-red-600/40 hover:-translate-y-1 flex items-center gap-3 group"
 					>
-						Xem danh sách sản phẩm
+						{{ activeBanner?.link ? "Khám phá ngay" : "Xem danh sách sản phẩm" }}
 						<Icon
 							name="fa6-solid:chevron-right"
 							class="text-xs transition-transform group-hover:translate-x-1"
 						/>
 					</NuxtLink>
 					<button
+						v-if="!activeBanner"
 						class="px-10 py-5 bg-transparent hover:bg-white/10 text-white border-2 border-white/50 rounded-2xl font-black uppercase tracking-widest backdrop-blur-md transition-all hover:border-white hover:-translate-y-1"
 					>
 						Đăng Ký Lái Thử
@@ -98,6 +122,7 @@ onMounted(() => {
 		</div>
 	</section>
 </template>
+
 
 <style scoped>
 @keyframes blink {

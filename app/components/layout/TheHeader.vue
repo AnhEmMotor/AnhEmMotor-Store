@@ -47,10 +47,31 @@
 
 				<nav class="hidden xl:flex flex-1 justify-center px-8">
 					<ul class="flex items-center gap-1">
-						<li v-for="item in navItems" :key="item.path">
-							<RouterLink :to="item.path" class="nav-link">{{
-								item.name
-							}}</RouterLink>
+						<li v-for="item in navItems" :key="item.path" class="relative group/nav">
+							<!-- Special case for Contact with Dropdown -->
+							<template v-if="item.name === 'Liên Hệ'">
+								<div class="relative flex items-center">
+									<RouterLink :to="item.path" class="nav-link !pr-8">{{ item.name }}</RouterLink>
+									<Icon name="fa6-solid:chevron-down" class="absolute right-3 text-[8px] text-gray-400 group-hover/nav:text-red-500 group-hover/nav:rotate-180 transition-all duration-300 pointer-events-none" />
+									
+									<!-- Contact Dropdown -->
+									<div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 opacity-0 invisible translate-y-2 group-hover/nav:opacity-100 group-hover/nav:visible group-hover/nav:translate-y-0 transition-all duration-300 z-50 overflow-hidden">
+										<RouterLink to="/contact" class="dropdown-item">
+											<div class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3">
+												<Icon name="fa6-solid:paper-plane" />
+											</div>
+											<span>Thông tin liên hệ</span>
+										</RouterLink>
+										<RouterLink to="/test-drive" class="dropdown-item">
+											<div class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3">
+												<Icon name="fa6-solid:motorcycle" />
+											</div>
+											<span>Đăng ký lái thử</span>
+										</RouterLink>
+									</div>
+								</div>
+							</template>
+							<RouterLink v-else :to="item.path" class="nav-link">{{ item.name }}</RouterLink>
 						</li>
 					</ul>
 				</nav>
@@ -327,7 +348,26 @@
 
 					<ul class="p-4 space-y-1">
 						<li v-for="item in navItems" :key="item.path">
+							<template v-if="item.name === 'Liên Hệ'">
+								<div class="flex flex-col">
+									<div class="mobile-nav-link !pointer-events-none opacity-50">
+										<Icon :name="getIconForPath(item.path)" class="w-8 text-red-500" />
+										<span>{{ item.name }}</span>
+									</div>
+									<div class="pl-12 space-y-1">
+										<RouterLink to="/contact" class="mobile-nav-link !py-3" @click="closeMobileNav">
+											<Icon name="fa6-solid:paper-plane" class="w-6 text-red-500/70" />
+											<span>Thông tin liên hệ</span>
+										</RouterLink>
+										<RouterLink to="/test-drive" class="mobile-nav-link !py-3" @click="closeMobileNav">
+											<Icon name="fa6-solid:motorcycle" class="w-6 text-red-500/70" />
+											<span>Đăng ký lái thử</span>
+										</RouterLink>
+									</div>
+								</div>
+							</template>
 							<RouterLink
+								v-else
 								:to="item.path"
 								class="mobile-nav-link"
 								@click="closeMobileNav"

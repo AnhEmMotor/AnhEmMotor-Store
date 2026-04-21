@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { newsService } from "@/services/news.service";
+import newsMapper from "@/mappers/news.mapper";
 
 export const useNewsStore = defineStore("news", {
 	state: () => ({
@@ -13,7 +14,7 @@ export const useNewsStore = defineStore("news", {
 			this.isLoading = true;
 			try {
 				const data = await newsService.getFeaturedNews();
-				this.featuredNews = data;
+				this.featuredNews = newsMapper.mapNewsList(data);
 			} catch {
 			} finally {
 				this.isLoading = false;
@@ -24,8 +25,8 @@ export const useNewsStore = defineStore("news", {
 			this.isLoading = true;
 			try {
 				const data = await newsService.getNewsBySlug(slug);
-				this.currentNews = data;
-				return data;
+				this.currentNews = newsMapper.mapNewsDetail(data);
+				return this.currentNews;
 			} catch {
 				return null;
 			} finally {
@@ -34,3 +35,4 @@ export const useNewsStore = defineStore("news", {
 		},
 	},
 });
+

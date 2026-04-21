@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "./styles.css";
 
+@theme {
+	--color-primary: #e31837;
+	--color-primary-dark: #c4122d;
+}
+
+
 html,
 body {
 	margin: 0;

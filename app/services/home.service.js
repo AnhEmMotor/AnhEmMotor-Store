@@ -1,30 +1,24 @@
+import { useAxios } from "~/composables/useAxios";
+
 const homeService = {
 	async getBrands() {
-		return [
-			{
-				img: "/assets/image/index/brand/honda.webp",
-				alt: "Honda Logo",
-				text: "Thương hiệu xe máy số 1 thế giới với chất lượng và độ bền vượt trội",
-			},
-			{
-				img: "/assets/image/index/brand/yamaha.webp",
-				alt: "Yamaha Logo",
-				text: "Thiết kế thể thao, công nghệ tiên tiến và âm thanh động cơ đầy sức hút",
-			},
-			{
-				img: "/assets/image/index/brand/suzuki.webp",
-				alt: "Suzuki Logo",
-				text: "Nâng cao chất lượng, an toàn và thoải mái, nhân rộng niềm vui của tất cả mọi người",
-			},
-			{
-				img: "/assets/image/index/brand/kawasaki.webp",
-				alt: "Kawasaki Logo",
-				text: "Phong cách mạnh mẽ, hiệu suất vượt trội, tốc độ đỉnh cao và công nghệ đột phá",
-			},
-		];
+		const axios = useAxios();
+		try {
+			const { data } = await axios.get("/api/v1/Brand", {
+				params: {
+					pageSize: 10,
+					sorts: "name",
+				},
+			});
+			return data.items || [];
+		} catch (error) {
+			console.error("Failed to fetch brands:", error);
+			return [];
+		}
 	},
 
 	async getHeroStats() {
+		// Mock stats for now or fetch from a real endpoint if available
 		return [
 			{ number: "50+", label: "Mẫu xe" },
 			{ number: "1K+", label: "Khách hàng" },
@@ -38,6 +32,34 @@ const homeService = {
 			'Tìm "Winner X v4", "Vario 160" hoặc hãng xe...',
 		];
 	},
+
+	async getFeaturedProducts() {
+		const axios = useAxios();
+		try {
+			const { data } = await axios.get("/api/v1/Product", {
+				params: {
+					pageSize: 8,
+					sorts: "-createdAt",
+				},
+			});
+			return data.items || [];
+		} catch (error) {
+			console.error("Failed to fetch featured products:", error);
+			return [];
+		}
+	},
+
+	async getBanners() {
+		const axios = useAxios();
+		try {
+			const { data } = await axios.get("/api/v1/banners/active");
+			return data || [];
+		} catch (error) {
+			console.error("Failed to fetch banners:", error);
+			return [];
+		}
+	},
 };
 
 export default homeService;
+

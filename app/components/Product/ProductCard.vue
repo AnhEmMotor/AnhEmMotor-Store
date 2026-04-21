@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 const props = defineProps({
 	product: {
@@ -12,11 +12,15 @@ const props = defineProps({
 	},
 });
 
-const selectedVariant = ref(
-	props.product.variants && props.product.variants.length > 0
-		? props.product.variants[0]
-		: null,
-);
+const selectedVariant = ref(null);
+
+watch(() => props.product, (newProd) => {
+	if (newProd?.variants?.length > 0) {
+		selectedVariant.value = newProd.variants[0];
+	} else {
+		selectedVariant.value = null;
+	}
+}, { immediate: true });
 
 const currentPrice = computed(() => {
 	if (!selectedVariant.value) return "N/A";
@@ -47,7 +51,7 @@ const variantSelectId = useId();
 		:to="currentUrl"
 		class="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 flex flex-col h-full"
 	>
-		<div class="relative aspect-[4/3] overflow-hidden bg-gray-50">
+		<div class="relative aspect-[4/3] overflow-hidden bg-gray-50 border-b border-gray-100">
 			<img
 				:src="currentImage"
 				:alt="product.name"
@@ -56,38 +60,48 @@ const variantSelectId = useId();
 		</div>
 
 		<div class="p-4 flex flex-col flex-1">
+			<!-- Brand Name -->
+			<div v-if="product.brand" class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+				{{ product.brand }}
+			</div>
+
+			<!-- Product Name -->
 			<h3
-				class="text-gray-900 font-bold text-lg mb-1 line-clamp-2 min-h-[3.5rem] group-hover:text-primary transition-colors"
+				class="text-gray-900 font-bold text-lg mb-4 line-clamp-2 min-h-[3.5rem] group-hover:text-primary transition-colors"
 			>
 				{{ product.name }}
 			</h3>
 
-			<p v-if="selectedVariant" class="text-gray-500 text-sm mb-4">
-				<span class="font-medium text-gray-700">Đã chọn:</span>
-				{{ selectedVariant.propertyName }}
-			</p>
-
+			<!-- Variant Thumbnails -->
 			<div
 				v-if="product.variants && product.variants.length > 1"
-				class="mb-4"
+				class="mb-6 flex flex-wrap gap-2 items-center"
 				@click.stop.prevent
 			>
-				<label
-					:for="variantSelectId"
-					class="block text-xs font-semibold text-gray-500 uppercase mb-1"
-					>Phiên bản</label
+				<div 
+					v-for="(v, index) in product.variants.slice(0, 3)" 
+					:key="v.url"
+					@click="selectedVariant = v"
+					class="w-12 h-12 rounded-lg border-2 overflow-hidden cursor-pointer transition-all duration-300"
+					:class="selectedVariant?.url === v.url ? 'border-primary scale-105 shadow-sm' : 'border-gray-50 hover:border-gray-200'"
+					:title="v.propertyName"
 				>
-				<select
-					:id="variantSelectId"
-					v-model="selectedVariant"
-					class="w-full px-3 py-2 border rounded-lg text-sm bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
+					<img 
+						:src="v.cover_image_url || '/assets/image/placeholder-product.webp'" 
+						class="w-full h-full object-cover"
+						:alt="v.propertyName"
+					/>
+				</div>
+				<!-- Plus Indicator -->
+				<div 
+					v-if="product.variants.length > 3" 
+					class="w-12 h-12 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center text-gray-400 text-xs font-bold shrink-0"
 				>
-					<option v-for="v in product.variants" :key="v.url" :value="v">
-						{{ v.propertyName }}
-					</option>
-				</select>
+					+{{ product.variants.length - 3 }}
+				</div>
 			</div>
 
+			<!-- Price and Action -->
 			<div class="mt-auto flex items-center justify-between">
 				<div class="flex flex-col">
 					<span class="text-xs text-gray-400 uppercase font-semibold">Giá</span>

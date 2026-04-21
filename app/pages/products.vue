@@ -46,6 +46,9 @@ const filters = ref({
 	search: route.query.search || "",
 	optionValueIds: parseArrayQuery(route.query.optionValueIds),
 	category_ids: parseArrayQuery(route.query.category_ids),
+	brand_ids: parseArrayQuery(route.query.brand_ids),
+	minPrice: route.query.minPrice ? Number(route.query.minPrice) : null,
+	maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : null,
 });
 
 const {
@@ -66,8 +69,13 @@ const {
 		}
 		if (filters.value.category_ids.length > 0) {
 			sieveParams.categoryIds = filters.value.category_ids.join(",");
-			delete sieveParams.category_ids;
 		}
+		if (filters.value.brand_ids.length > 0) {
+			sieveParams.brandIds = filters.value.brand_ids.join(",");
+		}
+
+		if (filters.value.minPrice !== null) sieveParams.minPrice = Math.round(filters.value.minPrice);
+		if (filters.value.maxPrice !== null) sieveParams.maxPrice = Math.round(filters.value.maxPrice);
 
 		return productStore.getProducts(sieveParams);
 	},
@@ -90,6 +98,14 @@ const handleViewDetail = (product) => {
 	if (product.slug) {
 		navigateTo(`/product/${product.slug}`);
 	}
+};
+
+const formatVND = (value) => {
+	if (!value) return "0 ₫";
+	return new Intl.NumberFormat("vi-VN", {
+		style: "currency",
+		currency: "VND",
+	}).format(value);
 };
 </script>
 
@@ -147,20 +163,42 @@ const handleViewDetail = (product) => {
 					<div
 						v-if="
 							filters.optionValueIds.length > 0 ||
-							filters.category_ids.length > 0
+							filters.category_ids.length > 0 ||
+							filters.brand_ids.length > 0 ||
+							filters.minPrice !== null ||
+							filters.maxPrice !== null
 						"
-						class="flex flex-wrap gap-2 mb-8"
+						class="flex flex-wrap gap-3 mb-8"
 					>
 						<span
 							class="text-xs font-bold text-gray-400 uppercase tracking-widest w-full mb-1"
 							>Đang lọc theo:</span
 						>
+
+						<!-- Price Chip -->
+						<button
+							v-if="filters.minPrice !== null || filters.maxPrice !== null"
+							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
+							@click="filters.minPrice = null; filters.maxPrice = null"
+						>
+							<Icon name="fa6-solid:money-bill-wave" class="text-xs" />
+							<span>
+								Giá: {{ filters.minPrice ? formatVND(filters.minPrice) : '0' }} - 
+								{{ filters.maxPrice ? formatVND(filters.maxPrice) : 'Tối đa' }}
+							</span>
+							<Icon
+								name="fa6-solid:xmark"
+								class="ml-1 opacity-50 group-hover:opacity-100"
+							/>
+						</button>
+
 						<button
 							class="px-4 py-2 bg-primary/5 text-primary rounded-full text-xs font-bold border border-primary/10 hover:bg-primary/10 transition-colors flex items-center gap-2"
 							aria-label="Xóa tất cả bộ lọc đang chọn"
 							@click="
 								filters.optionValueIds = [];
 								filters.category_ids = [];
+								filters.brand_ids = [];
 							"
 						>
 							Xóa tất cả

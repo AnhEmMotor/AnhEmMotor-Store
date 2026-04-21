@@ -1,8 +1,14 @@
 <script setup>
 import { useHomeStore } from "@/stores/home.store";
+import { useNewsStore } from "@/stores/news.store";
 
 const homeStore = useHomeStore();
-await homeStore.fetchHomeData();
+const newsStore = useNewsStore();
+
+await Promise.all([
+	homeStore.fetchHomeData(),
+	newsStore.fetchFeaturedNews(),
+]);
 
 useSeoMeta({
 	title: "Trang chủ",
@@ -24,6 +30,7 @@ useHead({
 });
 </script>
 
+
 <template>
 	<div class="home-page">
 		<IndexHeroSection />
@@ -31,6 +38,7 @@ useHead({
 		<IndexStatsSection />
 		<IndexProductCategories />
 		<IndexFeaturedProducts />
+		<IndexBrandSection />
 		<IndexReelsShowcase />
 		<IndexSalesEnablers />
 		<IndexTrustBuilding />
@@ -39,6 +47,7 @@ useHead({
 		<IndexCompareBar />
 	</div>
 </template>
+
 
 <style scoped>
 @reference "../assets/main.css";
