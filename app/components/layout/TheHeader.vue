@@ -30,7 +30,7 @@
 								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
 								width="40"
 								height="40"
-							>
+							/>
 						</div>
 						<div class="flex flex-col">
 							<span
@@ -109,7 +109,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
-									>
+									/>
 									<ClientOnly v-else>
 										<Icon name="fa6-solid:user" class="text-red-500 text-xs" />
 										<template #fallback>
@@ -232,7 +232,7 @@
 								src="/assets/image/logo.webp"
 								alt="Logo"
 								class="w-7 h-7 object-contain"
-							>
+							/>
 						</div>
 						<h3 class="m-0 text-xl font-black text-white tracking-tight">
 							MENU
@@ -281,7 +281,7 @@
 										:src="user.avatarUrl"
 										alt="Avatar"
 										class="w-full h-full object-cover pointer-events-none"
-									>
+									/>
 									<ClientOnly v-else>
 										<Icon name="fa6-solid:user" class="text-red-500 text-xl" />
 										<template #fallback>
@@ -350,6 +350,7 @@
 				:is-open="isCartOpen"
 				:cart-items="cartDetails"
 				:cart-total="cartTotal"
+				:is-checking="isChecking"
 				@close="toggleCart"
 				@update-quantity="updateCartItemQuantity"
 				@remove-item="removeCartItem"
@@ -415,8 +416,15 @@ const closeMobileNav = () => {
 	document.body.style.overflow = "";
 };
 
-const { cartItems, cartDetails, cartTotal, removeItem, updateQuantity } =
-	useCart();
+const {
+	cartItems,
+	cartDetails,
+	cartTotal,
+	removeItem,
+	updateQuantity,
+	isChecking,
+	validateProductLimit,
+} = useCart();
 const cartItemCount = computed(() =>
 	cartItems.value.reduce((s, i) => s + (i.quantity || 0), 0),
 );
@@ -428,7 +436,27 @@ const toggleCart = () => {
 watch(isCartOpen, (open) => {
 	document.body.style.overflow = open ? "hidden" : "";
 });
-const updateCartItemQuantity = (payload) => {
+const updateCartItemQuantity = async (payload) => {
+	const { index, change } = payload;
+	const item = cartDetails.value[index];
+	if (!item) return;
+
+	if (change > 0) {
+		isChecking.value = true;
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		const validation = validateProductLimit(item.id, change);
+		if (!validation.isValid) {
+			useNuxtApp().$toast.error(validation.message, {
+				position: "bottom-right",
+				autoClose: 3000,
+			});
+			isChecking.value = false;
+			return;
+		}
+		isChecking.value = false;
+	}
+
 	updateQuantity(payload);
 };
 const removeCartItem = (index) => {

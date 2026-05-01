@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/vue-query";
 
 const CART_KEY = "cartItems";
 const cartItems = ref([]);
+const isChecking = ref(false);
 
 if (import.meta.client) {
 	const stored = localStorage.getItem(CART_KEY);
@@ -60,6 +61,7 @@ export function useCart() {
 					detail?.coverImageUrl ||
 					item.image ||
 					"/assets/image/placeholder-product.webp",
+				productLimit: detail?.productLimit,
 				loading: false,
 			};
 		});
@@ -71,6 +73,7 @@ export function useCart() {
 			0,
 		);
 	});
+
 
 	function addItem(product, quantity = 1) {
 		const idx = cartItems.value.findIndex((i) => i.id === product.id);
@@ -167,16 +170,34 @@ export function useCart() {
 		cartItems.value = [];
 	}
 
+	function validateProductLimit(productId, additionalQuantity) {
+		if (!productId) return { isValid: true };
+		const detail = cartDetails.value.find((i) => Number(i.id) === Number(productId));
+		if (!detail || !detail.productLimit) return { isValid: true };
+
+		const currentCount = detail.quantity || 0;
+
+		if (currentCount + additionalQuantity > detail.productLimit) {
+			return {
+				isValid: false,
+				message: `Số lượng mua tối đa cho sản phẩm này là ${detail.productLimit} sản phẩm.`,
+			};
+		}
+		return { isValid: true };
+	}
+
 	return {
 		cartItems,
 		cartDetails,
 		cartTotal,
 		isPending,
+		isChecking,
 		refreshDetails: refetch,
 		addItem,
 		removeItem,
 		updateQuantity,
 		clearCart,
+		validateProductLimit,
 	};
 }
 

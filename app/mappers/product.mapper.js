@@ -73,6 +73,7 @@ const productMapper = {
 				shortDescription: product.short_description,
 				brand: product.brand,
 				category: product.category,
+				productLimit: product.product_limit,
 				metaTitle: product.meta_title,
 				metaDescription: product.meta_description,
 			},

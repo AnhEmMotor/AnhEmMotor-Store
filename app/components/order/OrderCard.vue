@@ -91,7 +91,7 @@ const calculateTotal = (items) => {
 							@error="
 								(e) => (e.target.src = '/assets/image/placeholder-product.webp')
 							"
-						>
+						/>
 					</div>
 					<div class="flex-1 min-w-0 flex flex-col justify-center">
 						<h4 class="font-bold text-gray-900 truncate">
@@ -107,6 +107,35 @@ const calculateTotal = (items) => {
 							</p>
 						</div>
 					</div>
+				</div>
+			</div>
+
+			<div
+				v-if="order.statusId === 'waiting_deposit'"
+				class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-[2rem] flex items-center gap-4"
+			>
+				<div
+					class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-sm"
+				>
+					<Icon name="fa6-solid:circle-info" class="text-lg" />
+				</div>
+				<div class="flex-1">
+					<p
+						class="text-xs font-black text-blue-900 uppercase tracking-widest mb-1"
+					>
+						Yêu cầu đặt cọc
+					</p>
+					<p class="text-sm font-bold text-blue-700 leading-tight">
+						Vui lòng đặt cọc
+						<span class="text-red-500">{{
+							formatPrice(
+								(order.totalAmount || calculateTotal(order.items)) *
+									((order.depositRatio || 50) / 100),
+							)
+						}}</span>
+						({{ order.depositRatio || 50 }}%) để xác nhận đơn. Liên hệ hotline
+						hoặc chờ Admin gọi xác nhận.
+					</p>
 				</div>
 			</div>
 
@@ -180,7 +209,27 @@ const calculateTotal = (items) => {
 					Sửa thông tin
 				</button>
 			</div>
-			<div class="text-right">
+			<div class="text-right space-y-1">
+				<div
+					v-if="
+						(order.statusId === 'deposit_paid' ||
+							order.statusId === 'delivering') &&
+						order.remainingAmount > 0
+					"
+					class="mb-2"
+				>
+					<div class="flex flex-col items-end">
+						<p
+							class="text-[10px] text-gray-400 font-black uppercase tracking-widest"
+						>
+							Số tiền còn lại:
+						</p>
+						<p class="text-lg font-black text-orange-500">
+							{{ formatPrice(order.remainingAmount) }}
+						</p>
+					</div>
+				</div>
+
 				<p
 					class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1"
 				>

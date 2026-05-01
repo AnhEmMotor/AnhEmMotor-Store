@@ -25,7 +25,11 @@ const orderMapper = {
 				raw.totalPrice ||
 				raw.amount ||
 				0,
+			statusId: raw.statusId || raw.status_id || raw.status || raw.orderStatus,
 			status: raw.status || raw.status_id || raw.statusId || raw.orderStatus,
+			depositRatio: raw.depositRatio || raw.DepositRatio,
+			depositAmount: raw.depositAmount || raw.DepositAmount,
+			remainingAmount: raw.remainingAmount || raw.RemainingAmount,
 			createdAt:
 				raw.createdAt ||
 				raw.created_at ||
