@@ -13,6 +13,7 @@ export const useOrderStore = defineStore("order", () => {
 
 	const currentOrder = ref(null);
 	const lastCreatedOrderId = ref(null);
+	const isRedirecting = ref(false);
 	const isLoading = ref(false);
 	const error = ref(null);
 	const fieldErrors = ref({});
@@ -147,6 +148,7 @@ export const useOrderStore = defineStore("order", () => {
 			queryClient.invalidateQueries({ queryKey: ["my-orders"] });
 			_refreshMyOrders();
 
+			isRedirecting.value = true;
 			return currentOrder.value;
 		} catch (e) {
 			const data = e.response?.data;
@@ -212,6 +214,7 @@ export const useOrderStore = defineStore("order", () => {
 	const clearOrder = () => {
 		currentOrder.value = null;
 		lastCreatedOrderId.value = null;
+		isRedirecting.value = false;
 		error.value = null;
 		fieldErrors.value = {};
 		errors.value = { fullName: "", phone: "", address: "" };
@@ -220,6 +223,7 @@ export const useOrderStore = defineStore("order", () => {
 	return {
 		currentOrder,
 		lastCreatedOrderId,
+		isRedirecting,
 		statusMap,
 		lockedStatuses,
 		cancellableStatuses,

@@ -72,7 +72,6 @@ async function handlePlaceOrder() {
 		const order = await orderStore.createOrder(cartItems.value);
 		if (order?.id) {
 			clearCart();
-			toast.success("Đặt hàng thành công!");
 			navigateTo(`/order-success?id=${order.id}`);
 		}
 	} catch {
