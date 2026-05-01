@@ -41,6 +41,7 @@
 		"glob": "^13.0.6"
 	},
 	"devDependencies": {
+		"@iconify-json/fa6-brands": "^1.2.6",
 		"@iconify-json/fa6-regular": "^1.2.4",
 		"@iconify-json/fa6-solid": "^1.2.4",
 		"@nuxt/eslint-config": "^1.15.2",
