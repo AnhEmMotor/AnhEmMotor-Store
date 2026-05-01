@@ -13,8 +13,10 @@ const {
 	updateQuantity,
 	isPending,
 	clearCart,
+	validateProductLimit,
 } = useCart();
 const orderStore = useOrderStore();
+const isChecking = ref(false);
 
 const isSubmitting = computed(() => orderStore.isLoading);
 
@@ -23,6 +25,35 @@ const orderSummary = computed(() =>
 );
 
 const formatPrice = (val) => orderMapper.formatPrice(val);
+
+async function handleUpdateQuantity(item, newQuantity, index) {
+	if (newQuantity <= 0) {
+		removeItem(index);
+		return;
+	}
+
+	// Xóa lỗi cho sản phẩm này khi người dùng thay đổi số lượng
+	if (orderStore.fieldErrors[item.id]) {
+		delete orderStore.fieldErrors[item.id];
+	}
+
+	const change = newQuantity - item.quantity;
+
+	if (change > 0) {
+		isChecking.value = true;
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		const validation = validateProductLimit(item.id, change);
+		if (!validation.isValid) {
+			orderStore.fieldErrors[item.id] = validation.message;
+			isChecking.value = false;
+			return;
+		}
+		isChecking.value = false;
+	}
+
+	updateQuantity(item.id, newQuantity);
+}
 
 async function handlePlaceOrder() {
 	const instance = useNuxtApp();
@@ -34,7 +65,6 @@ async function handlePlaceOrder() {
 	}
 
 	if (!orderStore.validateShippingInfo()) {
-		instance.$toast.error("Vui lòng kiểm tra lại thông tin nhận hàng!");
 		return;
 	}
 
@@ -46,7 +76,9 @@ async function handlePlaceOrder() {
 			navigateTo(`/order-success?id=${order.id}`);
 		}
 	} catch {
-		toast.error(orderStore.error || "Có lỗi xảy ra khi đặt hàng.");
+		if (Object.keys(orderStore.fieldErrors).length === 0) {
+			toast.error(orderStore.error || "Có lỗi xảy ra khi đặt hàng.");
+		}
 	}
 }
 </script>
@@ -83,59 +115,82 @@ async function handlePlaceOrder() {
 					<div
 						v-for="(item, index) in cartDetails"
 						:key="item.id"
-						class="flex gap-4"
+						class="flex flex-col gap-1 p-2 rounded-2xl transition-all border"
+						:class="
+							orderStore.fieldErrors[item.id]
+								? 'border-red-500 bg-red-50'
+								: 'border-transparent'
+						"
 					>
-						<div
-							class="w-16 h-16 rounded-xl overflow-hidden border border-gray-100 shrink-0"
-						>
-							<img
-								:src="item.image"
-								:alt="item.name"
-								class="w-full h-full object-cover"
-								@error="
-									(e) =>
-										(e.target.src = '/assets/image/placeholder-product.webp')
-								"
-							>
-						</div>
-						<div class="flex-1 min-w-0">
-							<div class="flex justify-between items-start">
-								<h5 class="text-sm font-bold text-gray-800 truncate">
-									{{ item.name }}
-								</h5>
-								<button
-									class="text-gray-400 hover:text-red-500 transition-colors ml-2"
-									aria-label="Xóa sản phẩm này khỏi đơn hàng"
-									@click="removeItem(index)"
-								>
-									<Icon name="fa6-solid:trash-can" class="text-xs" />
-								</button>
-							</div>
-							<div class="flex flex-col items-start mt-1">
-								<p class="text-sm font-black text-red-600">
-									{{ formatPrice(item.price * item.quantity) }}
-								</p>
-							</div>
+						<div class="flex gap-4">
 							<div
-								class="flex items-center gap-2 mt-2 bg-gray-50 p-1.5 rounded-lg w-fit"
+								class="w-16 h-16 rounded-xl overflow-hidden border border-gray-100 shrink-0"
 							>
-								<button
-									class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black"
-									aria-label="Giảm số lượng sản phẩm"
-									@click="updateQuantity(item.id, item.quantity - 1)"
+								<img
+									:src="item.image"
+									:alt="item.name"
+									class="w-full h-full object-cover"
+									@error="
+										(e) =>
+											(e.target.src = '/assets/image/placeholder-product.webp')
+									"
+								/>
+							</div>
+							<div class="flex-1 min-w-0">
+								<div class="flex justify-between items-start">
+									<h5
+										class="text-sm font-bold text-gray-800 line-clamp-2 leading-snug"
+									>
+										{{ item.name }}
+									</h5>
+									<button
+										class="text-gray-400 hover:text-red-500 transition-colors ml-2 disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+										aria-label="Xóa sản phẩm này khỏi đơn hàng"
+										:disabled="isChecking || isSubmitting"
+										@click="removeItem(index)"
+									>
+										<Icon name="fa6-solid:trash-can" class="text-xs" />
+									</button>
+								</div>
+								<div class="flex flex-col items-start mt-1">
+									<p class="text-sm font-black text-red-600">
+										{{ formatPrice(item.price * item.quantity) }}
+									</p>
+								</div>
+								<div
+									class="flex items-center gap-2 mt-2 bg-gray-100/50 p-1.5 rounded-lg w-fit"
 								>
-									-
-								</button>
-								<span class="text-xs font-bold w-4 text-center">{{
-									item.quantity
-								}}</span>
-								<button
-									class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black"
-									aria-label="Tăng số lượng sản phẩm"
-									@click="updateQuantity(item.id, item.quantity + 1)"
+									<button
+										class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black disabled:opacity-30 disabled:cursor-not-allowed"
+										aria-label="Giảm số lượng sản phẩm"
+										:disabled="isChecking || isSubmitting"
+										@click="
+											handleUpdateQuantity(item, item.quantity - 1, index)
+										"
+									>
+										-
+									</button>
+									<span
+										class="text-xs font-bold min-w-[2rem] text-center px-1"
+										>{{ item.quantity }}</span
+									>
+									<button
+										class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black disabled:opacity-30 disabled:cursor-not-allowed"
+										aria-label="Tăng số lượng sản phẩm"
+										:disabled="isChecking || isSubmitting"
+										@click="
+											handleUpdateQuantity(item, item.quantity + 1, index)
+										"
+									>
+										+
+									</button>
+								</div>
+								<p
+									v-if="orderStore.fieldErrors[item.id]"
+									class="text-[9px] font-bold text-red-600 mt-1"
 								>
-									+
-								</button>
+									{{ orderStore.fieldErrors[item.id] }}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -164,6 +219,31 @@ async function handlePlaceOrder() {
 					<span class="text-xl font-black text-red-600">{{
 						formatPrice(orderSummary.total)
 					}}</span>
+				</div>
+
+				<div
+					v-if="orderSummary.total >= orderStore.settings.Order_value_exceeds"
+					class="mt-4 p-3 bg-blue-50 rounded-xl border border-blue-100 space-y-1"
+				>
+					<div class="flex items-center gap-2 text-blue-800">
+						<Icon name="fa6-solid:circle-info" class="text-sm" />
+						<span class="text-xs font-black uppercase tracking-wider"
+							>Yêu cầu đặt cọc ({{ orderStore.settings.Deposit_ratio }}%)</span
+						>
+					</div>
+					<div class="flex justify-between items-baseline">
+						<span class="text-[10px] text-blue-600 font-medium"
+							>Số tiền cần cọc trước:</span
+						>
+						<span class="text-sm font-black text-blue-800">{{
+							formatPrice(
+								orderSummary.total * (orderStore.settings.Deposit_ratio / 100),
+							)
+						}}</span>
+					</div>
+					<p class="text-[9px] text-blue-500 leading-tight">
+						* Đơn hàng giá trị cao cần thanh toán cọc để xác nhận.
+					</p>
 				</div>
 			</div>
 

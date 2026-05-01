@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";
@@ -33,6 +33,11 @@ const isSubmitting = computed(() => orderStore.isLoading);
 onMounted(() => {
 	orderStore.clearOrder();
 	orderStore.initShippingInfo(authStore.user);
+	orderStore.initStatuses();
+});
+
+onUnmounted(() => {
+	orderStore.clearOrder();
 });
 </script>
 

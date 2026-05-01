@@ -77,7 +77,25 @@ useSeoMeta({
 							>
 								Đặt hàng thành công!
 							</h1>
-							<p class="text-gray-500 font-medium max-w-md mx-auto">
+							<div
+								v-if="order.statusId === 'waiting_deposit'"
+								class="space-y-2"
+							>
+								<p class="text-blue-600 font-bold max-w-md mx-auto">
+									Đơn hàng
+									<span class="text-red-600">#{{ order.orderCode }}</span> cần
+									được đặt cọc để xác nhận.
+								</p>
+								<p class="text-gray-500 text-sm max-w-sm mx-auto">
+									Vui lòng liên hệ hotline hoặc kiểm tra chi tiết đơn hàng để
+									thực hiện đặt cọc
+									<span class="font-bold text-gray-900"
+										>{{ order.depositRatio }}%</span
+									>
+									giá trị đơn.
+								</p>
+							</div>
+							<p v-else class="text-gray-500 font-medium max-w-md mx-auto">
 								Chúc mừng! Đơn hàng
 								<span class="text-red-600 font-black"
 									>#{{ order.orderCode }}</span
@@ -179,7 +197,7 @@ useSeoMeta({
 						Một email xác nhận đã được gửi đến bạn. Nếu có thắc mắc, vui lòng
 						liên hệ hotline
 						<a href="tel:0901234567" class="text-red-500 font-bold"
-							>090 123 4567</a
+							>(024) 8582 0808</a
 						>.
 					</p>
 				</div>

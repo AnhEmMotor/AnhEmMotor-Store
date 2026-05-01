@@ -31,7 +31,7 @@ const orderStore = useOrderStore();
 						'!border-red-500 !bg-red-50': orderStore.errors.fullName,
 					}"
 					@input="orderStore.errors.fullName = ''"
-				>
+				/>
 				<p
 					v-if="orderStore.errors.fullName"
 					class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
@@ -53,7 +53,7 @@ const orderStore = useOrderStore();
 						'!border-red-500 !bg-red-50': orderStore.errors.phone,
 					}"
 					@input="orderStore.errors.phone = ''"
-				>
+				/>
 				<p
 					v-if="orderStore.errors.phone"
 					class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
@@ -92,7 +92,7 @@ const orderStore = useOrderStore();
 			<textarea
 				v-model="orderStore.shippingInfo.notes"
 				rows="2"
-				placeholder="Lưu ý cho người giao hàng..."
+				placeholder="Lưu ý bổ sung..."
 				class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
 			/>
 		</div>
