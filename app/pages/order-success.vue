@@ -87,12 +87,36 @@ useSeoMeta({
 									được đặt cọc để xác nhận.
 								</p>
 								<p class="text-gray-500 text-sm max-w-sm mx-auto">
-									Vui lòng liên hệ hotline hoặc kiểm tra chi tiết đơn hàng để
+									Vui lòng liên hệ hotline hoặc thanh toán ngay qua cổng online để
 									thực hiện đặt cọc
 									<span class="font-bold text-gray-900"
 										>{{ order.depositRatio }}%</span
 									>
 									giá trị đơn.
+								</p>
+							</div>
+							<div
+								v-else-if="order.statusId === 'deposit_paid'"
+								class="space-y-2"
+							>
+								<p class="text-green-600 font-bold max-w-md mx-auto">
+									Đã nhận tiền đặt cọc cho đơn hàng
+									<span class="text-red-600">#{{ order.orderCode }}</span>!
+								</p>
+								<p class="text-gray-500 text-sm max-w-sm mx-auto">
+									Cảm ơn bạn đã đặt cọc. Đơn hàng của bạn đang được nhân viên xác nhận và chuẩn bị.
+								</p>
+							</div>
+							<div
+								v-else-if="order.statusId === 'paid_processing'"
+								class="space-y-2"
+							>
+								<p class="text-green-600 font-bold max-w-md mx-auto">
+									Thanh toán thành công đơn hàng
+									<span class="text-red-600">#{{ order.orderCode }}</span>!
+								</p>
+								<p class="text-gray-500 text-sm max-w-sm mx-auto">
+									Hệ thống đã ghi nhận thanh toán toàn bộ. Đơn hàng của bạn đang được xử lý nhanh nhất có thể.
 								</p>
 							</div>
 							<p v-else class="text-gray-500 font-medium max-w-md mx-auto">

@@ -6,6 +6,7 @@ const orderMapper = {
 			customerName: shippingInfo.fullName,
 			customerAddress: shippingInfo.address,
 			customerPhone: shippingInfo.phone,
+			paymentMethod: shippingInfo.paymentMethod,
 			products: cartItems.map((item) => ({
 				productId: item.id,
 				count: item.quantity,
@@ -94,7 +95,7 @@ const orderMapper = {
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
-		const shipping = subtotal > 10000000 ? 0 : 200000;
+		const shipping = 0;
 		const total = subtotal + shipping;
 		return {
 			subtotal,

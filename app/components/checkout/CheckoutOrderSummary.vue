@@ -72,7 +72,24 @@ async function handlePlaceOrder() {
 		const order = await orderStore.createOrder(cartItems.value);
 		if (order?.id) {
 			clearCart();
-			navigateTo(`/order-success?id=${order.id}`);
+			
+			if (orderStore.shippingInfo.paymentMethod === "COD") {
+				navigateTo(`/order-success?id=${order.id}`);
+			} else {
+				const config = useRuntimeConfig();
+				const { data: paymentLink } = await useFetch(`${config.public.apiUrlForBrowserClient}/api/payment/link/${order.id}`, {
+					headers: {
+						Authorization: authStore.accessToken ? `Bearer ${authStore.accessToken}` : "",
+					},
+				});
+				
+				if (paymentLink.value) {
+					window.location.href = paymentLink.value;
+				} else {
+					toast.error("Không thể lấy link thanh toán. Vui lòng thử lại trong danh sách đơn hàng.");
+					navigateTo("/orders");
+				}
+			}
 		}
 	} catch {
 		if (Object.keys(orderStore.fieldErrors).length === 0) {

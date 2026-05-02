@@ -93,6 +93,7 @@ export const useOrderStore = defineStore("order", () => {
 		phone: "",
 		address: "",
 		notes: "",
+		paymentMethod: "COD",
 	});
 
 	const errors = ref({

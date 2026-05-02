@@ -28,6 +28,10 @@ export default defineNuxtConfig({
 		zeroRuntime: true,
 	},
 
+	ogImage: {
+		zeroRuntime: true,
+	},
+
 	vite: {
 		optimizeDeps: {
 			include: [
