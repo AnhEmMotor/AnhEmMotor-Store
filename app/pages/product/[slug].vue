@@ -72,7 +72,6 @@ const onAddToCart = async () => {
 
 	localError.value = "";
 	isCheckingLimit.value = true;
-	// Giả lập việc check hệ thống (async) để UX mượt mà
 	await new Promise((resolve) => setTimeout(resolve, 600));
 
 	const validation = validateProductLimit(cartItem.id, 1);
@@ -185,7 +184,7 @@ const variantSelectId = useId();
 									:src="mainImage"
 									:alt="detail.product.name"
 									class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-								/>
+								>
 							</div>
 
 							<div
@@ -204,7 +203,7 @@ const variantSelectId = useId();
 									:aria-label="'Xem ảnh sản phẩm ' + (index + 1)"
 									@click="mainImage = photo"
 								>
-									<img :src="photo" class="w-full h-full object-cover" />
+									<img :src="photo" class="w-full h-full object-cover" >
 								</button>
 							</div>
 						</div>
@@ -293,8 +292,11 @@ const variantSelectId = useId();
 										name="fa6-solid:circle-info"
 										class="text-amber-500 text-xs"
 									/>
-									<span class="text-[11px] font-bold text-amber-700 uppercase tracking-tight">
-										Giới hạn mua: Tối đa {{ detail.product.productLimit }} sản phẩm
+									<span
+										class="text-[11px] font-bold text-amber-700 uppercase tracking-tight"
+									>
+										Giới hạn mua: Tối đa {{ detail.product.productLimit }} sản
+										phẩm
 									</span>
 								</div>
 

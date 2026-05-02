@@ -32,9 +32,8 @@ async function handleUpdateQuantity(item, newQuantity, index) {
 		return;
 	}
 
-	// Xóa lỗi cho sản phẩm này khi người dùng thay đổi số lượng
 	if (orderStore.fieldErrors[item.id]) {
-		delete orderStore.fieldErrors[item.id];
+		Reflect.deleteProperty(orderStore.fieldErrors, item.id);
 	}
 
 	const change = newQuantity - item.quantity;
@@ -72,21 +71,28 @@ async function handlePlaceOrder() {
 		const order = await orderStore.createOrder(cartItems.value);
 		if (order?.id) {
 			clearCart();
-			
+
 			if (orderStore.shippingInfo.paymentMethod === "COD") {
 				navigateTo(`/order-success?id=${order.id}`);
 			} else {
 				const config = useRuntimeConfig();
-				const { data: paymentLink } = await useFetch(`${config.public.apiUrlForBrowserClient}/api/payment/link/${order.id}`, {
-					headers: {
-						Authorization: authStore.accessToken ? `Bearer ${authStore.accessToken}` : "",
+				const { data: paymentLink } = await useFetch(
+					`${config.public.apiUrlForBrowserClient}/api/payment/link/${order.id}`,
+					{
+						headers: {
+							Authorization: authStore.accessToken
+								? `Bearer ${authStore.accessToken}`
+								: "",
+						},
 					},
-				});
-				
+				);
+
 				if (paymentLink.value) {
 					window.location.href = paymentLink.value;
 				} else {
-					toast.error("Không thể lấy link thanh toán. Vui lòng thử lại trong danh sách đơn hàng.");
+					toast.error(
+						"Không thể lấy link thanh toán. Vui lòng thử lại trong danh sách đơn hàng.",
+					);
 					navigateTo("/orders");
 				}
 			}
@@ -150,7 +156,7 @@ async function handlePlaceOrder() {
 										(e) =>
 											(e.target.src = '/assets/image/placeholder-product.webp')
 									"
-								/>
+								>
 							</div>
 							<div class="flex-1 min-w-0">
 								<div class="flex justify-between items-start">

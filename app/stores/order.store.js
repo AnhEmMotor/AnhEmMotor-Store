@@ -45,7 +45,7 @@ export const useOrderStore = defineStore("order", () => {
 			);
 			return settingSvc.getStoreSettings();
 		},
-		staleTime: 1000 * 60 * 60, // 1 hour
+		staleTime: 1000 * 60 * 60,
 	});
 
 	const settings = computed(() => ({

@@ -23,8 +23,7 @@ export default defineEventHandler(async (event) => {
 				priority: 0.8,
 			};
 		});
-	} catch (error) {
-		console.error("Error fetching sitemap slugs:", error);
+	} catch {
 		return [];
 	}
 });

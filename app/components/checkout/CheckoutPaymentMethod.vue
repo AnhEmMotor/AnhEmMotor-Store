@@ -21,7 +21,8 @@ const paymentMethods = [
 	{
 		id: "PayOS",
 		name: "Thanh toán qua PayOS",
-		description: "Thanh toán nhanh chóng qua cổng PayOS (VietQR, ATM, Credit Card).",
+		description:
+			"Thanh toán nhanh chóng qua cổng PayOS (VietQR, ATM, Credit Card).",
 		icon: "💳",
 		iconImage: "/assets/image/payment/payos.webp",
 	},
@@ -31,7 +32,6 @@ const selectMethod = (methodId) => {
 	orderStore.shippingInfo.paymentMethod = methodId;
 };
 
-// Default selection
 onMounted(() => {
 	if (!orderStore.shippingInfo.paymentMethod) {
 		orderStore.shippingInfo.paymentMethod = "COD";
@@ -55,22 +55,29 @@ onMounted(() => {
 			<div
 				v-for="method in paymentMethods"
 				:key="method.id"
-				@click="selectMethod(method.id)"
 				class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 group"
 				:class="[
 					orderStore.shippingInfo.paymentMethod === method.id
 						? 'bg-red-50 border-red-500 shadow-md shadow-red-500/10'
 						: 'border-gray-100 hover:border-red-200 hover:bg-gray-50',
 				]"
+				@click="selectMethod(method.id)"
 			>
 				<div
 					class="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-sm overflow-hidden p-2"
 				>
-					<img v-if="method.iconImage" :src="method.iconImage" :alt="method.name" class="w-full h-full object-contain" />
+					<img
+						v-if="method.iconImage"
+						:src="method.iconImage"
+						:alt="method.name"
+						class="w-full h-full object-contain"
+					>
 					<span v-else class="text-2xl">{{ method.icon }}</span>
 				</div>
 				<div class="flex-1">
-					<h5 class="font-bold text-gray-900 group-hover:text-red-600 transition-colors">
+					<h5
+						class="font-bold text-gray-900 group-hover:text-red-600 transition-colors"
+					>
 						{{ method.name }}
 					</h5>
 					<p class="text-xs text-gray-500 font-medium">
@@ -85,7 +92,14 @@ onMounted(() => {
 							: 'text-gray-200 group-hover:text-gray-300',
 					]"
 				>
-					<Icon :name="orderStore.shippingInfo.paymentMethod === method.id ? 'fa6-solid:circle-check' : 'fa6-regular:circle'" class="text-2xl" />
+					<Icon
+						:name="
+							orderStore.shippingInfo.paymentMethod === method.id
+								? 'fa6-solid:circle-check'
+								: 'fa6-regular:circle'
+						"
+						class="text-2xl"
+					/>
 				</div>
 			</div>
 		</div>

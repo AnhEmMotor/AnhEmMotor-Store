@@ -31,7 +31,7 @@ const orderStore = useOrderStore();
 						'!border-red-500 !bg-red-50': orderStore.errors.fullName,
 					}"
 					@input="orderStore.errors.fullName = ''"
-				/>
+				>
 				<p
 					v-if="orderStore.errors.fullName"
 					class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
@@ -53,7 +53,7 @@ const orderStore = useOrderStore();
 						'!border-red-500 !bg-red-50': orderStore.errors.phone,
 					}"
 					@input="orderStore.errors.phone = ''"
-				/>
+				>
 				<p
 					v-if="orderStore.errors.phone"
 					class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter"
