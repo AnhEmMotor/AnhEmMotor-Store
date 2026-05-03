@@ -98,8 +98,8 @@ async function handlePlaceOrder() {
 			}
 		}
 	} catch {
-		if (Object.keys(orderStore.fieldErrors).length === 0) {
-			toast.error(orderStore.error || "Có lỗi xảy ra khi đặt hàng.");
+		if (orderStore.error) {
+			toast.error(orderStore.error);
 		}
 	}
 }

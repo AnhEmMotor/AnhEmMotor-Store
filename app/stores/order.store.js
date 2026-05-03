@@ -154,16 +154,40 @@ export const useOrderStore = defineStore("order", () => {
 		} catch (e) {
 			const data = e.response?.data;
 			if (data?.errors) {
+				const fieldMapping = {
+					CustomerName: "fullName",
+					CustomerPhone: "phone",
+					CustomerAddress: "address",
+				};
+				const unmappedErrors = [];
+
 				data.errors.forEach((err) => {
+					let mapped = false;
+
+					// Map field errors to the shipping info form
+					if (err.field && fieldMapping[err.field]) {
+						errors.value[fieldMapping[err.field]] = err.message;
+						mapped = true;
+					}
+
+					// Map product-specific errors
 					if (err.field && err.field.startsWith("products[")) {
 						const index = parseInt(err.field.match(/\d+/)[0]);
 						const item = cartItems[index];
 						if (item) {
 							fieldErrors.value[item.id] = err.message;
+							mapped = true;
 						}
 					}
+
+					if (!mapped) {
+						unmappedErrors.push(err.message);
+					}
 				});
-				error.value = data.errors.map((err) => err.message).join(" ");
+
+				if (unmappedErrors.length > 0) {
+					error.value = unmappedErrors.join(" ");
+				}
 			} else {
 				error.value = data?.message || "Đã có lỗi xảy ra";
 			}
