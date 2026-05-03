@@ -164,13 +164,11 @@ export const useOrderStore = defineStore("order", () => {
 				data.errors.forEach((err) => {
 					let mapped = false;
 
-					// Map field errors to the shipping info form
 					if (err.field && fieldMapping[err.field]) {
 						errors.value[fieldMapping[err.field]] = err.message;
 						mapped = true;
 					}
 
-					// Map product-specific errors
 					if (err.field && err.field.startsWith("products[")) {
 						const index = parseInt(err.field.match(/\d+/)[0]);
 						const item = cartItems[index];
