@@ -23,7 +23,6 @@ const {
 } = useQuery({
 	queryKey: ["product-categories"],
 	queryFn: () => categoryStore.getProductCategories(),
-	staleTime: 1000 * 60 * 60,
 });
 
 const categories = computed(() => {
@@ -40,7 +39,6 @@ const {
 } = useQuery({
 	queryKey: ["product-options"],
 	queryFn: () => productStore.getOptions(),
-	staleTime: 1000 * 60 * 60,
 });
 
 const options = computed(() => optionsData.value || []);
