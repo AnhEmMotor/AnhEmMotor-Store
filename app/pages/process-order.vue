@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";
@@ -28,11 +28,17 @@ const { cartItems } = useCart();
 const authStore = useAuthStore();
 const orderStore = useOrderStore();
 
-const isSubmitting = computed(() => orderStore.isLoading);
+const isSubmitting = computed(() => orderStore.isLoading || orderStore.isRedirecting);
 
 onMounted(() => {
 	orderStore.clearOrder();
+	orderStore.isRedirecting = false;
 	orderStore.initShippingInfo(authStore.user);
+	orderStore.initStatuses();
+});
+
+onUnmounted(() => {
+	orderStore.clearOrder();
 });
 </script>
 
@@ -40,7 +46,7 @@ onMounted(() => {
 	<main class="min-h-screen bg-gray-50 py-12">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<ClientOnly>
-				<CheckoutCartEmpty v-if="cartItems.length === 0" />
+				<CheckoutCartEmpty v-if="cartItems.length === 0 && !orderStore.isRedirecting" />
 
 				<div v-else class="flex flex-col lg:flex-row gap-8">
 					<div class="flex-1 space-y-6">

@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
 	order: {
 		type: Object,
 		required: true,
@@ -33,6 +33,27 @@ const calculateTotal = (items) => {
 		(sum, item) => sum + (item.quantity || 0) * (item.price || 0),
 		0,
 	);
+};
+
+const handlePayment = async () => {
+	const authStore = useAuthStore();
+	const config = useRuntimeConfig();
+	try {
+		const paymentLink = await $fetch(
+			`${config.public.apiUrlForBrowserClient}/api/payment/link/${props.order.id}`,
+			{
+				headers: {
+					Authorization: authStore.accessToken
+						? `Bearer ${authStore.accessToken}`
+						: "",
+				},
+			},
+		);
+
+		if (paymentLink) {
+			window.location.href = paymentLink;
+		}
+	} catch {}
 };
 </script>
 
@@ -111,6 +132,35 @@ const calculateTotal = (items) => {
 			</div>
 
 			<div
+				v-if="order.statusId === 'waiting_deposit'"
+				class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-[2rem] flex items-center gap-4"
+			>
+				<div
+					class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-sm"
+				>
+					<Icon name="fa6-solid:circle-info" class="text-lg" />
+				</div>
+				<div class="flex-1">
+					<p
+						class="text-xs font-black text-blue-900 uppercase tracking-widest mb-1"
+					>
+						Yêu cầu đặt cọc
+					</p>
+					<p class="text-sm font-bold text-blue-700 leading-tight">
+						Vui lòng đặt cọc
+						<span class="text-red-500">{{
+							formatPrice(
+								(order.totalAmount || calculateTotal(order.items)) *
+									((order.depositRatio || 50) / 100),
+							)
+						}}</span>
+						({{ order.depositRatio || 50 }}%) để xác nhận đơn. Liên hệ hotline
+						hoặc chờ Admin gọi xác nhận.
+					</p>
+				</div>
+			</div>
+
+			<div
 				class="mt-6 pt-6 border-t border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6"
 			>
 				<div class="space-y-3">
@@ -179,8 +229,42 @@ const calculateTotal = (items) => {
 				>
 					Sửa thông tin
 				</button>
+				<button
+					v-if="
+						(order.statusId === 'pending' ||
+							order.statusId === 'waiting_deposit') &&
+						order.paymentMethod?.toLowerCase() !== 'cod' &&
+						order.paymentMethod
+					"
+					class="px-6 py-2 bg-red-600 text-white text-xs font-black rounded-full hover:bg-red-700 transition-all active:scale-95 shadow-lg shadow-red-600/20 uppercase tracking-wider flex items-center gap-2"
+					aria-label="Thanh toán ngay qua cổng online"
+					@click="handlePayment"
+				>
+					<Icon name="fa6-solid:credit-card" />
+					<span>Thanh toán ngay qua {{ order.paymentMethod }}</span>
+				</button>
 			</div>
-			<div class="text-right">
+			<div class="text-right space-y-1">
+				<div
+					v-if="
+						(order.statusId === 'deposit_paid' ||
+							order.statusId === 'delivering') &&
+						order.remainingAmount > 0
+					"
+					class="mb-2"
+				>
+					<div class="flex flex-col items-end">
+						<p
+							class="text-[10px] text-gray-400 font-black uppercase tracking-widest"
+						>
+							Số tiền còn lại:
+						</p>
+						<p class="text-lg font-black text-orange-500">
+							{{ formatPrice(order.remainingAmount) }}
+						</p>
+					</div>
+				</div>
+
 				<p
 					class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1"
 				>

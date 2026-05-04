@@ -62,10 +62,27 @@ useHead({
 	link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
 
-const { addItem } = useCart();
-const onAddToCart = () => {
+const { addItem, validateProductLimit } = useCart();
+const isCheckingLimit = ref(false);
+const localError = ref("");
+
+const onAddToCart = async () => {
 	const cartItem = productMapper.toCartItem(detail.value);
-	if (cartItem) addItem(cartItem, 1);
+	if (!cartItem) return;
+
+	localError.value = "";
+	isCheckingLimit.value = true;
+	await new Promise((resolve) => setTimeout(resolve, 600));
+
+	const validation = validateProductLimit(cartItem.id, 1);
+	if (!validation.isValid) {
+		localError.value = validation.message;
+		isCheckingLimit.value = false;
+		return;
+	}
+	isCheckingLimit.value = false;
+
+	addItem(cartItem, 1);
 };
 
 const variantSelectId = useId();
@@ -267,15 +284,45 @@ const variantSelectId = useId();
 									</div>
 								</div>
 
+								<div
+									v-if="detail.product.productLimit"
+									class="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-100 rounded-lg"
+								>
+									<Icon
+										name="fa6-solid:circle-info"
+										class="text-amber-500 text-xs"
+									/>
+									<span
+										class="text-[11px] font-bold text-amber-700 uppercase tracking-tight"
+									>
+										Giới hạn mua: Tối đa {{ detail.product.productLimit }} sản
+										phẩm
+									</span>
+								</div>
+
 								<div class="space-y-4 pt-4 border-b border-gray-100 pb-8">
 									<button
-										class="w-full py-4 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/20 flex items-center justify-center gap-3"
+										class="w-full py-4 bg-primary text-white font-black text-sm rounded-xl hover:bg-primary-dark transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/20 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
 										aria-label="Thêm sản phẩm này vào giỏ hàng"
+										:disabled="isCheckingLimit"
 										@click="onAddToCart"
 									>
-										<Icon name="fa6-solid:cart-shopping" />
-										THÊM VÀO GIỎ HÀNG
+										<Icon
+											v-if="isCheckingLimit"
+											name="fa6-solid:circle-notch"
+											class="animate-spin"
+										/>
+										<Icon v-else name="fa6-solid:cart-shopping" />
+										{{
+											isCheckingLimit ? "ĐANG KIỂM TRA..." : "THÊM VÀO GIỎ HÀNG"
+										}}
 									</button>
+									<p
+										v-if="localError"
+										class="text-xs font-bold text-red-600 text-center animate-shake"
+									>
+										{{ localError }}
+									</p>
 									<div class="grid grid-cols-2 gap-4">
 										<button
 											class="py-3 px-4 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 uppercase tracking-wider"

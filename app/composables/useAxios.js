@@ -128,6 +128,14 @@ export const useAxios = () => {
 				}
 			}
 
+			if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
+				error.message = error.response.data.errors.map((e) => e.message).join("\n");
+			} else if (error.response?.data?.message) {
+				error.message = error.response.data.message;
+			} else if (error.response?.data?.title) {
+				error.message = error.response.data.title;
+			}
+
 			return Promise.reject(error);
 		},
 	);

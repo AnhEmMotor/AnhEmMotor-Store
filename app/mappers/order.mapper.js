@@ -6,6 +6,7 @@ const orderMapper = {
 			customerName: shippingInfo.fullName,
 			customerAddress: shippingInfo.address,
 			customerPhone: shippingInfo.phone,
+			paymentMethod: shippingInfo.paymentMethod,
 			products: cartItems.map((item) => ({
 				productId: item.id,
 				count: item.quantity,
@@ -25,7 +26,11 @@ const orderMapper = {
 				raw.totalPrice ||
 				raw.amount ||
 				0,
+			statusId: raw.statusId || raw.status_id || raw.status || raw.orderStatus,
 			status: raw.status || raw.status_id || raw.statusId || raw.orderStatus,
+			depositRatio: raw.depositRatio || raw.DepositRatio,
+			depositAmount: raw.depositAmount || raw.DepositAmount,
+			remainingAmount: raw.remainingAmount || raw.RemainingAmount,
 			createdAt:
 				raw.createdAt ||
 				raw.created_at ||
@@ -90,7 +95,7 @@ const orderMapper = {
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
-		const shipping = subtotal > 10000000 ? 0 : 200000;
+		const shipping = 0;
 		const total = subtotal + shipping;
 		return {
 			subtotal,
