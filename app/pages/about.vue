@@ -1,5 +1,5 @@
 <script setup>
-import { useAboutStore } from "@/stores/about.store";
+
 
 useSeoMeta({
 	title: "Về chúng tôi | AnhEm Motor",

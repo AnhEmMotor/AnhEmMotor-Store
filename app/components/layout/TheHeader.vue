@@ -1,399 +1,303 @@
 <template>
 	<header
-		class="fixed top-0 w-full z-40 transition-all duration-300 ease-in-out border-b border-transparent bg-white/90 backdrop-blur-md"
-		:class="{
-			'shadow-md border-gray-100 py-2': isScrolled,
-			'py-3': !isScrolled,
-		}"
+		class="fixed top-0 w-full z-[1000] bg-white transition-all duration-300 border-b border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
+		:class="[isScrolled ? 'shadow-lg' : '']"
 	>
-		<div class="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="relative flex h-16 sm:h-20 items-center justify-between">
-				<div class="flex-none flex items-center">
-					<button
-						class="xl:hidden mr-3 p-2 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors"
-						aria-label="Mở menu điều hướng"
-						@click="openMobileNav"
-					>
-						<Icon name="fa6-solid:bars" class="text-xl" />
-					</button>
-
-					<RouterLink
-						to="/"
-						class="group flex items-center gap-2 sm:gap-3 transition-all active:scale-95"
-					>
-						<div
-							class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center overflow-hidden shadow-lg shadow-red-500/20 group-hover:shadow-red-500/40 transition-all duration-300"
+		<!-- TẦNG 1: TOP BAR (MINI - DISCREET) -->
+		<div class="h-10 bg-white border-b border-gray-50 overflow-hidden hidden lg:block">
+			<div class="max-w-[1440px] mx-auto px-10 h-full grid grid-cols-3 items-center">
+				<!-- LEFT: QUICK SEARCH (PROFESSIONAL MINIMALIST) -->
+				<div class="col-span-1">
+					<div class="relative w-[320px] group flex items-center">
+						<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+							<Icon name="lucide:search" class="w-3.5 h-3.5 text-slate-400 group-focus-within:text-[#e60023] transition-colors duration-300" />
+						</div>
+						<input 
+							type="text" 
+							placeholder="Tìm kiếm sản phẩm..."
+							class="block w-full bg-slate-100/50 hover:bg-slate-100 border-none rounded-lg py-1 pl-10 pr-10 text-[11px] font-medium placeholder:text-slate-400 text-slate-900 focus:bg-white focus:ring-1 focus:ring-slate-200 transition-all duration-300"
 						>
-							<img
-								src="/assets/image/logo.webp"
-								alt="AnhEm Motor"
-								class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-								width="40"
-								height="40"
-							>
+						<div class="absolute inset-y-0 right-2.5 flex items-center pointer-events-none">
+							<span class="flex items-center justify-center w-4 h-4 border border-slate-200 rounded bg-white text-[8px] font-bold text-slate-300 shadow-sm transition-all group-focus-within:opacity-0">/</span>
 						</div>
-						<div class="flex flex-col">
-							<span
-								class="text-lg sm:text-xl font-black tracking-tight text-gray-900 group-hover:text-red-500 transition-colors"
-								>ANHEM MOTOR</span
-							>
-							<span
-								class="hidden sm:block text-[10px] font-bold text-[#515267] tracking-[0.2em] uppercase leading-none"
-								>Racing & Lifestyle</span
-							>
-						</div>
-					</RouterLink>
+					</div>
 				</div>
 
-				<nav class="hidden xl:flex flex-1 justify-center px-8">
-					<ul class="flex items-center gap-1">
-						<li v-for="item in navItems" :key="item.path" class="relative group/nav">
-							<!-- Special case for Contact with Dropdown -->
-							<template v-if="item.name === 'Liên Hệ'">
-								<div class="relative flex items-center">
-									<RouterLink :to="item.path" class="nav-link !pr-8">{{ item.name }}</RouterLink>
-									<Icon name="fa6-solid:chevron-down" class="absolute right-3 text-[8px] text-gray-400 group-hover/nav:text-red-500 group-hover/nav:rotate-180 transition-all duration-300 pointer-events-none" />
-									
-									<!-- Contact Dropdown -->
-									<div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 opacity-0 invisible translate-y-2 group-hover/nav:opacity-100 group-hover/nav:visible group-hover/nav:translate-y-0 transition-all duration-300 z-50 overflow-hidden">
-										<RouterLink to="/contact" class="dropdown-item">
-											<div class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3">
-												<Icon name="fa6-solid:paper-plane" />
-											</div>
-											<span>Thông tin liên hệ</span>
-										</RouterLink>
-										<RouterLink to="/test-drive" class="dropdown-item">
-											<div class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3">
-												<Icon name="fa6-solid:motorcycle" />
-											</div>
-											<span>Đăng ký lái thử</span>
-										</RouterLink>
-									</div>
-								</div>
-							</template>
-							<RouterLink v-else :to="item.path" class="nav-link">{{ item.name }}</RouterLink>
-						</li>
-					</ul>
-				</nav>
+				<!-- CENTER: PROMO MESSAGE OR EMPTY -->
+				<div class="col-span-1 flex justify-center">
+					<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest animate-pulse">Hệ thống xe máy chính hãng AnhEm Motor</p>
+				</div>
 
-				<div class="flex-none flex items-center gap-2 sm:gap-4">
-					<div class="flex items-center gap-1 sm:gap-2">
-						<ClientOnly>
-							<button
-								v-if="cartItemCount > 0"
-								class="header-icon-btn group"
-								aria-label="Xem giỏ hàng"
-								@click="toggleCart"
-							>
-								<div class="relative">
-									<Icon
-										name="fa6-solid:cart-shopping"
-										class="w-6 h-6 text-gray-700 group-hover:text-red-500 transition-colors"
-									/>
-									<span
-										class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white animate-in zoom-in duration-300"
-									>
-										{{ cartItemCount }}
-									</span>
-								</div>
-							</button>
-						</ClientOnly>
-					</div>
-
-					<div class="hidden sm:flex items-center gap-3">
-						<template v-if="!isLoggedIn">
-							<RouterLink
-								to="/login"
-								class="hidden lg:block px-5 py-2.5 text-sm font-bold text-gray-700 hover:text-red-500 transition-colors"
-							>
-								Đăng Nhập
-							</RouterLink>
-							<RouterLink
-								to="/register"
-								class="px-6 py-2.5 rounded-full font-black text-sm text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
-							>
-								Đăng Ký
-							</RouterLink>
-						</template>
-
-						<div v-else class="relative user-menu-container">
-							<button
-								class="flex items-center gap-2 p-1 pr-3 bg-gray-50 border border-gray-100 rounded-full hover:bg-white hover:border-red-100 hover:shadow-md transition-all duration-300"
-								aria-label="Mở menu người dùng"
-								@click="toggleUserMenu"
-							>
-								<div
-									class="w-8 h-8 sm:w-9 sm:h-9 bg-red-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm rounded-full"
-								>
-									<img
-										v-if="user?.avatarUrl"
-										:src="user.avatarUrl"
-										alt="Avatar"
-										class="w-full h-full object-cover pointer-events-none"
-									>
-									<ClientOnly v-else>
-										<Icon name="fa6-solid:user" class="text-red-500 text-xs" />
-										<template #fallback>
-											<svg
-												viewBox="0 0 448 512"
-												class="w-3 h-3 text-red-500 fill-current"
-												xmlns="http://www.w3.org/2000/svg"
-											>
-												<path
-													d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 32C79.8 288 0 367.8 0 466.7v45.3h448v-45.3c0-98.9-79.8-178.7-178.3-178.7h-91.4z"
-												/>
-											</svg>
-										</template>
-									</ClientOnly>
-								</div>
-								<span
-									class="hidden md:block text-sm font-bold text-gray-800 max-w-[100px] truncate"
-								>
-									{{ user?.fullName || user?.userName || user?.email }}
-								</span>
-								<ClientOnly>
-									<Icon
-										name="fa6-solid:chevron-down"
-										class="text-[10px] text-gray-400"
-										:class="{ 'rotate-180': isUserMenuOpen }"
-									/>
-									<template #fallback>
-										<div class="w-2.5 h-2.5" />
-									</template>
-								</ClientOnly>
-							</button>
-
-							<div
-								v-if="isUserMenuOpen"
-								class="absolute right-0 mt-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 z-[60] overflow-hidden"
-							>
-								<div
-									class="px-5 py-4 bg-gray-50/50 border-b border-gray-100 mb-1"
-								>
-									<p
-										class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1"
-									>
-										Tài khoản
-									</p>
-									<p class="text-sm font-bold text-gray-900 truncate">
-										{{ user?.email }}
-									</p>
-								</div>
-								<div class="px-2">
-									<RouterLink
-										to="/profile"
-										class="dropdown-item"
-										@click="isUserMenuOpen = false"
-									>
-										<div
-											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3"
-										>
-											<ClientOnly>
-												<Icon name="fa6-solid:circle-user" />
-											</ClientOnly>
-										</div>
-										<span>Sửa thông tin</span>
-									</RouterLink>
-									<RouterLink
-										to="/orders"
-										class="dropdown-item"
-										@click="isUserMenuOpen = false"
-									>
-										<div
-											class="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center mr-3"
-										>
-											<ClientOnly>
-												<Icon name="fa6-solid:bag-shopping" />
-											</ClientOnly>
-										</div>
-										<span>Đơn hàng của tôi</span>
-									</RouterLink>
-									<div class="h-px bg-gray-50 my-1 mx-3" />
-									<button
-										class="dropdown-item text-red-600 hover:bg-red-50 group"
-										aria-label="Đăng xuất khỏi hệ thống"
-										@click="handleLogout"
-									>
-										<div
-											class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center mr-3 group-hover:bg-red-500 group-hover:text-white transition-colors"
-										>
-											<ClientOnly>
-												<Icon name="fa6-solid:right-from-bracket" />
-											</ClientOnly>
-										</div>
-										<span class="font-bold">Đăng xuất</span>
-									</button>
-								</div>
-							</div>
-						</div>
+				<!-- RIGHT LINKS -->
+				<div class="col-span-1 flex justify-end">
+					<div class="flex items-center gap-6 text-[10px] font-medium text-slate-400 uppercase tracking-widest whitespace-nowrap">
+						<NuxtLink to="/about" class="hover:text-gray-900 transition-all">Về AnhEm Motor</NuxtLink>
+						<NuxtLink to="/news" class="hover:text-gray-900 transition-all">Tin tức</NuxtLink>
+						<NuxtLink to="/recruitment" class="hover:text-gray-900 transition-all">Tuyển dụng</NuxtLink>
+						<NuxtLink to="/contact" class="hover:text-gray-900 transition-all">Câu hỏi thường gặp</NuxtLink>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<Teleport to="body">
-			<div
-				v-if="mobileNavActive"
-				class="fixed inset-0 z-[2000] bg-gray-900/60 backdrop-blur-sm"
-				@click="closeMobileNav"
-			/>
-
-			<nav
-				class="fixed top-0 bottom-0 left-0 w-[300px] sm:w-[350px] bg-white shadow-2xl z-[2100] flex flex-col transform"
-				:class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'"
-			>
-				<div
-					class="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-red-500 to-rose-600 shrink-0"
-				>
-					<div class="flex items-center gap-3">
-						<div
-							class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center whitespace-nowrap"
-						>
-							<img
-								src="/assets/image/logo.webp"
-								alt="Logo"
-								class="w-7 h-7 object-contain"
-							>
+		<!-- TẦNG 2: MAIN HEADER (PREMIUM BREATHABLE) -->
+		<div class="py-[14px] bg-white">
+			<div class="max-w-[1440px] mx-auto px-10 flex items-center justify-between">
+				<!-- LOGO (CIRCULAR ICON + REFINED TYPO) -->
+				<div class="flex items-center gap-8 shrink-0">
+					<NuxtLink to="/" class="flex items-center gap-4 group relative -top-[5px]" active-class="" exact-active-class="active-underline">
+						<div class="w-12 h-12 flex items-center justify-center transition-all duration-500">
+							<img src="/assets/image/logo.webp" alt="Logo" class="w-full h-full object-cover rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.15)] group-hover:scale-110 transition-all duration-300">
 						</div>
-						<h3 class="m-0 text-xl font-black text-white tracking-tight">
-							MENU
-						</h3>
-					</div>
-					<button
-						class="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-all active:scale-90"
-						aria-label="Đóng menu điều hướng"
-						@click="closeMobileNav"
-					>
-						<ClientOnly>
-							<Icon name="fa6-solid:xmark" class="text-xl" />
-						</ClientOnly>
-					</button>
-				</div>
+						<span class="text-xl font-bold text-[#111] uppercase tracking-[1px]">ANHEM MOTOR</span>
+					</NuxtLink>
 
-				<div class="flex-1 overflow-y-auto custom-scrollbar bg-white">
-					<div class="p-6 bg-gray-50 border-b border-gray-100">
-						<template v-if="!isLoggedIn">
-							<div class="grid grid-cols-2 gap-3">
-								<RouterLink
-									to="/login"
-									class="w-full text-center py-3 rounded-xl font-bold text-red-500 border-2 border-red-500 bg-white active:scale-95 transition-all"
-									@click="closeMobileNav"
+					<!-- NAVIGATION (STRONG HIERARCHY & FOCUS) -->
+					<nav class="hidden xl:flex items-center">
+						<ul class="flex items-center gap-5">
+							<!-- PRIMARY FOCUS: SẢN PHẨM (THE CENTERPIECE) -->
+							<li class="group/mega relative h-full flex items-center">
+								<NuxtLink 
+									to="/products?category_ids=1" 
+									class="nav-link-primary" 
+									:class="{ 'active-underline': $route.fullPath === '/products?category_ids=1' }"
 								>
-									Đăng Nhập
-								</RouterLink>
-								<RouterLink
-									to="/register"
-									class="w-full text-center py-3 rounded-xl font-bold text-white bg-red-500 shadow-lg shadow-red-500/20 active:scale-95 transition-all"
-									@click="closeMobileNav"
+									XE MÁY
+									<span class="nav-underline"></span>
+								</NuxtLink>
+								
+								<!-- MEGA MENU (HONDA/YAMAHA STYLE) -->
+								<div 
+									class="mega-menu fixed left-0 w-full bg-white shadow-2xl border-t border-gray-100 opacity-0 invisible group-hover/mega:opacity-100 group-hover/mega:visible transition-all duration-300 pt-12 pb-16 z-[100] top-full"
+									style="transition-delay: 100ms;"
 								>
-									Đăng Ký
-								</RouterLink>
+									<div class="max-w-[1440px] mx-auto px-10 grid grid-cols-4 gap-12">
+										<!-- CATEGORIES -->
+										<div class="space-y-8 col-span-1 border-r border-gray-50 pr-8">
+											<h4 class="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] border-b border-gray-50 pb-4">Phân khúc xe</h4>
+											<div class="grid grid-cols-1 gap-2">
+												<NuxtLink v-for="cat in megaMenuCategories" :key="cat.name" :to="cat.path" class="flex items-center gap-5 p-3 rounded-xl hover:bg-gray-50 group/cat transition-all border border-transparent">
+													<div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center group-hover/cat:bg-white transition-colors">
+														<Icon :name="cat.icon" class="text-lg text-gray-400 group-hover/cat:text-[#E60012]" />
+													</div>
+													<div class="flex flex-col">
+														<span class="text-[12px] font-bold text-gray-900 uppercase group-hover/cat:text-[#E60012] transition-colors">{{ cat.name }}</span>
+														<span class="text-[10px] text-gray-400 font-medium">{{ cat.desc }}</span>
+													</div>
+												</NuxtLink>
+											</div>
+										</div>
+
+										<!-- BRANDS -->
+										<div class="space-y-8 col-span-2">
+											<h4 class="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] border-b border-gray-50 pb-4">Thương hiệu phân phối</h4>
+											<div class="grid grid-cols-2 gap-4">
+												<NuxtLink v-for="brand in megaMenuBrands" :key="brand.name" :to="brand.path" class="flex flex-col items-center gap-4 p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-2xl transition-all group/brand border border-transparent">
+													<div class="w-16 h-16 bg-white rounded-full flex items-center justify-center p-4 shadow-sm border border-gray-100">
+														<img :src="brand.logo" :alt="brand.name" class="w-full h-full object-contain filter grayscale group-hover/brand:grayscale-0 transition-all duration-500">
+													</div>
+													<span class="text-[12px] font-black text-gray-900 uppercase tracking-widest">XE {{ brand.name }}</span>
+												</NuxtLink>
+											</div>
+										</div>
+
+										<!-- FEATURED / PROMO (DYNAMIC) -->
+										<div class="space-y-8 col-span-1">
+											<h4 class="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em] border-b border-gray-50 pb-4">Tiêu điểm</h4>
+											<div class="bg-slate-900 rounded-2xl overflow-hidden relative group/feature aspect-[4/5] shadow-2xl">
+												<img src="/assets/image/index/index-banner-bg.webp" alt="Featured" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-all duration-700">
+												<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+												<div class="absolute bottom-0 left-0 p-6 w-full">
+													<span class="text-[10px] font-bold text-[#e60023] uppercase tracking-widest block mb-2">{{ megaMenuSuggestions[0].label }}</span>
+													<h5 class="text-lg font-black text-white uppercase italic leading-tight mb-4" v-html="megaMenuSuggestions[0].title.replace(' - ', '<br/>')"></h5>
+													<NuxtLink :to="megaMenuSuggestions[0].path" class="inline-flex items-center gap-2 text-xs font-bold text-white group-hover:gap-4 transition-all">
+														Khám phá ngay <Icon name="fa6-solid:arrow-right" />
+													</NuxtLink>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+
+							<!-- OTHER PRIMARY ITEMS -->
+							<li>
+								<NuxtLink 
+									to="/products" 
+									class="nav-link-primary" 
+									:class="{ 'active-underline': $route.fullPath === '/products' }"
+								>
+									BẢNG GIÁ 
+									<span class="nav-underline"></span>
+								</NuxtLink>
+							</li>
+							<li>
+								<NuxtLink 
+									to="/promotion" 
+									class="nav-link-primary" 
+									:class="{ 'active-underline': $route.path === '/promotion' }"
+								>
+									KHUYẾN MÃI 
+									<span class="nav-underline"></span>
+								</NuxtLink>
+							</li>
+
+							<!-- SECONDARY ITEMS (LIGHTER & SMALLER) -->
+							<li>
+								<NuxtLink 
+									to="/service" 
+									class="nav-link-secondary"
+									:class="{ 'active-underline': $route.path === '/service' }"
+								>
+									Dịch vụ
+									<span class="nav-underline"></span>
+								</NuxtLink>
+							</li>
+							<li>
+								<NuxtLink 
+									to="/products?category_ids=2,3" 
+									class="nav-link-secondary"
+									:class="{ 'active-underline': $route.fullPath === '/products?category_ids=2,3' }"
+								>
+									Phụ tùng & Phụ kiện
+									<span class="nav-underline"></span>
+								</NuxtLink>
+							</li>
+							<li>
+								<NuxtLink 
+									to="/technology" 
+									class="nav-link-secondary"
+									:class="{ 'active-underline': $route.path === '/technology' }"
+								>
+									Công nghệ
+									<span class="nav-underline"></span>
+								</NuxtLink>
+							</li>
+							<li>
+								<NuxtLink 
+									to="/compare" 
+									class="nav-link-secondary"
+									:class="{ 'active-underline': $route.path === '/compare' }"
+								>
+									So sánh xe
+									<span class="nav-underline"></span>
+								</NuxtLink>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				<!-- ACTIONS (CTA DUO) -->
+				<!-- ACTIONS (CTA DUO + AUTH) -->
+				<div class="flex items-center gap-4">
+					<!-- CTA GROUP -->
+					<div class="flex items-center gap-3">
+						<button 
+							class="px-6 py-2.5 border border-gray-200 text-gray-900 font-bold text-[12px] uppercase tracking-wider rounded-lg transition-all hover:bg-gray-900 hover:text-white active:scale-95 whitespace-nowrap"
+							@click="isTestRideModalOpen = true"
+						>
+							Lái thử
+						</button>
+						<button 
+							class="px-7 py-2.5 bg-[#e60023] text-white font-black text-[12px] uppercase tracking-wider rounded-lg shadow-[0_8px_25px_rgba(230,0,35,0.4)] transition-all hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(230,0,35,0.5)] hover:bg-[#c4001e] active:scale-95 whitespace-nowrap"
+							@click="isQuoteModalOpen = true"
+						>
+							Báo giá
+						</button>
+					</div>
+
+					<!-- AUTH SECTION -->
+					<div class="flex items-center ml-1 pl-4 border-l border-gray-100">
+						<template v-if="authStore.isLoggedIn">
+							<div class="relative group">
+								<button class="flex items-center gap-3 hover:opacity-80 transition-all cursor-pointer">
+									<div class="w-9 h-9 rounded-full bg-slate-100 overflow-hidden border border-slate-200 flex items-center justify-center">
+										<img v-if="authStore.user?.avatarUrl" :src="authStore.user.avatarUrl" alt="Avatar" class="w-full h-full object-cover">
+										<Icon v-else name="lucide:user" class="text-lg text-slate-400" />
+									</div>
+									<div class="hidden xl:flex flex-col items-start leading-tight">
+										<span class="text-[12px] font-black text-slate-900 uppercase tracking-tight truncate max-w-[130px]">
+											{{ authStore.user?.fullName || authStore.user?.userName }}
+										</span>
+									</div>
+								</button>
+								
+								<!-- Dropdown Menu -->
+								<div class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[1100]">
+									<div class="px-4 py-2 border-b border-gray-50 mb-2">
+										<p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Tài khoản</p>
+									</div>
+									<NuxtLink to="/profile" class="flex items-center gap-3 px-4 py-2 text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:text-[#e60023] transition-colors">
+										<Icon name="lucide:user-cog" class="text-lg opacity-50" />
+										Thông tin cá nhân
+									</NuxtLink>
+									<NuxtLink to="/orders" class="flex items-center gap-3 px-4 py-2 text-[13px] font-medium text-gray-700 hover:bg-gray-50 hover:text-[#e60023] transition-colors">
+										<Icon name="lucide:package" class="text-lg opacity-50" />
+										Đơn hàng của tôi
+									</NuxtLink>
+									<div class="h-[1px] bg-gray-50 my-2"></div>
+									<button @click="authStore.logout()" class="w-full flex items-center gap-3 px-4 py-2 text-[13px] font-bold text-red-500 hover:bg-red-50 transition-colors">
+										<Icon name="lucide:log-out" class="text-lg" />
+										Đăng xuất
+									</button>
+								</div>
 							</div>
 						</template>
-						<div v-else class="flex flex-col gap-4">
-							<div
-								class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm"
-							>
-								<div
-									class="w-14 h-14 bg-red-50 flex items-center justify-center overflow-hidden border-2 border-white shadow-inner shrink-0"
-								>
-									<img
-										v-if="user?.avatarUrl"
-										:src="user.avatarUrl"
-										alt="Avatar"
-										class="w-full h-full object-cover pointer-events-none"
-									>
-									<ClientOnly v-else>
-										<Icon name="fa6-solid:user" class="text-red-500 text-xl" />
-										<template #fallback>
-											<svg
-												viewBox="0 0 448 512"
-												class="w-5 h-5 text-red-500 fill-current"
-												xmlns="http://www.w3.org/2000/svg"
-											>
-												<path
-													d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 32C79.8 288 0 367.8 0 466.7v45.3h448v-45.3c0-98.9-79.8-178.7-178.3-178.7h-91.4z"
-												/>
-											</svg>
-										</template>
-									</ClientOnly>
-								</div>
-								<div class="flex-1 min-w-0">
-									<p class="font-black text-gray-900 truncate leading-tight">
-										{{ user?.fullName || user?.userName || user?.email }}
-									</p>
-									<p
-										v-if="(user?.fullName || user?.userName) && user?.email"
-										class="text-xs font-medium text-gray-500 truncate mt-0.5"
-									>
-										{{ user?.email }}
-									</p>
-								</div>
-							</div>
-							<button
-								class="w-full py-3.5 rounded-xl font-black text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
-								aria-label="Đăng xuất tài khoản"
-								@click="
-									handleLogout();
-									closeMobileNav();
-								"
-							>
-								<ClientOnly>
-									<Icon name="fa6-solid:right-from-bracket" />
-								</ClientOnly>
-								<span>Đăng Xuất</span>
-							</button>
-						</div>
+						<template v-else>
+							<NuxtLink to="/login" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-slate-50 text-slate-900 font-bold text-[12px] uppercase tracking-wider hover:bg-slate-100 transition-all border border-slate-100 whitespace-nowrap">
+								<Icon name="lucide:user-circle" class="text-lg text-slate-400" />
+								Đăng nhập
+							</NuxtLink>
+						</template>
 					</div>
-
-					<ul class="p-4 space-y-1">
-						<li v-for="item in navItems" :key="item.path">
-							<template v-if="item.name === 'Liên Hệ'">
-								<div class="flex flex-col">
-									<div class="mobile-nav-link !pointer-events-none opacity-50">
-										<Icon :name="getIconForPath(item.path)" class="w-8 text-red-500" />
-										<span>{{ item.name }}</span>
-									</div>
-									<div class="pl-12 space-y-1">
-										<RouterLink to="/contact" class="mobile-nav-link !py-3" @click="closeMobileNav">
-											<Icon name="fa6-solid:paper-plane" class="w-6 text-red-500/70" />
-											<span>Thông tin liên hệ</span>
-										</RouterLink>
-										<RouterLink to="/test-drive" class="mobile-nav-link !py-3" @click="closeMobileNav">
-											<Icon name="fa6-solid:motorcycle" class="w-6 text-red-500/70" />
-											<span>Đăng ký lái thử</span>
-										</RouterLink>
-									</div>
-								</div>
-							</template>
-							<RouterLink
-								v-else
-								:to="item.path"
-								class="mobile-nav-link"
-								@click="closeMobileNav"
-							>
-								<ClientOnly>
-									<Icon
-										:name="getIconForPath(item.path)"
-										class="w-8 text-red-500"
-									/>
-								</ClientOnly>
-								<span>{{ item.name }}</span>
-							</RouterLink>
-						</li>
-					</ul>
 				</div>
-			</nav>
-		</Teleport>
+			</div>
+		</div>
+
+		<!-- MOBILE MENU -->
 		<ClientOnly>
-			<CartPanel
-				:is-open="isCartOpen"
-				:cart-items="cartDetails"
-				:cart-total="cartTotal"
-				@close="toggleCart"
-				@update-quantity="updateCartItemQuantity"
-				@remove-item="removeCartItem"
-			/>
+			<Teleport to="body">
+				<div v-if="mobileNavActive" class="fixed inset-0 z-[2000] bg-black/40 backdrop-blur-sm" @click="closeMobileNav" />
+				<nav class="fixed top-0 bottom-0 left-0 w-[300px] bg-white z-[2100] transform transition-transform duration-500 ease-in-out shadow-2xl" :class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'">
+					<div class="p-8 border-b flex justify-between items-center bg-gray-50/50">
+						<div v-if="authStore.isLoggedIn" class="flex items-center gap-4">
+							<div class="w-12 h-12 rounded-full bg-white overflow-hidden border border-gray-200 shadow-sm flex items-center justify-center">
+								<img v-if="authStore.user?.avatarUrl" :src="authStore.user.avatarUrl" alt="Avatar" class="w-full h-full object-cover">
+								<Icon v-else name="lucide:user" class="text-xl text-gray-400" />
+							</div>
+							<div class="flex flex-col">
+								<span class="font-bold text-gray-900 leading-tight">{{ authStore.user?.fullName }}</span>
+								<NuxtLink to="/profile" class="text-[10px] font-bold text-[#e60023] uppercase tracking-widest mt-0.5" @click="closeMobileNav">Xem hồ sơ</NuxtLink>
+							</div>
+						</div>
+						<span v-else class="font-black text-xl tracking-tighter">ANHEM MOTOR</span>
+						<button @click="closeMobileNav" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center hover:bg-red-50 hover:text-[#e60023] transition-colors border border-gray-100"><Icon name="fa6-solid:xmark" /></button>
+					</div>
+					<div class="p-8 space-y-6">
+						<!-- Auth Buttons for Mobile -->
+						<div v-if="!authStore.isLoggedIn" class="grid grid-cols-2 gap-3 mb-8">
+							<NuxtLink to="/login" class="flex items-center justify-center gap-2 py-3 rounded-xl bg-gray-900 text-white font-bold text-xs uppercase tracking-widest" @click="closeMobileNav">
+								Đăng nhập
+							</NuxtLink>
+							<NuxtLink to="/register" class="flex items-center justify-center gap-2 py-3 rounded-xl bg-white border border-gray-200 text-gray-900 font-bold text-xs uppercase tracking-widest" @click="closeMobileNav">
+								Đăng ký
+							</NuxtLink>
+						</div>
+						<NuxtLink v-for="item in navItemsMobile" :key="item.path" :to="item.path" class="block py-3 font-bold text-gray-900 border-b border-gray-50 last:border-0" @click="closeMobileNav">
+							{{ item.name }}
+						</NuxtLink>
+					</div>
+				</nav>
+			</Teleport>
+		</ClientOnly>
+
+		<ClientOnly>
+			<CartPanel :is-open="isCartOpen" :cart-items="cartDetails" :cart-total="cartTotal" @close="toggleCart" @update-quantity="updateCartItemQuantity" @remove-item="removeCartItem" />
+			<QuickActionModal :is-open="isTestRideModalOpen" @close="isTestRideModalOpen = false">
+				<TestRideForm @close="isTestRideModalOpen = false" />
+			</QuickActionModal>
+			<QuickActionModal :is-open="isQuoteModalOpen" @close="isQuoteModalOpen = false">
+				<ContactForm :is-submitting="contactStore.isSubmitting" :status-message="contactStore.statusMessage" :status-type="contactStore.statusType" @submit="handleContactSubmit" />
+			</QuickActionModal>
 		</ClientOnly>
 	</header>
 </template>
@@ -401,136 +305,110 @@
 <script setup>
 import { ref, onBeforeUnmount, computed, watch, onMounted } from "vue";
 import CartPanel from "../cart/CartPanel.vue";
-import { useCart } from "~/composables/useCart";
-import { useAuthStore } from "~/stores/auth.store";
-import { useLayoutStore } from "~/stores/layout.store";
+import QuickActionModal from "../common/QuickActionModal.vue";
+import TestRideForm from "../service/TestRideForm.vue";
+import ContactForm from "../contact/ContactForm.vue";
+
+
 
 const authStore = useAuthStore();
-const layoutStore = useLayoutStore();
-const navItems = computed(() => layoutStore.navItems);
-const isLoggedIn = computed(() => authStore.isLoggedIn);
-const user = computed(() => authStore.user);
-const isUserMenuOpen = ref(false);
+const contactStore = useContactStore();
+
 const isScrolled = ref(false);
-
-const toggleUserMenu = () => {
-	isUserMenuOpen.value = !isUserMenuOpen.value;
-};
-
-const handleLogout = async () => {
-	isUserMenuOpen.value = false;
-	await authStore.logout();
-};
-
-if (import.meta.client) {
-	const handleScroll = () => {
-		isScrolled.value = window.scrollY > 20;
-	};
-
-	onMounted(() => {
-		window.addEventListener("scroll", handleScroll);
-		handleScroll();
-
-		window.addEventListener("click", (e) => {
-			if (!e.target.closest(".user-menu-container")) {
-				isUserMenuOpen.value = false;
-			}
-		});
-	});
-
-	onBeforeUnmount(() => {
-		window.removeEventListener("scroll", handleScroll);
-	});
-}
-
 const mobileNavActive = ref(false);
 const isCartOpen = ref(false);
+const isTestRideModalOpen = ref(false);
+const isQuoteModalOpen = ref(false);
 
-const openMobileNav = () => {
-	mobileNavActive.value = true;
-	document.body.style.overflow = "hidden";
-};
-const closeMobileNav = () => {
-	mobileNavActive.value = false;
-	document.body.style.overflow = "";
-};
-
-const { cartItems, cartDetails, cartTotal, removeItem, updateQuantity } =
-	useCart();
-const cartItemCount = computed(() =>
-	cartItems.value.reduce((s, i) => s + (i.quantity || 0), 0),
-);
-
-const toggleCart = () => {
-	isCartOpen.value = !isCartOpen.value;
+const handleContactSubmit = async (data) => {
+	const { resetForm, ...formData } = data;
+	const success = await contactStore.submitContact(formData);
+	if (success && resetForm) { setTimeout(() => { isQuoteModalOpen.value = false; resetForm(); }, 2000); }
 };
 
-watch(isCartOpen, (open) => {
-	document.body.style.overflow = open ? "hidden" : "";
-});
-const updateCartItemQuantity = (payload) => {
-	updateQuantity(payload);
-};
-const removeCartItem = (index) => {
-	removeItem(index);
-};
-onBeforeUnmount(() => {
-	document.body.style.overflow = "";
-});
-const getIconForPath = (path) => {
-	const icons = {
-		"/": "fa6-solid:house",
-		"/products": "fa6-solid:motorcycle",
-		"/about": "fa6-solid:circle-info",
-		"/news": "fa6-solid:newspaper",
-		"/promotion": "fa6-solid:tags",
-		"/contact": "fa6-solid:paper-plane",
-		"/service": "fa6-solid:screwdriver-wrench",
-	};
-	return icons[path] || "fa6-solid:link";
-};
+const megaMenuCategories = [
+	{ name: 'Tất cả xe', path: '/products?category_ids=1', icon: 'fa6-solid:motorcycle', desc: 'Mọi dòng xe' },
+	{ name: 'Xe Tay Ga', path: '/products?category_ids=1&search=tay ga', icon: 'fa6-solid:motorcycle', desc: 'Thanh lịch' },
+	{ name: 'Xe Số', path: '/products?category_ids=1&search=xe so', icon: 'fa6-solid:motorcycle', desc: 'Bền bỉ' },
+	{ name: 'Xe Côn Tay', path: '/products?category_ids=1&search=con tay', icon: 'fa6-solid:gauge-high', desc: 'Thể thao' },
+	{ name: 'Xe PKL', path: '/products?category_ids=1&search=pkl', icon: 'fa6-solid:bolt', desc: 'Sức mạnh' },
+];
+
+const megaMenuBrands = [
+	{ name: 'Honda', path: '/products?brand=honda', logo: '/assets/image/index/brand/honda.webp' },
+	{ name: 'Yamaha', path: '/products?brand=yamaha', logo: '/assets/image/index/brand/yamaha.webp' },
+	{ name: 'Suzuki', path: '/products?brand=suzuki', logo: '/assets/image/index/brand/suzuki.webp' },
+	{ name: 'Kawasaki', path: '/products?brand=kawasaki', logo: '/assets/image/index/brand/kawasaki.webp' },
+];
+
+const megaMenuSuggestions = [
+	{ label: 'Hot Deal', title: 'Winner X trả góp 0%', desc: 'Chỉ từ 999k/tháng - Sẵn xe giao ngay', icon: 'fa6-solid:fire', path: '/products' },
+	{ label: 'Ưu đãi', title: 'Vario 160 Có Sẵn', desc: 'Hỗ trợ đăng ký biển số trong ngày', icon: 'fa6-solid:bolt-lightning', path: '/products' },
+];
+
+const navItemsMobile = [
+	{ name: 'XE MÁY', path: '/products?category_ids=1' },
+	{ name: 'KHUYẾN MÃI', path: '/promotion' },
+	{ name: 'CÔNG NGHỆ', path: '/technology' },
+	{ name: 'TIN TỨC', path: '/news' },
+	{ name: 'TUYỂN DỤNG', path: '/recruitment' },
+];
+
+const openMobileNav = () => { mobileNavActive.value = true; document.body.style.overflow = "hidden"; };
+const closeMobileNav = () => { mobileNavActive.value = false; document.body.style.overflow = ""; };
+
+const { cartItems, cartDetails, cartTotal, removeItem, updateQuantity } = useCart();
+const toggleCart = () => { isCartOpen.value = !isCartOpen.value; };
+const updateCartItemQuantity = (payload) => updateQuantity(payload);
+const removeCartItem = (index) => removeItem(index);
+
+if (import.meta.client) {
+	const handleScroll = () => { isScrolled.value = window.scrollY > 40; };
+	onMounted(() => { window.addEventListener("scroll", handleScroll, { passive: true }); handleScroll(); });
+	onBeforeUnmount(() => { window.removeEventListener("scroll", handleScroll); });
+}
 </script>
 
 <style scoped>
 @reference "../../assets/main.css";
 
-.nav-link {
-	@apply relative px-4 py-2 text-sm font-bold text-gray-600 no-underline transition-all duration-300 ease-in-out hover:text-[#A4040F] rounded-full hover:bg-red-50/50;
+/* PRIMARY NAVIGATION (BOLD #111) */
+.nav-link-primary {
+	@apply relative h-full flex items-center text-[14px] font-bold text-[#111] transition-all duration-300 cursor-pointer uppercase tracking-tight;
 }
 
-.nav-link.router-link-active {
-	@apply text-[#A4040F] bg-red-50;
+.nav-link-primary:hover {
+	@apply text-[#e60023];
 }
 
-.mobile-nav-link {
-	@apply flex items-center rounded-xl py-4 px-4 text-sm font-bold text-gray-700 no-underline transition-all duration-300 hover:bg-red-50 hover:text-[#A4040F] hover:pl-6 active:scale-[0.98];
+/* SECONDARY NAVIGATION (LIGHTER GREY) */
+.nav-link-secondary {
+	@apply relative h-full flex items-center text-[13px] font-normal text-[#9ca3af] transition-all duration-300 cursor-pointer hover:text-[#e60023];
 }
 
-.mobile-nav-link.router-link-active {
-	@apply bg-red-50 text-[#A4040F] pl-6 border-r-4 border-[#A4040F];
+/* MICRO-INTERACTION: UNDERLINE ANIMATION */
+.nav-underline {
+	@apply absolute bottom-[-14px] left-0 w-0 h-[2.5px] bg-[#e60023] transition-all duration-300 ease-out;
 }
 
-.dropdown-item {
-	@apply flex items-center px-4 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all duration-200 cursor-pointer rounded-xl mx-1;
+.nav-link-primary:hover .nav-underline,
+.nav-link-primary.active-underline .nav-underline,
+.nav-link-secondary:hover .nav-underline,
+.nav-link-secondary.active-underline .nav-underline {
+	@apply w-full;
 }
 
-.header-icon-btn {
-	@apply p-2.5 rounded-xl text-gray-700 hover:bg-gray-100 active:scale-95 transition-all outline-none;
+.nav-link-secondary.active-underline {
+	@apply text-[#e60023] font-bold;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-	width: 4px;
+.mega-menu {
+	animation: megaSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-	@apply bg-gray-200 rounded-full;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-	@apply bg-gray-300;
+@keyframes megaSlideIn {
+	from { opacity: 0; transform: translateY(15px); }
+	to { opacity: 1; transform: translateY(0); }
 }
 </style>
+

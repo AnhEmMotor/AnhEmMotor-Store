@@ -1,6 +1,6 @@
 <script setup>
-import { useHomeStore } from "@/stores/home.store";
-import { useNewsStore } from "@/stores/news.store";
+
+
 
 const homeStore = useHomeStore();
 const newsStore = useNewsStore();

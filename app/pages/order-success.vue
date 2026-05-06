@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { useOrderStore } from "~/stores/order.store";
-import { formatCurrency } from "~/utils/currency";
+
+
 
 const route = useRoute();
 const orderStore = useOrderStore();
@@ -142,6 +142,26 @@ useSeoMeta({
 											</p>
 											<p class="text-sm font-bold text-gray-900">
 												{{ order.paymentMethod }}
+											</p>
+										</div>
+										<div class="space-y-1">
+											<p
+												class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+											>
+												Tạm tính
+											</p>
+											<p class="text-sm font-bold text-gray-900">
+												{{ formatCurrency(order.totalAmount - order.shippingFee) }}
+											</p>
+										</div>
+										<div class="space-y-1">
+											<p
+												class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+											>
+												Phí giao hàng
+											</p>
+											<p class="text-sm font-bold text-gray-900">
+												{{ order.shippingFee > 0 ? formatCurrency(order.shippingFee) : 'Miễn phí' }}
 											</p>
 										</div>
 										<div class="space-y-1">

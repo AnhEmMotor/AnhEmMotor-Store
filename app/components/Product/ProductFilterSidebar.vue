@@ -1,10 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { useProductStore } from "@/stores/product.store";
-import { useCategoryStore } from "@/stores/category.store";
-import { useAxios } from "@/composables/useAxios";
-import { PRODUCT_ENDPOINTS } from "@/constants/endpoints/product.endpoint";
+
 
 const props = defineProps({
 	modelValue: {
@@ -34,22 +31,6 @@ const {
 const brands = computed(() => {
 	if (brandsData.value?.items) return brandsData.value.items;
 	if (Array.isArray(brandsData.value)) return brandsData.value;
-	return [];
-});
-
-const {
-	data: categoriesData,
-	isLoading: isLoadingCategories,
-	error: categoriesError,
-} = useQuery({
-	queryKey: ["product-categories"],
-	queryFn: () => categoryStore.getProductCategories(),
-	staleTime: 1000 * 60 * 60,
-});
-
-const categories = computed(() => {
-	if (categoriesData.value?.items) return categoriesData.value.items;
-	if (Array.isArray(categoriesData.value)) return categoriesData.value;
 	return [];
 });
 
@@ -87,13 +68,6 @@ const selectedOptions = computed({
 	},
 });
 
-const selectedCategories = computed({
-	get: () => props.modelValue.category_ids || [],
-	set: (val) => {
-		emit("update:modelValue", { ...props.modelValue, category_ids: val });
-	},
-});
-
 const selectedBrands = computed({
 	get: () => props.modelValue.brand_ids || [],
 	set: (val) => {
@@ -114,19 +88,6 @@ const maxPrice = computed({
 		emit("update:modelValue", { ...props.modelValue, maxPrice: val });
 	},
 });
-
-const isCategorySelected = (catId) => selectedCategories.value.includes(catId);
-
-const toggleCategory = (catId) => {
-	const current = [...selectedCategories.value];
-	const index = current.indexOf(catId);
-	if (index > -1) {
-		current.splice(index, 1);
-	} else {
-		current.push(catId);
-	}
-	selectedCategories.value = current;
-};
 
 const isBrandSelected = (brandId) => selectedBrands.value.includes(brandId);
 
@@ -214,75 +175,6 @@ const formatVND = (val) => {
 		</div>
 
 		<div class="flex-1 overflow-y-auto p-6 space-y-10 custom-scrollbar">
-			<!-- Marketing / Suggestions Section -->
-			<div class="space-y-4">
-				<div class="flex items-center gap-2">
-					<div class="w-1 h-4 bg-primary rounded-full shadow-[0_0_8px_rgba(227,24,55,0.5)]"></div>
-					<label class="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-2">
-						<Icon name="fa6-solid:fire" class="animate-pulse" />
-						Gợi ý hôm nay
-					</label>
-				</div>
-				<div class="grid grid-cols-1 gap-3">
-					<button 
-						class="flex items-center gap-3 p-3 bg-gradient-to-r from-red-50 to-rose-50 border border-red-100 rounded-2xl transition-all hover:shadow-md hover:-translate-y-1 group"
-						@click="searchQuery = 'hot'"
-					>
-						<div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-							<Icon name="fa6-solid:crown" class="text-yellow-500" />
-						</div>
-						<div class="text-left">
-							<p class="text-xs font-black text-gray-900 uppercase">Bán chạy nhất</p>
-							<p class="text-[10px] font-bold text-red-500">Ưu đãi lên tới 10%</p>
-						</div>
-					</button>
-
-					<button 
-						class="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl transition-all hover:shadow-md hover:-translate-y-1 group"
-						@click="searchQuery = 'new'"
-					>
-						<div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-							<Icon name="fa6-solid:wand-magic-sparkles" class="text-blue-500" />
-						</div>
-						<div class="text-left">
-							<p class="text-xs font-black text-gray-900 uppercase">Xe mới về</p>
-							<p class="text-[10px] font-bold text-blue-500">Hỗ trợ trả góp 0%</p>
-						</div>
-					</button>
-				</div>
-			</div>
-
-			<!-- Categories -->
-			<div class="space-y-4">
-				<div class="flex items-center gap-2">
-					<div class="w-1 h-4 bg-primary rounded-full"></div>
-					<label class="text-sm font-black text-gray-900 uppercase tracking-widest"
-						>Danh mục</label
-					>
-				</div>
-				<ClientOnly>
-					<div v-if="isLoadingCategories" class="py-4 flex justify-center">
-						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
-					</div>
-					<div v-else-if="categories.length > 0" class="grid grid-cols-1 gap-2">
-						<button
-							v-for="cat in categories"
-							:key="cat.id"
-							class="group flex items-center justify-between px-4 py-3 text-xs font-bold rounded-xl border transition-all duration-300"
-							:class="[
-								isCategorySelected(cat.id)
-									? 'bg-primary border-primary text-white shadow-lg shadow-primary/20 translate-x-2'
-									: 'bg-white border-gray-100 text-gray-500 hover:border-primary/30 hover:text-primary hover:bg-primary/5',
-							]"
-							@click="toggleCategory(cat.id)"
-						>
-							{{ cat.name }}
-							<Icon v-if="isCategorySelected(cat.id)" name="fa6-solid:circle-check" />
-						</button>
-					</div>
-				</ClientOnly>
-			</div>
-
 			<!-- Brands -->
 			<div class="space-y-4">
 				<div class="flex items-center gap-2">
@@ -515,3 +407,4 @@ input[type="range"]::-moz-range-track {
 	border: none;
 }
 </style>
+

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { REELS } from "@/constants/reel.constant";
+
 import BaseSectionHeader from "@/components/ui/BaseSectionHeader.vue";
 import ReelCard from "@/components/ui/ReelCard.vue";
 import VideoModal from "@/components/ui/VideoModal.vue";

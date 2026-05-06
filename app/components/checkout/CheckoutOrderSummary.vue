@@ -1,9 +1,8 @@
 <script setup>
 import { computed } from "vue";
 import { toast } from "vue3-toastify";
-import { useCart } from "~/composables/useCart";
-import { useOrderStore } from "~/stores/order.store";
-import orderMapper from "~/mappers/order.mapper";
+
+
 import "vue3-toastify/dist/index.css";
 
 const {
@@ -197,3 +196,4 @@ async function handlePlaceOrder() {
 	@apply bg-gray-200 rounded-full;
 }
 </style>
+

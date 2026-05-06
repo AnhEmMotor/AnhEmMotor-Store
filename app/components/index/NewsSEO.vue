@@ -1,5 +1,5 @@
 <script setup>
-import { useNewsStore } from "@/stores/news.store";
+
 import BaseSectionHeader from "@/components/ui/BaseSectionHeader.vue";
 import NewsCard from "@/components/ui/NewsCard.vue";
 import YoutubeReview from "@/components/ui/YoutubeReview.vue";

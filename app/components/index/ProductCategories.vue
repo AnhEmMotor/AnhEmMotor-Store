@@ -1,5 +1,5 @@
 <script setup>
-import { PRODUCT_CATEGORIES } from "@/constants/category.constant";
+
 import BaseSectionHeader from "@/components/ui/BaseSectionHeader.vue";
 import CategoryCard from "@/components/ui/CategoryCard.vue";
 </script>

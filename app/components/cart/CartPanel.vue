@@ -143,7 +143,7 @@
 import { ref, watch } from "vue";
 import BaseButton from "../ui/BaseButton.vue";
 import NumberStepper from "../ui/NumberStepper.vue";
-import { formatCurrency } from "~/utils/currency";
+
 
 const { isOpen, cartItems, cartTotal } = defineProps({
 	isOpen: Boolean,

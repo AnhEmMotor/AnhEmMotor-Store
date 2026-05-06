@@ -1,16 +1,16 @@
 <script setup>
 import { useQuery } from "@tanstack/vue-query";
-import { useProductStore } from "@/stores/product.store";
+
 
 const productStore = useProductStore();
 
 const { data: ssrData } = await useAsyncData("featured-products-ssr", () =>
-	productStore.getProducts({ pageSize: 4 }),
+	productStore.getProducts({ pageSize: 4, categoryIds: "1" }),
 );
 
 const { data: products, isPending } = useQuery({
 	queryKey: ["featured-products"],
-	queryFn: () => productStore.getProducts({ pageSize: 4 }),
+	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: "1" }),
 	select: (res) => res.items,
 	initialData: ssrData.value,
 });

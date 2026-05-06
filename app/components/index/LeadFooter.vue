@@ -1,8 +1,8 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { toast } from "vue3-toastify";
-import { BIKE_MODELS } from "@/constants/bike.constant";
-import { validatePhone } from "@/utils/validator";
+
+
 import BaseInput from "@/components/ui/BaseInput.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 import LeadFeatureItem from "@/components/ui/LeadFeatureItem.vue";

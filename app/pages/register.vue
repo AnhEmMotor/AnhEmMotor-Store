@@ -1,5 +1,5 @@
 <script setup>
-import { useRegisterStore } from "@/stores/register.store";
+
 
 import RegisterHeader from "@/components/auth/RegisterHeader.vue";
 import RegisterForm from "@/components/auth/RegisterForm.vue";

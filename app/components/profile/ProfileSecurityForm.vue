@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useUserStore } from "@/stores/user.store";
+
 
 const instance = useNuxtApp();
 const userStore = useUserStore();
