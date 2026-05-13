@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { useAuthStore } from "../stores/auth.store";
 
 useSeoMeta({
 	title: "Đăng Nhập",
@@ -296,4 +297,3 @@ async function handleLogin() {
 	}
 }
 </style>
-

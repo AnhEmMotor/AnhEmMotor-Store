@@ -1,8 +1,5 @@
 {
-  "compilerOptions": {
-    "baseUrl": "."
-  },
-  "files": [],
+	"files": [],
 	"references": [
 		{
 			"path": "./.nuxt/tsconfig.app.json"

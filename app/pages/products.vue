@@ -1,59 +1,46 @@
 <script setup>
 import { ref } from "vue";
+import { useProductStore } from "@/stores/product.store";
+import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
 import BasePagination from "@/components/ui/BasePagination.vue";
 
-const route = useRoute();
+useSeoMeta({
+	title: "Danh sách sản phẩm",
+	ogTitle: "Danh sách sản phẩm",
+	description:
+		"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
+	ogDescription:
+		"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
+	ogImage: "/assets/image/index/index-banner-bg.webp",
+	twitterTitle: "Danh sách sản phẩm",
+	twitterDescription:
+		"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
+	twitterImage: "/assets/image/index/index-banner-bg.webp",
+});
+
+useHead({
+	link: [
+		{
+			rel: "icon",
+			type: "image/x-icon",
+			href: "/favicon.ico",
+		},
+	],
+});
+
 const productStore = useProductStore();
 const isSidebarOpen = ref(false);
 
-function parseArrayQuery(val) {
+const route = useRoute();
+
+const parseArrayQuery = (val) => {
 	if (!val) return [];
 	const strVal = String(val);
 	return strVal
 		.split(",")
 		.map(Number)
 		.filter((n) => !Number.isNaN(n));
-}
-
-const pageMode = computed(() => {
-	const ids = parseArrayQuery(route.query.category_ids);
-	if (ids.includes(1) && ids.length === 1) return 'motorcycles';
-	if (ids.some(id => [2, 3].includes(id))) return 'accessories';
-	return 'all';
-});
-
-const pageConfig = computed(() => {
-	if (pageMode.value === 'motorcycles') {
-		return {
-			title: "Danh sách Xe máy",
-			description: "Khám phá các dòng xe máy Honda, Yamaha, Suzuki, Kawasaki mới nhất tại AnhEm Motor.",
-			heading: "Xe Máy"
-		};
-	}
-	if (pageMode.value === 'accessories') {
-		return {
-			title: "Phụ tùng & Phụ kiện",
-			description: "Cung cấp phụ tùng chính hãng, đồ chơi xe máy và phụ kiện bảo hộ cao cấp.",
-			heading: "Phụ tùng & Phụ kiện"
-		};
-	}
-	return {
-		title: "Tất cả sản phẩm",
-		description: "Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
-		heading: "Sản phẩm"
-	};
-});
-
-useSeoMeta({
-	title: () => `${pageConfig.value.title} | AnhEm Motor`,
-	ogTitle: () => `${pageConfig.value.title} | AnhEm Motor`,
-	description: () => pageConfig.value.description,
-	ogDescription: () => pageConfig.value.description,
-	ogImage: "/assets/image/index/index-banner-bg.webp",
-	twitterTitle: () => `${pageConfig.value.title} | AnhEm Motor`,
-	twitterDescription: () => pageConfig.value.description,
-	twitterImage: "/assets/image/index/index-banner-bg.webp",
-});
+};
 
 const filters = ref({
 	search: route.query.search || "",
@@ -97,20 +84,6 @@ const {
 	debouncedFields: ["search"],
 	dataKey: (res) => res.items,
 });
-
-// Watch for URL changes to sync filters back (Crucial for Header links)
-watch(
-	() => route.query,
-	(newQuery) => {
-		filters.value.search = newQuery.search || "";
-		filters.value.optionValueIds = parseArrayQuery(newQuery.optionValueIds);
-		filters.value.category_ids = parseArrayQuery(newQuery.category_ids);
-		filters.value.brand_ids = parseArrayQuery(newQuery.brand_ids);
-		filters.value.minPrice = newQuery.minPrice ? Number(newQuery.minPrice) : null;
-		filters.value.maxPrice = newQuery.maxPrice ? Number(newQuery.maxPrice) : null;
-	},
-	{ deep: true }
-);
 
 const toggleSidebar = () => {
 	isSidebarOpen.value = !isSidebarOpen.value;
@@ -170,10 +143,9 @@ const formatVND = (value) => {
 						class="flex flex-col sm:flex-row sm:items-center justify-between mb-10 gap-6"
 					>
 						<div>
-							<h1 class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 italic uppercase tracking-tighter">
-								{{ pageConfig.heading }}
+							<h1 class="text-3xl sm:text-4xl font-black text-gray-900 mb-2">
+								Sản phẩm
 							</h1>
-							<p class="text-gray-400 font-medium text-sm">{{ pageConfig.description }}</p>
 						</div>
 
 						<div class="flex items-center gap-3">
@@ -279,4 +251,3 @@ const formatVND = (value) => {
 	transform: translateX(-100%);
 }
 </style>
-
