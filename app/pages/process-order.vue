@@ -1,8 +1,7 @@
 <script setup>
 import { onMounted } from "vue";
-import { useCart } from "~/composables/useCart";
-import { useAuthStore } from "~/stores/auth.store";
-import { useOrderStore } from "~/stores/order.store";
+
+
 
 import CheckoutCartEmpty from "@/components/checkout/CheckoutCartEmpty.vue";
 import CheckoutShippingForm from "@/components/checkout/CheckoutShippingForm.vue";
@@ -85,3 +84,4 @@ onMounted(() => {
 <style scoped>
 @reference "../assets/main.css";
 </style>
+

@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
-import { useLayoutStore } from "../../stores/layout.store";
 
 const layoutStore = useLayoutStore();
 const { floatingButtons } = storeToRefs(layoutStore);
@@ -105,3 +104,4 @@ onUnmounted(() => {
 	opacity: 0;
 }
 </style>
+

@@ -1,9 +1,12 @@
+import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
 
 export default defineNuxtConfig({
 	compatibilityDate: "2025-07-15",
 	devtools: { enabled: true },
+	srcDir: "app",
 
 	build: {
 		transpile: ["@tanstack/vue-query"],
@@ -154,5 +157,28 @@ export default defineNuxtConfig({
 			apiUrlForBrowserClient:
 				process.env.NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT,
 		},
+	},
+
+	alias: {
+		"@/stores": "./app/core/application/stores",
+		"@/services": "./app/core/application/services",
+		"@/mappers": "./app/core/application/mappers",
+		"@/constants": "./app/core/domain/constants",
+		"@/utils": "./app/core/domain/utils",
+		"~/stores": "./app/core/application/stores",
+		"~/services": "./app/core/application/services",
+		"~/mappers": "./app/core/application/mappers",
+		"~/constants": "./app/core/domain/constants",
+		"~/utils": "./app/core/domain/utils",
+	},
+
+	imports: {
+		dirs: [
+			"core/domain/constants/**",
+			"core/domain/utils/**",
+			"core/application/services/**",
+			"core/application/stores/**",
+			"core/application/mappers/**",
+		],
 	},
 });

@@ -1,5 +1,4 @@
 <script setup>
-import { useMortgage } from "@/composables/useMortgage";
 import BaseRangeInput from "@/components/ui/BaseRangeInput.vue";
 import { formatCurrency } from "#imports";
 
@@ -116,3 +115,4 @@ const sendToZalo = () => {
 		</div>
 	</div>
 </template>
+

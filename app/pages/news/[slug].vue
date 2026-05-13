@@ -1,5 +1,5 @@
 <script setup>
-import { useNewsStore } from "@/stores/news.store";
+
 
 const route = useRoute();
 const newsStore = useNewsStore();
@@ -63,9 +63,9 @@ watch(
 							class="w-full rounded-xl shadow-lg mb-8 object-cover max-h-[500px]"
 						>
 						<div
-							class="prose prose-lg max-w-none text-gray-800 leading-relaxed"
+							class="max-w-none text-gray-800 leading-relaxed"
 						>
-							<div v-html="news.content" />
+							<NewsBlockRenderer :content="news.content" />
 						</div>
 						<div class="mt-10 pt-6 border-t border-gray-200">
 							<h3 class="text-lg font-bold mb-4">Chia sẻ bài viết</h3>

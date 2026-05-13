@@ -1,5 +1,5 @@
 <script setup>
-import { BENEFITS } from "@/constants/benefit.constant";
+
 import BenefitCard from "@/components/ui/BenefitCard.vue";
 import LoanCalculator from "@/components/index/LoanCalculator.vue";
 </script>

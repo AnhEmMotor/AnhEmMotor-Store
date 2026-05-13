@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useAuthStore } from "@/stores/auth.store";
-import { useUserStore } from "@/stores/user.store";
+
+
 
 defineProps({
 	modelValue: {

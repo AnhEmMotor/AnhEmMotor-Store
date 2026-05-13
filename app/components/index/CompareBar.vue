@@ -1,5 +1,5 @@
 <script setup>
-import { useCompareStore } from "@/stores/compare.store";
+
 import { formatCurrency } from "#imports";
 const compareStore = useCompareStore();
 </script>

@@ -1,5 +1,3 @@
-import { PERMISSIONS } from "~/config/constants";
-import { usePermissionConfig } from "~/composables/usePermissionConfig";
 import { computed } from "vue";
 
 export const usePermissions = () => {
@@ -32,3 +30,4 @@ export const usePermissions = () => {
 		),
 	};
 };
+

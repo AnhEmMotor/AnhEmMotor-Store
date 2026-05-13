@@ -1,8 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
-import { useProductStore } from "@/stores/product.store";
-import { useCart } from "~/composables/useCart";
-import productMapper from "@/mappers/product.mapper";
+
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);
@@ -735,3 +733,4 @@ const variantSelectId = useId();
 
 i { font-style: italic; }
 </style>
+

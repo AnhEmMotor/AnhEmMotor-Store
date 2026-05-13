@@ -1,10 +1,4 @@
 <script setup>
-import { ref } from "vue";
-import {
-	TRUST_SERVICES,
-	TESTIMONIALS,
-	SHOWROOMS,
-} from "@/constants/trust.constant";
 import TrustServiceCard from "@/components/ui/TrustServiceCard.vue";
 import TestimonialCard from "@/components/ui/TestimonialCard.vue";
 import ShowroomItem from "@/components/ui/ShowroomItem.vue";
@@ -98,3 +92,4 @@ const selectedShowroom = ref(SHOWROOMS[0]);
 		</div>
 	</section>
 </template>
+

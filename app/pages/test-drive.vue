@@ -168,8 +168,8 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue';
-import { useBookingStore } from '@/stores/booking.store';
-import { useProductStore } from '@/stores/product.store';
+
+
 
 const route = useRoute();
 const bookingStore = useBookingStore();

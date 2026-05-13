@@ -44,6 +44,28 @@ const currentUrl = computed(() => {
 });
 
 const variantSelectId = useId();
+
+// Comparison Logic
+
+const compareStore = useCompareStore();
+const isCompared = computed(() => compareStore.products.some(p => p.id === props.product.id));
+
+const toggleCompare = (e) => {
+	e.preventDefault();
+	e.stopPropagation();
+	if (isCompared.value) {
+		compareStore.removeProduct(props.product.id);
+	} else {
+		compareStore.addProduct({
+			id: props.product.id,
+			name: props.product.name,
+			slug: props.product.slug,
+			brand: props.product.brand,
+			image: currentImage.value,
+			price: selectedVariant.value?.price
+		});
+	}
+};
 </script>
 
 <template>
@@ -57,6 +79,15 @@ const variantSelectId = useId();
 				:alt="product.name"
 				class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
 			>
+			<!-- Compare Toggle -->
+			<button 
+				@click="toggleCompare"
+				class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10 backdrop-blur-md border"
+				:class="isCompared ? 'bg-[#CC0000] border-[#CC0000] text-white shadow-lg shadow-red-500/30' : 'bg-white/80 border-gray-100 text-gray-400 hover:text-[#CC0000] hover:bg-white'"
+				:title="isCompared ? 'Xóa khỏi danh sách so sánh' : 'Thêm vào so sánh'"
+			>
+				<Icon :name="isCompared ? 'fa6-solid:check' : 'fa6-solid:code-compare'" class="text-sm" />
+			</button>
 		</div>
 
 		<div class="p-4 flex flex-col flex-1">
