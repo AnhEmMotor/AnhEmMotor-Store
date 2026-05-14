@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useCategoryStore = defineStore("category", () => {
-	const axios = useAxios();
-	const service = categoryService(axios);
+	const service = categoryService;
+
 	const categories = ref([]);
 	const isLoading = ref(false);
 	const error = ref(null);

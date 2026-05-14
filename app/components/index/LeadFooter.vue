@@ -48,18 +48,18 @@ const handleSubmit = () => {
 
 		<div class="container mx-auto px-4 relative z-10">
 			<div
-				class="max-w-4xl mx-auto p-8 md:p-16 border-2 border-red-600/30 rounded-[40px] bg-black/30 backdrop-blur-3xl shadow-2xl shadow-red-600/10 transition-all hover:border-red-600/50"
+				class="max-w-5xl mx-auto p-8 md:p-20 border border-white/10 rounded-24 bg-white/5 backdrop-blur-xl shadow-2xl transition-all hover:border-primary/30"
 			>
-				<div class="text-center space-y-4 mb-12">
+				<div class="text-center space-y-6 mb-12">
 					<h2
-						class="text-3xl md:text-5xl font-black uppercase italic tracking-tighter leading-none"
+						class="text-3xl md:text-5xl lg:text-[42px] font-bold leading-tight tracking-tight"
 					>
-						TƯ VẤN <span class="text-red-600">LĂN BÁNH</span>
+						Bạn chưa biết chọn <span class="text-primary">dòng xe phù hợp?</span>
 					</h2>
 					<p
-						class="text-gray-400 text-sm max-w-sm mx-auto uppercase tracking-widest font-black opacity-50"
+						class="text-slate-400 text-lg font-medium max-w-2xl mx-auto leading-relaxed"
 					>
-						Để lại thông tin, nhận giá tốt nhất sau 5 phút
+						Ghé cửa hàng để được tư vấn & trải nghiệm thực tế, hoặc để lại thông tin để nhận báo giá lăn bánh tốt nhất sau 5 phút.
 					</p>
 				</div>
 
@@ -74,6 +74,7 @@ const handleSubmit = () => {
 							type="tel"
 							placeholder="VD: 0912 345 678"
 							required
+                            class="bg-white/5 border-white/10 text-white"
 						/>
 					</div>
 
@@ -84,26 +85,32 @@ const handleSubmit = () => {
 							placeholder="VD: Honda SH 160i"
 							required
 							list="models"
+                            class="bg-white/5 border-white/10 text-white"
 						/>
 						<datalist id="models">
 							<option v-for="m in BIKE_MODELS" :key="m" :value="m" />
 						</datalist>
 					</div>
 
-					<BaseButton type="submit" :loading="isSubmitting">
-						Gửi Ngay
-					</BaseButton>
+					<button 
+                        type="submit" 
+                        class="px-10 py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 flex items-center gap-2 whitespace-nowrap"
+                        :disabled="isSubmitting"
+                    >
+						{{ isSubmitting ? 'Đang gửi...' : 'Gửi thông tin' }}
+                        <Icon v-if="!isSubmitting" name="ph:paper-plane-right-bold" />
+					</button>
 				</form>
 
 				<div
-					class="mt-12 flex flex-col md:flex-row items-center justify-center gap-8 text-white/40 uppercase font-black text-[10px] tracking-widest border-t border-white/5 pt-8"
+					class="mt-12 flex flex-col md:flex-row items-center justify-center gap-10 text-white/40 font-bold text-xs tracking-wider border-t border-white/5 pt-8"
 				>
 					<LeadFeatureItem
-						icon="fa6-solid:lock"
+						icon="ph:lock-key-bold"
 						text="Bảo mật thông tin 100%"
 					/>
 					<div class="hidden md:block w-px h-4 bg-white/10" />
-					<LeadFeatureItem icon="fa6-solid:clock" text="Tư vấn siêu tốc 24/7" />
+					<LeadFeatureItem icon="ph:headset-bold" text="Tư vấn siêu tốc 24/7" />
 				</div>
 			</div>
 		</div>

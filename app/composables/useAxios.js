@@ -1,23 +1,34 @@
 import axios from "axios";
 
 
-let isRefreshing = false;
-let failedQueue = [];
-
-const processQueue = (error, token = null) => {
-	failedQueue.forEach((prom) => {
-		if (error) {
-			prom.reject(error);
-		} else {
-			prom.resolve(token);
-		}
-	});
-
-	failedQueue = [];
-};
 
 export const useAxios = () => {
 	const config = useRuntimeConfig();
+	const authStore = useAuthStore();
+	const nuxtApp = useNuxtApp();
+
+	// Use nuxtApp context for request-scoped, non-serializable state
+	// This avoids serialization errors during SSR
+	if (!nuxtApp._axiosRefreshState) {
+		nuxtApp._axiosRefreshState = {
+			isRefreshing: false,
+			failedQueue: []
+		};
+	}
+	const refreshState = nuxtApp._axiosRefreshState;
+
+	const processQueue = (error, token = null) => {
+		refreshState.failedQueue.forEach((prom) => {
+			if (error) {
+				prom.reject(error);
+			} else {
+				prom.resolve(token);
+			}
+		});
+
+		refreshState.failedQueue = [];
+	};
+
 	const baseURL =
 		(import.meta.server
 			? config.internalApiUrlForServer
@@ -37,8 +48,8 @@ export const useAxios = () => {
 			const authStore = useAuthStore();
 			if (authStore.accessToken) {
 				if (authStore.isTokenExpired) {
-					if (!isRefreshing) {
-						isRefreshing = true;
+					if (!refreshState.isRefreshing) {
+						refreshState.isRefreshing = true;
 						try {
 							const res = await authStore.refreshToken();
 							if (res.error) throw res.error;
@@ -50,11 +61,11 @@ export const useAxios = () => {
 							await authStore.logout(false);
 							return Promise.reject(refreshError);
 						} finally {
-							isRefreshing = false;
+							refreshState.isRefreshing = false;
 						}
 					} else {
 						return new Promise((resolve, reject) => {
-							failedQueue.push({ resolve, reject });
+							refreshState.failedQueue.push({ resolve, reject });
 						}).then((token) => {
 							config.headers.Authorization = `Bearer ${token}`;
 							return config;
@@ -90,9 +101,9 @@ export const useAxios = () => {
 					return Promise.reject(error);
 				}
 
-				if (isRefreshing) {
+				if (refreshState.isRefreshing) {
 					return new Promise((resolve, reject) => {
-						failedQueue.push({ resolve, reject });
+						refreshState.failedQueue.push({ resolve, reject });
 					})
 						.then((token) => {
 							originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -104,7 +115,7 @@ export const useAxios = () => {
 				}
 
 				originalRequest._retry = true;
-				isRefreshing = true;
+				refreshState.isRefreshing = true;
 
 				try {
 					const res = await authStore.refreshToken();
@@ -124,7 +135,7 @@ export const useAxios = () => {
 					await authStore.logout(false);
 					return Promise.reject(refreshError);
 				} finally {
-					isRefreshing = false;
+					refreshState.isRefreshing = false;
 				}
 			}
 

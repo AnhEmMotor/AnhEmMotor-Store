@@ -3,8 +3,8 @@ import { ref } from "vue";
 import { useAuthStore } from "./auth.store";
 
 export const useUserStore = defineStore("user", () => {
-	const axios = useAxios();
-	const service = userService(axios);
+	const service = userService;
+
 	const authStore = useAuthStore();
 	const isLoading = ref(false);
 	const isUploadingAvatar = ref(false);
@@ -12,7 +12,10 @@ export const useUserStore = defineStore("user", () => {
 	const formData = ref({
 		fullName: "",
 		phoneNumber: "",
+		email: "",
 		gender: "",
+		dob: "",
+		address: "",
 	});
 
 	const passwordData = ref({
@@ -25,7 +28,10 @@ export const useUserStore = defineStore("user", () => {
 		if (user) {
 			formData.value.fullName = user.fullName || "";
 			formData.value.phoneNumber = user.phoneNumber || "";
+			formData.value.email = user.email || "";
 			formData.value.gender = user.gender || "";
+			formData.value.dob = user.dob ? user.dob.split("T")[0] : "";
+			formData.value.address = user.address || "";
 		}
 	}
 

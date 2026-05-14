@@ -1,8 +1,6 @@
 <script setup>
-
-
-
 const homeStore = useHomeStore();
+
 const newsStore = useNewsStore();
 
 await Promise.all([
@@ -38,6 +36,7 @@ useHead({
 		<IndexStatsSection />
 		<IndexProductCategories />
 		<IndexFeaturedProducts />
+        <IndexPersonalizedRecommendations />
 		<IndexBrandSection />
 		<IndexReelsShowcase />
 		<IndexSalesEnablers />

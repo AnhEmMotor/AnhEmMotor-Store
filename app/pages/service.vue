@@ -1,75 +1,73 @@
 <script setup>
-
+import { ref } from 'vue';
 
 useSeoMeta({
-	title: "Dịch vụ | AnhEm Motor",
-	description:
-		"Các dịch vụ bảo dưỡng, sửa chữa xe máy chuyên nghiệp tại AnhEm Motor.",
+	title: "Dịch vụ Xe Máy Chuyên Nghiệp | AnhEm Motor",
+	description: "Bảo dưỡng, sửa chữa, thay lốp xe máy chính hãng tại AnhEm Motor. Quy trình chuyên nghiệp, giá cả minh bạch, bảo hành dài hạn.",
 });
 
 const maintenanceStore = useMaintenanceStore();
+const activeCategory = ref('all');
+const isBookingModalOpen = ref(false);
+const selectedService = ref(null);
 
 await useAsyncData("maintenance-services", () =>
 	maintenanceStore.fetchServices(),
 );
 
-onMounted(() => {
-	const observer = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add("visible");
-				}
-			});
-		},
-		{ threshold: 0.1 },
-	);
+const handleFilter = (category) => {
+	activeCategory.value = category;
+};
 
-	if (import.meta.client) {
-		document.querySelectorAll(".fade-in").forEach((el) => {
-			observer.observe(el);
-		});
-	}
-});
+const openBooking = (service) => {
+	selectedService.value = service;
+	isBookingModalOpen.value = true;
+};
 </script>
 
 <template>
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 bg-white min-h-screen">
+	<div class="bg-white min-h-screen font-['Be_Vietnam_Pro'] text-gray-900 overflow-x-hidden">
+		<!-- [1] HERO -->
 		<ServiceHero />
-		<ServiceList :services="maintenanceStore.services" />
+
+
+		<!-- [2] FILTER BAR -->
+		<ServiceFilterBar 
+			:active-category="activeCategory" 
+			@filter="handleFilter" 
+		/>
+
+
+
+
+		<!-- [3] SERVICES GRID -->
+		<ServiceList 
+			:services="maintenanceStore.services" 
+			:active-category="activeCategory"
+			@book="openBooking"
+			@reset-filter="activeCategory = 'all'"
+		/>
+
+
+		<!-- [4] QUY TRÌNH PHỤC VỤ -->
+		<ServiceProcess />
+
+
+		<!-- Booking Modal Unified -->
+		<ProductBookingModal 
+			v-if="isBookingModalOpen" 
+			:is-open="isBookingModalOpen"
+			:variant="{ id: selectedService?.id, name: selectedService?.name || 'Tư vấn bảo dưỡng' }"
+			type="Maintenance"
+			@close="isBookingModalOpen = false"
+		/>
+
 		<CommonScrollToTop />
 	</div>
 </template>
 
+
+
 <style scoped>
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.animate-fadeInUp {
-	animation: fadeInUp 1s;
-}
-
-.animation-delay-200 {
-	animation-delay: 0.2s;
-	animation-fill-mode: both;
-}
-
-:deep(.fade-in) {
-	opacity: 0;
-	transform: translateY(30px);
-	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:deep(.fade-in.visible) {
-	opacity: 1;
-	transform: translateY(0);
-}
+/* Simplified layout */
 </style>

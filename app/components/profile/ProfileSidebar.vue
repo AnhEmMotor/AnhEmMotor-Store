@@ -136,7 +136,7 @@ function setActiveTab(tab) {
 					:class="[
 						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'profile'
-							? 'border-blue-600 bg-blue-50/50 text-blue-700'
+							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
 					]"
 					@click="setActiveTab('profile')"
@@ -145,7 +145,7 @@ function setActiveTab(tab) {
 						:class="[
 							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
 							modelValue === 'profile'
-								? 'bg-blue-100 text-blue-600'
+								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
 						]"
 					>
@@ -160,7 +160,7 @@ function setActiveTab(tab) {
 					:class="[
 						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'security'
-							? 'border-blue-600 bg-blue-50/50 text-blue-700'
+							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
 					]"
 					@click="setActiveTab('security')"
@@ -169,13 +169,85 @@ function setActiveTab(tab) {
 						:class="[
 							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
 							modelValue === 'security'
-								? 'bg-blue-100 text-blue-600'
+								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
 						]"
 					>
 						<Icon name="fa6-solid:shield-halved" class="text-lg" />
 					</div>
 					Bảo mật & Mật khẩu
+				</button>
+
+				<div class="h-px bg-gray-100 mx-4" />
+
+				<button
+					:class="[
+						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						modelValue === 'notifications'
+							? 'border-primary bg-primary/5 text-primary'
+							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+					]"
+					@click="setActiveTab('notifications')"
+				>
+					<div
+						:class="[
+							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							modelValue === 'notifications'
+								? 'bg-primary/10 text-primary'
+								: 'bg-gray-100 text-gray-500',
+						]"
+					>
+						<Icon name="fa6-solid:bell" class="text-lg" />
+					</div>
+					Thông báo của tôi
+				</button>
+
+				<div class="h-px bg-gray-100 mx-4" />
+
+				<button
+					:class="[
+						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						modelValue === 'orders'
+							? 'border-primary bg-primary/5 text-primary'
+							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+					]"
+					@click="setActiveTab('orders')"
+				>
+					<div
+						:class="[
+							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							modelValue === 'orders'
+								? 'bg-primary/10 text-primary'
+								: 'bg-gray-100 text-gray-500',
+						]"
+					>
+						<Icon name="fa6-solid:box-open" class="text-lg" />
+					</div>
+					Đơn hàng của tôi
+				</button>
+
+				<div class="h-px bg-gray-100 mx-4" />
+
+				<button
+					:class="[
+						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						modelValue === 'services'
+							? 'border-primary bg-primary/5 text-primary'
+							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+					]"
+					@click="setActiveTab('services')"
+				>
+					<div
+						:class="[
+							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							modelValue === 'services'
+								? 'bg-primary/10 text-primary'
+								: 'bg-gray-100 text-gray-500',
+						]"
+					>
+						<Icon name="fa6-solid:screwdriver-wrench" class="text-lg" />
+					</div>
+					Dịch vụ sử dụng
 				</button>
 			</nav>
 		</div>

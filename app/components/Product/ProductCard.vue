@@ -71,79 +71,53 @@ const toggleCompare = (e) => {
 <template>
 	<NuxtLink
 		:to="currentUrl"
-		class="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 flex flex-col h-full"
+		class="group relative bg-white rounded-24 overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 border border-slate-100 flex flex-col h-full"
 	>
-		<div class="relative aspect-[4/3] overflow-hidden bg-gray-50 border-b border-gray-100">
+		<div class="relative aspect-[4/5] overflow-hidden bg-slate-50">
 			<img
 				:src="currentImage"
 				:alt="product.name"
 				class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
 			>
+			
+			<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
 			<!-- Compare Toggle -->
 			<button 
 				@click="toggleCompare"
 				class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10 backdrop-blur-md border"
-				:class="isCompared ? 'bg-[#CC0000] border-[#CC0000] text-white shadow-lg shadow-red-500/30' : 'bg-white/80 border-gray-100 text-gray-400 hover:text-[#CC0000] hover:bg-white'"
+				:class="isCompared ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30' : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'"
 				:title="isCompared ? 'Xóa khỏi danh sách so sánh' : 'Thêm vào so sánh'"
 			>
-				<Icon :name="isCompared ? 'fa6-solid:check' : 'fa6-solid:code-compare'" class="text-sm" />
+				<Icon :name="isCompared ? 'ph:check-bold' : 'ph:git-diff-bold'" class="text-lg" />
 			</button>
-		</div>
 
-		<div class="p-4 flex flex-col flex-1">
-			<!-- Brand Name -->
-			<div v-if="product.brand" class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+			<div v-if="product.brand" class="absolute bottom-4 left-4 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
 				{{ product.brand }}
 			</div>
+		</div>
 
+		<div class="p-5 flex flex-col flex-1">
 			<!-- Product Name -->
 			<h3
-				class="text-gray-900 font-bold text-lg mb-4 line-clamp-2 min-h-[3.5rem] group-hover:text-primary transition-colors"
+				class="text-slate-900 font-bold text-lg mb-4 line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors"
 			>
 				{{ product.name }}
 			</h3>
-
-			<!-- Variant Thumbnails -->
-			<div
-				v-if="product.variants && product.variants.length > 1"
-				class="mb-6 flex flex-wrap gap-2 items-center"
-				@click.stop.prevent
-			>
-				<div 
-					v-for="(v, index) in product.variants.slice(0, 3)" 
-					:key="v.url"
-					@click="selectedVariant = v"
-					class="w-12 h-12 rounded-lg border-2 overflow-hidden cursor-pointer transition-all duration-300"
-					:class="selectedVariant?.url === v.url ? 'border-primary scale-105 shadow-sm' : 'border-gray-50 hover:border-gray-200'"
-					:title="v.propertyName"
-				>
-					<img 
-						:src="v.cover_image_url || '/assets/image/placeholder-product.webp'" 
-						class="w-full h-full object-cover"
-						:alt="v.propertyName"
-					/>
-				</div>
-				<!-- Plus Indicator -->
-				<div 
-					v-if="product.variants.length > 3" 
-					class="w-12 h-12 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center text-gray-400 text-xs font-bold shrink-0"
-				>
-					+{{ product.variants.length - 3 }}
-				</div>
-			</div>
+            
+            <div class="flex flex-col gap-1 mb-6">
+                <span class="text-xs text-slate-400 font-medium">Giá từ</span>
+                <span class="text-primary font-bold text-2xl tracking-tight">{{ currentPrice }}</span>
+            </div>
 
 			<!-- Price and Action -->
-			<div class="mt-auto flex items-center justify-between">
-				<div class="flex flex-col">
-					<span class="text-xs text-gray-400 uppercase font-semibold">Giá</span>
-					<span class="text-primary font-bold text-xl">{{ currentPrice }}</span>
-				</div>
+			<div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
 				<div
 					v-if="showAction"
-					class="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest group-hover:bg-red-600 transition-all duration-300 shadow-lg shadow-black/5 hover:shadow-red-600/20 active:scale-95 flex items-center gap-2"
+					class="w-full py-3 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all duration-300 hover:bg-primary shadow-sm flex items-center justify-center gap-2"
 				>
 					Xem chi tiết
-					<Icon name="fa6-solid:chevron-right" class="text-[8px]" />
+					<Icon name="ph:arrow-right-bold" class="text-sm" />
 				</div>
 			</div>
 		</div>

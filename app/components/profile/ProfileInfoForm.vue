@@ -31,7 +31,7 @@ async function handleUpdateInfo() {
 
 		<form class="space-y-6" @submit.prevent="handleUpdateInfo">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<div class="md:col-span-2">
+				<div>
 					<label
 						for="fullName"
 						class="block text-sm font-medium text-gray-700 mb-1.5"
@@ -47,8 +47,30 @@ async function handleUpdateInfo() {
 							id="fullName"
 							v-model="userStore.formData.fullName"
 							type="text"
-							class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all sm:text-sm"
+							class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
 							placeholder="Nhập họ và tên của bạn"
+						>
+					</div>
+				</div>
+
+				<div>
+					<label
+						for="email"
+						class="block text-sm font-medium text-gray-700 mb-1.5"
+						>Địa chỉ Email</label
+					>
+					<div class="relative">
+						<div
+							class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
+						>
+							<Icon name="fa6-regular:envelope" class="text-gray-400" />
+						</div>
+						<input
+							id="email"
+							v-model="userStore.formData.email"
+							type="email"
+							class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
+							placeholder="example@email.com"
 						>
 					</div>
 				</div>
@@ -69,8 +91,29 @@ async function handleUpdateInfo() {
 							id="phoneNumber"
 							v-model="userStore.formData.phoneNumber"
 							type="tel"
-							class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all sm:text-sm"
+							class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
 							placeholder="Nhập số điện thoại"
+						>
+					</div>
+				</div>
+
+				<div>
+					<label
+						for="dob"
+						class="block text-sm font-medium text-gray-700 mb-1.5"
+						>Ngày sinh</label
+					>
+					<div class="relative">
+						<div
+							class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none"
+						>
+							<Icon name="fa6-regular:calendar-days" class="text-gray-400" />
+						</div>
+						<input
+							id="dob"
+							v-model="userStore.formData.dob"
+							type="date"
+							class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
 						>
 					</div>
 				</div>
@@ -90,7 +133,7 @@ async function handleUpdateInfo() {
 						<select
 							id="gender"
 							v-model="userStore.formData.gender"
-							class="block w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all sm:text-sm appearance-none"
+							class="block w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm appearance-none"
 						>
 							<option value="" disabled>Chọn giới tính</option>
 							<option
@@ -108,13 +151,35 @@ async function handleUpdateInfo() {
 						</div>
 					</div>
 				</div>
+
+				<div class="md:col-span-2">
+					<label
+						for="address"
+						class="block text-sm font-medium text-gray-700 mb-1.5"
+						>Địa chỉ hiện tại</label
+					>
+					<div class="relative">
+						<div
+							class="absolute inset-y-0 left-0 pl-3.5 pt-3.5 flex items-start pointer-events-none"
+						>
+							<Icon name="fa6-solid:location-dot" class="text-gray-400" />
+						</div>
+						<textarea
+							id="address"
+							v-model="userStore.formData.address"
+							rows="2"
+							class="block w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
+							placeholder="Nhập địa chỉ của bạn (Số nhà, tên đường, phường/xã...)"
+						></textarea>
+					</div>
+				</div>
 			</div>
 
 			<div class="pt-4 flex justify-end">
 				<button
 					type="submit"
 					:disabled="isLoading"
-					class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-blue-500/30 text-sm font-semibold rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+					class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-primary/30 text-sm font-semibold rounded-xl text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-70 disabled:cursor-not-allowed transition-all"
 				>
 					<Icon
 						v-if="isLoading"

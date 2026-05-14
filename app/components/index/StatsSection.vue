@@ -1,49 +1,33 @@
 <template>
-	<section class="py-10 bg-white">
+	<section class="py-20 bg-white border-b border-slate-50">
 		<div class="container mx-auto px-6">
 			<div
-				class="max-w-4xl mx-auto flex flex-wrap justify-between items-center gap-8 border-b border-gray-100 pb-10"
+				class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12"
 			>
-				<div class="flex-1 text-center group">
-					<div
-						class="text-4xl md:text-5xl font-black text-red-600 mb-1 transition-transform group-hover:scale-110"
-					>
-						50+
+				<div class="text-center flex flex-col items-center">
+					<div class="text-[42px] md:text-[56px] font-extrabold text-primary leading-none mb-4">
+						500+
 					</div>
-					<div
-						class="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-[0.2em]"
-					>
-						Mẫu Xe Hệ Thống
+					<div class="text-slate-500 font-bold uppercase tracking-widest text-xs">
+						Khách hàng đã phục vụ
 					</div>
 				</div>
 
-				<div class="hidden md:block w-px h-10 bg-gray-100" />
-
-				<div class="flex-1 text-center group">
-					<div
-						class="text-4xl md:text-5xl font-black text-red-600 mb-1 transition-transform group-hover:scale-110"
-					>
-						1K+
+				<div class="text-center flex flex-col items-center border-y md:border-y-0 md:border-x border-slate-100 py-12 md:py-0">
+					<div class="text-[42px] md:text-[56px] font-extrabold text-primary leading-none mb-4">
+						100+
 					</div>
-					<div
-						class="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-[0.2em]"
-					>
-						Khách Hàng Tin Dùng
+					<div class="text-slate-500 font-bold uppercase tracking-widest text-xs">
+						Mẫu xe đa dạng
 					</div>
 				</div>
 
-				<div class="hidden md:block w-px h-10 bg-gray-100" />
-
-				<div class="flex-1 text-center group">
-					<div
-						class="text-4xl md:text-5xl font-black text-red-600 mb-1 transition-transform group-hover:scale-110"
-					>
+				<div class="text-center flex flex-col items-center">
+					<div class="text-[42px] md:text-[56px] font-extrabold text-primary leading-none mb-4">
 						5+
 					</div>
-					<div
-						class="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-[0.2em]"
-					>
-						Năm Kinh Nghiệm
+					<div class="text-slate-500 font-bold uppercase tracking-widest text-xs">
+						Năm kinh nghiệm
 					</div>
 				</div>
 			</div>

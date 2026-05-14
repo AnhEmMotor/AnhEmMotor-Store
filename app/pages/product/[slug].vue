@@ -1,5 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import ProductBookingModal from "~/components/product/BookingModal.vue";
+
+
 
 
 const route = useRoute();
@@ -204,19 +207,11 @@ const openConsultation = () => {
     window.open("https://zalo.me/your-zalo-id", "_blank");
 };
 
+const isBookingModalOpen = ref(false);
 const bookTestDrive = () => {
-    if (currentVariant.value?.id) {
-        navigateTo({
-            path: '/test-drive',
-            query: { 
-                variantId: currentVariant.value.id,
-                variantName: detail.value.product.name + ' ' + (currentVariant.value.versionName || '')
-            }
-        });
-    } else {
-        navigateTo('/test-drive');
-    }
+    isBookingModalOpen.value = true;
 };
+
 
 const variantSelectId = useId();
 </script>
@@ -395,7 +390,8 @@ const variantSelectId = useId();
                                                 <Icon name="fa6-solid:motorcycle" class="text-primary" />
                                                 ĐĂNG KÝ LÁI THỬ
                                             </div>
-                                            <span class="text-[7px] text-gray-400 normal-case tracking-normal font-bold italic">Trải nghiệm thực tế tại Showroom Biên Hòa</span>
+                                            <span class="text-[7px] text-gray-400 normal-case tracking-normal font-bold italic">Trải nghiệm thực tế tại cửa hàng AnhEm Motor</span>
+
                                         </button>
                                     </template>
                                     <template v-else>
@@ -669,7 +665,16 @@ const variantSelectId = useId();
                 </div>
             </div>
         </div>
+
+        <!-- Booking Modal -->
+        <ProductBookingModal 
+            :is-open="isBookingModalOpen" 
+            :product="detail?.product"
+            :variant="currentVariant"
+            @close="isBookingModalOpen = false"
+        />
     </div>
+
 </template>
 
 <style scoped>

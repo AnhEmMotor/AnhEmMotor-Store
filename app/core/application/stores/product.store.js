@@ -4,8 +4,8 @@ import { ref } from "vue";
 
 
 export const useProductStore = defineStore("product", () => {
-	const axios = useAxios();
-	const service = productService(axios);
+	const service = productService;
+
 
 	const options = ref([]);
 	const isLoadingOptions = ref(false);

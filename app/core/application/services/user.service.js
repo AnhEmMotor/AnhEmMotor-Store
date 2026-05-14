@@ -1,25 +1,26 @@
 
-export default (axiosInstance) => ({
-	async updateProfile(payload) {
-		const { data } = await axiosInstance.put(USER_ENDPOINTS.ME, payload);
-		return data;
+
+/**
+ * Application Layer - User Service
+ */
+export const userService = {
+	async getProfile() {
+		try {
+			return await userRepository.getProfile();
+		} catch (error) {
+			console.error("Service: Failed to fetch user profile:", error);
+			return null;
+		}
 	},
 
-	async updateAvatar(formData) {
-		const { data } = await axiosInstance.post(USER_ENDPOINTS.AVATAR, formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
-		return data;
+	async updateProfile(profileData) {
+		try {
+			return await userRepository.updateProfile(profileData);
+		} catch (error) {
+			console.error("Service: Failed to update user profile:", error);
+			throw error;
+		}
 	},
+};
 
-	async changePassword(payload) {
-		const { data } = await axiosInstance.post(
-			USER_ENDPOINTS.CHANGE_PASSWORD,
-			payload,
-		);
-		return data;
-	},
-});
-
+export default userService;

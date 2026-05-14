@@ -10,42 +10,38 @@ defineProps({
 <template>
 	<NuxtLink
 		:to="category.path"
-		class="group relative bg-white p-6 rounded-[40px] border border-slate-100 transition-all hover:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)] hover:-translate-y-2 flex flex-col items-center text-center overflow-hidden"
+		class="group relative bg-white p-6 rounded-24 border border-slate-100 transition-all duration-500 hover:shadow-elevated hover:border-primary/20 hover:-translate-y-3 flex flex-col overflow-hidden"
 	>
 		<div
-			:class="[
-				'w-full aspect-[16/10] rounded-[32px] flex items-center justify-center transition-all duration-500 mb-4 relative z-10 overflow-hidden',
-				category.bgColor,
-			]"
+			class="w-full aspect-[4/3] rounded-18 overflow-hidden mb-8 relative bg-slate-50"
 		>
 			<img
 				:src="category.image"
 				:alt="category.name"
-				class="w-3/4 h-3/4 object-contain transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
+				class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
 			>
-
-			<div
-				class="absolute -bottom-4 -right-4 w-16 h-16 bg-white/20 blur-xl rounded-full"
-			/>
 		</div>
 
-		<div class="relative z-10 space-y-1">
-			<h3 class="font-black text-lg text-slate-900 uppercase tracking-tight">
-				{{ category.name }}
-			</h3>
-			<p class="text-[12px] text-slate-500 font-medium leading-tight">
+		<div class="px-2 pb-4">
+			<div class="flex justify-between items-start mb-3">
+				<h3 class="font-bold text-[22px] text-slate-900 group-hover:text-primary transition-colors">
+					{{ category.name }}
+				</h3>
+				<div
+					class="w-10 h-10 bg-slate-50 text-slate-900 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-x-4 group-hover:translate-x-0"
+				>
+					<Icon name="ph:arrow-right-bold" class="text-base" />
+				</div>
+			</div>
+			<p class="text-base text-slate-500 font-medium leading-relaxed">
 				{{ category.description }}
 			</p>
 		</div>
 
 		<div
-			class="mt-4 w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
+			class="absolute top-8 right-8 px-4 py-1.5 bg-white/90 backdrop-blur-md rounded-full text-[11px] font-bold uppercase tracking-widest text-slate-900 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0"
 		>
-			<Icon name="fa6-solid:arrow-right" class="text-xs" />
+			Khám phá
 		</div>
-
-		<div
-			class="absolute bottom-0 left-0 w-full h-1 bg-red-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"
-		/>
 	</NuxtLink>
 </template>

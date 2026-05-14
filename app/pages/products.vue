@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from "vue";
-import BasePagination from "@/components/ui/BasePagination.vue";
 
 const route = useRoute();
+
 const productStore = useProductStore();
 const isSidebarOpen = ref(false);
 
@@ -241,12 +241,13 @@ const formatVND = (value) => {
 					/>
 
 					<div v-if="pagination.totalPages > 1" class="flex justify-center">
-						<BasePagination
+						<UiBasePagination
 							:current-page="pagination.currentPage"
 							:total-pages="pagination.totalPages"
 							@update:current-page="pagination.goToPage"
 						/>
 					</div>
+
 				</div>
 			</div>
 		</div>

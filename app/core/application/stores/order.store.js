@@ -6,9 +6,9 @@ import { useQueryClient } from "@tanstack/vue-query";
 
 
 export const useOrderStore = defineStore("order", () => {
-	const axios = useAxios();
-	const service = orderService(axios);
+	const service = orderService;
 	const queryClient = useQueryClient();
+
 
 	const currentOrder = ref(null);
 	const lastCreatedOrderId = ref(null);

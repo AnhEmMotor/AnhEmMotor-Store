@@ -1,14 +1,21 @@
 
-export default (axiosInstance) => ({
+
+/**
+ * Application Layer - Category Service
+ */
+export const categoryService = {
 	async getStaticCategories() {
-		return Promise.resolve(STATIC_CATEGORIES);
+		return STATIC_CATEGORIES;
 	},
 
 	async getApiCategories(params = {}) {
-		const { data } = await axiosInstance.get(PRODUCT_ENDPOINTS.CATEGORIES, {
-			params,
-		});
-		return data;
+		try {
+			return await categoryRepository.getCategories(params);
+		} catch (error) {
+			console.error("Service: Failed to fetch API categories:", error);
+			return [];
+		}
 	},
-});
+};
 
+export default categoryService;

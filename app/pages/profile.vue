@@ -17,6 +17,12 @@
 					<ProfileInfoForm v-if="activeTab === 'profile'" />
 
 					<ProfileSecurityForm v-if="activeTab === 'security'" />
+
+					<ProfileNotifications v-if="activeTab === 'notifications'" />
+
+					<ProfileOrders v-if="activeTab === 'orders'" />
+
+					<ProfileServices v-if="activeTab === 'services'" />
 				</div>
 			</div>
 		</div>
@@ -29,6 +35,9 @@ import { ref, watch } from "vue";
 import ProfileSidebar from "@/components/profile/ProfileSidebar.vue";
 import ProfileInfoForm from "@/components/profile/ProfileInfoForm.vue";
 import ProfileSecurityForm from "@/components/profile/ProfileSecurityForm.vue";
+import ProfileNotifications from "@/components/profile/ProfileNotifications.vue";
+import ProfileOrders from "@/components/profile/ProfileOrders.vue";
+import ProfileServices from "@/components/profile/ProfileServices.vue";
 
 useSeoMeta({
 	title: "Chỉnh sửa hồ sơ | AnhEm Motor",

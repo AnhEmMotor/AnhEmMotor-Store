@@ -3,16 +3,22 @@ import { useQuery } from "@tanstack/vue-query";
 
 
 const productStore = useProductStore();
+const activeTab = ref("new");
 
-const { data: ssrData } = await useAsyncData("featured-products-ssr", () =>
-	productStore.getProducts({ pageSize: 4, categoryIds: "1" }),
-);
+const tabs = [
+	{ id: "new", label: "Mới nhất", categoryIds: "1" },
+	{ id: "best", label: "Bán chạy nhất", categoryIds: "1" },
+	{ id: "promo", label: "Khuyến mãi hot", categoryIds: "1" },
+];
 
-const { data: products, isPending } = useQuery({
-	queryKey: ["featured-products"],
-	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: "1" }),
+const { data: products, isPending, refetch } = useQuery({
+	queryKey: ["featured-products", activeTab],
+	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: tabs.find(t => t.id === activeTab.value).categoryIds }),
 	select: (res) => res.items,
-	initialData: ssrData.value,
+});
+
+watch(activeTab, () => {
+	refetch();
 });
 
 const handleViewDetail = (product) => {
@@ -35,42 +41,56 @@ const handleViewDetail = (product) => {
 			class="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"
 		/>
 
-		<div class="container mx-auto px-4 relative z-10">
+		<div class="container mx-auto px-6 relative z-10">
 			<div
-				class="flex flex-col md:flex-row justify-between items-center gap-10 mb-16 px-4"
+				class="flex flex-col md:flex-row justify-between items-end gap-10 mb-16"
 			>
-				<div class="space-y-4">
+				<div class="space-y-4 max-w-3xl">
+                    <div class="text-primary font-bold uppercase tracking-widest text-sm">Lựa chọn hàng đầu</div>
 					<h2
-						class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-slate-900 leading-none"
+						class="text-4xl md:text-5xl lg:text-[42px] font-bold tracking-tight text-slate-900 leading-tight"
 					>
-						Sản phẩm <span class="text-red-600">Nổi Bật</span>
+						Sản phẩm <span class="text-primary">Nổi Bật</span>
 					</h2>
-					<p class="text-gray-500 text-lg max-w-2xl mx-auto lg:mx-0">
-						Khám phá các mẫu xe mới nhất với giá lăn bánh minh bạch.
+					<p class="text-slate-500 text-lg font-medium max-w-2xl">
+						Khám phá các mẫu xe mới nhất với giá lăn bánh minh bạch & ưu đãi hấp dẫn nhất khu vực.
 					</p>
 				</div>
 
 				<div class="flex items-center gap-4">
 					<NuxtLink
 						to="/products"
-						class="px-8 py-4 bg-white hover:bg-slate-900 hover:text-white border-2 border-slate-200 rounded-2xl font-black uppercase tracking-widest transition-all shadow-sm whitespace-nowrap"
+						class="px-8 py-4 bg-white hover:bg-slate-900 hover:text-white border border-slate-200 rounded-xl font-bold transition-all shadow-soft whitespace-nowrap flex items-center gap-2"
 					>
 						Tất cả mẫu xe
+                        <Icon name="ph:arrow-right-bold" />
 					</NuxtLink>
 				</div>
 			</div>
 
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+			<div class="flex flex-wrap gap-4 mb-12 border-b border-slate-100 pb-6">
+				<button
+					v-for="tab in tabs"
+					:key="tab.id"
+					class="px-6 py-3 rounded-full font-bold transition-all"
+					:class="activeTab === tab.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'"
+					@click="activeTab = tab.id"
+				>
+					{{ tab.label }}
+				</button>
+			</div>
+
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
 				<template v-if="isPending && !products">
 					<div
 						v-for="i in 4"
 						:key="i"
-						class="bg-white rounded-[40px] p-5 h-[400px] border border-slate-100 animate-pulse"
+						class="bg-white rounded-24 p-6 h-[450px] border border-slate-50 animate-pulse space-y-6"
 					>
-						<div class="w-full h-48 bg-slate-50 rounded-[32px] mb-4" />
-						<div class="h-6 bg-slate-50 rounded-full w-3/4 mb-2" />
-						<div class="h-4 bg-slate-50 rounded-full w-1/2 mb-8" />
-						<div class="h-12 bg-slate-50 rounded-2xl w-full" />
+						<div class="w-full aspect-[4/5] bg-slate-50 rounded-18" />
+						<div class="h-6 bg-slate-50 rounded-full w-3/4" />
+						<div class="h-4 bg-slate-50 rounded-full w-1/2" />
+						<div class="h-12 bg-slate-50 rounded-xl w-full" />
 					</div>
 				</template>
 

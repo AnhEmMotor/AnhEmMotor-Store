@@ -54,7 +54,7 @@ async function handleUpdatePassword() {
 							id="currentPassword"
 							v-model="userStore.passwordData.currentPassword"
 							:type="passwordFieldType.current"
-							class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
+							class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
 							placeholder="Nhập mật khẩu hiện tại"
 						>
 						<button
@@ -89,7 +89,7 @@ async function handleUpdatePassword() {
 							id="newPassword"
 							v-model="userStore.passwordData.newPassword"
 							:type="passwordFieldType.new"
-							class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
+							class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
 							placeholder="Nhập mật khẩu mới"
 						>
 						<button
@@ -128,7 +128,7 @@ async function handleUpdatePassword() {
 							id="confirmPassword"
 							v-model="userStore.passwordData.confirmPassword"
 							:type="passwordFieldType.confirm"
-							class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 focus:bg-white transition-all sm:text-sm"
+							class="block w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all sm:text-sm"
 							placeholder="Nhập lại mật khẩu mới"
 						>
 						<button
@@ -152,7 +152,7 @@ async function handleUpdatePassword() {
 				<button
 					type="submit"
 					:disabled="isLoading"
-					class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-gray-900/20 text-sm font-semibold rounded-xl text-white bg-gray-900 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
+					class="inline-flex items-center justify-center py-2.5 px-6 border border-transparent shadow-sm shadow-primary/30 text-sm font-semibold rounded-xl text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-70 disabled:cursor-not-allowed transition-all"
 				>
 					<Icon
 						v-if="isLoading"

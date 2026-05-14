@@ -1,36 +1,33 @@
 
 
+/**
+ * Application Layer - News Service
+ */
 export const newsService = {
-	getFeaturedNews: async () => {
-		const axios = useAxios();
+	async getFeaturedNews() {
 		try {
-			const { data } = await axios.get("/api/v1/News", {
-				params: {
-					pageSize: 3,
-					isFeatured: true,
-					sorts: "-createdAt",
-				},
+			const data = await newsRepository.getNews({
+				pageSize: 3,
+				isFeatured: true,
+				sorts: "-createdAt",
 			});
-			return data.items || [];
+			return (data.items || []).map(item => new News(item));
 		} catch (error) {
-			console.error("Failed to fetch featured news:", error);
+			console.error("Service: Failed to fetch featured news:", error);
 			return [];
 		}
 	},
 
-	getAllNews: async (params = {}) => {
-		const axios = useAxios();
+	async getAllNews(params = {}) {
 		try {
-			const { data } = await axios.get("/api/v1/News", {
-				params: {
-					page: params.page || 1,
-					pageSize: params.pageSize || 10,
-					sorts: "-createdAt",
-					...params,
-				},
+			const data = await newsRepository.getNews({
+				page: params.page || 1,
+				pageSize: params.pageSize || 10,
+				sorts: "-createdAt",
+				...params,
 			});
 			return {
-				data: newsMapper.mapNewsList(data.items || []),
+				data: (data.items || []).map(item => new News(item)),
 				pagination: {
 					totalCount: data.totalCount,
 					totalPages: data.totalPages,
@@ -39,22 +36,18 @@ export const newsService = {
 				},
 			};
 		} catch (error) {
-			console.error("Failed to fetch news list:", error);
+			console.error("Service: Failed to fetch news list:", error);
 			return { data: [], pagination: {} };
 		}
 	},
 
-	getNewsBySlug: async (slug) => {
-		const axios = useAxios();
+	async getNewsBySlug(slug) {
 		try {
-			const { data } = await axios.get(`/api/v1/News/${slug}`);
-			return data;
+			const data = await newsRepository.getNewsDetail(slug);
+			return data ? new News(data) : null;
 		} catch (error) {
-			console.error(`Failed to fetch news detail for ${slug}:`, error);
+			console.error(`Service: Failed to fetch news detail for ${slug}:`, error);
 			return null;
 		}
 	},
 };
-
-
-

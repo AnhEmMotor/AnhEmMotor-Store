@@ -228,6 +228,10 @@ onMounted(() => {
 }
 
 .facebook-btn {
-	@apply bg-[#1877F2] text-white hover:bg-[#166fe5] hover:shadow-lg hover:shadow-blue-500/20;
+	@apply bg-white text-slate-700 border border-[#e2e8f0] hover:bg-[#f8fafc] hover:border-[#cbd5e1];
 }
+.facebook-btn :deep(svg) {
+	@apply text-[#1877F2];
+}
+
 </style>

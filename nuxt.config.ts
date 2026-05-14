@@ -4,7 +4,9 @@ import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
 
 export default defineNuxtConfig({
+	ssr: true,
 	compatibilityDate: "2025-07-15",
+	// Force reload to pick up new components and public assets
 	devtools: { enabled: true },
 	srcDir: "app",
 
@@ -133,8 +135,16 @@ export default defineNuxtConfig({
 				},
 				{
 					rel: "preconnect",
+					href: "https://fonts.googleapis.com",
+				},
+				{
+					rel: "preconnect",
 					href: "https://fonts.gstatic.com",
 					crossorigin: "anonymous",
+				},
+				{
+					rel: "stylesheet",
+					href: "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&family=Manrope:wght@200..800&display=swap",
 				},
 			],
 			script: [],
@@ -179,6 +189,10 @@ export default defineNuxtConfig({
 			"core/application/services/**",
 			"core/application/stores/**",
 			"core/application/mappers/**",
+			"core/infrastructure/repositories/**",
+			"core/domain/models/**",
 		],
 	},
+
+
 });

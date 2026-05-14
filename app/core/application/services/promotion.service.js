@@ -1,16 +1,35 @@
 
 
+/**
+ * Application Layer - Promotion Service
+ */
 export const promotionService = {
-	getAllPromotions: async () => {
-		return promotionData;
+	async getAllPromotions() {
+		try {
+			return await promotionRepository.getAllPromotions();
+		} catch (error) {
+			console.error("Service: Failed to fetch promotions:", error);
+			return [];
+		}
 	},
 
-	getPromotionBySlug: async (slug) => {
-		const promotion = promotionData.find((p) => p.slug === slug);
-		return promotion || null;
+	async getPromotionBySlug(slug) {
+		try {
+			return await promotionRepository.getPromotionBySlug(slug);
+		} catch (error) {
+			console.error(`Service: Failed to fetch promotion detail for ${slug}:`, error);
+			return null;
+		}
 	},
 
-	getHotPromotions: async () => {
-		return promotionData.filter((p) => p.isHot);
+	async getHotPromotions() {
+		try {
+			return await promotionRepository.getHotPromotions();
+		} catch (error) {
+			console.error("Service: Failed to fetch hot promotions:", error);
+			return [];
+		}
 	},
 };
+
+export default promotionService;

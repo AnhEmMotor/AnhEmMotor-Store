@@ -22,10 +22,10 @@ const sendToZalo = () => {
 
 <template>
 	<div
-		class="w-full lg:w-1/2 bg-white rounded-3xl p-8 shadow-2xl relative z-10"
+		class="w-full bg-white rounded-24 p-8 border border-slate-100 shadow-soft relative z-10"
 	>
-		<h3 class="text-2xl font-black text-gray-900 mb-8 uppercase text-center">
-			Công cụ <span class="text-red-600">Trả Góp</span> 0%
+		<h3 class="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
+			Công cụ tính <span class="text-primary">trả góp</span>
 		</h3>
 
 		<div class="space-y-8">
@@ -49,67 +49,62 @@ const sendToZalo = () => {
 			/>
 
 			<div class="space-y-4">
-				<label class="text-xs font-bold text-gray-400 uppercase"
-					>Số tháng vay</label
+				<label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
+					>Thời gian vay (tháng)</label
 				>
-				<div class="grid grid-cols-4 gap-2">
+				<div class="grid grid-cols-4 gap-3">
 					<button
 						v-for="month in [6, 12, 18, 24]"
 						:key="month"
-						class="py-3 rounded-xl font-bold transition-all border-2"
+						class="py-3 rounded-xl font-bold transition-all border-2 text-sm"
 						:class="
 							loanTermMonths === month
-								? 'border-red-600 bg-red-50 text-red-600'
-								: 'border-gray-100 bg-gray-50 text-gray-400 hover:border-gray-300'
+								? 'border-primary bg-primary/5 text-primary'
+								: 'border-slate-50 bg-slate-50 text-slate-400 hover:border-slate-200 hover:bg-slate-100'
 						"
 						@click="loanTermMonths = month"
 					>
-						{{ month }}T
+						{{ month }} tháng
 					</button>
 				</div>
 			</div>
 
 			<div
-				class="bg-slate-900 rounded-[32px] p-8 text-center space-y-6 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] border border-slate-800 relative overflow-hidden group/result"
+				class="bg-slate-900 rounded-24 p-8 text-center space-y-6 relative overflow-hidden group/result shadow-xl shadow-black/10"
 			>
-				<div
-					class="absolute -inset-x-full inset-y-0 skew-x-[-25deg] bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover/result:translate-x-[200%] transition-all duration-1000"
-				/>
-
-				<div class="space-y-1 relative z-10">
+				<div class="space-y-2 relative z-10">
 					<span
-						class="text-[10px] text-white/50 uppercase font-black tracking-[0.2em]"
-						>Số tiền trả mỗi tháng (dự kiến)</span
+						class="text-[10px] text-white/50 uppercase font-bold tracking-widest"
+						>Góp mỗi tháng dự kiến</span
 					>
 					<div
-						class="text-4xl md:text-5xl font-black text-red-600 overflow-hidden drop-shadow-[0_0_20px_rgba(220,38,38,0.3)] my-2 italic"
+						class="text-4xl md:text-5xl font-bold text-primary overflow-hidden my-2"
 					>
 						{{ formatCurrency(animatedPayment) }}
 					</div>
 					<div
-						class="flex items-center justify-center gap-2 text-xs font-bold text-red-500 bg-red-500/10 py-1.5 px-4 rounded-full w-fit mx-auto mt-2"
+						class="flex items-center justify-center gap-2 text-xs font-bold text-primary bg-primary/10 py-1.5 px-4 rounded-full w-fit mx-auto mt-3"
 					>
-						<Icon name="fa6-solid:percent" class="text-[10px]" />
-						Lãi suất tham khảo từ 0.79%/tháng
+						<Icon name="ph:percent-bold" class="text-[12px]" />
+						Lãi suất từ 0.79%/tháng
 					</div>
 				</div>
 
 				<button
-					class="w-full py-5 bg-red-600 hover:bg-red-700 text-white rounded-[20px] font-black uppercase text-[11px] tracking-widest transition-all shadow-xl shadow-red-600/20 flex items-center justify-center gap-3 group active:scale-95 relative z-10"
+					class="w-full py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 group active:scale-95 relative z-10"
 					@click="sendToZalo"
 				>
 					<Icon
-						name="fa6-solid:share-from-square"
-						class="text-xs group-hover:rotate-12 transition-transform"
+						name="ph:whatsapp-logo-fill"
+						class="text-xl"
 					/>
-					Gửi lịch chi tiết qua Zalo
+					Tư vấn qua Zalo
 				</button>
 
 				<p
-					class="text-[9px] text-white/30 italic uppercase tracking-tighter relative z-10"
+					class="text-[10px] text-white/30 font-medium leading-relaxed relative z-10"
 				>
-					*Giá trị mang tính chất tham khảo, lãi suất thực tế có thể thay đổi
-					tùy ngân hàng
+					* Giá trị mang tính chất tham khảo, lãi suất thực tế có thể thay đổi tùy ngân hàng và hồ sơ khách hàng.
 				</p>
 			</div>
 		</div>

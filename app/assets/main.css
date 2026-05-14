@@ -3,9 +3,29 @@
 
 @theme {
 	--color-primary: #e31837;
-	--color-primary-dark: #c4122d;
+	--color-primary-dark: #b9122a;
+	--color-surface: #ffffff;
+	--color-background: #f8f9fa;
+	--color-text: #1a1a1a;
+	--color-text-muted: #64748b;
+	
+	--radius-24: 24px;
+	--radius-18: 18px;
+	--radius-12: 12px;
+	
+	--shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.04);
+	--shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.08);
+
+	--font-size-h1: 56px;
+	--font-size-h2: 42px;
+	--font-size-h3: 28px;
+	--font-size-body: 16px;
+	--font-size-small: 14px;
 }
 
+:root {
+	--section-padding: 88px;
+}
 
 html,
 body {
@@ -14,7 +34,9 @@ body {
 	overflow-x: hidden;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	font-family: 'Be Vietnam Pro', 'Manrope', sans-serif;
 }
+
 
 #__nuxt {
 	min-height: 100vh;
@@ -22,67 +44,4 @@ body {
 	flex-direction: column;
 }
 
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: normal;
-	font-weight: 400;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/normal-400.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: normal;
-	font-weight: 500;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/normal-500.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: normal;
-	font-weight: 600;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/normal-600.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: normal;
-	font-weight: 700;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/normal-700.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: normal;
-	font-weight: 800;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/normal-800.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: normal;
-	font-weight: 900;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/normal-900.woff2") format("woff2");
-}
 
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: italic;
-	font-weight: 400;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/italic-400.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: italic;
-	font-weight: 500;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/italic-500.woff2") format("woff2");
-}
-@font-face {
-	font-family: "Be Vietnam Pro";
-	font-style: italic;
-	font-weight: 600;
-	font-display: swap;
-	src: url("/fonts/be-vietnam-pro/italic-600.woff2") format("woff2");
-}

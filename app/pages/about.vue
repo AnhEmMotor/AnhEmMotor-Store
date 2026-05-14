@@ -1,6 +1,7 @@
 <script setup>
 
 
+
 useSeoMeta({
 	title: "Về chúng tôi | AnhEm Motor",
 	description:
@@ -19,15 +20,21 @@ await useAsyncData("about-content", async () => {
 </script>
 
 <template>
-	<div v-if="aboutStore.aboutContent" class="about-page">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-			<AboutMissionSection :data="aboutStore.aboutContent.mission" />
-			<AboutServicesSection :data="aboutStore.aboutContent.services" />
-			<AboutCommitmentSection :data="aboutStore.aboutContent.commitment" />
-			<AboutWhyChooseUsSection :data="aboutStore.aboutContent.whyChooseUs" />
-			<AboutContactSection :data="aboutStore.aboutContent.contact" />
-		</div>
-		<AboutVideoSection :data="aboutStore.aboutContent.video" />
+	<div v-if="aboutStore.aboutContent" class="about-page bg-white">
+		<AboutHeroSection :data="aboutStore.aboutContent" />
+		
+		<AboutMissionSection :data="aboutStore.aboutContent.mission" />
+		
+		<AboutServicesSection :data="aboutStore.aboutContent.services" />
+		
+		<AboutGallerySection />
+		
+		<AboutCommitmentSection :data="aboutStore.aboutContent.commitment" />
+
+		
+		<AboutWhyChooseUsSection :data="aboutStore.aboutContent.whyChooseUs" />
+		
 		<AboutMapSection :locations="aboutStore.locations" />
+
 	</div>
 </template>

@@ -10,8 +10,8 @@ export const useContactStore = defineStore("contact", {
 
 	actions: {
 		async submitContact(formData) {
-			const axios = useAxios();
-			const service = contactService(axios);
+			const service = contactService;
+
 			
 			this.isSubmitting = true;
 			this.statusMessage = "";

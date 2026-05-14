@@ -9,17 +9,21 @@ defineProps({
 
 <template>
 	<div
-		class="bg-white rounded-3xl p-6 border border-red-100 group hover:shadow-lg transition-all cursor-default"
+		class="flex items-start gap-4 group"
 	>
-		<Icon
-			:name="benefit.icon"
-			class="text-3xl text-red-600 mb-2 group-hover:scale-110 transition-transform"
-		/>
-		<h4 class="font-bold text-sm text-slate-900">
-			{{ benefit.title }}
-		</h4>
-		<p class="text-[10px] text-slate-500">
-			{{ benefit.description }}
-		</p>
+        <div class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+            <Icon
+                :name="benefit.icon"
+                class="text-2xl"
+            />
+        </div>
+        <div class="space-y-1">
+            <h4 class="font-bold text-base text-slate-900 group-hover:text-primary transition-colors">
+                {{ benefit.title }}
+            </h4>
+            <p class="text-sm text-slate-500 font-medium leading-relaxed">
+                {{ benefit.description }}
+            </p>
+        </div>
 	</div>
 </template>

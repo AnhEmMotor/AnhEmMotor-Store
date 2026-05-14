@@ -8,18 +8,23 @@ defineProps({
 </script>
 
 <template>
-	<div class="py-8 sm:py-12 md:py-16">
-		<h2
-			class="text-2xl sm:text-3xl md:text-4xl text-center mb-8 font-bold text-red-500"
-		>
-			{{ data.title }}
-		</h2>
-		<ul
-			class="list-disc ml-4 sm:ml-5 mb-6 sm:mb-8 space-y-2 sm:space-y-2.5 text-base sm:text-lg"
-		>
-			<li v-for="(item, index) in data.items" :key="index">
-				<strong>{{ item.label }}</strong> {{ item.desc }}
-			</li>
-		</ul>
-	</div>
+	<section class="py-24 bg-gray-50">
+		<div class="max-w-7xl mx-auto px-6">
+			<h2 class="text-3xl md:text-5xl font-black text-center mb-16 text-gray-900 uppercase tracking-tight">
+				{{ data.title }}
+			</h2>
+			
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				<AboutServiceCard 
+					v-for="(item, index) in data.items" 
+					:key="index"
+					:item="item"
+					:index="index"
+				/>
+			</div>
+
+		</div>
+	</section>
 </template>
+
+
