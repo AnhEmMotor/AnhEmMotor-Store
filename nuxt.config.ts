@@ -109,6 +109,9 @@ export default defineNuxtConfig({
 			},
 		},
 		routeRules: {
+			"/api/**": {
+				proxy: "http://localhost:5000/api/**",
+			},
 			"/**": {
 				headers: {
 					"Cross-Origin-Opener-Policy": "same-origin-allow-popups",
