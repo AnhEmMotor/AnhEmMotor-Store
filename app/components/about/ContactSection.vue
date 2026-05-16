@@ -16,10 +16,10 @@ defineProps({
 				<div class="absolute bottom-0 left-0 w-64 h-64 bg-black/5 rounded-full -ml-32 -mb-32" />
 
 				<h2 class="text-3xl md:text-5xl font-black mb-6 relative z-10">
-					Cần tư vấn chọn xe?
+					{{ data.title }}
 				</h2>
 				<p class="text-xl text-red-100 mb-12 max-w-2xl mx-auto relative z-10">
-					Đội ngũ chuyên gia của AnhEm Motor luôn sẵn sàng hỗ trợ bạn tìm kiếm chiếc xe ưng ý nhất.
+					{{ data.description }}
 				</p>
 				
 				<div class="flex flex-wrap justify-center gap-6 relative z-10">
@@ -27,7 +27,7 @@ defineProps({
 						href="tel:0901234567" 
 						class="bg-white text-red-600 px-10 py-4 rounded-2xl font-black text-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl"
 					>
-						📞 Gọi ngay: 0901.234.567
+						📞 Gọi ngay: {{ data.hotline }}
 					</a>
 					<NuxtLink 
 						to="/support" 

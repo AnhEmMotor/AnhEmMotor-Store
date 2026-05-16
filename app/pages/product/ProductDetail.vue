@@ -1,4 +1,7 @@
 <script setup>
+definePageMeta({
+    path: '/product/:slug'
+});
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import ProductBookingModal from "~/components/product/BookingModal.vue";
 
@@ -209,7 +212,7 @@ const openConsultation = () => {
 
 const isBookingModalOpen = ref(false);
 const bookTestDrive = () => {
-    isBookingModalOpen.value = true;
+    navigateTo("/test-drive");
 };
 
 
@@ -310,7 +313,7 @@ const variantSelectId = useId();
                                     <div class="h-[1px] w-8 bg-primary"></div>
                                     <span class="text-[9px] font-black text-primary uppercase tracking-[0.4em]">{{ detail.product.category }}</span>
                                 </div>
-                                <h1 class="text-5xl lg:text-6xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase italic reveal-up">
+                                <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase italic reveal-up">
                                     {{ detail.product.name }}
                                 </h1>
                             </div>
@@ -320,7 +323,7 @@ const variantSelectId = useId();
                                     <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Giá từ</span>
                                     <div class="px-2 py-0.5 bg-primary/10 text-primary text-[8px] font-black rounded-md">GIÁ TỐT NHẤT</div>
                                 </div>
-                                <div class="text-5xl lg:text-5xl font-black text-gray-900 tracking-tighter italic">
+                                <div class="text-2xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter italic">
                                     {{ formattedPrice }}
                                 </div>
                                 <div class="flex items-center gap-2 text-gray-500 font-bold text-xs">
@@ -678,10 +681,8 @@ const variantSelectId = useId();
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap');
-
 :deep(*) {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
 }
 
 .text-primary { color: #e31837; }

@@ -2,7 +2,7 @@
 	<div 
 		ref="rowRef"
 		:class="[
-			'flex flex-col lg:flex-row items-center gap-12 lg:gap-24 py-24 border-b border-gray-100 last:border-0 group transition-all duration-1000',
+			'flex flex-col lg:flex-row items-center gap-8 lg:gap-16 py-16 border-b border-gray-100 last:border-0 group transition-all duration-1000',
 			isReversed ? 'lg:flex-row-reverse' : '',
 			isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
 		]"
@@ -37,17 +37,17 @@
 
 		<!-- Content Side -->
 		<div 
-			class="w-full lg:w-1/2 space-y-10 transition-all duration-1000 delay-500"
+			class="w-full lg:w-1/2 space-y-8 transition-all duration-1000 delay-500"
 			:class="isVisible ? 'opacity-100 translate-x-0' : (isReversed ? 'opacity-0 -translate-x-20' : 'opacity-0 translate-x-20')"
 		>
-			<div class="space-y-6">
+			<div class="space-y-4">
 				<div class="flex items-center gap-4">
 					<span class="text-[12px] font-black text-primary bg-primary/5 px-5 py-2 rounded-full border border-primary/10 tracking-widest uppercase">
 						{{ service.categoryLabel }}
 					</span>
 					<div class="flex-grow h-[1px] bg-gradient-to-r from-primary/20 to-transparent"></div>
 				</div>
-				<h3 class="text-4xl lg:text-6xl font-black text-gray-900 leading-[1.1] tracking-tight">
+				<h3 class="text-3xl lg:text-4xl font-black text-gray-900 leading-[1.1] tracking-tight">
 					{{ service.name }}
 				</h3>
 				<p class="text-gray-500 text-base md:text-xl font-medium leading-relaxed max-w-xl">
@@ -56,13 +56,13 @@
 			</div>
 
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-				<div v-for="(feature, idx) in service.features" :key="idx" class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-xl transition-all duration-500 group/feat">
+				<div v-for="(feature, idx) in service.features" :key="idx" class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-xl transition-all duration-500 group/feat">
 					<Icon name="fa6-solid:circle-check" class="text-primary text-base flex-shrink-0 group-hover/feat:scale-125 transition-transform" />
 					<span class="text-[14px] font-bold text-gray-700 uppercase tracking-tight">{{ feature }}</span>
 				</div>
 			</div>
 
-			<div class="flex flex-wrap items-center gap-10 pt-6">
+			<div class="flex flex-wrap items-center gap-8 pt-4">
 				<div class="group/price cursor-default">
 					<p class="text-[11px] font-black text-gray-400 mb-2 uppercase tracking-widest">Giá dịch vụ</p>
 					<p class="text-4xl font-black text-primary transition-transform group-hover/price:scale-105 origin-left">
@@ -81,7 +81,7 @@
 			<div class="pt-6">
 				<button 
 					@click="$emit('book', service)"
-					class="px-14 py-6 bg-gray-950 text-white text-[12px] font-black uppercase tracking-[0.2em] rounded-[2rem] hover:bg-primary transition-all duration-500 shadow-2xl shadow-gray-950/20 active:scale-95 flex items-center gap-4 group/btn relative overflow-hidden"
+					class="px-10 py-4 bg-gray-950 text-white text-[12px] font-black uppercase tracking-[0.2em] rounded-[1.5rem] hover:bg-primary transition-all duration-500 shadow-2xl shadow-gray-950/20 active:scale-95 flex items-center gap-4 group/btn relative overflow-hidden"
 				>
 					<span class="relative z-10">Đăng ký ngay</span>
 					<Icon name="fa6-solid:arrow-right-long" class="relative z-10 group-hover:translate-x-3 transition-transform text-base" />

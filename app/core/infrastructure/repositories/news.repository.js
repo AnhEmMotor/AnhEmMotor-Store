@@ -1,16 +1,26 @@
+import { newsData } from "../../domain/constants/news";
+
 /**
  * Infrastructure Layer - News Repository
  */
 export const newsRepository = {
 	async getNews(params) {
-		const axios = useAxios();
-		const response = await axios.get("/api/v1/News", { params });
-		return response.data;
+		// Mock delay
+		await new Promise(resolve => setTimeout(resolve, 500));
+		return {
+			data: newsData,
+			totalCount: newsData.length,
+			pageIndex: 1,
+			pageSize: 10
+		};
 	},
 
 	async getNewsDetail(slug) {
-		const axios = useAxios();
-		const response = await axios.get(`/api/v1/News/${slug}`);
-		return response.data;
+		const news = newsData.find(n => n.slug === slug);
+		return news || null;
 	},
+
+	async getFeaturedNews() {
+		return newsData.filter(n => n.featured);
+	}
 };

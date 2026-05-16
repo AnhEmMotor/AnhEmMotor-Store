@@ -1,5 +1,5 @@
 <template>
-	<div class="recruitment-page bg-white overflow-hidden font-['Be_Vietnam_Pro'] relative">
+	<div class="recruitment-page bg-white overflow-hidden relative">
 
 		<!-- Scroll Progress Bar -->
 		<div class="fixed top-0 left-0 h-1 bg-primary z-[100] transition-all duration-150" :style="{ width: `${scrollProgress}%` }"></div>
@@ -184,6 +184,13 @@ const handleApplyJob = (position) => {
 </script>
 
 <style>
+/* Import Manrope from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap');
+
+.recruitment-page, .recruitment-page * {
+	font-family: 'Manrope', sans-serif;
+}
+
 @keyframes float-slow {
 	0%, 100% { transform: translate(0, 0) rotate(0deg); }
 	33% { transform: translate(30px, -50px) rotate(10deg); }
@@ -203,17 +210,12 @@ const handleApplyJob = (position) => {
 	transform: translate(0, 0);
 }
 
-
 @keyframes fade-in-up {
 	from { opacity: 0; transform: translateY(20px); }
 	to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in-up {
 	animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.recruitment-page {
-	font-family: 'Be Vietnam Pro', sans-serif;
 }
 </style>
 

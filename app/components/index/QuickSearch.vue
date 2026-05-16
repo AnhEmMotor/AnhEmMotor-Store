@@ -25,7 +25,7 @@ const handleSearch = () => {
 <template>
 	<section class="max-w-6xl mx-auto px-6 -mt-10 relative z-20">
 		<div
-			class="bg-white rounded-24 shadow-elevated p-6 flex flex-col gap-6 border border-slate-100"
+			class="bg-white rounded-24 shadow-elevated p-5 sm:p-6 flex flex-col gap-6 border border-slate-100"
 		>
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 				<div class="relative group">

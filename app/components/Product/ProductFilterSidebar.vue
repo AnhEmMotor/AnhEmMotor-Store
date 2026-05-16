@@ -35,6 +35,21 @@ const brands = computed(() => {
 });
 
 const {
+    data: categoriesData,
+    isLoading: isLoadingCategories,
+} = useQuery({
+    queryKey: ["product-categories-filter"],
+    queryFn: async () => {
+        const response = await categoryStore.getProductCategories({ pageSize: 50 });
+        return response.items;
+    },
+    staleTime: 1000 * 60 * 60,
+});
+
+const categories = computed(() => categoriesData.value || []);
+
+
+const {
 	data: optionsData,
 	isLoading: isLoadingOptions,
 	error: optionsError,
@@ -75,6 +90,14 @@ const selectedBrands = computed({
 	},
 });
 
+const selectedCategories = computed({
+    get: () => props.modelValue.category_ids || [],
+    set: (val) => {
+        emit("update:modelValue", { ...props.modelValue, category_ids: val });
+    },
+});
+
+
 const minPrice = computed({
 	get: () => props.modelValue.minPrice ?? 0,
 	set: (val) => {
@@ -83,7 +106,7 @@ const minPrice = computed({
 });
 
 const maxPrice = computed({
-	get: () => props.modelValue.maxPrice ?? 500000000,
+	get: () => props.modelValue.maxPrice ?? 30000000,
 	set: (val) => {
 		emit("update:modelValue", { ...props.modelValue, maxPrice: val });
 	},
@@ -101,6 +124,20 @@ const toggleBrand = (brandId) => {
 	}
 	selectedBrands.value = current;
 };
+
+const isCategorySelected = (catId) => selectedCategories.value.includes(catId);
+
+const toggleCategory = (catId) => {
+    const current = [...selectedCategories.value];
+    const index = current.indexOf(catId);
+    if (index > -1) {
+        current.splice(index, 1);
+    } else {
+        current.push(catId);
+    }
+    selectedCategories.value = current;
+};
+
 
 const isSelected = (val) => {
 	if (val.ids) {
@@ -187,11 +224,11 @@ const formatVND = (val) => {
 					<div v-if="isLoadingBrands" class="py-4 flex justify-center">
 						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
 					</div>
-					<div v-else-if="brands.length > 0" class="grid grid-cols-2 gap-2">
+					<div v-else-if="brands.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
 						<button
 							v-for="brand in brands"
 							:key="brand.id"
-							class="group flex items-center justify-center px-2 py-3 text-[10px] font-bold rounded-xl border transition-all duration-300"
+							class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
 							:class="[
 								isBrandSelected(brand.id)
 									? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
@@ -205,11 +242,42 @@ const formatVND = (val) => {
 				</ClientOnly>
 			</div>
 
+			<!-- Categories -->
+			<div class="space-y-4">
+				<div class="flex items-center gap-2">
+					<div class="w-1 h-4 bg-primary rounded-full"></div>
+					<label class="text-sm font-black text-gray-900 uppercase tracking-widest"
+						>Danh Mục</label
+					>
+				</div>
+				<ClientOnly>
+					<div v-if="isLoadingCategories" class="py-4 flex justify-center">
+						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+					</div>
+					<div v-else-if="categories.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+						<button
+							v-for="cat in categories"
+							:key="cat.id"
+							class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
+							:class="[
+								isCategorySelected(cat.id)
+									? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+									: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+							]"
+							@click="toggleCategory(cat.id)"
+						>
+							{{ cat.name }}
+						</button>
+					</div>
+				</ClientOnly>
+			</div>
+
+
 			<!-- Price Range -->
 			<div class="space-y-6">
 				<div class="flex items-center gap-2">
 					<div class="w-1 h-4 bg-primary rounded-full"></div>
-					<label class="text-sm font-black text-gray-900 uppercase tracking-widest">Giá Xe</label>
+					<label class="text-sm font-black text-gray-900 uppercase tracking-widest">Giá sản phẩm</label>
 				</div>
 				
 				<div class="space-y-8 px-2">
@@ -219,8 +287,8 @@ const formatVND = (val) => {
 						<div 
 							class="absolute h-full bg-primary rounded-full shadow-[0_0_10px_rgba(227,24,55,0.3)] will-change-[left,right]"
 							:style="{ 
-								left: `${(minPrice / 500000000) * 100}%`, 
-								right: `${100 - (maxPrice || 500000000) / 500000000 * 100}%` 
+								left: `${(minPrice / 30000000) * 100}%`, 
+								right: `${100 - (maxPrice || 30000000) / 30000000 * 100}%` 
 							}"
 						></div>
 						
@@ -229,10 +297,10 @@ const formatVND = (val) => {
 							v-model.number="minPrice"
 							type="range"
 							min="0"
-							max="500000000"
+							max="30000000"
 							step="500000"
 							class="absolute w-full h-full appearance-none bg-transparent pointer-events-none z-10"
-							@input="minPrice = Math.min(minPrice, (maxPrice || 500000000) - 500000)"
+							@input="minPrice = Math.min(minPrice, (maxPrice || 30000000) - 500000)"
 						>
 						
 						<!-- Max Slider -->
@@ -240,7 +308,7 @@ const formatVND = (val) => {
 							v-model.number="maxPrice"
 							type="range"
 							min="0"
-							max="500000000"
+							max="30000000"
 							step="500000"
 							class="absolute w-full h-full appearance-none bg-transparent pointer-events-none z-20"
 							@input="maxPrice = Math.max(maxPrice || 0, minPrice + 500000)"
@@ -255,7 +323,7 @@ const formatVND = (val) => {
 						</div>
 						<div class="text-right space-y-1">
 							<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Đến</span>
-							<p class="text-xs font-black text-gray-900">{{ formatVND(maxPrice || 500000000) }}</p>
+							<p class="text-xs font-black text-gray-900">{{ formatVND(maxPrice || 30000000) }}</p>
 						</div>
 					</div>
 
@@ -263,9 +331,9 @@ const formatVND = (val) => {
 					<div class="flex flex-wrap gap-2 pt-2">
 						<button 
 							v-for="range in [
-								{l:'Dưới 20tr', min:0, max:20000000}, 
-								{l:'20-50tr', min:20000000, max:50000000}, 
-								{l:'Trên 50tr', min:50000000, max:500000000}
+								{l:'Dưới 10tr', min:0, max:10000000}, 
+								{l:'10-20tr', min:10000000, max:20000000}, 
+								{l:'20-30tr', min:20000000, max:30000000}
 							]" 
 							:key="range.l"
 							@click="minPrice = range.min; maxPrice = range.max"
@@ -291,11 +359,11 @@ const formatVND = (val) => {
 								{{ getOptionLabel(option.name) }}
 							</h3>
 						</div>
-						<div class="grid grid-cols-2 gap-2">
+						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
 							<template v-for="val in option.values" :key="val.id">
 								<!-- Default Button -->
 								<button
-									class="px-3 py-3 text-[10px] font-bold rounded-xl border transition-all duration-300 text-center"
+									class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
 									:class="[
 										isSelected(val)
 											? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'

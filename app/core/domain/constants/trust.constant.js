@@ -2,22 +2,26 @@ export const TRUST_SERVICES = [
 	{
 		title: "Đặt lịch bảo dưỡng",
 		desc: "Hệ thống máy móc hiện đại, kỹ thuật viên chuyên nghiệp Honda, Yamaha...",
-		icon: "ph:calendar-check-bold",
+		icon: "ph:calendar-check-fill",
+		link: "/service"
 	},
 	{
 		title: "Bảo hành chính hãng",
 		desc: "Chế độ bảo hành dài hạn, cam kết phụ tùng chính hiệu 100%.",
-		icon: "ph:shield-check-bold",
+		icon: "ph:shield-check-fill",
+		link: "/support"
 	},
 	{
 		title: "Đặt lịch lái thử",
 		desc: "Trải nghiệm trực tiếp các dòng xe mới nhất, tư vấn chuyên sâu tận tâm.",
-		icon: "ph:steering-wheel-bold",
+		icon: "ph:motorcycle-fill",
+		link: "/test-drive"
 	},
     {
 		title: "Hỗ trợ trả góp 0%",
 		desc: "Thủ tục đơn giản, duyệt hồ sơ nhanh chóng chỉ trong 15 phút.",
-		icon: "ph:credit-card-bold",
+		icon: "ph:credit-card-fill",
+		link: "/support"
 	},
 ];
 

@@ -50,6 +50,11 @@ export const aboutRepository = {
 				hotline: "0901 234 567",
 				email: "info@anhemmotor.vn",
 			},
+			video: {
+				title: "Hành Trình AnhEm Motor",
+				subtitle: "Khám phá câu chuyện và tâm huyết đằng sau mỗi chiếc xe",
+				url: "https://www.youtube.com/embed/dQw4w9WgXcQ", 
+			}
 		};
 	},
 

@@ -1,5 +1,5 @@
 <script setup>
-import BaseRangeInput from "@/components/ui/BaseRangeInput.vue";
+import BaseRangeInput from "../ui/BaseRangeInput.vue";
 import { formatCurrency } from "#imports";
 
 const {
@@ -22,13 +22,13 @@ const sendToZalo = () => {
 
 <template>
 	<div
-		class="w-full bg-white rounded-24 p-8 border border-slate-100 shadow-soft relative z-10"
+		class="w-full bg-white rounded-24 p-5 sm:p-8 border border-slate-100 shadow-soft relative z-10"
 	>
-		<h3 class="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
+		<h3 class="text-xl sm:text-2xl font-bold text-slate-900 mb-6 sm:mb-8 tracking-tight">
 			Công cụ tính <span class="text-primary">trả góp</span>
 		</h3>
 
-		<div class="space-y-8">
+		<div class="space-y-6 sm:space-y-8">
 			<BaseRangeInput
 				v-model="bikePrice"
 				label="Giá xe dự kiến"
@@ -52,11 +52,11 @@ const sendToZalo = () => {
 				<label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
 					>Thời gian vay (tháng)</label
 				>
-				<div class="grid grid-cols-4 gap-3">
+				<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
 					<button
 						v-for="month in [6, 12, 18, 24]"
 						:key="month"
-						class="py-3 rounded-xl font-bold transition-all border-2 text-sm"
+						class="py-2.5 sm:py-3 rounded-xl font-bold transition-all border-2 text-[13px] sm:text-sm whitespace-nowrap"
 						:class="
 							loanTermMonths === month
 								? 'border-primary bg-primary/5 text-primary'

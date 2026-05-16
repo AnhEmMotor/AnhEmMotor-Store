@@ -6,7 +6,7 @@ export const PRODUCT_CATEGORIES = [
 		image: "/assets/image/categories/xe.webp",
 		bgColor: "bg-blue-50/50",
 		textColor: "text-blue-600",
-		path: "/products?page=1&category_ids=1",
+		path: "/products?page=1&category_ids=8",
 	},
 	{
 		name: "Phụ Tùng",
@@ -15,7 +15,7 @@ export const PRODUCT_CATEGORIES = [
 		image: "/assets/image/categories/spare-parts.webp",
 		bgColor: "bg-green-50/50",
 		textColor: "text-green-600",
-		path: "/products?page=1&category_ids=3",
+		path: "/products?page=1&category_ids=13",
 	},
 	{
 		name: "Phụ Kiện",
@@ -24,6 +24,6 @@ export const PRODUCT_CATEGORIES = [
 		image: "/assets/image/categories/accessories.webp",
 		bgColor: "bg-orange-50/50",
 		textColor: "text-orange-600",
-		path: "/products?page=1&category_ids=2",
+		path: "/products?page=1&category_ids=12",
 	},
 ];

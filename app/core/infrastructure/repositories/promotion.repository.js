@@ -5,6 +5,8 @@ import { promotionData } from "../../domain/constants/promotion";
  */
 export const promotionRepository = {
 	async getAllPromotions() {
+		// Mock delay
+		await new Promise(resolve => setTimeout(resolve, 500));
 		return promotionData;
 	},
 

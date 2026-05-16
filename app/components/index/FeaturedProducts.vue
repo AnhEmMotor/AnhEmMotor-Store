@@ -13,7 +13,10 @@ const tabs = [
 
 const { data: products, isPending, refetch } = useQuery({
 	queryKey: ["featured-products", activeTab],
-	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: tabs.find(t => t.id === activeTab.value).categoryIds }),
+	queryFn: () => {
+		const tab = tabs.find(t => t.id === activeTab.value);
+		return productStore.getProducts({ pageSize: 4, categoryIds: tab ? tab.categoryIds : "1" });
+	},
 	select: (res) => res.items,
 });
 
@@ -35,7 +38,7 @@ const handleViewDetail = (product) => {
 <template>
 	<section
 		id="featured-products"
-		class="py-24 bg-white relative overflow-hidden"
+		class="py-12 md:py-24 bg-white relative overflow-hidden"
 	>
 		<div
 			class="absolute top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"
@@ -80,29 +83,32 @@ const handleViewDetail = (product) => {
 				</button>
 			</div>
 
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-				<template v-if="isPending && !products">
-					<div
-						v-for="i in 4"
-						:key="i"
-						class="bg-white rounded-24 p-6 h-[450px] border border-slate-50 animate-pulse space-y-6"
-					>
-						<div class="w-full aspect-[4/5] bg-slate-50 rounded-18" />
-						<div class="h-6 bg-slate-50 rounded-full w-3/4" />
-						<div class="h-4 bg-slate-50 rounded-full w-1/2" />
-						<div class="h-12 bg-slate-50 rounded-xl w-full" />
-					</div>
-				</template>
+			<ClientOnly>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
+					<template v-if="isPending && !products">
+						<div
+							v-for="i in 4"
+							:key="i"
+							class="bg-white rounded-24 p-6 h-[450px] border border-slate-50 animate-pulse space-y-6"
+						>
+							<div class="w-full aspect-[4/5] bg-slate-50 rounded-18" />
+							<div class="h-6 bg-slate-50 rounded-full w-3/4" />
+							<div class="h-4 bg-slate-50 rounded-full w-1/2" />
+							<div class="h-12 bg-slate-50 rounded-xl w-full" />
+						</div>
+					</template>
 
-				<ProductCard
-					v-for="product in products"
-					v-else
-					:key="product.id"
-					:product="product"
-					show-action
-					@click="handleViewDetail(product)"
-				/>
-			</div>
+					<template v-else>
+						<ProductCard
+							v-for="product in products"
+							:key="product.id"
+							:product="product"
+							show-action
+							@click="handleViewDetail(product)"
+						/>
+					</template>
+				</div>
+			</ClientOnly>
 		</div>
 	</section>
 </template>

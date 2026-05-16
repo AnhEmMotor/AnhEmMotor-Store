@@ -15,19 +15,19 @@ const footerData = computed(() => layoutStore.footerData);
 					<h3 class="footer-heading">Thông Tin Liên Hệ</h3>
 					<p class="contact-info-item">
 						<ClientOnly>
-							<Icon name="fa6-solid:location-dot" class="mr-2" />
+							<Icon name="ph:map-pin-fill" class="mr-2" />
 						</ClientOnly>
 						{{ footerData.contact.address }}
 					</p>
 					<p class="contact-info-item">
 						<ClientOnly>
-							<Icon name="fa6-solid:phone" class="mr-2" />
+							<Icon name="ph:phone-fill" class="mr-2" />
 						</ClientOnly>
 						{{ footerData.contact.phone }}
 					</p>
 					<p class="contact-info-item">
 						<ClientOnly>
-							<Icon name="fa6-solid:envelope" class="mr-2" />
+							<Icon name="ph:envelope-simple-fill" class="mr-2" />
 						</ClientOnly>
 						{{ footerData.contact.email }}
 					</p>

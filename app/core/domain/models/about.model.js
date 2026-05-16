@@ -31,6 +31,11 @@ export class AboutContent {
 			hotline: data.contact?.hotline || "",
 			email: data.contact?.email || "",
 		};
+		this.video = {
+			title: data.video?.title || "",
+			subtitle: data.video?.subtitle || "",
+			url: data.video?.url || "",
+		};
 	}
 }
 

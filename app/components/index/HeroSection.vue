@@ -66,7 +66,7 @@ const activeBanner = computed(() => {
 });
 
 const heroBg = computed(() => {
-	return activeBanner.value?.image || "/assets/image/index/index-banner-bg.webp";
+	return activeBanner.value?.image || "/assets/image/index/index-banner-bg.png";
 });
 
 const nextBanner = () => {
@@ -146,7 +146,7 @@ onUnmounted(() => {
 				:key="banner.id || index"
 				class="absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] scale-110 active:scale-100 animate-ken-burns"
 				:style="{
-					backgroundImage: `url('${banner.image || '/assets/image/index/index-banner-bg.webp'}')`,
+					backgroundImage: `url('${banner.image || '/assets/image/index/index-banner-bg.png'}')`,
 				}"
 			>
 				<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
@@ -157,7 +157,7 @@ onUnmounted(() => {
 		<div
 			v-if="banners.length === 0"
 			class="absolute inset-0 bg-cover bg-center"
-			style="background-image: url('/assets/image/index/index-banner-bg.webp')"
+			style="background-image: url('/assets/image/index/index-banner-bg.png')"
 		>
 			<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 		</div>
@@ -168,7 +168,7 @@ onUnmounted(() => {
 					<div :key="currentBannerIndex" class="space-y-4">
 						<h2 class="text-primary font-bold tracking-widest uppercase text-sm md:text-base">ANHEM MOTOR</h2>
 						<h1
-							class="text-4xl md:text-6xl lg:text-[56px] font-extrabold leading-tight drop-shadow-xl"
+							class="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight drop-shadow-xl"
 						>
 							<template v-if="activeBanner?.title">
 								{{ activeBanner.title }}

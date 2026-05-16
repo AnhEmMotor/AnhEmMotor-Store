@@ -143,75 +143,80 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 			</div>
 
 			<div v-else class="relative">
-				<!-- Sticky Header for Products -->
-				<div class="sticky top-20 z-40 bg-gray-50/80 backdrop-blur-md pb-6">
-					<div class="grid grid-cols-12 gap-6 items-stretch">
-						<div class="col-span-3"></div>
-						<div 
-							v-for="item in detailedProducts" 
-							:key="item.product.id"
-							class="col-span-3 bg-white rounded-3xl p-6 border border-gray-100 shadow-xl relative group"
-						>
-							<button 
-								@click="removeProduct(item.product.id)"
-								class="absolute -top-2 -right-2 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center hover:bg-[#CC0000] transition-colors z-10 opacity-0 group-hover:opacity-100"
-							>
-								<Icon name="fa6-solid:xmark" />
-							</button>
-							<div class="aspect-square mb-4 rounded-2xl overflow-hidden bg-gray-50 p-2">
-								<img :src="item.currentVariant.colors[0]?.image" :alt="item.product.name" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
-							</div>
-							<div class="space-y-1">
-								<p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ item.product.brand }}</p>
-								<h3 class="text-lg font-black text-gray-900 uppercase leading-tight italic line-clamp-1">{{ item.product.name }}</h3>
-								<p class="text-lg font-black text-[#CC0000]">{{ formatPrice(item.currentVariant.price) }}</p>
-							</div>
-							<NuxtLink :to="`/product/${item.currentVariant.slug}`" class="mt-4 block w-full py-3 bg-gray-50 text-center rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-400 hover:bg-black hover:text-white transition-all">
-								Chi tiết xe
-							</NuxtLink>
-						</div>
-						<!-- Empty Slots if < 3 -->
-						<div 
-							v-for="i in (3 - detailedProducts.length)" 
-							:key="'empty-' + i"
-							class="col-span-3 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-4 hover:border-[#CC0000] hover:bg-red-50/50 transition-all cursor-pointer group"
-							@click="navigateTo('/products')"
-						>
-							<div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-[#CC0000] group-hover:text-white transition-all">
-								<Icon name="fa6-solid:plus" />
-							</div>
-							<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-[#CC0000]">Thêm xe</span>
-						</div>
-					</div>
-				</div>
-
-				<!-- Spec Sections -->
-				<div class="space-y-12">
-					<div v-for="group in specGroups" :key="group.name" class="animate-in fade-in slide-in-from-bottom-8 duration-700">
-						<div class="bg-black text-white p-6 rounded-t-[32px] flex items-center gap-4">
-							<div class="w-1.5 h-6 bg-[#CC0000]"></div>
-							<h4 class="text-sm font-black uppercase tracking-[0.4em]">{{ group.name }}</h4>
-						</div>
-						<div class="bg-white rounded-b-[32px] border-x border-b border-gray-100 shadow-xl overflow-hidden">
-							<div 
-								v-for="(key, idx) in group.keys" 
-								:key="key"
-								class="grid grid-cols-12 items-center border-t border-gray-50 first:border-t-0"
-								:class="idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'"
-							>
-								<div class="col-span-3 p-6 border-r border-gray-100">
-									<span class="text-[11px] font-black text-gray-400 uppercase tracking-widest">{{ specLabels[key] }}</span>
-								</div>
+				<!-- Horizontal Scroll Wrapper for Mobile -->
+				<div class="overflow-x-auto pb-8 -mx-6 px-6 scrollbar-hide">
+					<div class="min-w-[900px] lg:min-w-0">
+						<!-- Sticky Header for Products -->
+						<div class="sticky top-20 z-40 bg-gray-50/80 backdrop-blur-md pb-6">
+							<div class="grid grid-cols-12 gap-4 lg:gap-6 items-stretch">
+								<div class="col-span-3"></div>
 								<div 
 									v-for="item in detailedProducts" 
 									:key="item.product.id"
-									class="col-span-3 p-6 text-center"
+									class="col-span-3 bg-white rounded-3xl p-4 lg:p-6 border border-gray-100 shadow-xl relative group"
 								>
-									<span class="text-sm font-bold text-gray-900">{{ getSpecValue(item, key) }}</span>
+									<button 
+										@click="removeProduct(item.product.id)"
+										class="absolute -top-2 -right-2 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center hover:bg-[#CC0000] transition-colors z-10 opacity-0 group-hover:opacity-100"
+									>
+										<Icon name="fa6-solid:xmark" />
+									</button>
+									<div class="aspect-square mb-4 rounded-2xl overflow-hidden bg-gray-50 p-2">
+										<img :src="item.currentVariant.colors[0]?.image" :alt="item.product.name" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
+									</div>
+									<div class="space-y-1">
+										<p class="text-[9px] lg:text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ item.product.brand }}</p>
+										<h3 class="text-sm lg:text-lg font-black text-gray-900 uppercase leading-tight italic line-clamp-2">{{ item.product.name }}</h3>
+										<p class="text-base lg:text-lg font-black text-[#CC0000]">{{ formatPrice(item.currentVariant.price) }}</p>
+									</div>
+									<NuxtLink :to="`/product/${item.currentVariant.slug}`" class="mt-4 block w-full py-2 lg:py-3 bg-gray-50 text-center rounded-xl text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-gray-400 hover:bg-black hover:text-white transition-all">
+										Chi tiết
+									</NuxtLink>
 								</div>
-								<!-- Empty slots alignment -->
-								<div v-for="i in (3 - detailedProducts.length)" :key="'empty-val-' + i" class="col-span-3 p-6 text-center text-gray-300">
-									—
+								<!-- Empty Slots if < 3 -->
+								<div 
+									v-for="i in (3 - detailedProducts.length)" 
+									:key="'empty-' + i"
+									class="col-span-3 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-4 hover:border-[#CC0000] hover:bg-red-50/50 transition-all cursor-pointer group"
+									@click="navigateTo('/products')"
+								>
+									<div class="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-[#CC0000] group-hover:text-white transition-all">
+										<Icon name="fa6-solid:plus" />
+									</div>
+									<span class="text-[9px] lg:text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-[#CC0000]">Thêm xe</span>
+								</div>
+							</div>
+						</div>
+
+						<!-- Spec Sections -->
+						<div class="space-y-8 lg:space-y-12">
+							<div v-for="group in specGroups" :key="group.name" class="reveal reveal-up">
+								<div class="bg-black text-white p-4 lg:p-6 rounded-t-[2rem] flex items-center gap-4">
+									<div class="w-1.5 h-6 bg-[#CC0000]"></div>
+									<h4 class="text-xs lg:text-sm font-black uppercase tracking-[0.4em]">{{ group.name }}</h4>
+								</div>
+								<div class="bg-white rounded-b-[2rem] border-x border-b border-gray-100 shadow-xl overflow-hidden">
+									<div 
+										v-for="(key, idx) in group.keys" 
+										:key="key"
+										class="grid grid-cols-12 items-center border-t border-gray-50 first:border-t-0"
+										:class="idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'"
+									>
+										<div class="col-span-3 p-4 lg:p-6 border-r border-gray-100">
+											<span class="text-[9px] lg:text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed">{{ specLabels[key] }}</span>
+										</div>
+										<div 
+											v-for="item in detailedProducts" 
+											:key="item.product.id"
+											class="col-span-3 p-4 lg:p-6 text-center"
+										>
+											<span class="text-xs lg:text-sm font-bold text-gray-900 leading-relaxed">{{ getSpecValue(item, key) }}</span>
+										</div>
+										<!-- Empty slots alignment -->
+										<div v-for="i in (3 - detailedProducts.length)" :key="'empty-val-' + i" class="col-span-3 p-4 lg:p-6 text-center text-gray-300">
+											—
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

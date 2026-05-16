@@ -1,11 +1,11 @@
 <script setup>
 
-import BenefitCard from "@/components/ui/BenefitCard.vue";
-import LoanCalculator from "@/components/index/LoanCalculator.vue";
+import BenefitCard from "../ui/BenefitCard.vue";
+import LoanCalculator from "./LoanCalculator.vue";
 </script>
 
 <template>
-	<section class="py-24 container mx-auto px-6">
+	<section class="py-12 md:py-24 container mx-auto px-6">
 		<div
 			class="relative bg-white rounded-24 overflow-hidden p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row gap-12 lg:gap-20 items-stretch border border-slate-100 shadow-soft"
 		>

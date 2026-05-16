@@ -43,6 +43,7 @@
 		"@iconify-json/fa6-regular": "^1.2.4",
 		"@iconify-json/fa6-solid": "^1.2.4",
 		"@iconify-json/lucide": "^1.2.107",
+		"@iconify-json/ph": "^1.2.2",
 		"@nuxt/eslint-config": "^1.15.2",
 		"cross-env": "^10.1.0"
 	}

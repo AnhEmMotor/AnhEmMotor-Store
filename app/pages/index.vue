@@ -10,11 +10,11 @@ await Promise.all([
 
 useSeoMeta({
 	title: "Trang chủ",
-	ogImage: "/assets/image/index/index-banner-bg.webp",
+	ogImage: "/assets/image/index/index-banner-bg.png",
 	twitterTitle: "Trang chủ",
 	twitterDescription:
 		"AnhEm Motor - Chuyên cung cấp xe máy, phụ tùng, phụ kiện chính hãng.",
-	twitterImage: "/assets/image/index/index-banner-bg.webp",
+	twitterImage: "/assets/image/index/index-banner-bg.png",
 });
 
 useHead({
@@ -43,15 +43,14 @@ useHead({
 		<IndexTrustBuilding />
 		<IndexNewsSEO />
 		<IndexLeadFooter />
-		<IndexCompareBar />
+		<ProductCompareBar />
 	</div>
 </template>
 
 
 <style scoped>
-@reference "../assets/main.css";
-
 .home-page {
-	@apply bg-white text-slate-900;
+	background-color: white;
+	color: #0f172a;
 }
 </style>

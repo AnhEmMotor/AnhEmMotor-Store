@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+const router = useRouter();
 
 useSeoMeta({
 	title: "Dịch vụ Xe Máy Chuyên Nghiệp | AnhEm Motor",
@@ -8,25 +9,27 @@ useSeoMeta({
 
 const maintenanceStore = useMaintenanceStore();
 const activeCategory = ref('all');
-const isBookingModalOpen = ref(false);
-const selectedService = ref(null);
 
-await useAsyncData("maintenance-services", () =>
-	maintenanceStore.fetchServices(),
-);
+
+await useAsyncData("maintenance-services-v2", async () => {
+	await maintenanceStore.fetchServices();
+	return maintenanceStore.services;
+});
 
 const handleFilter = (category) => {
 	activeCategory.value = category;
 };
 
 const openBooking = (service) => {
-	selectedService.value = service;
-	isBookingModalOpen.value = true;
+	router.push({
+		path: '/service-booking',
+		query: { id: service?.id }
+	});
 };
 </script>
 
 <template>
-	<div class="bg-white min-h-screen font-['Be_Vietnam_Pro'] text-gray-900 overflow-x-hidden">
+	<div class="bg-white min-h-screen text-gray-900 overflow-x-hidden">
 		<!-- [1] HERO -->
 		<ServiceHero />
 
@@ -53,14 +56,7 @@ const openBooking = (service) => {
 		<ServiceProcess />
 
 
-		<!-- Booking Modal Unified -->
-		<ProductBookingModal 
-			v-if="isBookingModalOpen" 
-			:is-open="isBookingModalOpen"
-			:variant="{ id: selectedService?.id, name: selectedService?.name || 'Tư vấn bảo dưỡng' }"
-			type="Maintenance"
-			@close="isBookingModalOpen = false"
-		/>
+
 
 		<CommonScrollToTop />
 	</div>

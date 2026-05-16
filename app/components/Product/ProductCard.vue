@@ -73,7 +73,7 @@ const toggleCompare = (e) => {
 		:to="currentUrl"
 		class="group relative bg-white rounded-24 overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 border border-slate-100 flex flex-col h-full"
 	>
-		<div class="relative aspect-[4/5] overflow-hidden bg-slate-50">
+		<div class="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden bg-slate-50">
 			<img
 				:src="currentImage"
 				:alt="product.name"
@@ -97,17 +97,17 @@ const toggleCompare = (e) => {
 			</div>
 		</div>
 
-		<div class="p-5 flex flex-col flex-1">
+		<div class="p-4 sm:p-5 flex flex-col flex-1">
 			<!-- Product Name -->
 			<h3
-				class="text-slate-900 font-bold text-lg mb-4 line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors"
+				class="text-slate-900 font-bold text-base sm:text-lg mb-3 sm:mb-4 line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] group-hover:text-primary transition-colors"
 			>
 				{{ product.name }}
 			</h3>
             
             <div class="flex flex-col gap-1 mb-6">
                 <span class="text-xs text-slate-400 font-medium">Giá từ</span>
-                <span class="text-primary font-bold text-2xl tracking-tight">{{ currentPrice }}</span>
+                <span class="text-primary font-bold text-xl sm:text-2xl tracking-tight">{{ currentPrice }}</span>
             </div>
 
 			<!-- Price and Action -->

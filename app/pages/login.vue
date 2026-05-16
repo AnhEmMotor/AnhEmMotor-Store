@@ -8,7 +8,7 @@ useSeoMeta({
 </script>
 
 <template>
-	<div class="auth-wrapper min-h-screen bg-[#f8fafc] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-['Be_Vietnam_Pro'] relative overflow-hidden">
+	<div class="auth-wrapper min-h-screen bg-[#f8fafc] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
 		<!-- Dynamic Background Effects -->
 		<div class="absolute inset-0 pointer-events-none z-0">
 			<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse"></div>

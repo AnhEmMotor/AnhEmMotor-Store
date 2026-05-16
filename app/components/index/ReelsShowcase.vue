@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
 
-import BaseSectionHeader from "@/components/ui/BaseSectionHeader.vue";
-import ReelCard from "@/components/ui/ReelCard.vue";
-import VideoModal from "@/components/ui/VideoModal.vue";
+import BaseSectionHeader from "../ui/BaseSectionHeader.vue";
+import ReelCard from "../ui/ReelCard.vue";
+import VideoModal from "../ui/VideoModal.vue";
 
 const activeVideo = ref(null);
 const isOpen = ref(false);
@@ -20,7 +20,7 @@ const closeVideo = () => {
 </script>
 
 <template>
-	<section class="py-24 bg-white relative overflow-hidden">
+	<section class="py-12 md:py-24 bg-white relative overflow-hidden">
 		<div class="container mx-auto px-6">
 			<div class="flex flex-col md:flex-row justify-between items-end gap-10 mb-16">
 				<div class="space-y-4 max-w-2xl">
@@ -43,7 +43,7 @@ const closeVideo = () => {
 				</NuxtLink>
 			</div>
 
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+			<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
 				<ReelCard
 					v-for="reel in REELS"
 					:key="reel.id"

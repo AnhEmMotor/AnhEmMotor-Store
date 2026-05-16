@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-	<div class="flex flex-col">
+	<div class="flex flex-col min-h-screen bg-white">
 		<LayoutTheHeader />
 		<main class="grow mx-auto w-full pt-[72px] lg:pt-[104px]">
 			<slot />

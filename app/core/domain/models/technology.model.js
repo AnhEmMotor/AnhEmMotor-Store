@@ -38,5 +38,6 @@ export class ManagementFeature {
     constructor(data = {}) {
         this.title = data.title || "";
         this.desc = data.desc || "";
+        this.icon = data.icon || "fa6-solid:circle-check";
     }
 }

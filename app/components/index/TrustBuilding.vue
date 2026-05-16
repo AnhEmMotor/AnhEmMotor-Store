@@ -1,8 +1,8 @@
 <script setup>
-import TrustServiceCard from "@/components/ui/TrustServiceCard.vue";
-import TestimonialCard from "@/components/ui/TestimonialCard.vue";
-import ShowroomItem from "@/components/ui/ShowroomItem.vue";
-import ShowroomMap from "@/components/ui/ShowroomMap.vue";
+import TrustServiceCard from "../ui/TrustServiceCard.vue";
+import TestimonialCard from "../ui/TestimonialCard.vue";
+import ShowroomItem from "../ui/ShowroomItem.vue";
+import ShowroomMap from "../ui/ShowroomMap.vue";
 
 const selectedShowroom = ref(SHOWROOMS[0]);
 </script>
@@ -11,7 +11,7 @@ const selectedShowroom = ref(SHOWROOMS[0]);
 	<section class="py-24 bg-white overflow-hidden relative">
 		<div class="container mx-auto px-6 relative z-10">
 			<div
-				class="bg-slate-50 rounded-24 p-10 md:p-16 mb-24 border border-slate-100"
+				class="bg-slate-50 rounded-24 p-6 sm:p-10 md:p-16 mb-24 border border-slate-100"
 			>
 				<div class="flex flex-col gap-4 mb-16 text-center max-w-3xl mx-auto">
                     <div class="text-primary font-bold uppercase tracking-widest text-sm">Giá trị cốt lõi</div>
@@ -76,37 +76,42 @@ const selectedShowroom = ref(SHOWROOMS[0]);
                         </p>
 					</div>
 
-					<div class="relative rounded-24 overflow-hidden shadow-elevated group">
-                        <ShowroomMap :showroom="SHOWROOMS[0]" class="w-full h-[500px] md:h-[600px]" />
+					<div class="relative rounded-[32px] md:rounded-[50px] overflow-hidden shadow-elevated group border-[6px] md:border-[10px] border-white">
+                        <ShowroomMap :showroom="SHOWROOMS[0]" class="w-full h-[550px] md:h-[650px]" />
                         
-                        <div class="absolute bottom-6 left-6 right-6 md:right-auto md:w-[400px] bg-white/95 backdrop-blur-md p-8 rounded-24 shadow-2xl border border-slate-100 space-y-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                            <div class="flex items-center gap-5">
-                                <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0">
-                                    <Icon name="ph:map-pin-bold" class="text-2xl" />
+                        <div class="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-auto md:w-[420px] bg-white/95 backdrop-blur-md p-6 md:p-10 rounded-[28px] md:rounded-[40px] shadow-2xl border border-white/50 space-y-5 md:space-y-8 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                            <div class="flex items-center gap-5 md:gap-6">
+                                <div class="w-12 h-12 md:w-14 md:h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center shrink-0">
+                                    <Icon name="ph:map-pin-bold" class="text-2xl md:text-3xl" />
                                 </div>
                                 <div>
-                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Địa chỉ</div>
-                                    <div class="text-slate-900 font-bold text-base leading-tight">{{ SHOWROOMS[0].address }}</div>
+                                    <div class="text-[10px] md:text-[11px] text-gray-400 font-black uppercase tracking-widest mb-1">Địa chỉ Showroom</div>
+                                    <div class="text-gray-900 font-black text-sm md:text-lg leading-tight">{{ SHOWROOMS[0].address }}</div>
                                 </div>
                             </div>
 
-                            <div class="flex items-center gap-5 border-y border-slate-100 py-6">
-                                <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0">
-                                    <Icon name="ph:phone-bold" class="text-2xl" />
+                            <div class="flex items-center gap-5 md:gap-6 border-y border-gray-50 py-6 md:py-8">
+                                <div class="w-12 h-12 md:w-14 md:h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center shrink-0">
+                                    <Icon name="ph:phone-bold" class="text-2xl md:text-3xl" />
                                 </div>
                                 <div>
-                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Hotline hỗ trợ</div>
-                                    <div class="text-slate-900 font-bold text-lg leading-none">{{ SHOWROOMS[0].phone }}</div>
+                                    <div class="text-[10px] md:text-[11px] text-gray-400 font-black uppercase tracking-widest mb-1">Hotline hỗ trợ 24/7</div>
+                                    <div class="text-gray-900 font-black text-lg md:text-xl leading-none">{{ SHOWROOMS[0].phone }}</div>
                                 </div>
                             </div>
 
-                            <div class="flex items-center gap-5">
-                                <div class="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center shrink-0">
-                                    <Icon name="ph:clock-bold" class="text-2xl" />
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-5 md:gap-6">
+                                    <div class="w-12 h-12 md:w-14 md:h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center shrink-0">
+                                        <Icon name="ph:clock-bold" class="text-2xl md:text-3xl" />
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] md:text-[11px] text-gray-400 font-black uppercase tracking-widest mb-1">Giờ mở cửa</div>
+                                        <div class="text-gray-900 font-black text-sm md:text-base leading-none">08:00 - 20:00 (Hàng ngày)</div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Giờ mở cửa</div>
-                                    <div class="text-slate-900 font-bold text-base leading-none">08:00 - 20:00 (Hàng ngày)</div>
+                                <div class="hidden md:flex flex-col items-end">
+                                    <span class="text-[9px] font-black text-green-500 uppercase tracking-widest mb-1 animate-pulse">● Đang mở cửa</span>
                                 </div>
                             </div>
                         </div>

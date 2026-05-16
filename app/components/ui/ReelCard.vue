@@ -34,22 +34,22 @@ defineEmits(["play"]);
 			</div>
 		</div>
 
-		<div class="absolute bottom-0 left-0 w-full p-6 space-y-3">
-			<div class="flex items-center gap-3">
+		<div class="absolute bottom-0 left-0 w-full p-3 sm:p-6 space-y-2 sm:space-y-3">
+			<div class="flex items-center gap-2 sm:gap-3">
 				<span
-					class="px-2 py-1 bg-primary text-white text-[10px] font-bold rounded-lg"
+					class="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-primary text-white text-[8px] sm:text-[10px] font-bold rounded-lg"
 				>
 					{{ reel.duration }}
 				</span>
 				<span
-					class="text-white/80 text-[10px] font-bold flex items-center gap-1.5"
+					class="text-white/80 text-[8px] sm:text-[10px] font-bold flex items-center gap-1.5"
 				>
 					<Icon name="ph:eye-bold" />
 					{{ reel.views }}
 				</span>
 			</div>
 			<h3
-				class="text-white font-bold text-base line-clamp-2 leading-tight group-hover:text-primary transition-colors"
+				class="text-white font-bold text-xs sm:text-base line-clamp-2 leading-tight group-hover:text-primary transition-colors"
 			>
 				{{ reel.title }}
 			</h3>

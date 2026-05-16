@@ -17,7 +17,7 @@ const scrollToTop = () => {
 <template>
 	<div
 		v-if="isVisible"
-		class="fixed bottom-10 right-6 z-[1000] flex flex-col items-end gap-4"
+		class="fixed bottom-24 right-6 sm:bottom-10 z-[1000] flex flex-col items-end gap-4"
 	>
 		<!-- AI CHAT WINDOW (UI ONLY) -->
 		<Transition name="chat-slide">
@@ -138,7 +138,7 @@ const scrollToTop = () => {
 			:class="isAiOpen ? 'bg-primary border-primary/20 rotate-180' : 'bg-slate-900'"
 			@click="isAiOpen = !isAiOpen"
 		>
-			<Icon :name="isAiOpen ? 'fa6-solid:xmark' : 'fa6-solid:robot'" class="text-2xl transition-all" />
+			<Icon :name="isAiOpen ? 'fa6-solid:xmark' : 'fa6-solid:robot'" class="text-3xl transition-all" />
 			<div v-if="!isAiOpen" class="absolute right-full mr-4 px-3 py-2 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap border border-white/10">
 				AI Support (Beta)
 			</div>
@@ -156,7 +156,7 @@ const scrollToTop = () => {
 		>
 			<Icon
 				:name="isContactOpen ? 'fa6-solid:xmark' : 'fa6-solid:comment-dots'"
-				class="text-3xl"
+				class="text-4xl"
 			/>
 			<span
 				v-if="!isContactOpen"
@@ -199,6 +199,13 @@ const scrollToTop = () => {
 	opacity: 0;
 }
 
-
+/* Mobile: AI Chat window full screen feel */
+@media (max-width: 640px) {
+	:deep(.absolute.bottom-20) {
+		width: calc(100vw - 2rem);
+		right: 0;
+		height: 480px;
+	}
+}
 </style>
 

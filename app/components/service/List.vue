@@ -1,9 +1,9 @@
 <template>
-	<div id="services-grid" class="bg-white pt-8 pb-32">
+	<div id="services-grid" class="bg-white pt-8 pb-12">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<!-- Header Title -->
-			<div class="mb-20 text-center space-y-4">
-				<h2 class="text-5xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter">
+			<div class="mb-10 text-center space-y-4">
+				<h2 class="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter">
 					Chi Tiết Các <span class="text-red-600">Gói Dịch Vụ</span>
 				</h2>
 				<p class="text-gray-400 text-xs font-black uppercase tracking-[0.4em]">Tiêu chuẩn kỹ thuật 5 sao</p>

@@ -3,6 +3,8 @@ import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
 
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
 export default defineNuxtConfig({
 	ssr: true,
 	compatibilityDate: "2025-07-15",
@@ -27,6 +29,7 @@ export default defineNuxtConfig({
 			scan: true,
 		},
 		serverBundle: "auto",
+        collections: ['ph', 'lucide', 'fa6-solid', 'fa6-regular']
 	},
 
 	sitemap: {
@@ -109,13 +112,9 @@ export default defineNuxtConfig({
 			},
 		},
 		routeRules: {
-			"/api/**": {
-				proxy: "http://localhost:5000/api/**",
-			},
-			"/**": {
-				headers: {
-					"Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-				},
+			"/contact": { redirect: "/support" },
+			"/api/v1/**": {
+				proxy: "http://localhost:5000/api/v1/**",
 			},
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
@@ -147,7 +146,7 @@ export default defineNuxtConfig({
 				},
 				{
 					rel: "stylesheet",
-					href: "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&family=Manrope:wght@200..800&display=swap",
+					href: "https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap",
 				},
 			],
 			script: [],

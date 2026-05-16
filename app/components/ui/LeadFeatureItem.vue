@@ -13,7 +13,9 @@ defineProps({
 
 <template>
 	<div class="flex items-center gap-2">
-		<Icon :name="icon" class="text-red-600" />
+		<ClientOnly>
+			<Icon :name="icon" class="text-red-600" />
+		</ClientOnly>
 		{{ text }}
 	</div>
 </template>

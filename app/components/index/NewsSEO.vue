@@ -1,8 +1,8 @@
 <script setup>
 
-import BaseSectionHeader from "@/components/ui/BaseSectionHeader.vue";
-import NewsCard from "@/components/ui/NewsCard.vue";
-import YoutubeReview from "@/components/ui/YoutubeReview.vue";
+import BaseSectionHeader from "../ui/BaseSectionHeader.vue";
+import NewsCard from "../ui/NewsCard.vue";
+import YoutubeReview from "../ui/YoutubeReview.vue";
 
 const newsStore = useNewsStore();
 </script>

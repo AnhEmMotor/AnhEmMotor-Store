@@ -36,22 +36,26 @@ const handleViewDetail = (product) => {
 				</p>
 			</div>
 
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-				<template v-if="isPending">
-					<div
-						v-for="i in 4"
-						:key="i"
-						class="bg-white rounded-24 p-6 h-[400px] border border-slate-100 animate-pulse"
-					/>
-				</template>
+			<ClientOnly>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+					<template v-if="isPending">
+						<div
+							v-for="i in 4"
+							:key="i"
+							class="bg-white rounded-24 p-6 h-[400px] border border-slate-100 animate-pulse"
+						/>
+					</template>
 
-				<ProductCard
-					v-for="product in products"
-					:key="product.id"
-					:product="product"
-					@click="handleViewDetail(product)"
-				/>
-			</div>
+					<template v-else>
+						<ProductCard
+							v-for="product in products"
+							:key="product.id"
+							:product="product"
+							@click="handleViewDetail(product)"
+						/>
+					</template>
+				</div>
+			</ClientOnly>
 		</div>
 	</section>
 </template>

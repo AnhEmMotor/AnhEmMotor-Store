@@ -1,5 +1,5 @@
 <template>
-	<section class="relative w-full h-[60vh] md:h-[75vh] min-h-[500px] overflow-hidden flex items-center bg-gray-900">
+	<section class="relative w-full h-[50vh] md:h-[65vh] min-h-[450px] overflow-hidden flex items-center bg-gray-900">
 		<!-- Background Image with Multi-layer Parallax Feel -->
 		<div class="absolute inset-0 z-0 overflow-hidden">
 			<img 
@@ -14,7 +14,7 @@
 			<div class="absolute top-0 right-0 w-1/2 h-full bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4 z-10 animate-pulse-slow"></div>
 		</div>
 
-		<div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 relative z-20 w-full pt-10">
+		<div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 relative z-20 w-full pt-24">
 			<div class="max-w-3xl">
 				<!-- Badges (Staggered Entrance) -->
 				<div class="flex flex-wrap gap-3 mb-8 animate-reveal-down">
@@ -30,11 +30,11 @@
 
 				<!-- Main Headline (Split Reveal Feel) -->
 				<div class="space-y-6">
-					<h1 class="text-5xl md:text-7xl lg:text-8xl font-[1000] text-white leading-[0.95] tracking-tight animate-reveal-left">
+					<h1 class="text-4xl md:text-6xl lg:text-7xl font-[1000] text-white leading-[0.95] tracking-tight animate-reveal-left">
 						DỊCH VỤ <br />
 						<span class="text-primary italic relative inline-block">
 							CHUẨN 5 SAO
-							<span class="absolute -bottom-2 left-0 w-full h-2 bg-primary/20 -skew-x-12"></span>
+							<span class="absolute -bottom-1.5 left-0 w-full h-1.5 bg-primary/20 -skew-x-12"></span>
 						</span>
 					</h1>
 					<p class="text-gray-300 text-base md:text-xl font-medium max-w-xl leading-relaxed animate-reveal-up opacity-90 [animation-delay:400ms] fill-mode-forwards opacity-0">
@@ -45,26 +45,26 @@
 				<!-- CTA Buttons (Interactive) -->
 				<div class="flex flex-wrap gap-5 pt-10 animate-reveal-up opacity-0 [animation-delay:600ms] fill-mode-forwards">
 					<button 
-						@click="scrollToServices"
-						class="px-10 py-5 bg-primary text-white text-xs font-black uppercase tracking-[0.2em] rounded-2xl shadow-[0_20px_40px_-10px_rgba(230,0,35,0.5)] hover:shadow-[0_25px_50px_-10px_rgba(230,0,35,0.6)] hover:scale-105 active:scale-95 transition-all duration-500 flex items-center gap-3 group overflow-hidden relative"
+						@click="router.push('/service-booking')"
+						class="px-8 py-4 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl shadow-[0_15px_30px_-10px_rgba(230,0,35,0.5)] hover:shadow-[0_20px_40px_-10px_rgba(230,0,35,0.6)] hover:scale-105 active:scale-95 transition-all duration-500 flex items-center gap-3 group overflow-hidden relative"
 					>
 						<span class="relative z-10">Đặt Lịch Ngay</span>
-						<Icon name="fa6-solid:calendar-check" class="relative z-10 group-hover:rotate-12 transition-transform text-base" />
+						<Icon name="fa6-solid:calendar-check" class="relative z-10 group-hover:rotate-12 transition-transform text-sm" />
 						<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
 					</button>
 					<button 
 						@click="scrollToServices"
-						class="px-10 py-5 bg-white/5 backdrop-blur-xl border border-white/20 text-white text-xs font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-white hover:text-gray-950 hover:border-white transition-all duration-500 active:scale-95"
+						class="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-white hover:text-gray-950 hover:border-white transition-all duration-500 active:scale-95"
 					>
 						Xem Bảng Giá
 					</button>
 				</div>
 
 				<!-- Trust Signals Row (Staggered) -->
-				<div class="flex items-center gap-10 mt-16 pt-8 border-t border-white/5 animate-reveal-up opacity-0 [animation-delay:800ms] fill-mode-forwards">
+				<div class="flex items-center gap-8 mt-12 pt-6 border-t border-white/5 animate-reveal-up opacity-0 [animation-delay:800ms] fill-mode-forwards">
 					<div v-for="(stat, idx) in stats" :key="idx" class="group cursor-default">
-						<p class="text-3xl md:text-4xl font-black text-white leading-none group-hover:text-primary transition-colors duration-500">{{ stat.value }}</p>
-						<p class="text-[10px] font-black text-primary uppercase tracking-widest mt-2 opacity-60 group-hover:opacity-100 transition-opacity">{{ stat.label }}</p>
+						<p class="text-2xl md:text-3xl font-black text-white leading-none group-hover:text-primary transition-colors duration-500">{{ stat.value }}</p>
+						<p class="text-[9px] font-black text-primary uppercase tracking-widest mt-1.5 opacity-60 group-hover:opacity-100 transition-opacity">{{ stat.label }}</p>
 					</div>
 				</div>
 			</div>
@@ -76,6 +76,7 @@
 </template>
 
 <script setup>
+const router = useRouter();
 const stats = [
 	{ value: "15+", label: "Kinh nghiệm" },
 	{ value: "20k+", label: "Lượt phục vụ" },

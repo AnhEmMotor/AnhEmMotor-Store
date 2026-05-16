@@ -3,9 +3,9 @@ import { ref, reactive } from "vue";
 import { toast } from "vue3-toastify";
 
 
-import BaseInput from "@/components/ui/BaseInput.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
-import LeadFeatureItem from "@/components/ui/LeadFeatureItem.vue";
+import BaseInput from "../ui/BaseInput.vue";
+import BaseButton from "../ui/BaseButton.vue";
+import LeadFeatureItem from "../ui/LeadFeatureItem.vue";
 import "vue3-toastify/dist/index.css";
 
 const leadForm = reactive({
@@ -48,7 +48,7 @@ const handleSubmit = () => {
 
 		<div class="container mx-auto px-4 relative z-10">
 			<div
-				class="max-w-5xl mx-auto p-8 md:p-20 border border-white/10 rounded-24 bg-white/5 backdrop-blur-xl shadow-2xl transition-all hover:border-primary/30"
+				class="max-w-5xl mx-auto p-6 sm:p-12 md:p-20 border border-white/10 rounded-24 bg-white/5 backdrop-blur-xl shadow-2xl transition-all hover:border-primary/30"
 			>
 				<div class="text-center space-y-6 mb-12">
 					<h2

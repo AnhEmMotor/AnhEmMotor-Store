@@ -60,7 +60,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="tech-page bg-[#0a0a0a] text-white overflow-hidden font-['Be_Vietnam_Pro'] relative">
+  <div class="tech-page bg-[#0a0a0a] text-white overflow-hidden relative">
     <!-- Ambient Background Elements -->
     <div class="fixed inset-0 pointer-events-none z-0">
       <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[120px] animate-pulse"></div>
@@ -84,20 +84,20 @@ onMounted(async () => {
     </div>
 
     <!-- Final Call to Action -->
-    <section class="py-40 px-4 relative overflow-hidden text-center border-t border-white/5 z-10">
+    <section class="py-24 px-4 relative overflow-hidden text-center border-t border-white/5 z-10">
       <div class="absolute inset-0 bg-[#0a0a0a] z-0"></div>
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/10 rounded-full blur-[150px] z-10 animate-pulse"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/10 rounded-full blur-[120px] z-10 animate-pulse"></div>
       
       <div class="relative z-20 max-w-4xl mx-auto reveal reveal-up">
-        <h2 class="text-5xl md:text-7xl font-black mb-12 uppercase italic tracking-tighter leading-tight">GIA NHẬP CỘNG ĐỒNG <br/> <span class="text-red-600 underline decoration-white/20 underline-offset-8">ANHEM MOTOR</span></h2>
-        <p class="text-xl text-gray-400 mb-16 max-w-2xl mx-auto leading-relaxed">Trải nghiệm dịch vụ di chuyển thông minh và các đặc quyền số độc duy nhất chỉ dành cho thành viên của chúng tôi.</p>
-        <div class="flex flex-wrap justify-center gap-8">
-          <a href="#" class="px-12 py-6 bg-red-600 text-white font-black rounded-2xl hover:scale-110 hover:bg-red-700 transition-all flex items-center gap-4 shadow-[0_20px_50px_rgba(220,38,38,0.4)] group active:scale-95">
-            <Icon name="lucide:smartphone" class="text-2xl group-hover:animate-bounce" /> TẢI APP NGAY
-          </a>
-          <a href="#" class="px-12 py-6 bg-white/5 backdrop-blur-md text-white font-black rounded-2xl hover:bg-white/10 transition-all border border-white/10 flex items-center gap-4 hover:border-red-600/50 shadow-xl">
+        <h2 class="text-4xl md:text-5xl font-black mb-8 uppercase italic tracking-tighter leading-tight">GIA NHẬP CỘNG ĐỒNG <br/> <span class="text-red-600 underline decoration-white/20 underline-offset-8">ANHEM MOTOR</span></h2>
+        <p class="text-lg text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">Trải nghiệm dịch vụ di chuyển thông minh và các đặc quyền số độc duy nhất chỉ dành cho thành viên của chúng tôi.</p>
+        <div class="flex flex-wrap justify-center gap-6">
+          <NuxtLink to="/support" class="px-10 py-5 bg-red-600 text-white font-black rounded-xl hover:scale-110 hover:bg-red-700 transition-all flex items-center gap-4 shadow-[0_20px_50px_rgba(220,38,38,0.4)] group active:scale-95">
+            <Icon name="lucide:smartphone" class="text-xl group-hover:animate-bounce" /> TẢI APP NGAY
+          </NuxtLink>
+          <NuxtLink to="/about" class="px-10 py-5 bg-white/5 backdrop-blur-md text-white font-black rounded-xl hover:bg-white/10 transition-all border border-white/10 flex items-center gap-4 hover:border-red-600/50 shadow-xl">
              HỆ THỐNG SHOWROOM <Icon name="lucide:map-pinned" class="group-hover:translate-y-[-4px] transition-transform" />
-          </a>
+          </NuxtLink>
         </div>
       </div>
     </section>
