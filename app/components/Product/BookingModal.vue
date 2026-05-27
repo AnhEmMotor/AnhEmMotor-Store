@@ -115,7 +115,7 @@ const close = () => {
         <div v-if="isOpen" class="fixed inset-0 z-[2000] flex items-center justify-center p-4 lg:p-10">
 
             <!-- Backdrop -->
-            <div class="absolute inset-0 bg-gray-900/80 backdrop-blur-md" @click="close"></div>
+            <div class="absolute inset-0 bg-gray-900/80 backdrop-blur-md" @click="close"/>
 
             <!-- Modal Content -->
             <div class="relative w-full max-w-4xl bg-white rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-white/20 max-h-[95vh]">
@@ -158,7 +158,7 @@ const close = () => {
                 <!-- Right: Form -->
                 <div class="lg:w-2/3 p-8 lg:p-14 bg-white relative overflow-y-auto max-h-[90vh] lg:max-h-none no-scrollbar">
 
-                    <button @click="close" class="absolute top-8 right-8 w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all shadow-sm">
+                    <button class="absolute top-8 right-8 w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all shadow-sm" @click="close">
                         <Icon name="fa6-solid:xmark" />
                     </button>
 
@@ -166,10 +166,10 @@ const close = () => {
                         <div class="mb-10">
                             <h3 class="text-2xl font-black text-gray-900 uppercase mb-2">Thông tin khách hàng</h3>
 
-                            <div class="h-1 w-12 bg-red-600 rounded-full"></div>
+                            <div class="h-1 w-12 bg-red-600 rounded-full"/>
                         </div>
 
-                        <form @submit.prevent="handleSubmit" class="space-y-6">
+                        <form class="space-y-6" @submit.prevent="handleSubmit">
                             <!-- User Info -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-2 md:col-span-2">
@@ -190,7 +190,7 @@ const close = () => {
                             <div v-if="type === 'Maintenance'" class="space-y-6 pt-4 border-t border-gray-50">
                                 <div class="mb-4">
                                     <h3 class="text-xl font-black text-gray-900 uppercase mb-2">Thông tin phương tiện</h3>
-                                    <div class="h-1 w-8 bg-red-600 rounded-full"></div>
+                                    <div class="h-1 w-8 bg-red-600 rounded-full"/>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Dòng xe đang sử dụng *</label>
@@ -198,7 +198,7 @@ const close = () => {
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Tình trạng xe / Yêu cầu chi tiết *</label>
-                                    <textarea v-model="form.condition" required rows="3" placeholder="Mô tả tình trạng xe hoặc yêu cầu của bạn..." class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-medium focus:ring-2 focus:ring-red-600/20 transition-all"></textarea>
+                                    <textarea v-model="form.condition" required rows="3" placeholder="Mô tả tình trạng xe hoặc yêu cầu của bạn..." class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-medium focus:ring-2 focus:ring-red-600/20 transition-all"/>
                                     
                                     <!-- Suggestions -->
                                     <div class="flex flex-wrap gap-2 mt-2">
@@ -206,8 +206,8 @@ const close = () => {
                                             v-for="sug in ['Bảo dưỡng định kỳ', 'Xe khó nổ máy', 'Phanh không ăn', 'Có tiếng động lạ', 'Thay lốp mới']" 
                                             :key="sug"
                                             type="button"
-                                            @click="form.condition = sug"
                                             class="text-[9px] font-bold px-3 py-1.5 bg-gray-100 text-gray-500 rounded-lg hover:bg-red-600 hover:text-white transition-all whitespace-nowrap"
+                                            @click="form.condition = sug"
                                         >
                                             + {{ sug }}
                                         </button>
@@ -265,7 +265,7 @@ const close = () => {
                         <p class="text-gray-500 font-bold max-w-sm text-xs leading-relaxed">
                             Cảm ơn bạn đã tin tưởng AnhEm Motor. Chúng tôi sẽ liên hệ sớm nhất để xác nhận yêu cầu của bạn.
                         </p>
-                        <button @click="close" class="px-10 py-4 bg-gray-900 text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-red-600 transition-all shadow-lg">
+                        <button class="px-10 py-4 bg-gray-900 text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-red-600 transition-all shadow-lg" @click="close">
                             Đóng cửa sổ
                         </button>
                     </div>

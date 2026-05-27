@@ -84,9 +84,9 @@ const formatPrice = (price) => {
 </script>
 
 <template>
-	<div class="space-y-6">
+	<div class="space-y-5">
 		<!-- Header -->
-		<div class="bg-white rounded-[24px] p-6 shadow-sm border border-gray-100">
+		<div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
 			<div class="flex items-center justify-between mb-2">
 				<h2 class="text-xl font-black text-gray-900 uppercase tracking-tight">Dịch vụ sử dụng</h2>
 				<span class="text-xs font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
@@ -101,13 +101,13 @@ const formatPrice = (price) => {
 			<button 
 				v-for="filter in filters" 
 				:key="filter.id"
-				@click="activeFilter = filter.id"
 				:class="[
-					'flex items-center gap-2 px-5 py-3 rounded-2xl text-[11px] font-black transition-all whitespace-nowrap border shrink-0',
+					'flex items-center gap-2 px-5 py-3 rounded-md text-[11px] font-black transition-all whitespace-nowrap border shrink-0',
 					activeFilter === filter.id 
 						? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' 
 						: 'bg-white text-gray-500 border-gray-100 hover:border-primary/30 hover:bg-gray-50'
 				]"
+				@click="activeFilter = filter.id"
 			>
 				<Icon :name="filter.icon" class="text-sm" />
 				{{ filter.label }}
@@ -119,11 +119,11 @@ const formatPrice = (price) => {
 			<div 
 				v-for="service in filteredServices" 
 				:key="service.id"
-				class="bg-white rounded-[24px] p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all group"
+				class="bg-white rounded-lg p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all group"
 			>
 				<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
 					<div class="flex items-start gap-4">
-						<div class="w-14 h-14 rounded-2xl bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors">
+						<div class="w-14 h-14 rounded-md bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors">
 							<Icon :name="service.icon" class="text-2xl text-primary group-hover:text-white" />
 						</div>
 						<div class="space-y-1">
@@ -175,7 +175,7 @@ const formatPrice = (price) => {
 		</div>
 
 		<!-- Empty State -->
-		<div v-else class="bg-white rounded-[24px] p-16 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
+		<div v-else class="bg-white rounded-lg p-12 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
 			<div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
 				<Icon name="ph:wrench-duotone" class="text-4xl text-gray-200" />
 			</div>
@@ -186,14 +186,14 @@ const formatPrice = (price) => {
 			<NuxtLink 
 				v-if="activeFilter === 'All'"
 				to="/service"
-				class="px-8 py-3 bg-primary text-white text-[11px] font-black rounded-xl hover:shadow-lg hover:shadow-primary/20 transition-all"
+				class="px-8 py-3 bg-primary text-white text-[11px] font-black rounded-md hover:shadow-lg hover:shadow-primary/20 transition-all"
 			>
 				Đặt lịch dịch vụ ngay
 			</NuxtLink>
 			<button 
 				v-else
+				class="px-8 py-3 bg-gray-900 text-white text-[11px] font-black rounded-md hover:shadow-lg transition-all"
 				@click="activeFilter = 'All'"
-				class="px-8 py-3 bg-gray-900 text-white text-[11px] font-black rounded-xl hover:shadow-lg transition-all"
 			>
 				Xem tất cả dịch vụ
 			</button>

@@ -7,25 +7,39 @@ const newsMapper = {
 	},
 
 	mapNewsItem(raw) {
-		const date = raw.createdAt || raw.publishedAt;
-		const formattedDate = date
-			? new Date(date).toLocaleDateString("vi-VN")
-			: "";
+		const date = raw.createdAt || raw.publishedAt || raw.date;
+		let formattedDate = "";
+		if (date) {
+			try {
+				const d = new Date(date);
+				if (!isNaN(d.getTime())) {
+					formattedDate = d.toLocaleDateString("vi-VN");
+				}
+			} catch {
+				// Ignore
+			}
+		}
+		if (!formattedDate && raw.date) {
+			formattedDate = raw.date;
+		}
+
+		const summary = raw.summary || raw.excerpt || raw.shortDescription || raw.description || "";
 
 		return {
 			id: raw.id,
 			title: raw.title,
 			slug: raw.slug,
-			summary: raw.summary,
-			excerpt: raw.summary, // Used by some components
+			summary: summary,
+			excerpt: summary, // Used by some components
 			content: raw.content,
-			image: getImageUrl(raw.coverImageUrl || raw.cover_image_url || raw.thumbnailUrl || raw.imageUrl),
-			category: raw.categoryName || "Tin tức",
+			image: getImageUrl(raw.image || raw.coverImageUrl || raw.cover_image_url || raw.thumbnailUrl || raw.imageUrl || raw.thumbnail),
+			category: raw.categoryName || raw.category?.name || raw.category || "Tin tức",
 			author: raw.authorName || "AnhEm Motor",
 			createdAt: raw.createdAt,
 			publishedAt: raw.publishedAt || raw.createdAt,
 			date: formattedDate, // Used by NewsCard
-			featured: raw.isFeatured || false,
+			featured: raw.isFeatured || raw.featured || false,
+			isHot: raw.isHot || false,
 		};
 	},
 

@@ -91,54 +91,54 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 </script>
 
 <template>
-	<div class="booking-page min-h-screen bg-[#FDFDFD] py-12 lg:py-20">
+	<div class="booking-page min-h-screen bg-[#FDFDFD] py-8 lg:py-12">
 		<!-- Decorative Background -->
 		<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-			<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-red-600/5 rounded-full blur-[120px]"></div>
-			<div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[100px]"></div>
+			<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-red-600/5 rounded-full blur-[120px]"/>
+			<div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[100px]"/>
 		</div>
 
 		<div class="container mx-auto px-6 relative z-10">
 			<div class="max-w-7xl mx-auto">
 				<!-- Header Section -->
-				<div class="mb-6 animate-reveal-down">
+				<div class="mb-4 animate-reveal-down">
 					<h1 class="text-3xl lg:text-4xl font-[1000] text-gray-900 leading-none tracking-tighter uppercase italic">
 						Đăng ký <span class="text-red-600">Dịch vụ</span>
 					</h1>
 					<div class="flex items-center gap-3 mt-3">
-						<div class="h-[1px] w-8 bg-red-600"></div>
+						<div class="h-[1px] w-8 bg-red-600"/>
 						<p class="text-gray-400 font-bold text-[8px] uppercase tracking-[0.3em]">
 							Hệ thống đặt lịch chuyên nghiệp AnhEm Motor
 						</p>
 					</div>
 				</div>
 
-				<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+				<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 					<!-- Left: Form (Condensed) -->
-					<div class="lg:col-span-8 animate-reveal-up pb-8">
-						<div class="bg-white rounded-[2rem] p-6 lg:p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.04)] border border-gray-100 relative overflow-hidden">
-							<div class="absolute top-0 left-0 w-full h-2 bg-red-600"></div>
+					<div class="lg:col-span-8 animate-reveal-up pb-6">
+						<div class="bg-white rounded-[2rem] p-5 lg:p-6 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.04)] border border-gray-100 relative overflow-hidden">
+							<div class="absolute top-0 left-0 w-full h-2 bg-red-600"/>
 							<div v-if="!isSuccess">
-								<form @submit.prevent="handleSubmit" class="space-y-8">
+								<form class="space-y-3" @submit.prevent="handleSubmit">
 									<!-- Customer Info -->
-									<section class="space-y-6">
-										<div class="flex items-center justify-between pb-3 border-b border-gray-50">
-											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-center gap-2">
-												<span class="text-red-600 text-xl font-black">/01</span>
-												Thông tin khách hàng
+									<section class="space-y-3">
+										<div class="flex items-center justify-between pb-2 border-b border-gray-50">
+											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-start gap-2 text-left leading-tight">
+												<span class="text-red-600 text-xl font-black leading-tight shrink-0">/01</span>
+												<span>Thông tin khách hàng</span>
 											</h2>
 											<Icon name="ph:user-focus-fill" class="text-lg text-gray-200" />
 										</div>
-										<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-											<div class="space-y-2">
+										<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Họ tên *</label>
 												<input v-model="form.fullName" type="text" required placeholder="Ví dụ: Nguyễn Văn A" class="booking-input uppercase">
 											</div>
-											<div class="space-y-2">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Số điện thoại *</label>
 												<input v-model="form.phone" type="tel" required placeholder="09xx xxx xxx" class="booking-input">
 											</div>
-											<div class="space-y-2">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email</label>
 												<input v-model="form.email" type="email" placeholder="khachhang@gmail.com" class="booking-input">
 											</div>
@@ -146,33 +146,33 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 									</section>
 
 									<!-- Vehicle Info -->
-									<section class="space-y-6 pt-4">
-										<div class="flex items-center justify-between pb-3 border-b border-gray-50">
-											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-center gap-2">
-												<span class="text-red-600 text-xl font-black">/02</span>
-												Thông tin phương tiện
+									<section class="space-y-3">
+										<div class="flex items-center justify-between pb-2 border-b border-gray-50">
+											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-start gap-2 text-left leading-tight">
+												<span class="text-red-600 text-xl font-black leading-tight shrink-0">/02</span>
+												<span>Thông tin phương tiện</span>
 											</h2>
 											<Icon name="ph:motorcycle-fill" class="text-lg text-gray-200" />
 										</div>
-										<div class="space-y-2">
+										<div class="space-y-1.5">
 											<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Dòng xe đang sử dụng *</label>
 											<input v-model="form.motorcycleModel" type="text" required placeholder="Nhập tên xe (VD: SH 150i, Exciter...)" class="booking-input uppercase">
 											
 											<!-- Brand Suggestions -->
-											<div class="flex flex-wrap gap-2 mt-2">
+											<div class="flex flex-wrap gap-2 mt-1.5">
 												<button 
 													v-for="brand in ['Honda', 'Yamaha', 'Piaggio', 'Suzuki', 'SYM']" 
 													:key="brand"
 													type="button"
-													@click="form.motorcycleModel = brand"
 													class="text-[9px] font-black px-3 py-1.5 bg-white text-gray-400 rounded-lg hover:text-red-600 hover:border-red-600/30 transition-all border border-gray-100 uppercase tracking-widest"
+													@click="form.motorcycleModel = brand"
 												>
 													{{ brand }}
 												</button>
 											</div>
 										</div>
 										<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-											<div class="space-y-2">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Loại xe</label>
 												<select v-model="form.vehicleType" class="booking-input cursor-pointer">
 													<option value="">Chọn loại xe</option>
@@ -182,7 +182,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 													<option value="Moto">Moto</option>
 												</select>
 											</div>
-											<div class="space-y-2">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phiên bản</label>
 												<select v-model="form.version" class="booking-input cursor-pointer">
 													<option value="">Chọn phiên bản</option>
@@ -193,7 +193,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 													<option value="Khác">Khác</option>
 												</select>
 											</div>
-											<div class="space-y-2">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Màu sắc</label>
 												<select v-model="form.color" class="booking-input cursor-pointer">
 													<option value="">Chọn màu sắc</option>
@@ -207,22 +207,22 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 												</select>
 											</div>
 										</div>
-										<div class="space-y-2">
+										<div class="space-y-1.5">
 											<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Tình trạng xe / Yêu cầu chi tiết *</label>
-											<textarea v-model="form.condition" required rows="4" placeholder="Mô tả tình trạng xe hoặc yêu cầu của bạn..." class="booking-input resize-none py-4"></textarea>
+											<textarea v-model="form.condition" required rows="3" placeholder="Mô tả tình trạng xe hoặc yêu cầu của bạn..." class="booking-input resize-none py-3"/>
 											
-											<div class="flex flex-wrap gap-2 mt-3">
+											<div class="flex flex-wrap gap-2 mt-2">
 												<button 
 													v-for="sug in ['Bảo dưỡng định kỳ', 'Xe khó nổ máy', 'Phanh không ăn', 'Có tiếng động lạ', 'Thay lốp mới']" 
 													:key="sug"
 													type="button"
-													@click="form.condition = sug"
 													:class="[
 														'text-[10px] font-black px-4 py-2 rounded-xl transition-all border uppercase tracking-wider',
 														form.condition === sug 
 															? 'bg-red-600 text-white border-red-600' 
 															: 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-white hover:border-red-600/30'
 													]"
+													@click="form.condition = sug"
 												>
 													{{ sug }}
 												</button>
@@ -231,27 +231,27 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 									</section>
 
 									<!-- Schedule -->
-									<section class="space-y-6 pt-4">
-										<div class="flex items-center justify-between pb-3 border-b border-gray-50">
-											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-center gap-2">
-												<span class="text-red-600 text-xl font-black">/03</span>
-												Thời gian hẹn
+									<section class="space-y-3">
+										<div class="flex items-center justify-between pb-2 border-b border-gray-50">
+											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-start gap-2 text-left leading-tight">
+												<span class="text-red-600 text-xl font-black leading-tight shrink-0">/03</span>
+												<span>Thời gian hẹn</span>
 											</h2>
 											<Icon name="ph:clock-countdown-fill" class="text-lg text-gray-200" />
 										</div>
-										<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-											<div class="space-y-2">
+										<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Ngày hẹn *</label>
 												<input v-model="form.date" type="date" required :min="minDate" class="booking-input">
 											</div>
-											<div class="space-y-2">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Buổi</label>
 												<select v-model="form.session" class="booking-input cursor-pointer">
 													<option value="Sáng">Sáng</option>
 													<option value="Chiều">Chiều</option>
 												</select>
 											</div>
-											<div class="space-y-2">
+											<div class="space-y-1.5">
 												<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Giờ dự kiến</label>
 												<div class="relative">
 													<select v-model="form.hour" class="booking-input cursor-pointer appearance-none">
@@ -264,19 +264,19 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 									</section>
 
 									<!-- Confirmation -->
-									<div class="pt-4">
-										<label class="flex items-start gap-4 p-6 bg-gray-50 rounded-3xl border border-gray-100 cursor-pointer group hover:bg-white hover:border-red-600/30 transition-all">
-											<div class="relative flex items-center justify-center mt-1">
-												<input v-model="form.isConfirmed" type="checkbox" required class="peer appearance-none w-6 h-6 rounded-lg border-2 border-gray-200 checked:bg-red-600 checked:border-red-600 transition-all cursor-pointer">
+									<div class="pt-1">
+										<label class="flex items-start gap-3 p-3.5 sm:gap-4 sm:p-4 bg-gray-50 rounded-2xl border border-gray-100 cursor-pointer group hover:bg-white hover:border-red-600/30 transition-all">
+											<div class="relative flex items-center justify-center mt-0.5 sm:mt-1">
+												<input v-model="form.isConfirmed" type="checkbox" required class="peer appearance-none w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg border-2 border-gray-200 checked:bg-red-600 checked:border-red-600 transition-all cursor-pointer">
 												<Icon name="ph:check-bold" class="absolute text-[12px] text-white opacity-0 peer-checked:opacity-100 transition-all pointer-events-none" />
 											</div>
-											<span class="text-[11px] font-bold text-gray-500 tracking-wide select-none leading-relaxed">
+											<span class="text-[10px] sm:text-[11px] font-bold text-gray-500 tracking-normal sm:tracking-wide select-none leading-relaxed">
 												Tôi xác nhận thông tin trên là chính xác và đồng ý đặt lịch dịch vụ tại AnhEm Motor.
 											</span>
 										</label>
 									</div>
 
-									<button type="submit" :disabled="isSubmitting || !form.isConfirmed" class="w-full py-5 bg-gray-950 text-white font-[1000] text-xs uppercase tracking-[0.4em] rounded-[1.25rem] hover:bg-red-600 transition-all shadow-xl disabled:bg-gray-100 disabled:text-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-3 group mt-6">
+									<button type="submit" :disabled="isSubmitting || !form.isConfirmed" class="w-full py-4 bg-gray-950 text-white font-[1000] text-xs uppercase tracking-[0.4em] rounded-[1.25rem] hover:bg-red-600 transition-all shadow-xl disabled:bg-gray-100 disabled:text-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-3 group mt-4">
 										<span v-if="!isSubmitting">Xác nhận đăng ký ngay</span>
 										<span v-else>Đang xử lý yêu cầu...</span>
 										<Icon v-if="!isSubmitting" name="ph:paper-plane-tilt-fill" class="text-lg group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -284,7 +284,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 									</button>
 
 									<!-- Cancel Button -->
-									<button type="button" @click="router.back()" class="w-full py-4 bg-white border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] rounded-[1.25rem] hover:bg-gray-50 hover:text-red-600 hover:border-red-600/30 transition-all mt-3">
+									<button type="button" class="w-full py-3.5 bg-white border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] rounded-[1.25rem] hover:bg-gray-50 hover:text-red-600 hover:border-red-600/30 transition-all mt-2" @click="router.back()">
 										Hủy bỏ yêu cầu
 									</button>
 								</form>
@@ -302,10 +302,10 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 									</p>
 								</div>
 								<div class="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-									<button @click="router.push('/')" class="px-10 py-4 bg-gray-900 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-red-600 transition-all shadow-lg">
+									<button class="px-10 py-4 bg-gray-900 text-white font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-red-600 transition-all shadow-lg" @click="router.push('/')">
 										Về trang chủ
 									</button>
-									<button @click="router.push('/service')" class="px-10 py-4 bg-white border border-gray-100 text-gray-900 font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-gray-50 transition-all">
+									<button class="px-10 py-4 bg-white border border-gray-100 text-gray-900 font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-gray-50 transition-all" @click="router.push('/service')">
 										Xem dịch vụ khác
 									</button>
 								</div>
@@ -318,7 +318,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 						<div class="sticky top-10 space-y-4">
 							<!-- Summary Card -->
 							<div class="bg-[#0D1117] rounded-[2rem] p-8 lg:p-10 text-white relative overflow-hidden shadow-xl border border-white/5">
-								<div class="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl"></div>
+								<div class="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl"/>
 								
 								<div class="relative z-10 space-y-8">
 									<div class="flex items-center justify-between">
@@ -418,7 +418,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 
 .booking-input {
 	width: 100%;
-	padding: 0.75rem 1rem;
+	padding: 0.65rem 0.95rem;
 	background-color: #f7f7f8;
 	border: 1.5px solid #e4e4e7;
 	border-radius: 0.75rem;

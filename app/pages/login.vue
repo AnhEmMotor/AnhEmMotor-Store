@@ -11,11 +11,12 @@ useSeoMeta({
 	<div class="auth-wrapper min-h-screen bg-[#f8fafc] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
 		<!-- Dynamic Background Effects -->
 		<div class="absolute inset-0 pointer-events-none z-0">
-			<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse"></div>
-			<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+			<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse"/>
+			<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse delay-1000"/>
 			
 			<!-- Floating Particles -->
-			<div v-for="i in 5" :key="i" 
+			<div
+v-for="i in 5" :key="i" 
 				class="absolute bg-primary/10 rounded-full blur-xl animate-float-slow"
 				:style="{
 					width: `${Math.random() * 80 + 40}px`,
@@ -25,7 +26,7 @@ useSeoMeta({
 					animationDelay: `${Math.random() * 5}s`,
 					animationDuration: `${Math.random() * 10 + 10}s`
 				}"
-			></div>
+			/>
 		</div>
 
 		<div class="max-w-[1100px] w-full bg-white rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden grid lg:grid-cols-2 relative z-10 animate-fade-in-up">
@@ -43,7 +44,7 @@ useSeoMeta({
 				<AuthLoginForm @loading="(val) => (isLoading = val)" />
 
 				<!-- Social Login -->
-				<AuthSocialLogin @loading="(val) => (isLoading = val)" class="mt-8" />
+				<AuthSocialLogin class="mt-8" @loading="(val) => (isLoading = val)" />
 
 				<div class="mt-10 pt-8 border-t border-gray-100 text-center">
 					<p class="text-sm text-gray-500 font-medium">

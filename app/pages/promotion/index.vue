@@ -39,6 +39,27 @@ onMounted(() => {
 
 	document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
 })
+
+// Testimonial Pagination Logic (Local client-side pagination)
+const promotionPage = ref(1);
+const itemsPerPage = 6;
+const totalPromotionPages = computed(() => Math.ceil(regularPromotions.value.length / itemsPerPage));
+const paginatedRegularPromotions = computed(() => {
+	const start = (promotionPage.value - 1) * itemsPerPage;
+	return regularPromotions.value.slice(start, start + itemsPerPage);
+});
+
+// Watch for page changes to smoothly scroll directly to the promotions list grid section
+watch(promotionPage, (newPage) => {
+	if (import.meta.client) {
+		setTimeout(() => {
+			const element = document.getElementById('promotion-grid-title');
+			if (element) {
+				element.scrollIntoView({ behavior: 'smooth' });
+			}
+		}, 100);
+	}
+});
 </script>
 
 <template>
@@ -47,7 +68,7 @@ onMounted(() => {
 		<PromotionBanner />
 
 		<!-- [2] FILTER SECTION -->
-		<div id="promotion-content" class="bg-white border-b border-gray-100 sticky top-[72px] z-50">
+		<div id="promotion-content" class="bg-white border-b border-gray-100 sticky top-[72px] z-50 scroll-mt-[72px]">
 			<div class="container mx-auto px-4">
 				<PromotionFilters v-model:active-tab="activeTab" />
 			</div>
@@ -61,7 +82,7 @@ onMounted(() => {
 				
 				<div v-if="promotionStore.promotions.length > 0" class="space-y-12 md:space-y-20">
 					<!-- [4] FEATURED PROMOTION (Option 3 from MD) -->
-					<section v-if="activeTab === 'all' && featuredPromotion" class="reveal reveal-up">
+					<section v-if="activeTab === 'all' && promotionPage === 1 && featuredPromotion" class="transition-all duration-700">
 						<div class="inline-flex items-center gap-4 px-6 py-2.5 bg-red-600/5 rounded-full mb-12 border border-red-600/10 backdrop-blur-sm">
 							<Icon name="ph:fire-fill" class="text-red-600 animate-bounce" />
 							<span class="text-[11px] font-black uppercase tracking-[0.2em] text-red-600">Ưu đãi nổi bật nhất trong tuần</span>
@@ -78,7 +99,7 @@ onMounted(() => {
 									class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
 									:alt="featuredPromotion.title"
 								>
-								<div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
+								<div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 via-transparent to-transparent"/>
 								
 								<!-- Countdown Overlay -->
 								<div class="absolute bottom-6 md:bottom-12 left-6 md:left-12 p-4 md:p-8 bg-black/20 backdrop-blur-2xl border border-white/10 rounded-2xl md:rounded-[2.5rem]">
@@ -87,7 +108,7 @@ onMounted(() => {
 											<span class="block text-xl md:text-3xl font-black text-white leading-none">03</span>
 											<span class="text-[8px] md:text-[10px] font-black text-white/50 uppercase tracking-widest mt-1 md:mt-2 block">Ngày</span>
 										</div>
-										<div class="w-[1px] h-6 md:h-10 bg-white/10"></div>
+										<div class="w-[1px] h-6 md:h-10 bg-white/10"/>
 										<div class="text-center">
 											<span class="block text-xl md:text-3xl font-black text-white leading-none">12</span>
 											<span class="text-[8px] md:text-[10px] font-black text-white/50 uppercase tracking-widest mt-1 md:mt-2 block">Giờ</span>
@@ -131,10 +152,10 @@ onMounted(() => {
 					</section>
 
 					<!-- [5] PROMOTION GRID -->
-					<section class="space-y-16">
+					<section id="promotion-grid-section" class="space-y-16">
 						<div class="flex items-end justify-between border-b border-gray-100 pb-10">
 							<div class="space-y-3">
-								<h2 class="text-4xl font-black text-gray-950 uppercase tracking-tighter">Danh sách ưu đãi</h2>
+								<h2 id="promotion-grid-title" class="text-4xl font-black text-gray-950 uppercase tracking-tighter scroll-mt-[180px]">Danh sách ưu đãi</h2>
 								<p class="text-gray-400 text-xs font-black uppercase tracking-[0.3em]">Khám phá và tận hưởng ngay hôm nay</p>
 							</div>
 							<div class="hidden sm:flex items-center gap-2 text-gray-400 text-[10px] font-black uppercase tracking-widest">
@@ -145,13 +166,21 @@ onMounted(() => {
 
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
 							<div
-								v-for="(promotion, index) in regularPromotions"
+								v-for="(promotion, index) in paginatedRegularPromotions"
 								:key="promotion.id"
-								class="reveal reveal-up"
-								:style="{ transitionDelay: `${index * 150}ms` }"
+								class="transition-all duration-300"
 							>
 								<PromotionCard :promotion="promotion" />
 							</div>
+						</div>
+
+						<!-- Promotion Local Pagination Component -->
+						<div v-if="totalPromotionPages > 1" class="flex justify-center pt-16">
+							<UiBasePagination
+								:current-page="promotionPage"
+								:total-pages="totalPromotionPages"
+								@update:current-page="promotionPage = $event"
+							/>
 						</div>
 					</section>
 				</div>
@@ -182,11 +211,11 @@ onMounted(() => {
 		
 		<!-- [9] CALL TO ACTION -->
 		<section class="py-16 md:py-24 bg-gray-950 relative overflow-hidden font-['Manrope']">
-			<div class="absolute inset-0 opacity-30 bg-[url('/final_cta_rider_adventure_1778828626734.png')] bg-cover bg-center scale-110"></div>
-			<div class="absolute inset-0 bg-gradient-to-b from-gray-950 via-transparent to-gray-950"></div>
+			<div class="absolute inset-0 opacity-30 bg-[url('/final_cta_rider_adventure_1778828626734.png')] bg-cover bg-center scale-110"/>
+			<div class="absolute inset-0 bg-gradient-to-b from-gray-950 via-transparent to-gray-950"/>
 			
 			<div class="container mx-auto px-4 relative z-10 text-center space-y-12">
-				<h2 class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-tight">Bạn đã chọn được <br /><span class="text-red-600 italic">xế yêu</span>?</h2>
+				<h2 class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-tight">Bạn đã chọn được <br ><span class="text-red-600 italic">xế yêu</span>?</h2>
 				<p class="text-gray-400 text-xl md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed">Hãy để đội ngũ chuyên gia của AnhEm Motor tư vấn chi tiết nhất về giá lăn bánh và các ưu đãi đặc quyền dành riêng cho bạn.</p>
 				<div class="flex flex-wrap justify-center gap-6 pt-6">
 					<NuxtLink to="/support" class="px-12 py-6 bg-red-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-[0_25px_50px_-12px_rgba(230,0,35,0.6)] hover:scale-110 hover:-rotate-1 transition-all">Liên hệ ngay</NuxtLink>

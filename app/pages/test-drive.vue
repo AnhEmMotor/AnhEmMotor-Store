@@ -8,13 +8,13 @@
 					alt="Showroom AnhEm Motor" 
 					class="w-full h-full object-cover brightness-50 scale-105"
 				>
-				<div class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/40 to-transparent"></div>
+				<div class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/40 to-transparent"/>
 			</div>
 
 			<div class="container mx-auto px-6 relative z-10">
 				<div class="max-w-2xl space-y-4">
 					<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 backdrop-blur-xl border border-primary/30 rounded-full">
-						<span class="w-1 h-1 bg-primary rounded-full"></span>
+						<span class="w-1 h-1 bg-primary rounded-full"/>
 						<span class="text-[10px] font-extrabold text-white uppercase tracking-[0.3em]">Hành trình trải nghiệm</span>
 					</div>
 					<h1 class="text-[32px] md:text-[50px] lg:text-[58px] font-extrabold text-white uppercase italic leading-[1.1] tracking-tight reveal-up">
@@ -25,7 +25,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white to-transparent"></div>
+			<div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white to-transparent"/>
 		</section>
 
 		<!-- [2] MAIN REGISTRATION AREA -->
@@ -37,8 +37,8 @@
 					<div class="lg:col-span-4 space-y-6 order-1">
 						<!-- Vehicle Preview Card -->
 						<div 
-							@click="scrollToSelect"
 							class="bg-white rounded-[20px] p-6 shadow-lg border border-gray-100 overflow-hidden relative group min-h-[350px] flex flex-col justify-center cursor-pointer hover:border-primary/30 transition-all duration-500"
+							@click="scrollToSelect"
 						>
 							<div v-if="selectedVehicle" class="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
 								<div class="relative">
@@ -52,7 +52,7 @@
 										</div>
 										<p class="text-primary font-black text-[18px] italic leading-none">{{ selectedVehicle.price }}</p>
 									</div>
-									<div class="h-[1px] w-full bg-gray-50 my-2"></div>
+									<div class="h-[1px] w-full bg-gray-50 my-2"/>
 									<div class="grid grid-cols-2 gap-y-3 gap-x-4">
 										<div v-for="spec in selectedVehicle.specs" :key="spec.l" class="flex flex-col gap-0.5">
 											<span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">{{ spec.l }}</span>
@@ -92,11 +92,11 @@
 									<p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide">* Bắt buộc</p>
 								</div>
 
-								<form v-if="!isSuccess" @submit.prevent="handleSubmit" class="space-y-6">
+								<form v-if="!isSuccess" class="space-y-6" @submit.prevent="handleSubmit">
 									<div class="space-y-4">
 										<div class="flex items-center gap-2">
 											<span class="text-[12px] font-extrabold text-primary uppercase tracking-widest">01. Thông tin liên hệ</span>
-											<div class="flex-grow h-[1px] bg-gray-50"></div>
+											<div class="flex-grow h-[1px] bg-gray-50"/>
 										</div>
 										<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 											<input v-model="form.fullName" type="text" required placeholder="Họ và tên *" class="premium-input">
@@ -121,7 +121,7 @@
 									<div class="space-y-4">
 										<div class="flex items-center gap-2">
 											<span class="text-[12px] font-extrabold text-primary uppercase tracking-widest">02. Chi tiết lịch hẹn</span>
-											<div class="flex-grow h-[1px] bg-gray-50"></div>
+											<div class="flex-grow h-[1px] bg-gray-50"/>
 										</div>
 										<div class="space-y-4">
 											<div class="relative">
@@ -199,8 +199,8 @@
 								:class="{'shadow-lg border-primary/20': activeFaq === idx}"
 							>
 								<button 
-									@click="activeFaq = activeFaq === idx ? null : idx"
 									class="w-full p-4 flex items-center justify-between text-left group"
+									@click="activeFaq = activeFaq === idx ? null : idx"
 								>
 									<h4 
 										class="text-[15px] font-extrabold uppercase transition-colors tracking-tight"
@@ -219,7 +219,7 @@
 									v-show="activeFaq === idx"
 									class="px-4 pb-4 animate-in fade-in slide-in-from-top-2 duration-300"
 								>
-									<div class="h-[1px] w-full bg-gray-50 mb-3"></div>
+									<div class="h-[1px] w-full bg-gray-50 mb-3"/>
 									<p class="text-[14px] text-gray-500 leading-relaxed">{{ faq.a }}</p>
 								</div>
 							</div>

@@ -11,7 +11,7 @@
 			</p>
 		</div>
 
-		<form @submit.prevent="handleSubmit" class="space-y-6">
+		<form class="space-y-6" @submit.prevent="handleSubmit">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 				<!-- Full Name -->
 				<div class="space-y-2">
@@ -26,7 +26,7 @@
 							required
 							placeholder="Nguyễn Văn A"
 							class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
-						/>
+						>
 					</div>
 				</div>
 
@@ -43,7 +43,7 @@
 							required
 							placeholder="09xxx"
 							class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
-						/>
+						>
 					</div>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 						required
 						placeholder="example@gmail.com"
 						class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
-					/>
+					>
 				</div>
 			</div>
 
@@ -97,12 +97,13 @@
 					required
 					placeholder="Hãy cho chúng tôi biết bạn cần hỗ trợ điều gì..."
 					class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm resize-none"
-				></textarea>
+				/>
 			</div>
 
 			<!-- Status Message -->
 			<Transition name="fade">
-				<div v-if="statusMessage" 
+				<div
+v-if="statusMessage" 
 					:class="['p-4 rounded-2xl text-xs font-bold flex items-center gap-3', 
 					statusType === 'success' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100']">
 					<Icon :name="statusType === 'success' ? 'ph:check-circle-fill' : 'ph:warning-circle-fill'" class="text-lg" />

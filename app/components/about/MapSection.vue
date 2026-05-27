@@ -31,7 +31,7 @@ const searchLocation = (address) => {
 					<iframe
 						id="mapFrame"
 						class="w-full h-full border-none grayscale-[0.2] contrast-[1.1] group-hover:grayscale-0 transition-all duration-700"
-						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.290626800085!2d106.6974457!3d10.7928445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528cb61921c23%3A0x7d01878d6556f8f5!2zQW5oRW0gTW90b3I!5e0!3m2!1svi!2s!4v1709123456789!5m2!1svi!2s"
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.15452442564!2d106.8336939!3d10.93762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174df8850f50511%3A0x852d023377c2fbe1!2sFPT%20PolySchool%20%C4%90%C3%B2ng%20Nai%20(%C6%A1%20s%E1%BB%9F%202)!5e0!3m2!1svn!2s!4v1716450000000!5m2!1svn!2s"
 						allowfullscreen=""
 						loading="lazy"
 						referrerpolicy="no-referrer-when-downgrade"
@@ -41,7 +41,7 @@ const searchLocation = (address) => {
 				<!-- Info Column (35% approx) -->
 				<div class="lg:col-span-4 space-y-6">
 					<AboutLocationInfo 
-						address="123 Lê Văn Sỹ, Phường 13, Quận Phú Nhuận, TP. Hồ Chí Minh"
+						address="193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam"
 						hotline="0901.234.567"
 						@search="searchLocation"
 					/>

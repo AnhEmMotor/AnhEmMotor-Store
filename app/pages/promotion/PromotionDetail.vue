@@ -63,7 +63,7 @@ const relatedPromotions = computed(() => {
 
 					<!-- RICH CONTENT -->
 					<section class="prose prose-lg max-w-none prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-p:text-gray-500 prose-p:leading-relaxed">
-						<div v-html="promotion.content"></div>
+						<div v-html="promotion.content"/>
 					</section>
 
 					<!-- APPLICABLE MODELS -->
@@ -93,7 +93,7 @@ const relatedPromotions = computed(() => {
 
 					<!-- PROCESS STEPS -->
 					<section class="py-16 bg-gray-950 rounded-[3rem] px-8 md:px-12 relative overflow-hidden">
-						<div class="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[80px] rounded-full"></div>
+						<div class="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[80px] rounded-full"/>
 						<div class="relative z-10 space-y-12">
 							<div class="text-center space-y-2">
 								<span class="text-[10px] font-black text-red-600 uppercase tracking-[0.3em]">Hành trình của bạn</span>
@@ -112,7 +112,7 @@ const relatedPromotions = computed(() => {
 										</div>
 									</div>
 									<!-- Connector Line -->
-									<div v-if="idx < 3" class="hidden lg:block absolute top-8 left-[70%] w-[60%] h-[1px] border-t border-dashed border-white/20"></div>
+									<div v-if="idx < 3" class="hidden lg:block absolute top-8 left-[70%] w-[60%] h-[1px] border-t border-dashed border-white/20"/>
 								</div>
 							</div>
 						</div>

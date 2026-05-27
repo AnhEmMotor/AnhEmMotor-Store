@@ -72,16 +72,16 @@ function markAsRead(type, id) {
 </script>
 
 <template>
-	<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fadeIn">
+	<div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden animate-fadeIn">
 		<!-- Header & Sub-tabs -->
-		<div class="p-6 border-b border-gray-100">
-			<h3 class="text-xl font-bold text-gray-900 mb-6">Thông báo của tôi</h3>
+		<div class="p-6 pb-5 border-b border-gray-100">
+			<h3 class="text-xl font-bold text-gray-900 mb-5">Thông báo của tôi</h3>
 			
 			<div class="flex flex-wrap gap-2">
 				<button
 					v-for="tab in subTabs"
 					:key="tab.id"
-					class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
+					class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all"
 					:class="activeSubTab === tab.id 
 						? 'bg-primary text-white shadow-lg shadow-primary/20' 
 						: 'bg-gray-50 text-gray-600 hover:bg-gray-100'"
@@ -89,18 +89,19 @@ function markAsRead(type, id) {
 				>
 					<Icon :name="tab.icon" />
 					{{ tab.label }}
-					<span v-if="notifications[tab.id]?.filter(n => !n.isRead).length > 0" 
+					<span
+v-if="notifications[tab.id]?.filter(n => !n.isRead).length > 0" 
 						class="w-2 h-2 rounded-full bg-white animate-pulse" />
 				</button>
 			</div>
 		</div>
 
 		<!-- Content -->
-		<div class="p-6 min-h-[400px]">
+		<div class="p-6">
 			<Transition name="fade" mode="out-in">
-				<div :key="activeSubTab" class="space-y-4">
+				<div :key="activeSubTab" class="space-y-3">
 					<!-- News & Promotions & Feedback -->
-					<div v-if="activeSubTab !== 'vouchers'" class="space-y-4">
+					<div v-if="activeSubTab !== 'vouchers'" class="space-y-3">
 						<div v-if="notifications[activeSubTab].length === 0" class="flex flex-col items-center justify-center py-20 text-gray-400">
 							<Icon name="ph:bell-slash-bold" class="text-6xl mb-4 opacity-20" />
 							<p>Không có thông báo nào trong mục này</p>
@@ -109,7 +110,7 @@ function markAsRead(type, id) {
 						<div
 							v-for="item in notifications[activeSubTab]"
 							:key="item.id"
-							class="group p-4 rounded-2xl border transition-all hover:shadow-md"
+							class="group p-4 rounded-md border transition-all hover:shadow-md"
 							:class="item.isRead ? 'bg-white border-gray-100' : 'bg-primary/5 border-primary/20'"
 							@click="markAsRead(activeSubTab, item.id)"
 						>
@@ -139,7 +140,7 @@ function markAsRead(type, id) {
 						<div
 							v-for="voucher in notifications.vouchers"
 							:key="voucher.id"
-							class="relative flex bg-white rounded-2xl border border-gray-100 overflow-hidden group hover:shadow-lg transition-all"
+							class="relative flex bg-white rounded-md border border-gray-100 overflow-hidden group hover:shadow-lg transition-all"
 						>
 							<!-- Left Side (Icon/Accent) -->
 							<div class="w-24 bg-primary/10 flex flex-col items-center justify-center p-4 gap-2 border-r border-dashed border-gray-200">
@@ -153,7 +154,7 @@ function markAsRead(type, id) {
 								<p class="text-xs text-gray-500 mb-3">Hết hạn: {{ voucher.expiry }}</p>
 								
 								<div class="flex items-center justify-between">
-									<div class="px-2 py-1 bg-gray-100 rounded-lg font-mono text-xs font-bold text-gray-700">
+									<div class="px-2 py-1 bg-gray-100 rounded-md font-mono text-xs font-bold text-gray-700">
 										{{ voucher.code }}
 									</div>
 									<button class="text-xs font-bold text-primary hover:underline">

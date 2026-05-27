@@ -8,6 +8,12 @@ export const getImageUrl = (path) => {
 
 	if (path.startsWith("http") || path.startsWith("data:")) return path;
 
+	// If it is a local frontend static asset (starting with "/" but not "/uploads" or "/api")
+	// return the path as-is so it is served by the frontend dev server
+	if (typeof path === "string" && path.startsWith("/") && !path.startsWith("/uploads") && !path.startsWith("/api")) {
+		return path;
+	}
+
 	const config = useRuntimeConfig();
 	const baseURL = config.public.apiUrlForBrowserClient || "";
 

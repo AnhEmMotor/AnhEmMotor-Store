@@ -2,10 +2,10 @@
 	<div class="test-ride-form-container">
 		<div class="mb-10 text-center">
 			<h2 class="text-2xl font-black text-gray-900 uppercase italic mb-2">Đăng ký lái thử</h2>
-			<div class="h-1 w-12 bg-red-600 rounded-full mx-auto"></div>
+			<div class="h-1 w-12 bg-red-600 rounded-full mx-auto"/>
 		</div>
 
-		<form v-if="!isSuccess" @submit.prevent="handleSubmit" class="space-y-6">
+		<form v-if="!isSuccess" class="space-y-6" @submit.prevent="handleSubmit">
 			<div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
 				<div class="space-y-2">
 					<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Họ tên *</label>
@@ -99,7 +99,7 @@
 			<p class="text-gray-500 text-xs font-medium leading-relaxed max-w-xs mx-auto">
 				Chúng tôi đã nhận được yêu cầu và sẽ liên hệ xác nhận trong vòng 30 phút.
 			</p>
-			<button @click="$emit('close')" class="text-xs font-black text-red-600 uppercase tracking-widest hover:underline">Đóng</button>
+			<button class="text-xs font-black text-red-600 uppercase tracking-widest hover:underline" @click="$emit('close')">Đóng</button>
 		</div>
 	</div>
 </template>

@@ -116,8 +116,8 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 					<span class="text-sm font-bold text-gray-400">{{ compareProducts.length }}/3 mẫu xe</span>
 					<button 
 						v-if="compareProducts.length > 0"
-						@click="compareStore.clearAll"
 						class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-[#CC0000] transition-colors"
+						@click="compareStore.clearAll"
 					>
 						Xóa tất cả
 					</button>
@@ -149,15 +149,15 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 						<!-- Sticky Header for Products -->
 						<div class="sticky top-20 z-40 bg-gray-50/80 backdrop-blur-md pb-6">
 							<div class="grid grid-cols-12 gap-4 lg:gap-6 items-stretch">
-								<div class="col-span-3"></div>
+								<div class="col-span-3"/>
 								<div 
 									v-for="item in detailedProducts" 
 									:key="item.product.id"
 									class="col-span-3 bg-white rounded-3xl p-4 lg:p-6 border border-gray-100 shadow-xl relative group"
 								>
 									<button 
-										@click="removeProduct(item.product.id)"
 										class="absolute -top-2 -right-2 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center hover:bg-[#CC0000] transition-colors z-10 opacity-0 group-hover:opacity-100"
+										@click="removeProduct(item.product.id)"
 									>
 										<Icon name="fa6-solid:xmark" />
 									</button>
@@ -192,7 +192,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 						<div class="space-y-8 lg:space-y-12">
 							<div v-for="group in specGroups" :key="group.name" class="reveal reveal-up">
 								<div class="bg-black text-white p-4 lg:p-6 rounded-t-[2rem] flex items-center gap-4">
-									<div class="w-1.5 h-6 bg-[#CC0000]"></div>
+									<div class="w-1.5 h-6 bg-[#CC0000]"/>
 									<h4 class="text-xs lg:text-sm font-black uppercase tracking-[0.4em]">{{ group.name }}</h4>
 								</div>
 								<div class="bg-white rounded-b-[2rem] border-x border-b border-gray-100 shadow-xl overflow-hidden">

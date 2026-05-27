@@ -51,12 +51,12 @@ function setActiveTab(tab) {
 </script>
 
 <template>
-	<div class="lg:w-1/3 xl:w-1/4 flex flex-col gap-6">
+	<div class="lg:w-1/3 xl:w-1/4 flex flex-col gap-5">
 		<div
-			class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center"
+			class="bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex flex-col items-center"
 		>
 			<div
-				class="w-32 h-32 rounded-full bg-red-50 flex items-center justify-center overflow-hidden ring-4 ring-white shadow-md transition-all relative group cursor-pointer"
+				class="w-28 h-28 rounded-full bg-red-50 flex items-center justify-center overflow-hidden ring-4 ring-white shadow-sm transition-all relative group cursor-pointer"
 				:class="{ 'opacity-50 blur-[2px]': isUploadingAvatar }"
 				@click="triggerAvatarUpload"
 			>
@@ -107,7 +107,7 @@ function setActiveTab(tab) {
 				@change="handleAvatarChange"
 			>
 
-			<h2 class="mt-5 text-xl font-bold text-gray-900 text-center">
+			<h2 class="mt-4 text-lg font-bold text-gray-900 text-center">
 				{{ user?.fullName || "Người dùng" }}
 			</h2>
 			<p
@@ -118,7 +118,7 @@ function setActiveTab(tab) {
 			</p>
 
 			<button
-				class="mt-6 w-full py-2.5 px-4 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl border border-gray-200 transition-colors flex items-center justify-center gap-2"
+				class="mt-5 w-full py-2.5 px-4 bg-gray-50 hover:bg-gray-100 text-gray-700 text-sm font-semibold rounded-md border border-gray-200 transition-colors flex items-center justify-center gap-2"
 				:disabled="isUploadingAvatar"
 				aria-label="Tải lên ảnh đại diện mới"
 				@click="triggerAvatarUpload"
@@ -129,12 +129,12 @@ function setActiveTab(tab) {
 		</div>
 
 		<div
-			class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+			class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
 		>
 			<nav class="flex flex-col">
 				<button
 					:class="[
-						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'profile'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -143,7 +143,7 @@ function setActiveTab(tab) {
 				>
 					<div
 						:class="[
-							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'profile'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -158,7 +158,7 @@ function setActiveTab(tab) {
 
 				<button
 					:class="[
-						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'security'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -167,7 +167,7 @@ function setActiveTab(tab) {
 				>
 					<div
 						:class="[
-							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'security'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -182,7 +182,7 @@ function setActiveTab(tab) {
 
 				<button
 					:class="[
-						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'notifications'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -191,7 +191,7 @@ function setActiveTab(tab) {
 				>
 					<div
 						:class="[
-							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'notifications'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -206,7 +206,7 @@ function setActiveTab(tab) {
 
 				<button
 					:class="[
-						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'orders'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -215,7 +215,7 @@ function setActiveTab(tab) {
 				>
 					<div
 						:class="[
-							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'orders'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -230,7 +230,7 @@ function setActiveTab(tab) {
 
 				<button
 					:class="[
-						'flex items-center gap-3 px-6 py-4 text-sm font-semibold transition-all text-left border-l-4',
+						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'services'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -239,7 +239,7 @@ function setActiveTab(tab) {
 				>
 					<div
 						:class="[
-							'w-8 h-8 rounded-lg flex items-center justify-center transition-colors',
+							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'services'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',

@@ -50,7 +50,7 @@ async function handleLogin() {
 </script>
 
 <template>
-	<form @submit.prevent="handleLogin" class="space-y-6">
+	<form class="space-y-6" @submit.prevent="handleLogin">
 		<div class="space-y-2 animate-fade-in-up" style="animation-delay: 100ms">
 			<label class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Email hoặc Tên đăng nhập</label>
 			<input
@@ -59,7 +59,7 @@ async function handleLogin() {
 				placeholder="example@email.com"
 				class="custom-input"
 				required
-			/>
+			>
 		</div>
 
 		<div class="space-y-2 animate-fade-in-up" style="animation-delay: 200ms">
@@ -74,7 +74,7 @@ async function handleLogin() {
 					placeholder="••••••••"
 					class="custom-input"
 					required
-				/>
+				>
 				<button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors" @click="togglePassword">
 					<Icon :name="passwordFieldType === 'password' ? 'fa6-solid:eye' : 'fa6-solid:eye-slash'" class="text-lg" />
 				</button>
@@ -82,7 +82,7 @@ async function handleLogin() {
 		</div>
 
 		<div class="flex items-center animate-fade-in-up" style="animation-delay: 300ms">
-			<input id="remember" v-model="rememberMe" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+			<input id="remember" v-model="rememberMe" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" >
 			<label for="remember" class="ml-2 text-sm font-bold text-gray-600">Ghi nhớ đăng nhập</label>
 		</div>
 

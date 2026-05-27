@@ -165,8 +165,8 @@ const canEdit = (statusId) => {
 </script>
 
 <template>
-	<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 animate-fadeIn">
-		<div class="border-b border-gray-100 pb-5 mb-6">
+	<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 animate-fadeIn">
+		<div class="border-b border-gray-100 pb-4 mb-5">
 			<h3 class="text-xl font-bold text-gray-900">Đơn hàng của tôi</h3>
 			<p class="text-sm text-gray-500 mt-1">
 				Xem lịch sử mua hàng và theo dõi trạng thái đơn hàng của bạn.

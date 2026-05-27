@@ -53,7 +53,7 @@ export const aboutRepository = {
 			video: {
 				title: "Hành Trình AnhEm Motor",
 				subtitle: "Khám phá câu chuyện và tâm huyết đằng sau mỗi chiếc xe",
-				url: "https://www.youtube.com/embed/dQw4w9WgXcQ", 
+				url: "https://www.youtube.com/embed/1a0uk9yl3GA", 
 			}
 		};
 	},
@@ -63,7 +63,7 @@ export const aboutRepository = {
 	 */
 	getLocations: async () => {
 		return [
-			{ title: "Cơ Sở 1 - TP.HCM", address: "123 Lê Văn Sỹ, Phường 13, Quận Phú Nhuận, TP. Hồ Chí Minh" },
+			{ title: "Cơ Sở 2 - TP. Đồng Nai", address: "193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam" },
 		];
 	},
 };

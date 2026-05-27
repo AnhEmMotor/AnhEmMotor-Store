@@ -16,7 +16,7 @@ const calculateTimeLeft = (endDate) => {
 };
 
 const timeLeft = ref({ days: 0, hours: 0, minutes: 0 });
-let timer = null;
+const timer = null;
 
 onMounted(() => {
 	// Initial calculation
@@ -34,8 +34,8 @@ onMounted(() => {
 				class="w-full h-full object-cover opacity-40 scale-105"
 				:alt="promotion.title"
 			>
-			<div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/60 to-transparent"></div>
-			<div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent"></div>
+			<div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/60 to-transparent"/>
+			<div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent"/>
 		</div>
 
 		<div class="container mx-auto px-6 relative z-10 py-20">
@@ -46,7 +46,7 @@ onMounted(() => {
 						class="px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border"
 						:class="promotion.status === 'ongoing' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-gray-500/10 text-gray-400 border-gray-500/20'"
 					>
-						<span class="inline-block w-2 h-2 rounded-full bg-current animate-pulse mr-2"></span>
+						<span class="inline-block w-2 h-2 rounded-full bg-current animate-pulse mr-2"/>
 						{{ promotion.status === 'ongoing' ? 'Đang diễn ra' : 'Sắp diễn ra' }}
 					</div>
 					<div class="px-5 py-1.5 bg-red-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
@@ -72,12 +72,12 @@ onMounted(() => {
 							<span class="block text-4xl font-black text-red-500 tabular-nums leading-none">03</span>
 							<span class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2 block">Ngày</span>
 						</div>
-						<div class="w-[1px] h-10 bg-white/10"></div>
+						<div class="w-[1px] h-10 bg-white/10"/>
 						<div class="text-center min-w-[60px]">
 							<span class="block text-4xl font-black text-white tabular-nums leading-none">12</span>
 							<span class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2 block">Giờ</span>
 						</div>
-						<div class="w-[1px] h-10 bg-white/10"></div>
+						<div class="w-[1px] h-10 bg-white/10"/>
 						<div class="text-center min-w-[60px]">
 							<span class="block text-4xl font-black text-white tabular-nums leading-none">45</span>
 							<span class="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2 block">Phút</span>
@@ -94,7 +94,7 @@ onMounted(() => {
 
 		<!-- Decorative Elements -->
 		<div class="absolute bottom-0 right-0 w-1/3 h-full hidden lg:block pointer-events-none">
-			<div class="absolute inset-0 bg-gradient-to-l from-red-600/20 via-transparent to-transparent"></div>
+			<div class="absolute inset-0 bg-gradient-to-l from-red-600/20 via-transparent to-transparent"/>
 			<div class="h-full flex items-center justify-end pr-20 opacity-20">
 				<Icon name="ph:motorcycle-fill" class="text-[30rem] -rotate-12 translate-x-20" />
 			</div>

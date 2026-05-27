@@ -22,9 +22,9 @@
 					<button 
 						v-for="cat in ['Tất cả', 'Bảo hành', 'Trả góp', 'Giấy tờ', 'Bảo dưỡng', 'Hỗ trợ']" 
 						:key="cat"
-						@click="activeCategory = cat"
 						class="px-6 py-2.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest transition-all"
 						:class="activeCategory === cat ? 'bg-red-600 text-white shadow-lg shadow-red-600/10' : 'bg-white text-gray-400 border border-gray-100 hover:border-red-600/30'"
+						@click="activeCategory = cat"
 					>
 						{{ cat }}
 					</button>
@@ -33,16 +33,18 @@
 
 			<!-- FAQ List -->
 			<div class="space-y-3">
-				<div v-for="(faq, idx) in filteredFaqs" :key="idx" 
+				<div
+v-for="(faq, idx) in filteredFaqs" :key="idx" 
 					class="bg-white rounded-xl border border-gray-100 overflow-hidden transition-all duration-500"
 					:class="{ 'shadow-xl shadow-red-600/5 border-red-600/20': activeIdx === idx }"
 				>
 					<button 
-						@click="activeIdx = activeIdx === idx ? -1 : idx"
 						class="w-full px-8 py-6 flex items-center justify-between text-left group"
+						@click="activeIdx = activeIdx === idx ? -1 : idx"
 					>
 						<span class="text-[14px] font-extrabold text-gray-900 uppercase tracking-tight group-hover:text-red-600 transition-colors leading-tight">{{ faq.question }}</span>
-						<div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-red-700 group-hover:text-white transition-all duration-500"
+						<div
+class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-red-700 group-hover:text-white transition-all duration-500"
 							:class="{ 'bg-red-700 text-white rotate-180': activeIdx === idx }"
 						>
 							<Icon name="fa6-solid:chevron-down" class="text-[9px]" />

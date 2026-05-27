@@ -6,19 +6,19 @@
 				src="/img/recruitment/hero.png"
 				alt="Gia nhập AnhEm Motor"
 				class="w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
-			/>
-			<div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent"></div>
-			<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-transparent"></div>
+			>
+			<div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent"/>
+			<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-transparent"/>
 		</div>
 
 
 		<!-- Animated Decorative Blobs & Shapes -->
-		<div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
-		<div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] animate-pulse delay-700"></div>
+		<div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse"/>
+		<div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] animate-pulse delay-700"/>
 		
 		<!-- Floating Geometric Shapes -->
-		<div class="absolute top-1/3 left-1/4 w-12 h-12 border border-white/10 rounded-lg rotate-12 animate-float-slow opacity-20"></div>
-		<div class="absolute bottom-1/3 right-1/3 w-16 h-16 border border-primary/20 rounded-full animate-float-slow delay-1000 opacity-30"></div>
+		<div class="absolute top-1/3 left-1/4 w-12 h-12 border border-white/10 rounded-lg rotate-12 animate-float-slow opacity-20"/>
+		<div class="absolute bottom-1/3 right-1/3 w-16 h-16 border border-primary/20 rounded-full animate-float-slow delay-1000 opacity-30"/>
 
 		<div class="container mx-auto px-6 relative z-10">
 			<div class="max-w-4xl">
@@ -26,14 +26,14 @@
 					class="inline-flex items-center gap-3 px-6 py-2.5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.3em] mb-8 animate-fade-in-up"
 				>
 					<span class="relative flex h-3 w-3">
-						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-						<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+						<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"/>
+						<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"/>
 					</span>
 					We are hiring talent
 				</div>
 
 				<h1 class="text-4xl md:text-6xl font-black text-white leading-[0.9] mb-6 animate-fade-in-up delay-100 italic uppercase tracking-tighter">
-					Gia nhập <br/> 
+					Gia nhập <br> 
 					<span class="text-primary drop-shadow-[0_0_30px_rgba(227,24,55,0.3)] animate-text-shine bg-[linear-gradient(110deg,#e31837,45%,#ff4d6d,55%,#e31837)] bg-[length:200%_100%] bg-clip-text text-transparent">ANHEM MOTOR</span>
 				</h1>
 
@@ -44,15 +44,15 @@
 
 				<div class="flex flex-wrap gap-4 animate-fade-in-up delay-300">
 					<button
-						@click="scrollToJobs"
 						class="group px-8 py-4 bg-white text-black rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all transform hover:-translate-y-1 active:scale-95 shadow-2xl flex items-center gap-3"
+						@click="scrollToJobs"
 					>
 						Vị trí tuyển dụng
 						<Icon name="fa6-solid:chevron-right" class="text-[10px] group-hover:translate-x-1 transition-transform" />
 					</button>
 					<button
-						@click="scrollToForm"
 						class="px-8 py-4 bg-white/5 backdrop-blur-md text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all transform hover:-translate-y-1 active:scale-95 border border-white/10 flex items-center gap-3"
+						@click="scrollToForm"
 					>
 						Ứng tuyển nhanh
 						<Icon name="fa6-solid:bolt" class="text-primary" />
@@ -71,7 +71,7 @@
 		</div>
 
 		<!-- Bottom Fade -->
-		<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent z-20"></div>
+		<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent z-20"/>
 	</section>
 </template>
 

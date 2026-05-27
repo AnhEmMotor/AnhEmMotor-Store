@@ -17,8 +17,8 @@
 					:src="service.image || '/service-hero.png'" 
 					:alt="service.name" 
 					class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
-				/>
-				<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
+				>
+				<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"/>
 				
 				<!-- Icon Overlay (Floating) -->
 				<div class="absolute top-8 left-8 w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-2xl border border-gray-50 transform group-hover:-translate-y-2 group-hover:rotate-6 transition-all duration-500">
@@ -32,7 +32,7 @@
 					'absolute -top-10 -bottom-10 w-2/3 bg-primary/5 rounded-[4rem] blur-3xl -z-10 animate-pulse-slow',
 					isReversed ? '-left-10' : '-right-10'
 				]"
-			></div>
+			/>
 		</div>
 
 		<!-- Content Side -->
@@ -45,7 +45,7 @@
 					<span class="text-[12px] font-black text-primary bg-primary/5 px-5 py-2 rounded-full border border-primary/10 tracking-widest uppercase">
 						{{ service.categoryLabel }}
 					</span>
-					<div class="flex-grow h-[1px] bg-gradient-to-r from-primary/20 to-transparent"></div>
+					<div class="flex-grow h-[1px] bg-gradient-to-r from-primary/20 to-transparent"/>
 				</div>
 				<h3 class="text-3xl lg:text-4xl font-black text-gray-900 leading-[1.1] tracking-tight">
 					{{ service.name }}
@@ -69,7 +69,7 @@
 						{{ formatPrice(service.price) }}
 					</p>
 				</div>
-				<div class="w-[1px] h-16 bg-gray-100 hidden sm:block"></div>
+				<div class="w-[1px] h-16 bg-gray-100 hidden sm:block"/>
 				<div class="group/time cursor-default">
 					<p class="text-[11px] font-black text-gray-400 mb-2 uppercase tracking-widest">Thời gian dự kiến</p>
 					<p class="text-2xl font-black text-gray-900 transition-transform group-hover/time:scale-105 origin-left">
@@ -80,12 +80,12 @@
 
 			<div class="pt-6">
 				<button 
-					@click="$emit('book', service)"
 					class="px-10 py-4 bg-gray-950 text-white text-[12px] font-black uppercase tracking-[0.2em] rounded-[1.5rem] hover:bg-primary transition-all duration-500 shadow-2xl shadow-gray-950/20 active:scale-95 flex items-center gap-4 group/btn relative overflow-hidden"
+					@click="$emit('book', service)"
 				>
 					<span class="relative z-10">Đăng ký ngay</span>
 					<Icon name="fa6-solid:arrow-right-long" class="relative z-10 group-hover:translate-x-3 transition-transform text-base" />
-					<div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+					<div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"/>
 				</button>
 			</div>
 		</div>

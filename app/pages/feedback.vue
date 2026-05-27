@@ -38,14 +38,14 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 	<div class="fb-page-container min-h-screen relative overflow-hidden flex flex-col bg-[#FDFDFD]">
 		<!-- Premium Background Image -->
 		<div class="fb-bg-image">
-			<img src="/feedback-bg.png" alt="AnhEm Motor Showroom" class="fb-bg-img" />
-			<div class="fb-bg-overlay"></div>
+			<img src="/premium_motorcycle_showroom_visit_1778827603878.png" alt="AnhEm Motor Showroom" class="fb-bg-img" >
+			<div class="fb-bg-overlay"/>
 			
 			<!-- Decorative Premium Elements -->
-			<div class="fb-glow fb-glow-1"></div>
-			<div class="fb-glow fb-glow-2"></div>
-			<div class="fb-glow fb-glow-3"></div>
-			<div class="fb-grid-pattern"></div>
+			<div class="fb-glow fb-glow-1"/>
+			<div class="fb-glow fb-glow-2"/>
+			<div class="fb-glow fb-glow-3"/>
+			<div class="fb-grid-pattern"/>
 		</div>
 
 		<div class="container mx-auto px-6 relative z-10 pt-24 pb-12 flex-grow">
@@ -73,13 +73,13 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 				</div>
 
 				<div class="fb-card">
-					<div class="fb-card-highlight"></div>
+					<div class="fb-card-highlight"/>
 
-					<form @submit.prevent="handleSubmit" class="fb-form-inner">
+					<form class="fb-form-inner" @submit.prevent="handleSubmit">
 						<div class="fb-rating-section">
 							<label class="fb-label-small">Mức độ hài lòng của bạn</label>
 							<div class="fb-emoji-grid">
-								<button v-for="i in 5" :key="i" type="button" @click="form.rating = i" class="fb-emoji-btn" :class="{ 'active': form.rating === i }">
+								<button v-for="i in 5" :key="i" type="button" class="fb-emoji-btn" :class="{ 'active': form.rating === i }" @click="form.rating = i">
 									<div class="fb-emoji-box">
 										<Icon :name="getRatingIcon(i)" class="text-2xl" />
 									</div>
@@ -91,7 +91,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 						<div class="fb-field-group">
 							<label class="fb-label-small">Lĩnh vực góp ý</label>
 							<div class="fb-pill-grid">
-								<button v-for="cat in categories" :key="cat" type="button" @click="form.subject = cat" class="fb-pill" :class="{ 'active': form.subject === cat }">
+								<button v-for="cat in categories" :key="cat" type="button" class="fb-pill" :class="{ 'active': form.subject === cat }" @click="form.subject = cat">
 									{{ cat }}
 								</button>
 							</div>
@@ -116,7 +116,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 
 						<div class="fb-field">
 							<label class="fb-label-small">Nội dung chia sẻ</label>
-							<textarea v-model="form.message" required rows="5" placeholder="Mô tả chi tiết trải nghiệm của bạn..." class="fb-input fb-textarea"></textarea>
+							<textarea v-model="form.message" required rows="5" placeholder="Mô tả chi tiết trải nghiệm của bạn..." class="fb-input fb-textarea"/>
 						</div>
 
 						<button type="submit" :disabled="isSubmitting" class="fb-submit-btn">
@@ -145,7 +145,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 				</div>
 				<h2 class="fb-modal-title">Cảm ơn bạn!</h2>
 				<p class="fb-modal-desc">Ý kiến của bạn đã được ghi nhận ❤️</p>
-				<button @click="isSuccess = false; router.push('/')" class="fb-modal-btn">Về trang chủ</button>
+				<button class="fb-modal-btn" @click="isSuccess = false; router.push('/')">Về trang chủ</button>
 			</div>
 		</div>
 	</div>
@@ -158,16 +158,17 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 /* Global style to avoid Scoped CSS 404 errors */
 .fb-page-container, .fb-page-container * { font-family: 'Manrope', sans-serif; }
 .fb-bg-image {
-	position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+	position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: #f8fafc;
 }
 .fb-bg-img {
-	width: 100%; height: 100%; object-fit: cover; filter: blur(60px) brightness(0.9); transform: scale(1.15); opacity: 0.5;
+	position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top;
+	filter: saturate(1.12) contrast(1.02); opacity: 0.58; transform: none;
 }
 .fb-bg-overlay {
 	position: absolute; inset: 0;
-	background: radial-gradient(circle at 20% 30%, rgba(227, 24, 55, 0.03) 0%, transparent 40%),
-	            radial-gradient(circle at 80% 70%, rgba(3, 7, 18, 0.02) 0%, transparent 40%),
-	            linear-gradient(to bottom, rgba(253, 253, 253, 0.6) 0%, #FDFDFD 100%);
+	background:
+		radial-gradient(ellipse at 50% 18%, rgba(253, 253, 253, 0.94) 0%, rgba(253, 253, 253, 0.82) 28%, rgba(253, 253, 253, 0.35) 66%, rgba(253, 253, 253, 0.18) 100%),
+		linear-gradient(to bottom, rgba(253, 253, 253, 0.46) 0%, rgba(253, 253, 253, 0.18) 46%, rgba(253, 253, 253, 0.86) 100%);
 }
 .fb-glow {
 	position: absolute; border-radius: 9999px; filter: blur(80px); opacity: 0.4; z-index: 1; pointer-events: none;

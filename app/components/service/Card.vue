@@ -6,7 +6,7 @@
 		]"
 	>
 		<!-- Accent bar left -->
-		<div class="absolute left-0 top-10 bottom-10 w-0 group-hover:w-[4px] bg-red-600 transition-all duration-300 rounded-r-full"></div>
+		<div class="absolute left-0 top-10 bottom-10 w-0 group-hover:w-[4px] bg-red-600 transition-all duration-300 rounded-r-full"/>
 
 		<div class="flex justify-between items-start mb-6">
 			<div class="p-3 bg-red-600/5 rounded-xl group-hover:scale-110 transition-transform flex items-center justify-center w-12 h-12 shadow-sm">
@@ -55,8 +55,8 @@
 
 		<div class="mt-6 pt-4 border-t border-gray-50">
 			<button 
-				@click="handleBooking"
 				class="w-full py-3.5 bg-gray-900 text-white text-[10px] font-black rounded-xl hover:bg-red-600 transition-all active:scale-95 flex items-center justify-center gap-2 group/btn"
+				@click="handleBooking"
 			>
 				Đặt Lịch Ngay
 				<Icon name="fa6-solid:arrow-right-long" class="transition-transform group-hover/btn:translate-x-1" />

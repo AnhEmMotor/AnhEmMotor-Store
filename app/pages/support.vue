@@ -48,7 +48,7 @@ onMounted(() => {
 		<!-- [4] CONTACT SECTION (Form đăng ký liên hệ) -->
 		<section class="relative py-24 bg-white overflow-hidden border-t border-gray-100 reveal reveal-up">
 			<!-- Background Decorative Elements -->
-			<div class="absolute top-0 right-0 w-1/3 h-full bg-red-600/5 -skew-x-12 transform translate-x-1/4"></div>
+			<div class="absolute top-0 right-0 w-1/3 h-full bg-red-600/5 -skew-x-12 transform translate-x-1/4"/>
 			
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-stretch">
@@ -57,11 +57,11 @@ onMounted(() => {
 						<div class="space-y-6 flex-1">
 							<div class="space-y-6">
 								<div class="inline-flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-full shadow-sm border border-gray-100">
-									<span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
+									<span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"/>
 									<span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-500">Kết nối trực tiếp</span>
 								</div>
 								<h2 class="text-4xl lg:text-6xl font-extrabold text-gray-900 uppercase tracking-tighter leading-[1]">
-									Trung tâm <br />
+									Trung tâm <br >
 									<span class="text-red-600">Hỗ trợ tận tâm</span>
 								</h2>
 

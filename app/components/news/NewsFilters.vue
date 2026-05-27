@@ -9,12 +9,10 @@ const props = defineProps({
 const emit = defineEmits(['update:activeTab']);
 
 const categories = [
-	{ id: 'all', name: 'Tất cả', icon: 'ph:grid-four-fill' },
-	{ id: 'new', name: 'Xe mới', icon: 'ph:motorcycle-fill' },
-	{ id: 'installment', name: 'Trả góp', icon: 'ph:credit-card-fill' },
-	{ id: 'service', name: 'Bảo dưỡng', icon: 'ph:wrench-fill' },
-	{ id: 'accessory', name: 'Phụ kiện', icon: 'ph:package-fill' },
-	{ id: 'tradein', name: 'Thu cũ đổi mới', icon: 'ph:arrows-left-right-fill' }
+	{ id: 'all', name: 'Tất cả tin tức', icon: 'ph:newspaper-fill' },
+	{ id: 'events', name: 'Sự kiện showroom', icon: 'ph:megaphone-fill' },
+	{ id: 'guides', name: 'Cẩm nang công nghệ', icon: 'ph:wrench-fill' },
+	{ id: 'reviews', name: 'Đánh giá xe', icon: 'ph:motorcycle-fill' }
 ];
 
 const setActiveTab = (id) => {
@@ -23,7 +21,7 @@ const setActiveTab = (id) => {
 </script>
 
 <template>
-	<div class="w-full overflow-hidden py-4 md:py-16 font-['Manrope'] relative">
+	<div class="w-full overflow-hidden py-4 md:py-6 font-['Manrope'] relative">
 		<!-- Gradient Fades for depth -->
 		<div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none lg:hidden"/>
 		<div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none lg:hidden"/>
@@ -36,7 +34,7 @@ const setActiveTab = (id) => {
 				<button 
 					v-for="cat in categories" 
 					:key="cat.id"
-					class="flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-4 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item"
+					class="flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-4 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item flex-shrink-0"
 					:class="[
 						activeTab === cat.id 
 						? 'bg-red-600 text-white shadow-lg scale-105 z-20' 
@@ -57,7 +55,7 @@ const setActiveTab = (id) => {
 				<button 
 					v-for="cat in categories" 
 					:key="`${cat.id}-clone`"
-					class="flex lg:hidden items-center gap-2 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item"
+					class="flex lg:hidden items-center gap-2 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item flex-shrink-0"
 					:class="[
 						activeTab === cat.id 
 						? 'bg-red-600 text-white shadow-lg scale-105' 
@@ -80,7 +78,7 @@ const setActiveTab = (id) => {
 <style scoped>
 @media (max-width: 1024px) {
 	.marquee-container {
-		animation: marquee 25s linear infinite;
+		animation: marquee 20s linear infinite;
 		display: flex;
 		width: max-content;
 	}

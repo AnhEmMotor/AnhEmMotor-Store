@@ -1,9 +1,9 @@
 <script setup>
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import ProductBookingModal from "~/components/product/BookingModal.vue";
 definePageMeta({
     path: '/product/:slug'
 });
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
-import ProductBookingModal from "~/components/product/BookingModal.vue";
 
 
 
@@ -258,7 +258,7 @@ const variantSelectId = useId();
                 <!-- Hero Section -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 relative">
                     <!-- Spotlight Effect -->
-                    <div class="absolute -top-12 left-0 w-full h-full spotlight pointer-events-none"></div>
+                    <div class="absolute -top-12 left-0 w-full h-full spotlight pointer-events-none"/>
 
                     <!-- Image Gallery -->
                     <div class="lg:col-span-7 space-y-8">
@@ -271,11 +271,12 @@ const variantSelectId = useId();
                                 <img :src="mainImage" :alt="detail.product.name" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="eager">
                             </div>
                             <!-- Reflection -->
-                            <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-20 reflection opacity-30 z-0"></div>
+                            <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-20 reflection opacity-30 z-0"/>
                         </div>
 
                         <div v-if="!isPlaceholderActive && allPhotos.length > 1" class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide px-2">
-                            <button v-for="(photo, index) in allPhotos" :key="index" 
+                            <button
+v-for="(photo, index) in allPhotos" :key="index" 
                                 class="relative w-20 h-20 rounded-[1.5rem] overflow-hidden flex-shrink-0 transition-all duration-500 border-2"
                                 :class="mainImage === photo ? 'border-primary ring-4 ring-primary/5 scale-105 shadow-xl' : 'border-transparent hover:border-gray-200 shadow-sm opacity-50 hover:opacity-100'"
                                 @click="mainImage = photo"
@@ -310,7 +311,7 @@ const variantSelectId = useId();
                         <div class="sticky top-28 space-y-8">
                             <div class="space-y-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="h-[1px] w-8 bg-primary"></div>
+                                    <div class="h-[1px] w-8 bg-primary"/>
                                     <span class="text-[9px] font-black text-primary uppercase tracking-[0.4em]">{{ detail.product.category }}</span>
                                 </div>
                                 <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase italic reveal-up">
@@ -347,10 +348,10 @@ const variantSelectId = useId();
                                             <template v-for="v in currentGroupVariants" :key="v.slug">
                                                 <div v-for="(color, cIdx) in v.colors" :key="cIdx" class="relative group">
                                                     <NuxtLink v-if="v.slug !== currentVariant.slug" :to="`/product/${v.slug}`" class="block w-8 h-8 rounded-full border-2 border-white shadow-sm p-0.5 hover:scale-110 transition-transform">
-                                                        <div class="w-full h-full rounded-full border border-black/5" :style="{ backgroundColor: color.code || '#ccc' }"></div>
+                                                        <div class="w-full h-full rounded-full border border-black/5" :style="{ backgroundColor: color.code || '#ccc' }"/>
                                                     </NuxtLink>
-                                                    <button v-else @click="selectedColorIndex = cIdx; selectedImage = null" class="block w-8 h-8 rounded-full border-2 transition-all p-0.5 focus:outline-none scale-110" :class="selectedColorIndex === cIdx ? 'border-primary shadow-md ring-2 ring-primary/10' : 'border-white shadow-sm hover:scale-110'">
-                                                        <div class="w-full h-full rounded-full border border-black/5" :style="{ backgroundColor: color.code || '#ccc' }"></div>
+                                                    <button v-else class="block w-8 h-8 rounded-full border-2 transition-all p-0.5 focus:outline-none scale-110" :class="selectedColorIndex === cIdx ? 'border-primary shadow-md ring-2 ring-primary/10' : 'border-white shadow-sm hover:scale-110'" @click="selectedColorIndex = cIdx; selectedImage = null">
+                                                        <div class="w-full h-full rounded-full border border-black/5" :style="{ backgroundColor: color.code || '#ccc' }"/>
                                                     </button>
                                                 </div>
                                             </template>
@@ -365,14 +366,14 @@ const variantSelectId = useId();
                                     <div class="flex items-center gap-3">
                                         <div class="relative">
                                             <Icon name="fa6-solid:bolt-lightning" class="text-primary text-base relative z-10" />
-                                            <div class="absolute inset-0 bg-primary/50 blur-md animate-pulse"></div>
+                                            <div class="absolute inset-0 bg-primary/50 blur-md animate-pulse"/>
                                         </div>
                                         <div class="flex flex-col">
                                             <span class="text-[8px] font-black text-primary uppercase tracking-[0.1em]">Ưu đãi kết thúc</span>
                                             <span class="text-base font-black text-white font-mono tracking-wider">{{ formattedCountdown }}</span>
                                         </div>
                                     </div>
-                                    <div class="h-8 w-[1px] bg-white/10"></div>
+                                    <div class="h-8 w-[1px] bg-white/10"/>
                                     <div class="text-right">
                                         <span class="text-[8px] font-black text-gray-400 uppercase tracking-[0.1em]">Còn lại</span>
                                         <div class="text-lg font-black text-white leading-none">08 <span class="text-[10px] text-primary italic">xe</span></div>
@@ -381,14 +382,14 @@ const variantSelectId = useId();
 
                                 <div class="grid grid-cols-1 gap-3">
                                     <template v-if="isMotorbike">
-                                        <button @click="openConsultation" class="w-full py-5 bg-primary text-white font-black text-xs rounded-[1.5rem] hover:scale-[1.01] active:scale-95 transition-all shadow-lg flex flex-col items-center justify-center gap-1 uppercase tracking-[0.2em] group relative overflow-hidden">
+                                        <button class="w-full py-5 bg-primary text-white font-black text-xs rounded-[1.5rem] hover:scale-[1.01] active:scale-95 transition-all shadow-lg flex flex-col items-center justify-center gap-1 uppercase tracking-[0.2em] group relative overflow-hidden" @click="openConsultation">
                                             <div class="flex items-center gap-2">
                                                 TƯ VẤN & BÁO GIÁ
                                                 <Icon name="fa6-solid:phone-volume" class="text-[10px] animate-bounce" />
                                             </div>
                                             <span class="text-[7px] opacity-70 normal-case tracking-normal font-bold italic">Báo giá lăn bánh & Thủ tục trả góp</span>
                                         </button>
-                                        <button @click="bookTestDrive" class="w-full py-4 bg-white text-gray-900 border border-primary font-black text-[10px] rounded-[1.5rem] hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-1 uppercase tracking-[0.15em]">
+                                        <button class="w-full py-4 bg-white text-gray-900 border border-primary font-black text-[10px] rounded-[1.5rem] hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-1 uppercase tracking-[0.15em]" @click="bookTestDrive">
                                             <div class="flex items-center gap-2">
                                                 <Icon name="fa6-solid:motorcycle" class="text-primary" />
                                                 ĐĂNG KÝ LÁI THỬ
@@ -398,11 +399,11 @@ const variantSelectId = useId();
                                         </button>
                                     </template>
                                     <template v-else>
-                                        <button @click="buyNow" class="w-full py-5 bg-primary text-white font-black text-xs rounded-[1.5rem] hover:scale-[1.01] active:scale-95 transition-all shadow-lg flex items-center justify-center gap-3 uppercase tracking-[0.2em] group relative overflow-hidden">
+                                        <button class="w-full py-5 bg-primary text-white font-black text-xs rounded-[1.5rem] hover:scale-[1.01] active:scale-95 transition-all shadow-lg flex items-center justify-center gap-3 uppercase tracking-[0.2em] group relative overflow-hidden" @click="buyNow">
                                             MUA NGAY — NHẬN ƯU ĐÃI
                                             <Icon name="fa6-solid:arrow-right" class="text-[10px] group-hover:translate-x-1 transition-transform" />
                                         </button>
-                                        <button @click="onAddToCart" class="w-full py-4 bg-white text-gray-900 border border-primary font-black text-[10px] rounded-[1.5rem] hover:bg-primary/5 transition-all flex items-center justify-center gap-2 uppercase tracking-[0.15em]">
+                                        <button class="w-full py-4 bg-white text-gray-900 border border-primary font-black text-[10px] rounded-[1.5rem] hover:bg-primary/5 transition-all flex items-center justify-center gap-2 uppercase tracking-[0.15em]" @click="onAddToCart">
                                             <Icon name="fa6-solid:cart-plus" class="text-primary" />
                                             THÊM VÀO GIỎ
                                         </button>
@@ -415,11 +416,11 @@ const variantSelectId = useId();
 
                 <!-- Highlights Section -->
                 <div v-if="highlights.length > 0" class="space-y-24 lg:space-y-32 relative">
-                    <div class="absolute inset-0 bg-gradient-to-b from-gray-50/30 via-white to-gray-50/30 -z-10 rounded-[3rem]"></div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-gray-50/30 via-white to-gray-50/30 -z-10 rounded-[3rem]"/>
 
                     <div class="text-center space-y-4 reveal-up">
                         <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 rounded-full">
-                            <div class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></div>
+                            <div class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"/>
                             <span class="text-[8px] font-black text-primary uppercase tracking-[0.3em]">Innovation</span>
                         </div>
                         <h2 class="text-4xl lg:text-6xl font-black text-gray-900 uppercase tracking-tight italic leading-[1.1]">
@@ -464,8 +465,8 @@ const variantSelectId = useId();
 
                     <div class="max-w-6xl mx-auto relative px-4">
                         <!-- Background Glows -->
-                        <div class="absolute -top-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10 animate-pulse"></div>
-                        <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10"></div>
+                        <div class="absolute -top-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10 animate-pulse"/>
+                        <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10"/>
 
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 rounded-[3.5rem] overflow-hidden border border-gray-100 shadow-2xl bg-white/50 backdrop-blur-xl">
                             <!-- Left: Features -->
@@ -475,7 +476,8 @@ const variantSelectId = useId();
                                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Dịch vụ chuẩn 5 sao</p>
                                 </div>
                                 <div class="space-y-12">
-                                    <div v-for="feat in ['Thời gian Bảo hành', 'Cứu hộ tận nơi', 'Hỗ trợ kỹ thuật', 'Không gian chờ', 'Thủ tục Trả góp']" :key="feat" 
+                                    <div
+v-for="feat in ['Thời gian Bảo hành', 'Cứu hộ tận nơi', 'Hỗ trợ kỹ thuật', 'Không gian chờ', 'Thủ tục Trả góp']" :key="feat" 
                                         class="h-10 flex items-center text-xs font-black text-gray-700 uppercase tracking-widest border-b border-gray-100 pb-2">
                                         {{ feat }}
                                     </div>
@@ -485,8 +487,8 @@ const variantSelectId = useId();
                             <!-- Middle: AnhEm Motor (The Premium One) -->
                             <div class="lg:col-span-4 bg-dark-900 p-8 lg:p-12 relative overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.3)] z-10 scale-105 lg:-my-6 lg:rounded-[3rem]">
                                 <!-- Premium Accents -->
-                                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] group-hover:bg-primary/20 transition-all duration-700"></div>
-                                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-primary/5 blur-[80px]"></div>
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] group-hover:bg-primary/20 transition-all duration-700"/>
+                                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-primary/5 blur-[80px]"/>
                                 
                                 <div class="relative z-20 space-y-8">
                                     <div class="text-center space-y-3 pb-4">
@@ -564,43 +566,44 @@ const variantSelectId = useId();
                 <!-- Final CTA Section -->
                 <div class="relative rounded-[3.5rem] overflow-hidden bg-dark-900 py-16 lg:py-24 shadow-2xl mx-4 lg:mx-0 group border border-white/5">
                     <!-- Dynamic Background Accents -->
-                    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
-                    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-[120px]"></div>
+                    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"/>
+                    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-[120px]"/>
                     
                     <div class="relative z-10 max-w-6xl mx-auto px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                         <div class="space-y-8 reveal-up">
                             <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20">
-                                <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+                                <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"/>
                                 <span class="text-[9px] font-black text-primary uppercase tracking-[0.3em]">Cơ hội sở hữu cuối cùng</span>
                             </div>
                             <h2 class="text-5xl lg:text-7xl font-black text-white leading-[1.1] uppercase italic tracking-tight">Đừng bỏ lỡ<br><span class="text-primary drop-shadow-lg">Chiến mã</span></h2>
                             <p class="text-white/60 font-bold text-lg max-w-md leading-relaxed">Sở hữu ngay siêu phẩm {{ detail.product.name }} với ưu đãi độc quyền chỉ có tại hệ thống AnhEm Motor.</p>
                             <div class="flex flex-wrap gap-4 pt-4">
                                 <template v-if="isMotorbike">
-                                    <button @click="openConsultation" class="px-12 py-5 bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-primary transition-all animate-glow shadow-xl flex items-center gap-2">
+                                    <button class="px-12 py-5 bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-primary transition-all animate-glow shadow-xl flex items-center gap-2" @click="openConsultation">
                                         Tư vấn & Báo giá
                                         <Icon name="fa6-solid:phone-volume" class="text-[10px]" />
                                     </button>
-                                    <button @click="bookTestDrive" class="px-10 py-5 bg-white/5 backdrop-blur-md text-white border border-white/10 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all flex items-center gap-2">
+                                    <button class="px-10 py-5 bg-white/5 backdrop-blur-md text-white border border-white/10 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all flex items-center gap-2" @click="bookTestDrive">
                                         Đăng ký lái thử
                                         <Icon name="fa6-solid:motorcycle" class="text-[10px]" />
                                     </button>
                                 </template>
                                 <template v-else>
-                                    <button @click="buyNow" class="px-12 py-5 bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-primary transition-all animate-glow shadow-xl">Đặt mua ngay</button>
-                                    <button @click="openConsultation" class="px-10 py-5 bg-white/5 backdrop-blur-md text-white border border-white/10 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all">Liên hệ tư vấn</button>
+                                    <button class="px-12 py-5 bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-primary transition-all animate-glow shadow-xl" @click="buyNow">Đặt mua ngay</button>
+                                    <button class="px-10 py-5 bg-white/5 backdrop-blur-md text-white border border-white/10 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all" @click="openConsultation">Liên hệ tư vấn</button>
                                 </template>
                             </div>
                         </div>
 
                         <!-- Product Cutout Image -->
                         <div class="relative lg:h-[400px] flex items-center justify-center reveal-up delay-200">
-                            <div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl scale-150 animate-pulse"></div>
-                            <img :src="mainImage" :alt="detail.product.name" 
+                            <div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl scale-150 animate-pulse"/>
+                            <img
+:src="mainImage" :alt="detail.product.name" 
                                 class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
                             >
                             <!-- Reflection Shadow -->
-                            <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[80%] h-12 bg-black/40 blur-2xl rounded-full"></div>
+                            <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[80%] h-12 bg-black/40 blur-2xl rounded-full"/>
                         </div>
                     </div>
                 </div>
@@ -619,24 +622,26 @@ const variantSelectId = useId();
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-                        <div v-for="group in specGroups" :key="group.title" 
+                        <div
+v-for="group in specGroups" :key="group.title" 
                             class="premium-card rounded-[2.5rem] bg-white/50 backdrop-blur-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
                             :class="[isGroupExpanded(group.title) ? 'shadow-xl border-primary/20' : 'hover:border-primary/10']"
                         >
                             <!-- Accordion Header -->
                             <button 
-                                @click="toggleGroup(group.title)"
                                 class="flex items-center justify-between gap-5 p-8 w-full text-left group/header"
+                                @click="toggleGroup(group.title)"
                             >
                                 <div class="flex items-center gap-5">
-                                    <div class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center text-primary text-2xl shadow-xl transition-transform duration-500 group-hover/header:scale-110"
+                                    <div
+class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center text-primary text-2xl shadow-xl transition-transform duration-500 group-hover/header:scale-110"
                                         :class="[isGroupExpanded(group.title) ? 'scale-110 ring-4 ring-primary/10' : '']"
                                     >
                                         <Icon :name="`fa6-solid:${group.icon}`" />
                                     </div>
                                     <div class="space-y-1">
                                         <h3 class="font-black text-gray-900 text-lg uppercase tracking-tight italic">{{ group.title }}</h3>
-                                        <div class="h-1 bg-primary/20 rounded-full transition-all duration-500" :class="[isGroupExpanded(group.title) ? 'w-16' : 'w-8']"></div>
+                                        <div class="h-1 bg-primary/20 rounded-full transition-all duration-500" :class="[isGroupExpanded(group.title) ? 'w-16' : 'w-8']"/>
                                     </div>
                                 </div>
                                 <Icon 
@@ -655,7 +660,7 @@ const variantSelectId = useId();
                                     <div class="grid grid-cols-1 gap-6 pt-6 border-t border-gray-100/50">
                                         <div v-for="spec in group.specs" :key="spec.key" class="flex flex-col gap-1.5 group/item">
                                             <div class="flex items-center gap-2">
-                                                <div class="w-1.5 h-1.5 rounded-full bg-primary/20 group-hover/item:bg-primary transition-colors"></div>
+                                                <div class="w-1.5 h-1.5 rounded-full bg-primary/20 group-hover/item:bg-primary transition-colors"/>
                                                 <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover/item:text-primary transition-colors">{{ spec.label }}</span>
                                             </div>
                                             <span class="text-base font-black text-gray-900 tracking-tight pl-3.5">{{ spec.value }}</span>

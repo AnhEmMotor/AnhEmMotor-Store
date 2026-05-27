@@ -32,7 +32,7 @@ useSeoMeta({
                 />
             </div>
             <div v-else class="flex justify-center items-center h-64">
-                <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+                <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"/>
             </div>
 
             <div v-if="!isLoading && (!categories || categories.length === 0)" class="text-center py-20 bg-gray-50 rounded-[3rem]">

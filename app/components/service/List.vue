@@ -26,7 +26,7 @@
 					<Icon name="fa6-solid:magnifying-glass" class="text-4xl text-gray-200" />
 				</div>
 				<p class="text-gray-400 font-black uppercase tracking-[0.3em] text-sm">Không tìm thấy dịch vụ trong danh mục này</p>
-				<button @click="$emit('reset-filter')" class="mt-8 text-red-600 font-black uppercase tracking-widest text-xs hover:underline">Xem tất cả dịch vụ</button>
+				<button class="mt-8 text-red-600 font-black uppercase tracking-widest text-xs hover:underline" @click="$emit('reset-filter')">Xem tất cả dịch vụ</button>
 			</div>
 		</div>
 	</div>

@@ -48,7 +48,7 @@ export const technologyRepository = {
             {
                 title: 'Hỗ trợ đỗ xe (Parking Assist)',
                 description: 'Cảm biến và hệ thống trợ lực giúp việc dừng đỗ xe trong không gian hẹp trở nên dễ dàng và an toàn hơn.',
-                icon: 'ph:parking-fill'
+                icon: 'ph:park-fill'
             }
         ];
     },

@@ -2,7 +2,7 @@
 	<section id="apply-form" class="py-20 bg-white overflow-hidden relative">
 
 		<!-- Background decorative light -->
-		<div class="absolute bottom-0 right-0 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+		<div class="absolute bottom-0 right-0 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] pointer-events-none"/>
 
 		<div class="container mx-auto px-6">
 			<div class="flex flex-col lg:flex-row gap-16 items-start">
@@ -10,11 +10,11 @@
 				<div class="lg:w-5/12 space-y-12">
 					<div class="space-y-4">
 						<div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full">
-							<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+							<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"/>
 							<span class="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Hành trình sự nghiệp</span>
 						</div>
 						<h2 class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] italic uppercase tracking-tighter">
-							Quy trình <br />
+							Quy trình <br >
 							<span class="text-primary underline decoration-black/5 underline-offset-8">Ứng tuyển</span>
 						</h2>
 						<p class="text-base text-gray-500 font-medium leading-relaxed max-w-lg">
@@ -25,7 +25,7 @@
 
 					<div class="space-y-12 relative">
 						<!-- Progress Line -->
-						<div class="absolute left-7 top-0 bottom-0 w-[2px] bg-gray-100"></div>
+						<div class="absolute left-7 top-0 bottom-0 w-[2px] bg-gray-100"/>
 
 						<div v-for="(step, index) in steps" :key="index" class="relative flex gap-10 group">
 							<div class="w-14 h-14 rounded-2xl bg-white border-2 border-gray-100 flex items-center justify-center text-gray-400 font-black text-xl z-10 group-hover:border-primary group-hover:text-primary group-hover:scale-110 transition-all duration-500 shadow-sm">
@@ -55,8 +55,8 @@
 				<div class="lg:w-7/12 w-full">
 					<div class="bg-[#0a0a0a] rounded-[3.5rem] p-10 md:p-16 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.4)] relative overflow-hidden group">
 						<!-- Glows -->
-						<div class="absolute top-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-[100px] -mr-40 -mt-40 group-hover:bg-primary/30 transition-all duration-1000"></div>
-						<div class="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -ml-32 -mb-32"></div>
+						<div class="absolute top-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-[100px] -mr-40 -mt-40 group-hover:bg-primary/30 transition-all duration-1000"/>
+						<div class="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -ml-32 -mb-32"/>
 
 						<div class="relative z-10">
 							<div class="mb-12">
@@ -64,7 +64,7 @@
 								<p class="text-white/40 font-medium">Thông tin của bạn sẽ được bộ phận nhân sự bảo mật tuyệt đối.</p>
 							</div>
 
-							<form @submit.prevent="submitForm" class="space-y-8">
+							<form class="space-y-8" @submit.prevent="submitForm">
 								<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 									<div class="space-y-3">
 										<label class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2">Họ và Tên *</label>
@@ -74,7 +74,7 @@
 											placeholder="Nguyễn Văn A"
 											class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
 											required
-										/>
+										>
 									</div>
 									<div class="space-y-3">
 										<label class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2">Số điện thoại *</label>
@@ -84,7 +84,7 @@
 											placeholder="09xx xxx xxx"
 											class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
 											required
-										/>
+										>
 									</div>
 								</div>
 
@@ -96,7 +96,7 @@
 											type="email"
 											placeholder="email@example.com"
 											class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
-										/>
+										>
 									</div>
 									<div class="space-y-3 relative">
 										<label class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2">Vị trí ứng tuyển *</label>
@@ -127,7 +127,7 @@
 										<p class="text-sm font-black text-white/30 uppercase tracking-widest group-hover/upload:text-white transition-colors">
 											{{ fileName || 'Tải lên hồ sơ của bạn' }}
 										</p>
-										<input ref="fileInput" type="file" class="hidden" @change="handleFileChange" />
+										<input ref="fileInput" type="file" class="hidden" @change="handleFileChange" >
 									</div>
 								</div>
 
@@ -138,7 +138,7 @@
 										rows="4"
 										placeholder="Giới thiệu ngắn về bản thân hoặc kinh nghiệm của bạn..."
 										class="w-full px-8 py-5 rounded-[2rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none font-medium"
-									></textarea>
+									/>
 								</div>
 
 								<button

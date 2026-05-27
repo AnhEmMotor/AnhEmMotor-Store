@@ -114,7 +114,7 @@ export default defineNuxtConfig({
 		routeRules: {
 			"/contact": { redirect: "/support" },
 			"/api/v1/**": {
-				proxy: "http://localhost:5000/api/v1/**",
+				proxy: "http://localhost:7001/api/v1/**",
 			},
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },

@@ -1,29 +1,43 @@
 <template>
 	<header
-		class="fixed top-0 w-full z-[1000] bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
+		class="fixed top-0 w-full z-1000 bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
 		:class="[isScrolled ? 'shadow-lg' : '']"
 	>
 
 
 		<!-- TẦNG 1: TOP BAR (MINIMAL & COHESIVE) -->
 		<div class="h-9 bg-gray-50/50 backdrop-blur-sm border-b border-gray-100 hidden lg:block overflow-hidden">
-			<div class="max-w-[1440px] mx-auto px-10 h-full flex items-center justify-between">
+		<div class="max-w-360 mx-auto px-10 h-full flex items-center justify-between">
 				<!-- LEFT: PROMO / BRAND SLOGAN -->
 				<div class="flex items-center gap-2">
-					<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+					<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"/>
 					<p class="text-[9px] font-black text-gray-400 uppercase tracking-[0.25em]">Hệ thống xe máy chính hãng AnhEm Motor</p>
 				</div>
 
 				<!-- RIGHT: QUICK LINKS -->
-				<div class="flex items-center gap-8 h-full">
-					<NuxtLink v-for="item in [
+				<div class="flex items-center gap-6 h-full">
+					<!-- PREMIUM GLOWING APP LINK -->
+					<NuxtLink 
+						to="/app" 
+						class="text-[9px] font-[1000] uppercase tracking-widest text-white px-3 py-1 bg-linear-to-r from-red-600 to-red-800 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 relative z-10 shrink-0 font-sans"
+					>
+						AnhEmMoto App
+						<span class="relative flex h-1.5 w-1.5 flex-shrink-0">
+							<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"/>
+							<span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"/>
+						</span>
+					</NuxtLink>
+
+					<!-- OTHER QUICK LINKS -->
+					<NuxtLink
+v-for="item in [
 						{ name: 'Về AnhEm Motor', path: '/about' },
 						{ name: 'Tin tức', path: '/news' },
 						{ name: 'Tuyển dụng', path: '/recruitment' },
 						{ name: 'Hỗ trợ', path: '/support' }
-					]" :key="item.name" :to="item.path" class="text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all duration-300 relative group/top">
+					]" :key="item.name" :to="item.path" class="text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all duration-300 relative group/top flex items-center gap-1" :class="{ 'text-primary font-black': isRouteActive(item.path) }">
 						{{ item.name }}
-						<span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover/top:w-full"></span>
+						<span class="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[1.5px] bg-primary transition-all duration-300" :class="isRouteActive(item.path) ? 'w-full' : 'w-0 group-hover/top:w-full'"/>
 					</NuxtLink>
 				</div>
 			</div>
@@ -34,17 +48,17 @@
 			class="py-2 sm:py-3 bg-white/70 backdrop-blur-xl transition-all duration-500 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)]"
 			:class="[isScrolled ? 'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]' : '']"
 		>
-			<div class="max-w-[1440px] mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2 sm:gap-6">
+			<div class="max-w-360 mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2 sm:gap-6">
 				
 				<!-- Mobile Menu Toggle (Moved to Left) -->
 				<button
 					class="xl:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full text-gray-900 hover:bg-gray-100 transition-all shrink-0 group"
-					@click="openMobileNav"
 					aria-label="Mở menu"
+					@click="openMobileNav"
 				>
-					<span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary"></span>
-					<span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary"></span>
-					<span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary"></span>
+					<span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary"/>
+					<span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary"/>
+					<span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary"/>
 				</button>
 
 				<!-- LOGO (ENHANCED BRANDING) -->
@@ -60,7 +74,7 @@
 						<div class="relative overflow-hidden pr-2">
 							<span class="text-[18px] sm:text-[22px] font-[1000] text-gray-950 uppercase tracking-[-0.04em] italic block">AnhEm</span>
 							<!-- Subtle sweep effect on hover -->
-							<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-sweep"></div>
+							<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-sweep"/>
 						</div>
 
 						<span class="text-[10px] sm:text-[11px] font-black text-red-600 uppercase tracking-[0.45em] mt-0.5">Motor</span>
@@ -74,11 +88,11 @@
 						<li class="group relative py-2">
 							<NuxtLink to="/products?category_ids=8" class="nav-link-refined" :class="{ 'active': isRouteActive('/products?category_ids=8') }">
 								XE MÁY
-								<span class="nav-dot-floating" :class="{ 'active': isRouteActive('/products?category_ids=8') }"></span>
+								<span class="nav-dot-floating" :class="{ 'active': isRouteActive('/products?category_ids=8') }"/>
 							</NuxtLink>
-							<div class="absolute top-full left-[-20px] w-max max-w-[900px] bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-gray-50 rounded-[2rem] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 p-5 z-[100] translate-y-4 group-hover:translate-y-0">
+							<div class="absolute top-full -left-5 w-max max-w-225 bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-gray-50 rounded-4xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 p-5 z-100 translate-y-4 group-hover:translate-y-0">
 								<div class="flex items-center gap-2">
-									<NuxtLink v-for="cat in dynamicMotorcycleCategories" :key="cat.name" :to="cat.path" class="flex flex-col items-center gap-3 p-5 rounded-[1.5rem] hover:bg-primary/5 group/cat transition-all text-center min-w-[140px]">
+									<NuxtLink v-for="cat in dynamicMotorcycleCategories" :key="cat.name" :to="cat.path" class="flex flex-col items-center gap-3 p-5 rounded-[1.5rem] hover:bg-primary/5 group/cat transition-all text-center min-w-35">
 										<div class="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center group-hover/cat:bg-white transition-all duration-500 shadow-sm group-hover/cat:shadow-md group-hover/cat:scale-110 group-hover/cat:-rotate-3">
 											<Icon :name="getCategoryIcon(cat)" class="text-2xl text-gray-400 group-hover/cat:text-primary" />
 										</div>
@@ -90,14 +104,14 @@
 								</div>
 							</div>
 						</li>
-						<li><NuxtLink to="/products" class="nav-link-refined" :class="{ 'active': isRouteActive('/products') }">BẢNG GIÁ <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/products') }"></span></NuxtLink></li>
-						<li><NuxtLink to="/promotion" class="nav-link-refined" :class="{ 'active': isRouteActive('/promotion') }">KHUYẾN MÃI <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/promotion') }"></span></NuxtLink></li>
-						<li><NuxtLink to="/service" class="nav-link-refined" :class="{ 'active': isRouteActive('/service') }">DỊCH VỤ <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/service') }"></span></NuxtLink></li>
-						<li><NuxtLink to="/products?category_ids=12,13" class="nav-link-refined" :class="{ 'active': isRouteActive('/products?category_ids=12,13') }">PHỤ TÙNG & PHỤ KIỆN<span class="nav-dot-floating" :class="{ 'active': isRouteActive('/products?category_ids=12,13') }"></span></NuxtLink></li>
-						<li><NuxtLink to="/compare" class="nav-link-refined" :class="{ 'active': isRouteActive('/compare') }">SO SÁNH XE <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/compare') }"></span></NuxtLink></li>
+						<li><NuxtLink to="/products" class="nav-link-refined" :class="{ 'active': isRouteActive('/products') }">BẢNG GIÁ <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/products') }"/></NuxtLink></li>
+						<li><NuxtLink to="/promotion" class="nav-link-refined" :class="{ 'active': isRouteActive('/promotion') }">KHUYẾN MÃI <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/promotion') }"/></NuxtLink></li>
+						<li><NuxtLink to="/service" class="nav-link-refined" :class="{ 'active': isRouteActive('/service') }">DỊCH VỤ <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/service') }"/></NuxtLink></li>
+						<li><NuxtLink to="/products?category_ids=12,13" class="nav-link-refined" :class="{ 'active': isRouteActive('/products?category_ids=12,13') }">PHỤ TÙNG & PHỤ KIỆN<span class="nav-dot-floating" :class="{ 'active': isRouteActive('/products?category_ids=12,13') }"/></NuxtLink></li>
+						<li><NuxtLink to="/compare" class="nav-link-refined" :class="{ 'active': isRouteActive('/compare') }">SO SÁNH XE <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/compare') }"/></NuxtLink></li>
 						
 						<!-- KHÁM PHÁ -->
-						<li><NuxtLink to="/technology" class="nav-link-refined" :class="{ 'active': isRouteActive('/technology') }">CÔNG NGHỆ <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/technology') }"></span></NuxtLink></li>
+						<li><NuxtLink to="/technology" class="nav-link-refined" :class="{ 'active': isRouteActive('/technology') }">CÔNG NGHỆ <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/technology') }"/></NuxtLink></li>
 
 					</ul>
 				</nav>
@@ -118,7 +132,7 @@
 						<!-- Search Dropdown (Refined) -->
 						<div 
 							v-if="isSearchOpen"
-							class="absolute top-full right-0 mt-4 w-[300px] sm:w-[350px] bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-gray-100 rounded-2xl p-4 z-[1100] animate-megaSlideIn"
+							class="absolute top-full right-0 mt-4 w-[300px] sm:w-87.5 bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-gray-100 rounded-2xl p-4 z-1100 animate-megaSlideIn"
 						>
 							<div class="relative">
 								<Icon name="ph:magnifying-glass-fill" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -162,7 +176,7 @@
 								</button>
 								
 								<!-- Dropdown -->
-								<div class="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[1100]">
+								<div class="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-1100">
 									<div class="px-5 py-2 border-b border-gray-50 mb-2">
 										<p class="text-[9px] text-gray-400 uppercase font-black tracking-widest">Khách hàng</p>
 										<p class="text-[12px] font-bold text-gray-900 truncate">{{ authStore.user?.fullName }}</p>
@@ -173,8 +187,8 @@
 									<NuxtLink to="/orders" class="flex items-center gap-3 px-4 sm:px-5 py-2 sm:py-2.5 text-[12px] font-bold text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors">
 										<Icon name="ph:shopping-bag-fill" class="text-base" /> Đơn hàng của tôi
 									</NuxtLink>
-									<div class="h-[1px] bg-gray-50 my-2"></div>
-									<button @click="authStore.logout()" class="w-full flex items-center gap-3 px-4 sm:px-5 py-2 sm:py-2.5 text-[12px] font-black text-red-500 hover:bg-red-50 transition-colors">
+									<div class="h-[1px] bg-gray-50 my-2"/>
+									<button class="w-full flex items-center gap-3 px-4 sm:px-5 py-2 sm:py-2.5 text-[12px] font-black text-red-500 hover:bg-red-50 transition-colors" @click="authStore.logout()">
 										<Icon name="ph:sign-out-fill" class="text-base" /> ĐĂNG XUẤT
 									</button>
 								</div>
@@ -195,14 +209,14 @@
 
 		<ClientOnly>
 			<Teleport to="body">
-				<div v-if="mobileNavActive" class="fixed inset-0 z-[2000] bg-black/40 backdrop-blur-sm" @click="closeMobileNav" />
-				<nav class="fixed top-0 bottom-0 left-0 w-[85%] max-w-sm bg-white z-[2100] transform transition-transform duration-500 ease-in-out shadow-2xl" :class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'">
+				<div v-if="mobileNavActive" class="fixed inset-0 z-2000 bg-black/40 backdrop-blur-sm" @click="closeMobileNav" />
+				<nav class="fixed top-0 bottom-0 left-0 w-[85%] max-w-sm bg-white z-2100 transform transition-transform duration-500 ease-in-out shadow-2xl" :class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'">
 					<div class="p-4 sm:p-8 border-b flex justify-between items-center bg-gray-50/50">
 						<div v-if="authStore.isLoggedIn" class="flex items-center gap-4">
 							<div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white overflow-hidden border border-gray-200 shadow-sm flex items-center justify-center">
 								<img v-if="authStore.user?.avatarUrl" :src="authStore.user.avatarUrl" alt="Avatar" class="w-full h-full object-cover">
 								<div v-else class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
 								</div>
 							</div>
 							<div class="flex flex-col">
@@ -214,10 +228,10 @@
 							<span class="text-lg sm:text-xl font-black text-gray-900 uppercase tracking-tighter">ANHEM</span>
 							<span class="text-[10px] sm:text-[11px] font-black text-[#e60023] uppercase tracking-[0.35em]">MOTOR</span>
 						</div>
-						<button @click="closeMobileNav" class="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-red-50 transition-all border border-gray-100 group active:scale-95" aria-label="Đóng menu">
+						<button class="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-red-50 transition-all border border-gray-100 group active:scale-95" aria-label="Đóng menu" @click="closeMobileNav">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;" class="group-hover:stroke-red-600 transition-colors">
-								<line x1="18" y1="6" x2="6" y2="18"></line>
-								<line x1="6" y1="6" x2="18" y2="18"></line>
+								<line x1="18" y1="6" x2="6" y2="18"/>
+								<line x1="6" y1="6" x2="18" y2="18"/>
 							</svg>
 						</button>
 					</div>

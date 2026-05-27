@@ -84,10 +84,10 @@ const toggleCompare = (e) => {
 
 			<!-- Compare Toggle -->
 			<button 
-				@click="toggleCompare"
 				class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10 backdrop-blur-md border"
 				:class="isCompared ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30' : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'"
 				:title="isCompared ? 'Xóa khỏi danh sách so sánh' : 'Thêm vào so sánh'"
+				@click="toggleCompare"
 			>
 				<Icon :name="isCompared ? 'ph:check-bold' : 'ph:git-diff-bold'" class="text-lg" />
 			</button>

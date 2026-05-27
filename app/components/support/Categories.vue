@@ -6,22 +6,26 @@
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-			<div v-for="(cat, idx) in categories" :key="idx" 
-				@click="activeIdx = activeIdx === idx ? -1 : idx"
+			<div
+v-for="(cat, idx) in categories" :key="idx" 
 				class="group p-8 bg-white border transition-all duration-500 cursor-pointer text-center space-y-6 hover:-translate-y-2"
 				:class="[
 					activeIdx === idx ? 'border-red-600 ring-4 ring-red-600/5 shadow-xl shadow-red-600/5 rounded-2xl' : 'border-gray-100 rounded-2xl hover:border-red-600/30'
 				]"
+				@click="activeIdx = activeIdx === idx ? -1 : idx"
 			>
-				<div class="w-16 h-16 mx-auto bg-gray-50 rounded-xl flex items-center justify-center transition-all duration-500"
+				<div
+class="w-16 h-16 mx-auto bg-gray-50 rounded-xl flex items-center justify-center transition-all duration-500"
 					:class="activeIdx === idx ? 'bg-red-600' : 'group-hover:bg-red-600'"
 				>
-					<Icon :name="cat.icon" class="text-2xl transition-all duration-500" 
+					<Icon
+:name="cat.icon" class="text-2xl transition-all duration-500" 
 						:class="activeIdx === idx ? 'text-white' : 'text-gray-700 group-hover:text-white'"
 					/>
 				</div>
 				<div class="space-y-3">
-					<h3 class="text-[15px] font-extrabold text-gray-900 uppercase tracking-tight transition-colors"
+					<h3
+class="text-[15px] font-extrabold text-gray-900 uppercase tracking-tight transition-colors"
 						:class="{ 'text-red-600': activeIdx === idx }"
 					>{{ cat.title }}</h3>
 					<p class="text-[13px] text-gray-500 font-medium leading-relaxed px-2 line-clamp-2">{{ cat.desc }}</p>
@@ -30,10 +34,12 @@
 				<!-- Mini CTA -->
 				<div class="pt-2">
 					<div class="inline-flex items-center gap-2 transition-all duration-500">
-						<span class="text-[10px] font-extrabold text-gray-900 uppercase tracking-widest transition-colors"
+						<span
+class="text-[10px] font-extrabold text-gray-900 uppercase tracking-widest transition-colors"
 							:class="{ 'text-red-600': activeIdx === idx }"
 						>{{ cat.cta }}</span>
-						<Icon name="fa6-solid:arrow-right" class="text-[9px] text-red-600 transition-all" 
+						<Icon
+name="fa6-solid:arrow-right" class="text-[9px] text-red-600 transition-all" 
 							:class="{ 'translate-x-1': activeIdx === idx }"
 						/>
 					</div>
@@ -44,7 +50,7 @@
 		<!-- Dynamic Detail Panel -->
 		<transition name="panel">
 			<div v-if="activeIdx !== -1" class="mt-12 bg-gray-50 rounded-3xl p-10 border border-gray-100 relative overflow-hidden">
-				<div class="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+				<div class="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full -translate-y-1/2 translate-x-1/2"/>
 				
 				<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 					<div class="lg:col-span-7 space-y-6">
