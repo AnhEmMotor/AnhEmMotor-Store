@@ -13,5 +13,10 @@ export const orderRepository = {
 		const axios = useAxios();
 		const response = await axios.get("/api/v1/Order/my-orders");
 		return response.data;
+	},
+	async getPaymentLink(orderId) {
+		const axios = useAxios();
+		const response = await axios.get(`/api/v1/Payment/${orderId}/link`);
+		return response.data;
 	}
 };

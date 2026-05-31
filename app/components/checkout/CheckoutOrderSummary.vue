@@ -1,22 +1,10 @@
 <script setup>
 import { computed } from "vue";
-import { toast } from "vue3-toastify";
 import { useCart } from "~/composables/useCart";
-import { useOrderStore } from "~/stores/order.store";
 import orderMapper from "~/mappers/order.mapper";
-import "vue3-toastify/dist/index.css";
 
-const {
-	cartItems,
-	cartDetails,
-	removeItem,
-	updateQuantity,
-	isPending,
-	clearCart,
-} = useCart();
-const orderStore = useOrderStore();
-
-const isSubmitting = computed(() => orderStore.isLoading);
+const { cartItems, cartDetails, removeItem, updateQuantity, isPending, clearCart } =
+	useCart();
 
 const orderSummary = computed(() =>
 	orderMapper.calculateSummary(cartDetails.value),
@@ -24,30 +12,10 @@ const orderSummary = computed(() =>
 
 const formatPrice = (val) => orderMapper.formatPrice(val);
 
-async function handlePlaceOrder() {
-	const instance = useNuxtApp();
-	const authStore = useAuthStore();
+const emit = defineEmits(["place-order"]);
 
-	if (!authStore.isLoggedIn) {
-		instance.$toast.error("Vui lòng đăng nhập để đặt hàng!");
-		return;
-	}
-
-	if (!orderStore.validateShippingInfo()) {
-		instance.$toast.error("Vui lòng kiểm tra lại thông tin nhận hàng!");
-		return;
-	}
-
-	try {
-		const order = await orderStore.createOrder(cartItems.value);
-		if (order?.id) {
-			clearCart();
-			toast.success("Đặt hàng thành công!");
-			navigateTo(`/order-success?id=${order.id}`);
-		}
-	} catch {
-		toast.error(orderStore.error || "Có lỗi xảy ra khi đặt hàng.");
-	}
+function handlePlaceOrder() {
+	emit("place-order");
 }
 </script>
 
@@ -93,8 +61,7 @@ async function handlePlaceOrder() {
 								:alt="item.name"
 								class="w-full h-full object-cover"
 								@error="
-									(e) =>
-										(e.target.src = '/assets/image/placeholder-product.webp')
+									(e) => (e.target.src = '/assets/image/placeholder-product.webp')
 								"
 							>
 						</div>
@@ -152,15 +119,13 @@ async function handlePlaceOrder() {
 				<div class="flex justify-between text-sm">
 					<span class="text-gray-500 font-medium">Phí giao hàng</span>
 					<span class="font-bold text-gray-900">{{
-						orderSummary.shipping === 0
-							? "Miễn phí"
-							: formatPrice(orderSummary.shipping)
+						orderSummary.shipping === 0 ? "Miễn phí" : formatPrice(orderSummary.shipping)
 					}}</span>
 				</div>
-				<div class="flex justify-between pt-4 border-t border-gray-100">
-					<span class="text-lg font-black text-gray-900 uppercase"
-						>Tổng cộng</span
-					>
+				<div
+					class="flex justify-between pt-4 border-t border-gray-100"
+				>
+					<span class="text-lg font-black text-gray-900 uppercase">Tổng cộng</span>
 					<span class="text-xl font-black text-red-600">{{
 						formatPrice(orderSummary.total)
 					}}</span>
@@ -168,17 +133,12 @@ async function handlePlaceOrder() {
 			</div>
 
 			<button
-				:disabled="isSubmitting || cartItems.length === 0"
 				class="w-full mt-8 py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-sm"
 				aria-label="Xác nhận và đặt hàng ngay"
 				@click="handlePlaceOrder"
 			>
-				<Icon
-					v-if="isSubmitting"
-					name="fa6-solid:spinner"
-					class="animate-spin"
-				/>
-				<span v-else>Xác nhận đặt hàng</span>
+				<Icon name="fa6-solid:lock" class="text-xs" />
+				<span>Xác nhận đặt hàng</span>
 			</button>
 		</div>
 	</div>

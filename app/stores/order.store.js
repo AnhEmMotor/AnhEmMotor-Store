@@ -10,11 +10,13 @@ export const useOrderStore = defineStore("order", () => {
 	const service = orderService;
 	const queryClient = useQueryClient();
 
-
 	const currentOrder = ref(null);
 	const lastCreatedOrderId = ref(null);
 	const isLoading = ref(false);
 	const error = ref(null);
+
+	const selectedPaymentMethod = ref("cod");
+	const paymentUrl = ref(null);
 
 	const statusMap = ref({
 		pending: "Chờ xác nhận",
@@ -170,6 +172,15 @@ export const useOrderStore = defineStore("order", () => {
 		_refreshMyOrders();
 	};
 
+	const setPaymentUrl = (url) => {
+		paymentUrl.value = url;
+	};
+
+	const clearPayment = () => {
+		paymentUrl.value = null;
+		selectedPaymentMethod.value = "cod";
+	};
+
 	const getStatusName = (statusId) => {
 		return statusMap.value[statusId] || statusId || "Đang xử lý";
 	};
@@ -178,6 +189,7 @@ export const useOrderStore = defineStore("order", () => {
 		currentOrder.value = null;
 		lastCreatedOrderId.value = null;
 		errors.value = { fullName: "", phone: "", address: "" };
+		clearPayment();
 	};
 
 	return {
@@ -188,6 +200,8 @@ export const useOrderStore = defineStore("order", () => {
 		cancellableStatuses,
 		isLoading,
 		error,
+		selectedPaymentMethod,
+		paymentUrl,
 		shippingInfo,
 		errors,
 		initStatuses,
@@ -198,6 +212,8 @@ export const useOrderStore = defineStore("order", () => {
 		fetchOrderDetail,
 		cancelOrder,
 		updateOrderInfo,
+		setPaymentUrl,
+		clearPayment,
 		getStatusName,
 		clearOrder,
 	};

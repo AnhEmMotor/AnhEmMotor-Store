@@ -30,6 +30,15 @@ export const orderService = {
 			return [];
 		}
 	},
+
+	async getPaymentLink(orderId) {
+		try {
+			return await orderRepository.getPaymentLink(orderId);
+		} catch (error) {
+			console.error(`Service: Failed to get payment link for order ${orderId}:`, error);
+			return null;
+		}
+	},
 };
 
 export default orderService;

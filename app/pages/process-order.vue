@@ -34,6 +34,32 @@ onMounted(() => {
 	orderStore.clearOrder();
 	orderStore.initShippingInfo(authStore.user);
 });
+
+const handleCheckout = async () => {
+	if (!orderStore.validateShippingInfo()) {
+		const instance = useNuxtApp();
+		instance.$toast.error("Vui lòng kiểm tra lại thông tin nhận hàng!");
+		return;
+	}
+	try {
+		const order = await orderStore.createOrder(cartItems.value);
+		if (order?.id) {
+			const instance = useNuxtApp();
+			const paymentMethod = orderStore.selectedPaymentMethod;
+			if (paymentMethod === "cod") {
+				clearCart();
+				instance.$toast.success("Đặt hàng thành công!");
+				navigateTo(`/order-success?id=${order.id}`);
+			} else {
+				instance.$toast.info("Đang chuyển đến trang thanh toán...");
+				navigateTo(`/order-success?id=${order.id}`);
+			}
+		}
+	} catch {
+		const instance = useNuxtApp();
+		instance.$toast.error(orderStore.error || "Có lỗi xảy ra khi đặt hàng.");
+	}
+};
 </script>
 
 <template>
@@ -57,10 +83,12 @@ onMounted(() => {
 
 						<CheckoutShippingForm />
 
-						<CheckoutPaymentMethod />
+						<CheckoutPaymentMethod
+							v-model="orderStore.selectedPaymentMethod"
+						/>
 					</div>
 
-					<CheckoutOrderSummary />
+					<CheckoutOrderSummary @place-order="handleCheckout" />
 				</div>
 
 				<template #fallback>

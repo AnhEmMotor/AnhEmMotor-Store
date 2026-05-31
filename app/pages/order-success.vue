@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useOrderStore } from "~/stores/order.store";
 import { formatCurrency } from "~/utils/currency";
@@ -7,6 +7,8 @@ import { formatCurrency } from "~/utils/currency";
 const route = useRoute();
 const orderStore = useOrderStore();
 const orderId = computed(() => route.query.id);
+const isPaying = ref(false);
+const paymentError = ref("");
 
 if (import.meta.server) {
 	throw createError({
@@ -20,10 +22,9 @@ const { data: order, pending: isLoading } = await useAsyncData(
 	`order-success-${orderId.value}`,
 	async () => {
 		if (!orderId.value) return null;
-
 		const isAuthorized =
-			orderStore.lastCreatedOrderId == orderId.value && orderStore.currentOrder;
-
+			orderStore.lastCreatedOrderId == orderId.value &&
+			orderStore.currentOrder;
 		if (!isAuthorized) {
 			throw createError({
 				statusCode: 404,
@@ -31,14 +32,60 @@ const { data: order, pending: isLoading } = await useAsyncData(
 				fatal: true,
 			});
 		}
-
 		return orderStore.currentOrder;
 	},
-	{
-		watch: [orderId],
-		server: false,
-	},
+	{ watch: [orderId], server: false },
 );
+
+const isOnlinePayment = computed(
+	() =>
+		order.value &&
+		order.value.paymentMethod &&
+		order.value.paymentMethod.toLowerCase() !== "cod",
+);
+
+const needsPayment = computed(
+	() =>
+		isOnlinePayment.value &&
+		!order.value.paymentUrl &&
+		orderStore.paymentUrl !== order.value.paymentUrl,
+);
+
+onMounted(async () => {
+	if (!order.value) return;
+	if (
+		isOnlinePayment.value &&
+		!order.value.paymentUrl &&
+		!orderStore.paymentUrl
+	) {
+		try {
+			const url = await orderStore.service.getPaymentLink(order.value.id);
+			if (url) {
+				orderStore.setPaymentUrl(url);
+			}
+		} catch {
+			paymentError.value = "Không thể tạo link thanh toán. Vui lòng thử lại sau.";
+		}
+	}
+});
+
+async function handlePayNow() {
+	if (!order.value) return;
+	isPaying.value = true;
+	paymentError.value = "";
+	try {
+		const url = await orderStore.service.getPaymentLink(order.value.id);
+		if (url) {
+			orderStore.setPaymentUrl(url);
+			window.open(url, "_blank");
+		}
+	} catch {
+		paymentError.value =
+			"Không thể tạo link thanh toán. Vui lòng thử lại sau.";
+	} finally {
+		isPaying.value = false;
+	}
+}
 
 useSeoMeta({
 	title: "Đặt hàng thành công",
@@ -79,10 +126,8 @@ useSeoMeta({
 							</h1>
 							<p class="text-gray-500 font-medium max-w-md mx-auto">
 								Chúc mừng! Đơn hàng
-								<span class="text-red-600 font-black"
-									>#{{ order.orderCode }}</span
-								>
-								của bạn đã được tiếp nhận và đang chờ xử lý.
+								<span class="text-red-600 font-black">#{{ order.orderCode }}</span>
+								của bạn đã được tiếp nhận.
 							</p>
 						</div>
 
@@ -141,7 +186,13 @@ useSeoMeta({
 												Thanh toán
 											</p>
 											<p class="text-sm font-bold text-gray-900">
-												{{ order.paymentMethod }}
+												{{ order.paymentMethod || "COD" }}
+											</p>
+											<p
+												v-if="isOnlinePayment && order.paymentUrl"
+												class="text-xs text-green-600 font-medium mt-1"
+											>
+												Đang chờ thanh toán
 											</p>
 										</div>
 										<div class="space-y-1">
@@ -159,16 +210,70 @@ useSeoMeta({
 							</div>
 						</div>
 
+						<div
+							v-if="isOnlinePayment"
+							class="bg-blue-50 rounded-2xl border border-blue-100 p-6 text-left space-y-4"
+						>
+							<h3 class="text-sm font-black text-blue-800 uppercase tracking-wider">
+								<Icon name="fa6-solid:link" class="mr-1" />
+								Thanh toán trực tuyến
+							</h3>
+							<p class="text-sm text-blue-700 font-medium">
+								Vui lòng hoàn tất thanh toán để đơn hàng được xử lý. Link thanh toán có
+								hiệu lực trong thời gian quy định.
+							</p>
+							<p
+								v-if="paymentError"
+								class="text-sm text-red-600 font-medium"
+							>
+								{{ paymentError }}
+							</p>
+							<div
+								v-if="order.paymentUrl || orderStore.paymentUrl"
+								class="space-y-3"
+							>
+								<p class="text-xs text-blue-600 break-all">
+									Link: {{ order.paymentUrl || orderStore.paymentUrl }}
+								</p>
+								<button
+									class="px-6 py-3 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all uppercase text-xs tracking-widest"
+									@click="
+										window.open(
+											order.paymentUrl || orderStore.paymentUrl,
+											'_blank',
+										)
+									"
+								>
+									<Icon name="fa6-solid:external-link-alt" class="mr-1" />
+									Mở trang thanh toán
+								</button>
+							</div>
+							<button
+								v-else
+								class="px-6 py-3 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all uppercase text-xs tracking-widest disabled:opacity-50"
+								:disabled="isPaying"
+								@click="handlePayNow"
+							>
+								<Icon
+									v-if="isPaying"
+									name="fa6-solid:spinner"
+									class="animate-spin mr-1"
+								/>
+								<Icon v-else name="fa6-solid:link" class="mr-1" />
+								{{ isPaying ? "Đang tạo link..." : "Lấy link thanh toán" }}
+							</button>
+						</div>
+
 						<div class="flex flex-col sm:flex-row gap-4 pt-4">
 							<NuxtLink
 								to="/products"
-								class="flex-1 py-4.5 bg-gray-100 text-gray-700 font-black rounded-2xl hover:bg-gray-200 transition-all uppercase text-xs tracking-widest"
+								class="flex-1 py-4.5 bg-gray-100 text-gray-700 font-black rounded-2xl hover:bg-gray-200 transition-all uppercase text-xs tracking-widest text-center"
 							>
 								Tiếp tục mua sắm
 							</NuxtLink>
 							<NuxtLink
 								to="/orders"
-								class="flex-1 py-4.5 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 shadow-xl shadow-red-600/20 transition-all transform hover:-translate-y-1 active:scale-95 uppercase text-xs tracking-widest"
+								class="flex-1 py-4.5 bg-red-600 text-white font-black rounded-2xl hover:bg-red-700 shadow-xl shadow-red-600/20 transition-all transform hover:-translate-y-1 active:scale-95 uppercase text-xs tracking-widest text-center"
 							>
 								Xem đơn hàng của tôi
 							</NuxtLink>
@@ -178,9 +283,7 @@ useSeoMeta({
 					<p class="text-center text-gray-400 text-xs font-medium">
 						Một email xác nhận đã được gửi đến bạn. Nếu có thắc mắc, vui lòng
 						liên hệ hotline
-						<a href="tel:0901234567" class="text-red-500 font-bold"
-							>090 123 4567</a
-						>.
+						<a href="tel:0901234567" class="text-red-500 font-bold">090 123 4567</a>.
 					</p>
 				</div>
 
