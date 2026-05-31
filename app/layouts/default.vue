@@ -3,11 +3,10 @@
 <template>
 	<div class="flex flex-col min-h-screen bg-white">
 		<LayoutTheHeader />
-		<main class="grow mx-auto w-full pt-[72px] lg:pt-[104px]">
+		<main class="grow mx-auto w-full pt-20 sm:pt-28">
 			<slot />
 		</main>
         <CommonFloatingContact />
-		<ProductCompareBar />
 		<LayoutTheFooter />
 	</div>
 </template>

@@ -1,4 +1,4 @@
-
+import { getImageUrl } from "~/utils/image";
 
 const productMapper = {
 	mapProductList(rawItems) {

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
+import { useLayoutStore } from "../../stores/layout.store";
 
 const layoutStore = useLayoutStore();
 const { floatingButtons } = storeToRefs(layoutStore);
@@ -240,4 +241,3 @@ const scrollToTop = () => {
 	opacity: 0;
 }
 </style>
-

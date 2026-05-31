@@ -1,4 +1,4 @@
-
+import { promotionData } from "@/constants/promotion";
 
 /**
  * Application Layer - Promotion Service

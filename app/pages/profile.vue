@@ -31,6 +31,8 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { useAuthStore } from "../stores/auth.store";
+import { useUserStore } from "../stores/user.store";
 
 import ProfileSidebar from "@/components/profile/ProfileSidebar.vue";
 import ProfileInfoForm from "@/components/profile/ProfileInfoForm.vue";
@@ -60,4 +62,3 @@ watch(
 </script>
 
 <style scoped></style>
-

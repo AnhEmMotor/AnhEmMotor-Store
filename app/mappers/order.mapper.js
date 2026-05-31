@@ -25,7 +25,6 @@ const orderMapper = {
 				raw.totalPrice ||
 				raw.amount ||
 				0,
-			shippingFee: raw.shippingFee || raw.shipping_fee || 0,
 			status: raw.status || raw.status_id || raw.statusId || raw.orderStatus,
 			createdAt:
 				raw.createdAt ||

@@ -1,4 +1,6 @@
 <script setup>
+import { useOrderStore } from "@/stores/order.store";
+import { usePaginatedQuery } from "@/composables/usePaginatedQuery";
 import { toast } from "vue3-toastify";
 import { useQueryClient } from "@tanstack/vue-query";
 import OrderEmpty from "@/components/order/OrderEmpty.vue";
@@ -240,4 +242,3 @@ const canEdit = (statusId) => {
 	background-color: #e31837;
 }
 </style>
-

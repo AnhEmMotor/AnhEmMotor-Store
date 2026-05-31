@@ -1,4 +1,4 @@
-
+import { getImageUrl } from "~/utils/image";
 
 const homeMapper = {
 	mapHeroStats(stats) {
@@ -15,7 +15,6 @@ const homeMapper = {
 			alt: brand.name,
 			text: brand.description || "",
 			name: brand.name,
-			origin: brand.origin || "",
 		}));
 	},
 

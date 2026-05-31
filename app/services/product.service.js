@@ -1,4 +1,4 @@
-
+import { PRODUCT_ENDPOINTS } from "@/constants/endpoints/product.endpoint";
 
 /**
  * Application Layer - Product Service

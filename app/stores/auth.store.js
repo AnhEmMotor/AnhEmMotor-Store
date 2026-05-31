@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { useAxios } from "~/composables/useAxios";
 import { useQueryClient } from "@tanstack/vue-query";
 import { parseCookies, appendResponseHeader } from "h3";
 import { useRouter } from "vue-router";
@@ -564,4 +565,3 @@ export const useAuthStore = defineStore("auth", () => {
 		},
 	};
 });
-

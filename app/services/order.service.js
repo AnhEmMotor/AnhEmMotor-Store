@@ -1,4 +1,4 @@
-
+import { ORDER_ENDPOINTS } from "@/constants/endpoints/order.endpoint";
 
 /**
  * Application Layer - Order Service
