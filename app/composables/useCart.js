@@ -142,22 +142,50 @@ export function useCart() {
 	}
 
 	function updateQuantity(idOrPayload, change) {
-		if (typeof idOrPayload === "object" && idOrPayload.index !== undefined) {
+		const clampToLimit = (item, desiredQty) => {
+			const detail = cartDetails.value.find((d) => d.id === Number(item.id));
+			const limit = detail?.productLimit;
+			if (limit != null && desiredQty > limit)
+			{
+				return limit;
+			}
+			return Math.max(desiredQty, 1);
+		};
+
+		if (typeof idOrPayload === "object" && idOrPayload.index !== undefined)
+		{
 			const { index, change: c } = idOrPayload;
 			const item = cartItems.value[index];
 			if (!item) return;
-			item.quantity += c;
-			if (item.quantity <= 0) cartItems.value.splice(index, 1);
-		} else {
+			const newQty = item.quantity + c;
+			const clamped = clampToLimit(item, newQty);
+			if (clamped <= 0) cartItems.value.splice(index, 1);
+			else item.quantity = clamped;
+			if (clamped < newQty)
+			{
+				toast.warning("Đã đạt số lượng mua tối đa cho sản phẩm này.", { position: "bottom-right" });
+			}
+		}
+		else
+		{
 			const productId = idOrPayload;
 			const newQuantity = change;
 			const item = cartItems.value.find((i) => i.id === productId);
-			if (item) {
-				if (newQuantity <= 0) {
+			if (item)
+			{
+				if (newQuantity <= 0)
+				{
 					const index = cartItems.value.indexOf(item);
 					cartItems.value.splice(index, 1);
-				} else {
-					item.quantity = newQuantity;
+				}
+				else
+				{
+					const clamped = clampToLimit(item, newQuantity);
+					item.quantity = clamped;
+					if (clamped < newQuantity)
+					{
+						toast.warning("Đã đạt số lượng mua tối đa cho sản phẩm này.", { position: "bottom-right" });
+					}
 				}
 			}
 		}
