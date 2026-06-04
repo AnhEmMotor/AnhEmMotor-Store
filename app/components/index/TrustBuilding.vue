@@ -1,10 +1,9 @@
 <script setup>
 import TrustServiceCard from "../ui/TrustServiceCard.vue";
 import TestimonialCard from "../ui/TestimonialCard.vue";
-import ShowroomItem from "../ui/ShowroomItem.vue";
 import ShowroomMap from "../ui/ShowroomMap.vue";
+import { SHOWROOMS, TESTIMONIALS, TRUST_SERVICES } from "@/constants/trust.constant";
 
-const selectedShowroom = ref(SHOWROOMS[0]);
 const isInfoOpen = ref(false);
 
 // Testimonial Pagination Logic (Local client-side pagination)

@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
 
-import BaseSectionHeader from "../ui/BaseSectionHeader.vue";
 import ReelCard from "../ui/ReelCard.vue";
 import VideoModal from "../ui/VideoModal.vue";
+import { REELS } from "@/constants/reel.constant";
 
 const activeVideo = ref(null);
 const isOpen = ref(false);

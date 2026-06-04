@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
+import { toast } from "vue3-toastify";
+import { useCart } from "~/composables/useCart";
 
 import ProductColorChip from "./ProductColorChip.vue";
 
@@ -15,38 +17,55 @@ const props = defineProps({
 });
 
 const selectedVariant = ref(null);
+const selectedColorKey = ref(null);
+const { addItem } = useCart();
+
+const colorKey = (color, index) => color?.id ?? `index:${index}`;
 
 watch(
   () => props.product,
   (newProd) => {
-    if (newProd?.variants?.length > 0) {
-      selectedVariant.value = newProd.variants[0];
-    } else {
-      selectedVariant.value = null;
-    }
+    selectedVariant.value = newProd?.variants?.[0] ?? null;
+    selectedColorKey.value = null;
   },
   { immediate: true },
 );
 
+const selectedVariantColors = computed(() => selectedVariant.value?.colors ?? []);
+
+const selectedColor = computed(() => {
+  const colors = selectedVariantColors.value;
+  if (!colors.length || selectedColorKey.value === null) return null;
+  return colors.find((color, index) => colorKey(color, index) === selectedColorKey.value) ?? null;
+});
+
 const currentPrice = computed(() => {
-  if (!selectedVariant.value) return "N/A";
+  const price = selectedVariant.value?.price ?? props.product.price;
+  if (!price) return "N/A";
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
-  }).format(selectedVariant.value.price);
+  }).format(price);
 });
 
 const currentImage = computed(() => {
   return (
+    selectedColor.value?.image ||
+    selectedColor.value?.coverImageUrl ||
     selectedVariant.value?.cover_image_url ||
+    selectedVariant.value?.image ||
+    props.product?.image ||
     "/assets/image/placeholder-product.webp"
   );
 });
 
 const currentUrl = computed(() => {
-  return selectedVariant.value?.url
-    ? `/product/${selectedVariant.value.url}`
-    : "#";
+  const slug =
+    selectedVariant.value?.url ||
+    selectedVariant.value?.url_slug ||
+    selectedVariant.value?.urlSlug ||
+    props.product?.slug;
+  return slug ? `/product/${slug}` : "#";
 });
 
 const chipVariants = computed(() => {
@@ -64,10 +83,58 @@ const chipVariants = computed(() => {
 
 const applyVariant = (variant) => {
   selectedVariant.value = variant;
+  selectedColorKey.value = null;
 };
 
+const applyColor = (color, index) => {
+  selectedColorKey.value = colorKey(color, index);
+};
 
-// Comparison Logic
+const colorLabel = (color, index) =>
+  color?.name || color?.colorName || color?.colorCode || color?.code || `Màu ${index + 1}`;
+
+const handleAddToCart = () => {
+  const variant = selectedVariant.value;
+  if (!variant) return;
+
+  if (selectedVariantColors.value.length > 0 && !selectedColor.value) {
+    toast.warning("Vui lòng chọn màu sản phẩm.", { position: "bottom-right" });
+    return;
+  }
+
+  const colorId =
+    selectedColor.value?.id && Number(selectedColor.value.id) > 0
+      ? Number(selectedColor.value.id)
+      : null;
+  const variantLabel = variant.option_values_text || variant.variant_name || "";
+  const selectedColorLabel = selectedColor.value
+    ? colorLabel(selectedColor.value, 0)
+    : "";
+  const name = [props.product.name, variantLabel, selectedColorLabel]
+    .filter(Boolean)
+    .join(" - ");
+
+  addItem(
+    {
+      id: `${variant.id}:${colorId ?? 0}`,
+      cartKey: `${variant.id}:${colorId ?? 0}`,
+      productVariantId: variant.id,
+      productVariantColorId: colorId,
+      name,
+      displayName: name,
+      price: variant.price,
+      image: currentImage.value,
+      effectiveMax:
+        selectedColor.value?.effectiveMax ??
+        selectedColor.value?.maxPurchaseQuantity ??
+        variant.effectiveMax ??
+        props.product.effectiveMax ??
+        props.product.productLimit ??
+        null,
+    },
+    1,
+  );
+};
 
 const compareStore = useCompareStore();
 const isCompared = computed(() =>
@@ -106,7 +173,6 @@ const toggleCompare = (e) => {
 
       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-      <!-- Compare Toggle -->
       <button
         class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10 backdrop-blur-md border"
         :class="isCompared ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30' : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'"
@@ -122,14 +188,12 @@ const toggleCompare = (e) => {
     </div>
 
     <div class="p-4 sm:p-5 flex flex-col flex-1">
-      <!-- Product Name -->
       <h3
         class="text-slate-900 font-bold text-base sm:text-lg mb-3 sm:mb-4 line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem] group-hover:text-primary transition-colors"
       >
         {{ product.name }}
       </h3>
 
-      <!-- Variant chip strip -->
       <div v-if="chipVariants.length > 0" class="flex flex-wrap gap-2 mb-4">
         <ProductColorChip
           v-for="cv in chipVariants"
@@ -140,18 +204,35 @@ const toggleCompare = (e) => {
         />
       </div>
 
+      <div v-if="selectedVariantColors.length > 0" class="flex flex-wrap gap-2 mb-4">
+        <ProductColorChip
+          v-for="(color, index) in selectedVariantColors"
+          :key="colorKey(color, index)"
+          :label="colorLabel(color, index)"
+          :selected="selectedColorKey === colorKey(color, index)"
+          @select="applyColor(color, index)"
+        />
+      </div>
+
       <div class="flex flex-col gap-1 mb-6">
         <span class="text-xs text-slate-400 font-medium">Giá từ</span>
         <span class="text-primary font-bold text-xl sm:text-2xl tracking-tight">{{ currentPrice }}</span>
       </div>
 
-      <!-- Price and Action -->
-      <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+      <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-2">
+        <button
+          type="button"
+          class="flex-1 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all duration-300 hover:bg-primary shadow-sm flex items-center justify-center gap-2"
+          @click.prevent.stop="handleAddToCart"
+        >
+          <Icon name="fa6-solid:cart-plus" class="text-sm" />
+          Thêm vào giỏ
+        </button>
         <div
           v-if="showAction"
-          class="w-full py-3 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all duration-300 hover:bg-primary shadow-sm flex items-center justify-center gap-2"
+          class="h-11 w-11 shrink-0 bg-white border border-slate-100 text-slate-700 rounded-xl text-xs font-bold transition-all duration-300 hover:border-primary hover:text-primary shadow-sm flex items-center justify-center"
+          title="Xem chi tiết"
         >
-          Xem chi tiết
           <Icon name="ph:arrow-right-bold" class="text-sm" />
         </div>
       </div>

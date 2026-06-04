@@ -35,6 +35,9 @@ export default defineNuxtConfig({
 	sitemap: {
 		zeroRuntime: true,
 	},
+	ogImage: {
+		zeroRuntime: true,
+	},
 
 	vite: {
 		optimizeDeps: {

@@ -1,4 +1,4 @@
-import { newsData } from "../../domain/constants/news";
+import { newsData } from "../../../constants/news";
 
 /**
  * Infrastructure Layer - Technology Repository

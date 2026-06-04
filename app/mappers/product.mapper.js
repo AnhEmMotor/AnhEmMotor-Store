@@ -9,8 +9,26 @@ const productMapper = {
 	mapProductItem(raw) {
 		const variants = (raw.variants || []).map((v) => ({
 			...v,
+			id: v.id || v.Id,
+			url: v.url || v.url_slug || v.urlSlug,
+			url_slug: v.url_slug || v.urlSlug || v.url,
+			option_values_text:
+				v.option_values_text || v.optionValuesText || v.propertyName || v.variant_name,
 			image: getImageUrl(v.image || v.cover_image_url),
 			cover_image_url: getImageUrl(v.cover_image_url || v.image),
+			colors: (v.colors || []).map((c) => ({
+				id: c.id || c.Id,
+				name: c.colorName || c.color_name || c.name,
+				colorName: c.colorName || c.color_name || c.name,
+				code: c.colorCode || c.color_code || c.code || "#ccc",
+				colorCode: c.colorCode || c.color_code || c.code || "#ccc",
+				image: getImageUrl(c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url),
+				coverImageUrl: getImageUrl(c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url),
+				maxPurchaseQuantity: c.maxPurchaseQuantity,
+				effectiveMax: c.maxPurchaseQuantity ?? v.effectiveMax ?? v.productLimit ?? v.product_limit ?? null,
+			})),
+			effectiveMax: v.effectiveMax ?? v.productLimit ?? v.product_limit ?? null,
+			productLimit: v.productLimit ?? v.product_limit ?? null,
 		}));
 
 		return {
@@ -29,6 +47,8 @@ const productMapper = {
 			rating: raw.rating || 5,
 			reviews: raw.reviewsCount || 0,
 			inventoryStatus: raw.inventoryStatus,
+			productLimit: raw.productLimit ?? raw.product_limit ?? null,
+			effectiveMax: raw.effectiveMax ?? raw.productLimit ?? raw.product_limit ?? null,
 			variants: variants,
 		};
 	},
@@ -201,6 +221,31 @@ const productMapper = {
 			}
 		}
 
+		const mapColors = (variantLike) => {
+			if (Array.isArray(variantLike.colors) && variantLike.colors.length > 0) {
+				return variantLike.colors.map((c) => ({
+					id: c.id || c.Id,
+					name: c.colorName || c.color_name || c.name,
+					code: c.colorCode || c.color_code || c.code || "#ccc",
+					image: getImageUrl(c.coverImageUrl || c.cover_image_url || c.image || variantLike.cover_image_url),
+					effectiveMax: c.maxPurchaseQuantity ?? variantLike.effectiveMax ?? variantLike.product_limit ?? null,
+					maxPurchaseQuantity: c.maxPurchaseQuantity,
+				}));
+			}
+			return (variantLike.color_name || "").split(",").filter(Boolean).map((name, index) => {
+				const codes = (variantLike.color_code || "").split(",");
+				const images = (variantLike.cover_image_url || "").split(",");
+				return {
+					id: null,
+					name: name.trim(),
+					code: (codes[index] || codes[0] || "#ccc").trim(),
+					image: getImageUrl(images[index] || images[0] || variantLike.cover_image_url),
+					effectiveMax: variantLike.effectiveMax ?? variantLike.product_limit ?? null,
+					maxPurchaseQuantity: null,
+				};
+			});
+		};
+
 		return {
 			product: {
 				id: product.id,
@@ -211,6 +256,8 @@ const productMapper = {
 				category: product.category,
 				metaTitle: product.meta_title,
 				metaDescription: product.meta_description,
+				productLimit: product.productLimit ?? product.product_limit ?? null,
+				effectiveMax: product.effectiveMax ?? product.productLimit ?? product.product_limit ?? null,
 				highlights: highlights,
 			},
 			currentVariant: {
@@ -218,16 +265,10 @@ const productMapper = {
 				name: currentVariant.display_name,
 				slug: currentVariant.url_slug,
 				price: currentVariant.price || currentVariant.Price,
-				// Handle multiple colors/images in a single variant
-				colors: (currentVariant.color_name || "").split(",").filter(Boolean).map((name, index) => {
-					const codes = (currentVariant.color_code || "").split(",");
-					const images = (currentVariant.cover_image_url || "").split(",");
-					return {
-						name: name.trim(),
-						code: (codes[index] || codes[0] || "#ccc").trim(),
-						image: getImageUrl(images[index] || images[0] || currentVariant.cover_image_url)
-					};
-				}),
+				image: getImageUrl(currentVariant.cover_image_url),
+				effectiveMax: currentVariant.effectiveMax ?? currentVariant.product_limit ?? product.product_limit ?? null,
+				productLimit: currentVariant.productLimit ?? currentVariant.product_limit ?? null,
+				colors: mapColors(currentVariant),
 				photos: currentVariant.photo_collection?.map((url) =>
 					getImageUrl(url),
 				) || [getImageUrl(currentVariant.cover_image_url)],
@@ -237,15 +278,8 @@ const productMapper = {
 				name: v.display_name,
 				slug: v.url_slug,
 				price: v.price || v.Price,
-				colors: (v.color_name || "").split(",").filter(Boolean).map((name, index) => {
-					const codes = (v.color_code || "").split(",");
-					const images = (v.cover_image_url || "").split(",");
-					return {
-						name: name.trim(),
-						code: (codes[index] || codes[0] || "#ccc").trim(),
-						image: getImageUrl(images[index] || images[0] || v.cover_image_url)
-					};
-				}),
+				effectiveMax: v.effectiveMax ?? v.product_limit ?? product.product_limit ?? null,
+				colors: mapColors(v),
 			})),
 			specifications,
 		};
@@ -289,18 +323,32 @@ const productMapper = {
 		const product = detail.product;
 		const variant = detail.currentVariant;
 		const selectedColor = variant.colors?.[colorIndex];
+		const colorId =
+			selectedColor?.id && Number(selectedColor.id) > 0
+				? Number(selectedColor.id)
+				: null;
+		const cartKey = `${variant.id}:${colorId ?? 0}`;
 
 		return {
-			id: variant.id,
+			id: cartKey,
+			cartKey,
+			productVariantId: variant.id,
+			productVariantColorId: colorId,
 			name:
 				product.name +
 				(variant.name ? ` - ${variant.name}` : "") +
 				(selectedColor ? ` - ${selectedColor.name}` : ""),
 			price: variant.price,
 			image: selectedColor?.image || variant.image,
+			effectiveMax:
+				selectedColor?.effectiveMax ??
+				selectedColor?.maxPurchaseQuantity ??
+				variant.effectiveMax ??
+				product.effectiveMax ??
+				product.productLimit ??
+				null,
 		};
 	},
 };
 
 export default productMapper;
-

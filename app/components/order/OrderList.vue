@@ -21,10 +21,14 @@ defineProps({
 	canEdit: {
 		type: Function,
 		required: true
+	},
+	canContinuePayment: {
+		type: Function,
+		required: true
 	}
 });
 
-defineEmits(['edit', 'cancel']);
+defineEmits(['edit', 'cancel', 'continue-payment']);
 </script>
 
 <template>
@@ -37,8 +41,10 @@ defineEmits(['edit', 'cancel']);
 				:status-name="getStatusName(order.status)"
 				:is-cancellable="isCancellable(order.status)"
 				:can-edit="canEdit(order.status)"
+				:can-continue-payment="canContinuePayment(order)"
 				@edit="$emit('edit', order)"
 				@cancel="$emit('cancel', order.id)"
+				@continue-payment="$emit('continue-payment', order)"
 			/>
 		</div>
 

@@ -18,7 +18,7 @@ defineProps({
     :aria-pressed="selected"
     :aria-label="label"
     :title="label"
-    @click="$emit('select')"
+    @click.prevent.stop="$emit('select')"
   >
     {{ label }}
   </button>

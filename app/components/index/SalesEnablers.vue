@@ -2,6 +2,7 @@
 
 import BenefitCard from "../ui/BenefitCard.vue";
 import LoanCalculator from "./LoanCalculator.vue";
+import { BENEFITS } from "@/constants/benefit.constant";
 </script>
 
 <template>
@@ -21,7 +22,7 @@ import LoanCalculator from "./LoanCalculator.vue";
                         Chương trình đặc biệt
                     </div>
 					<h2 class="text-4xl md:text-5xl lg:text-[42px] font-bold leading-tight tracking-tight">
-						Trả góp <span class="text-primary">0% lãi suất</span> <br class="hidden lg:block" /> Nhận xe ngay chỉ với CCCD
+						Trả góp <span class="text-primary">0% lãi suất</span> <br class="hidden lg:block"> Nhận xe ngay chỉ với CCCD
 					</h2>
 					<p class="text-slate-500 text-lg font-medium leading-relaxed max-w-xl">
 						Hỗ trợ thủ tục trả góp siêu tốc trong 15 phút. Duyệt hồ sơ nhanh chóng, cam kết không phát sinh chi phí ẩn.

@@ -115,6 +115,7 @@ export const useOrderStore = defineStore("order", () => {
 				shippingInfo.value,
 				cartItems,
 				userId,
+				selectedPaymentMethod.value,
 			);
 			const res = await service.createOrder(payload);
 			lastCreatedOrderId.value = res.id || res.Id;
@@ -176,6 +177,15 @@ export const useOrderStore = defineStore("order", () => {
 		paymentUrl.value = url;
 	};
 
+	const getPaymentLink = async (orderId) => {
+		const res = await service.getPaymentLink(orderId);
+		const url = res?.url || "";
+		if (url) {
+			paymentUrl.value = url;
+		}
+		return url;
+	};
+
 	const clearPayment = () => {
 		paymentUrl.value = null;
 		selectedPaymentMethod.value = "cod";
@@ -212,6 +222,7 @@ export const useOrderStore = defineStore("order", () => {
 		fetchOrderDetail,
 		cancelOrder,
 		updateOrderInfo,
+		getPaymentLink,
 		setPaymentUrl,
 		clearPayment,
 		getStatusName,

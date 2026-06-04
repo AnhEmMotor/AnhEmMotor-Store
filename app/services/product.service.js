@@ -36,3 +36,5 @@ export const productService = {
 		return await productRepository.getAttributeLabels();
 	},
 };
+
+export default productService;

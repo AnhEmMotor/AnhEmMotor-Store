@@ -1,4 +1,5 @@
-
+import { STATIC_CATEGORIES } from "../constants/categories";
+import { categoryRepository } from "../core/infrastructure/repositories/category.repository";
 
 /**
  * Application Layer - Category Service

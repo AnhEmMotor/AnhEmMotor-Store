@@ -16,9 +16,13 @@ defineProps({
 		type: Boolean,
 		default: false,
 	},
+	canContinuePayment: {
+		type: Boolean,
+		default: false,
+	},
 });
 
-const emit = defineEmits(["edit", "cancel"]);
+const emit = defineEmits(["edit", "cancel", "continue-payment"]);
 
 const formatPrice = (price) => {
 	return new Intl.NumberFormat("vi-VN", {
@@ -163,6 +167,15 @@ const calculateTotal = (items) => {
 			class="px-6 py-4 bg-gray-50/20 border-t border-gray-100 flex flex-wrap justify-between items-center gap-4"
 		>
 			<div class="flex items-center gap-3">
+				<button
+					v-if="canContinuePayment"
+					class="px-6 py-2 bg-red-500 text-white text-xs font-black rounded-full hover:bg-red-600 transition-all active:scale-95 shadow-sm uppercase tracking-wider flex items-center gap-2"
+					aria-label="Tiếp tục thanh toán đơn hàng này"
+					@click="emit('continue-payment', order)"
+				>
+					<Icon name="fa6-solid:credit-card" class="text-[10px]" />
+					Tiếp tục thanh toán
+				</button>
 				<button
 					v-if="isCancellable"
 					class="px-6 py-2 bg-white border border-red-100 text-red-500 text-xs font-black rounded-full hover:bg-red-50 transition-all active:scale-95 shadow-sm uppercase tracking-wider"
