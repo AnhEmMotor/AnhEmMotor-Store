@@ -30,8 +30,6 @@ v-for="i in 5" :key="i"
 		</div>
 
 		<div class="max-w-[1100px] w-full bg-white rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden grid lg:grid-cols-2 relative z-10 animate-fade-in-up">
-
-			
 			<!-- Left: Branding Panel (UI Component) -->
 			<AuthLoginBranding />
 
@@ -55,9 +53,8 @@ v-for="i in 5" :key="i"
 				</div>
 			</div>
 		</div>
+		<CommonFullLoading :show="isLoading" text="Đang xử lý đăng nhập..." />
 	</div>
-
-	<CommonFullLoading :show="isLoading" text="Đang xử lý đăng nhập..." />
 </template>
 
 <style scoped>

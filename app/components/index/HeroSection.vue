@@ -67,10 +67,6 @@ const activeBanner = computed(() => {
 		: null;
 });
 
-const heroBg = computed(() => {
-	return activeBanner.value?.image || "/assets/image/index/index-banner-bg.png";
-});
-
 const nextBanner = () => {
 	if (banners.value.length <= 1) return;
 	slideDirection.value = "next";
@@ -176,7 +172,7 @@ onUnmounted(() => {
 								{{ activeBanner.title }}
 							</template>
 							<template v-else>
-								Hệ thống xe máy & <br />
+								Hệ thống xe máy & <br >
 								<span class="text-white/90">Dịch vụ bảo dưỡng chuyên nghiệp</span>
 							</template>
 						</h1>
@@ -237,9 +233,9 @@ onUnmounted(() => {
 			<button
 				v-for="(_, index) in banners"
 				:key="index"
-				@click="setBanner(index)"
 				class="group relative h-2 transition-all duration-300"
 				:class="index === currentBannerIndex ? 'w-12' : 'w-2 hover:w-4'"
+				@click="setBanner(index)"
 			>
 				<div
 					class="absolute inset-0 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors"
@@ -255,14 +251,14 @@ onUnmounted(() => {
 		<!-- Side Navigation Arrows -->
 		<div v-if="banners.length > 1" class="hidden md:flex absolute inset-y-0 left-4 right-4 items-center justify-between pointer-events-none z-20">
 			<button
-				@click="prevBanner"
 				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
+				@click="prevBanner"
 			>
 				<Icon name="ph:caret-left-bold" class="text-xl transition-transform group-hover:-translate-x-0.5" />
 			</button>
 			<button
-				@click="nextBanner"
 				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
+				@click="nextBanner"
 			>
 				<Icon name="ph:caret-right-bold" class="text-xl transition-transform group-hover:translate-x-0.5" />
 			</button>

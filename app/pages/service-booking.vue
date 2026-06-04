@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -10,7 +10,7 @@ const serviceId = route.query.id;
 const isSubmitting = ref(false);
 const isSuccess = ref(false);
 
-const { data } = await useAsyncData("maintenance-services-booking", async () => {
+await useAsyncData("maintenance-services-booking", async () => {
 	if (maintenanceStore.services.length === 0) {
 		await maintenanceStore.fetchServices();
 	}

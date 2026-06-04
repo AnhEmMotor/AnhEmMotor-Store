@@ -167,8 +167,8 @@ onMounted(async () => {
 			}
 		});
 		variants.value = allVariants;
-	} catch (e) {
-		console.error("Failed to fetch variants", e);
+	} catch (_e) {
+		console.error("Failed to fetch variants", _e);
 	}
 });
 
@@ -205,7 +205,7 @@ const handleSubmit = async () => {
 
 		isSuccess.value = true;
 		emit('success');
-	} catch (error) {
+	} catch {
 		alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
 	} finally {
 		isSubmitting.value = false;

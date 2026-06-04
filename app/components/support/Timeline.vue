@@ -11,7 +11,7 @@
 						<p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">{{ step.time }}</p>
 					</div>
 					<!-- Connector (only for Desktop) -->
-					<div v-if="idx < steps.length - 1" class="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[calc(100%-0.5rem)] w-6 h-[1px] bg-gray-100 group-hover:bg-primary/20 transition-colors"></div>
+					<div v-if="idx < steps.length - 1" class="hidden lg:block absolute top-1/2 -translate-y-1/2 left-[calc(100%-0.5rem)] w-6 h-[1px] bg-gray-100 group-hover:bg-primary/20 transition-colors"/>
 				</div>
 			</div>
 		</div>

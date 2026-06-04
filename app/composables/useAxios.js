@@ -4,7 +4,6 @@ import { useAuthStore } from "@/stores/auth.store";
 
 export const useAxios = () => {
 	const config = useRuntimeConfig();
-	const authStore = useAuthStore();
 	const nuxtApp = useNuxtApp();
 
 	// Use nuxtApp context for request-scoped, non-serializable state

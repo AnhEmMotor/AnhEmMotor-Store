@@ -50,7 +50,7 @@ const paginatedRegularPromotions = computed(() => {
 });
 
 // Watch for page changes to smoothly scroll directly to the promotions list grid section
-watch(promotionPage, (newPage) => {
+watch(promotionPage, () => {
 	if (import.meta.client) {
 		setTimeout(() => {
 			const element = document.getElementById('promotion-grid-title');
@@ -166,7 +166,7 @@ watch(promotionPage, (newPage) => {
 
 						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
 							<div
-								v-for="(promotion, index) in paginatedRegularPromotions"
+								v-for="promotion in paginatedRegularPromotions"
 								:key="promotion.id"
 								class="transition-all duration-300"
 							>

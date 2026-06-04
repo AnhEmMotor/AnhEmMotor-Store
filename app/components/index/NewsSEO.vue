@@ -1,6 +1,5 @@
 <script setup>
 
-import BaseSectionHeader from "../ui/BaseSectionHeader.vue";
 import NewsCard from "../ui/NewsCard.vue";
 import YoutubeReview from "../ui/YoutubeReview.vue";
 
@@ -13,7 +12,7 @@ const newsStore = useNewsStore();
 			<div class="space-y-4 max-w-2xl">
 				<div class="text-primary font-bold uppercase tracking-widest text-sm">Tin tức & Sự kiện</div>
 				<h2 class="text-4xl md:text-5xl lg:text-[42px] font-bold tracking-tight text-slate-900 leading-tight">
-					Kinh nghiệm & <br />
+					Kinh nghiệm & <br >
 					<span class="text-primary">Kiến thức xe máy</span>
 				</h2>
 				<p class="text-slate-500 text-lg font-medium">
@@ -60,7 +59,7 @@ const newsStore = useNewsStore();
                         <YoutubeReview />
                     </div>
                     <!-- Subtle decoration -->
-                    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"/>
 				</div>
 			</div>
 		</div>

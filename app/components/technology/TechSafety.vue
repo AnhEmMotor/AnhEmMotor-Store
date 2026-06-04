@@ -1,12 +1,12 @@
 <template>
   <section class="py-16 sm:py-20 px-4 relative overflow-hidden z-10">
-    <div class="absolute -right-1/4 top-1/4 w-1/2 h-1/2 bg-red-600/5 rounded-full blur-[100px]"></div>
+    <div class="absolute -right-1/4 top-1/4 w-1/2 h-1/2 bg-red-600/5 rounded-full blur-[100px]"/>
     <div class="max-w-7xl mx-auto">
       <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <div class="space-y-6 sm:space-y-8 reveal reveal-left">
           <div>
             <div class="text-red-500 font-black tracking-widest text-[9px] sm:text-[10px] uppercase mb-3 italic underline decoration-1 underline-offset-8">Guardian Technology</div>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight uppercase">An toàn <br/> <span class="text-white">Tuyệt đối</span></h2>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight uppercase">An toàn <br> <span class="text-white">Tuyệt đối</span></h2>
           </div>
 
           <div class="space-y-6">
@@ -21,11 +21,11 @@
         </div>
         
         <div class="relative group reveal reveal-right">
-          <div class="absolute -inset-4 bg-white/5 rounded-[2rem] group-hover:bg-red-600/10 transition-all duration-700"></div>
+          <div class="absolute -inset-4 bg-white/5 rounded-[2rem] group-hover:bg-red-600/10 transition-all duration-700"/>
           <div class="relative overflow-hidden rounded-[2rem] border border-white/10 shadow-2xl group-hover:shadow-red-600/20 transition-all duration-700">
-            <img src="/images/technology/safety_action.png" alt="Safety in Action" class="w-full transform group-hover:scale-105 group-hover:-rotate-1 transition-all duration-1000" />
+            <img src="/images/technology/safety_action.png" alt="Safety in Action" class="w-full transform group-hover:scale-105 group-hover:-rotate-1 transition-all duration-1000" >
             <!-- Scanner Effect -->
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-red-600 shadow-[0_0_15px_rgba(220,38,38,1)] animate-scanner opacity-0 group-hover:opacity-100"></div>
+            <div class="absolute top-0 left-0 w-full h-[2px] bg-red-600 shadow-[0_0_15px_rgba(220,38,38,1)] animate-scanner opacity-0 group-hover:opacity-100"/>
           </div>
         </div>
       </div>

@@ -4,7 +4,6 @@ import { toast } from "vue3-toastify";
 
 
 import BaseInput from "../ui/BaseInput.vue";
-import BaseButton from "../ui/BaseButton.vue";
 import LeadFeatureItem from "../ui/LeadFeatureItem.vue";
 import "vue3-toastify/dist/index.css";
 

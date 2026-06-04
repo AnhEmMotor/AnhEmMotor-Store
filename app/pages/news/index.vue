@@ -48,7 +48,7 @@ const filteredNewsList = computed(() => {
 });
 
 // Watch for page changes to smoothly scroll directly to the news grid section
-watch(() => pagination.currentPage, (newPage) => {
+watch(() => pagination.currentPage, () => {
 	if (import.meta.client) {
 		setTimeout(() => {
 			const element = document.getElementById('news-grid-title');
@@ -190,7 +190,7 @@ onMounted(() => {
 								:class="{ 'opacity-50 pointer-events-none': isFetching }"
 							>
 								<div
-									v-for="(news, index) in filteredNewsList"
+									v-for="news in filteredNewsList"
 									:key="news.id"
 									class="transition-all duration-300"
 								>

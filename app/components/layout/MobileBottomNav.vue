@@ -17,7 +17,7 @@
 					<span 
 						v-if="route.path === item.path"
 						class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full border-2 border-white animate-pulse"
-					></span>
+					/>
 				</div>
 				<span class="text-[9px] font-black uppercase tracking-widest">{{ item.name }}</span>
 			</NuxtLink>

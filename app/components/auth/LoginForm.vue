@@ -65,7 +65,7 @@ async function handleLogin() {
 		<div class="space-y-2 animate-fade-in-up" style="animation-delay: 200ms">
 			<div class="flex justify-between items-center px-1">
 				<label class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Mật khẩu</label>
-				<NuxtLink to="/forgot-password" class="text-xs font-bold text-primary hover:underline">Quên mật khẩu?</NuxtLink>
+				<NuxtLink to="/login" class="text-xs font-bold text-primary hover:underline">Quên mật khẩu?</NuxtLink>
 			</div>
 			<div class="relative group">
 				<input

@@ -90,13 +90,6 @@ const productMapper = {
 		if (!raw || !raw.product) return null;
 		const product = raw.product;
 		const currentVariant = raw.current_variant || {};
-		const otherVariants = (raw.other_variants || []).map((v) => ({
-			slug: v.url_slug || v.slug,
-			display_name: v.display_name,
-			price: v.price,
-			image: getImageUrl(v.cover_image_url || v.image),
-		}));
-
 		const photos = [];
 		if (currentVariant.cover_image_url) {
 			if (

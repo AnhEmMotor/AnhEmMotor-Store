@@ -1,5 +1,4 @@
 import { fileURLToPath } from "node:url";
-import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
 
@@ -96,6 +95,9 @@ export default defineNuxtConfig({
 	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],
 
 	nitro: {
+		externals: {
+			trace: false,
+		},
 		rollupConfig: {
 			onwarn(warning, warn) {
 				const silentCodes = ["CIRCULAR_DEPENDENCY"];

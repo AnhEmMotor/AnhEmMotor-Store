@@ -95,11 +95,12 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
 	modelValue: {
 		type: String,
 		default: "cod",
 	},
 });
-const emit = defineEmits(["update:modelValue"]);
+
+defineEmits(["update:modelValue"]);
 </script>

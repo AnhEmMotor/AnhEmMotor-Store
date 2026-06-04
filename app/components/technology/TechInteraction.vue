@@ -7,13 +7,14 @@
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 sm:p-6">
-        <div v-for="(card, index) in cards" :key="card.title" 
+        <div
+v-for="(card, index) in cards" :key="card.title" 
              class="group bg-[#111] rounded-2xl overflow-hidden border border-white/5 hover:border-red-600/40 transition-all duration-500 hover:-translate-y-2 shadow-xl reveal reveal-up"
              :style="`transition-delay: ${index * 150}ms`"
         >
           <div class="h-36 sm:h-40 overflow-hidden relative">
-            <img :src="card.image" :alt="card.title" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-125 group-hover:scale-100" />
-            <div class="absolute inset-0 bg-black/60 group-hover:bg-black/10 transition-all duration-700"></div>
+            <img :src="card.image" :alt="card.title" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-125 group-hover:scale-100" >
+            <div class="absolute inset-0 bg-black/60 group-hover:bg-black/10 transition-all duration-700"/>
             <div class="absolute top-4 right-4 w-8 h-8 sm:w-10 sm:h-8 rounded-full bg-red-600 flex items-center justify-center text-white scale-0 group-hover:scale-100 transition-transform duration-500 shadow-lg">
               <Icon :name="card.icon" class="text-base" />
             </div>

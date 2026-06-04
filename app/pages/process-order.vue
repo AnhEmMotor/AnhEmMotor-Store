@@ -28,8 +28,6 @@ const { cartItems, clearCart } = useCart();
 const authStore = useAuthStore();
 const orderStore = useOrderStore();
 
-const isSubmitting = computed(() => orderStore.isLoading);
-
 onMounted(() => {
   orderStore.clearOrder();
   orderStore.initShippingInfo(authStore.user);

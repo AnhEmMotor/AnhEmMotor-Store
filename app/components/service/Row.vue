@@ -95,7 +95,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-const props = defineProps({
+defineProps({
 	service: {
 		type: Object,
 		required: true

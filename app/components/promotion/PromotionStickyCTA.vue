@@ -13,13 +13,13 @@ defineProps({
 		<div class="hidden lg:block sticky top-32 space-y-6">
 			<div class="bg-white rounded-[2.5rem] p-10 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden relative">
 				<!-- Brand Accent -->
-				<div class="absolute top-0 left-0 right-0 h-2 bg-red-600"></div>
+				<div class="absolute top-0 left-0 right-0 h-2 bg-red-600"/>
 
 				<div class="space-y-8">
 					<div class="flex items-center justify-between">
 						<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Thời gian còn lại</span>
 						<span class="text-[10px] font-black text-red-600 uppercase tracking-widest flex items-center gap-2">
-							<span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
+							<span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"/>
 							Đang diễn ra
 						</span>
 					</div>
@@ -39,7 +39,7 @@ defineProps({
 							<div 
 								class="h-full bg-red-600 transition-all duration-1000" 
 								:style="{ width: `${(promotion.remainingSlots / 100) * 100}%` }"
-							></div>
+							/>
 						</div>
 					</div>
 

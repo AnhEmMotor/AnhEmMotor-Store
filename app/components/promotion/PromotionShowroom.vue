@@ -6,12 +6,12 @@
 					<!-- Text Content -->
 					<div class="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center space-y-8 z-10">
 						<div class="inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-600/20 rounded-full w-fit">
-							<span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
+							<span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"/>
 							<span class="text-[10px] font-black text-red-500 uppercase tracking-widest">Trải nghiệm trực tiếp</span>
 						</div>
 						
 						<h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-tight">
-							Ghé thăm <span class="text-red-600">Showroom</span> <br />
+							Ghé thăm <span class="text-red-600">Showroom</span> <br >
 							Nhận thêm quà tặng
 						</h2>
 						
@@ -54,7 +54,7 @@
 							class="w-full h-full object-cover"
 							alt="Showroom AnhEm Motor"
 						>
-						<div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/40 to-transparent"></div>
+						<div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/40 to-transparent"/>
 						
 						<!-- Floating Stats -->
 						<div class="absolute bottom-10 right-10 p-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl animate-bounce-slow">

@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { appService } from "@/services/app.service";
 
 /**
  * Application Layer - App Store (Pinia)

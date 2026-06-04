@@ -2,10 +2,10 @@
 	<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 		<div class="relative overflow-hidden rounded-[3rem] bg-gray-900 shadow-2xl">
 			<!-- Background Image -->
-			<img src="/promo-banner.png" alt="Promotion" class="absolute inset-0 w-full h-full object-cover opacity-60" />
+			<img src="/promo-banner.png" alt="Promotion" class="absolute inset-0 w-full h-full object-cover opacity-60" >
 			
 			<!-- Gradient Overlay -->
-			<div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"></div>
+			<div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"/>
 
 			<!-- Content -->
 			<div class="relative z-10 p-10 lg:p-16 flex flex-col lg:flex-row justify-between items-center gap-10">
@@ -15,7 +15,7 @@
 						<span class="text-[10px] font-black">Ưu đãi độc quyền</span>
 					</div>
 					<h2 class="text-4xl lg:text-6xl font-black text-white leading-none">
-						Giảm Ngay <span class="text-red-600">20%</span> <br />
+						Giảm Ngay <span class="text-red-600">20%</span> <br >
 						Dịch Vụ Lần Đầu
 					</h2>
 					<p class="text-gray-300 text-sm md:text-base font-medium leading-relaxed">
@@ -23,14 +23,14 @@
 					</p>
 					<div class="flex flex-wrap justify-center lg:justify-start gap-4">
 						<button 
-							@click="$emit('book')"
 							class="px-10 py-5 bg-red-600 text-white text-[11px] font-black hover:bg-red-700 transition-all shadow-xl shadow-red-600/30 active:scale-95 flex items-center gap-3 group"
+							@click="$emit('book')"
 						>
 							Nhận Ưu Đãi Ngay
 							<Icon name="fa6-solid:gift" class="group-hover:rotate-12 transition-transform" />
 						</button>
 						<div class="flex items-center gap-4 text-white/60 text-xs font-bold">
-							<span class="w-10 h-[1px] bg-white/20"></span>
+							<span class="w-10 h-[1px] bg-white/20"/>
 							Kết thúc sau 3 ngày
 						</div>
 					</div>

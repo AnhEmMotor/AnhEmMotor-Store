@@ -17,7 +17,7 @@
 							<div class="space-y-2">
 								<h3 class="text-lg font-extrabold text-gray-900 uppercase tracking-tight">Cửa hàng AnhEm Motor</h3>
 								<div class="flex items-center gap-2">
-									<div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+									<div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"/>
 									<span class="text-[10px] font-extrabold text-green-500 uppercase tracking-widest">Đang mở cửa</span>
 								</div>
 							</div>
@@ -75,7 +75,7 @@
 						loading="lazy" 
 						referrerpolicy="no-referrer-when-downgrade"
 						class="absolute inset-0 grayscale-[0.2] contrast-[1.1] transition-all duration-700"
-					></iframe>
+					/>
 					
 					<!-- Map Overlay -->
 					<div class="absolute bottom-10 left-10 right-10 p-6 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl flex items-center justify-between">

@@ -266,7 +266,7 @@ v-for="item in [
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount, computed, watch, onMounted } from "vue";
+import { ref, onBeforeUnmount, computed, onMounted } from "vue";
 import CartPanel from "../cart/CartPanel.vue";
 import QuickActionModal from "../common/QuickActionModal.vue";
 import TestRideForm from "../service/TestRideForm.vue";
@@ -318,7 +318,7 @@ const dynamicMotorcycleCategories = computed(() => {
 		...c,
 		name: c.id === 8 ? 'Tất cả xe' : c.name,
 		path: `/products?category_ids=${c.id}`
-	})).sort((a, b) => a.id === 8 ? -1 : 1);
+	})).sort((a) => a.id === 8 ? -1 : 1);
 });
 
 const getCategoryIcon = (cat) => {
@@ -337,18 +337,6 @@ const getCategoryDesc = (cat) => {
 	return 'Chính hãng AnhEm';
 };
 
-const megaMenuBrands = [
-	{ name: 'Honda', path: '/products?brand=honda', logo: '/assets/image/index/brand/honda.webp' },
-	{ name: 'Yamaha', path: '/products?brand=yamaha', logo: '/assets/image/index/brand/yamaha.webp' },
-	{ name: 'Suzuki', path: '/products?brand=suzuki', logo: '/assets/image/index/brand/suzuki.webp' },
-	{ name: 'Kawasaki', path: '/products?brand=kawasaki', logo: '/assets/image/index/brand/kawasaki.webp' },
-];
-
-const megaMenuSuggestions = [
-	{ label: 'Hot Deal', title: 'Winner X trả góp 0%', desc: 'Chỉ từ 999k/tháng - Sẵn xe giao ngay', icon: 'fa6-solid:fire', path: '/products' },
-	{ label: 'Ưu đãi', title: 'Vario 160 Có Sẵn', desc: 'Hỗ trợ đăng ký biển số trong ngày', icon: 'fa6-solid:bolt-lightning', path: '/products' },
-];
-
 const navItemsMobile = [
 		{ name: 'TRANG CHỦ', path: '/' },
 		{ name: 'XE MÁY', path: '/products?category_ids=8' },
@@ -365,7 +353,7 @@ const navItemsMobile = [
 const openMobileNav = () => { mobileNavActive.value = true; document.body.style.overflow = "hidden"; };
 const closeMobileNav = () => { mobileNavActive.value = false; document.body.style.overflow = ""; };
 
-const { cartItems, cartDetails, cartTotal, removeItem, updateQuantity } = useCart();
+const { cartDetails, cartTotal, removeItem, updateQuantity } = useCart();
 const toggleCart = () => { isCartOpen.value = !isCartOpen.value; };
 const updateCartItemQuantity = (payload) => updateQuantity(payload);
 const removeCartItem = (index) => removeItem(index);

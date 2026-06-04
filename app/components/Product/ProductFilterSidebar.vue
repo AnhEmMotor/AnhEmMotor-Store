@@ -52,8 +52,6 @@ const categories = computed(() => categoriesData.value || []);
 const {
 	data: optionsData,
 	isLoading: isLoadingOptions,
-	error: optionsError,
-	refetch: fetchOptionsManual,
 } = useQuery({
 	queryKey: ["product-options"],
 	queryFn: () => productStore.getOptions(),
@@ -67,13 +65,6 @@ const filteredOptions = computed(() => {
 		.filter((opt) => requested.includes(opt.name))
 		.map(opt => opt)
 		.sort((a, b) => requested.indexOf(a.name) - requested.indexOf(b.name));
-});
-
-const searchQuery = computed({
-	get: () => props.modelValue.search || "",
-	set: (val) => {
-		emit("update:modelValue", { ...props.modelValue, search: val });
-	},
 });
 
 const selectedOptions = computed({
@@ -215,14 +206,14 @@ const formatVND = (val) => {
 			<!-- Brands -->
 			<div class="space-y-4">
 				<div class="flex items-center gap-2">
-					<div class="w-1 h-4 bg-primary rounded-full"></div>
+					<div class="w-1 h-4 bg-primary rounded-full"/>
 					<label class="text-sm font-black text-gray-900 uppercase tracking-widest"
 						>Thương Hiệu</label
 					>
 				</div>
 				<ClientOnly>
 					<div v-if="isLoadingBrands" class="py-4 flex justify-center">
-						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
 					</div>
 					<div v-else-if="brands.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
 						<button
@@ -245,14 +236,14 @@ const formatVND = (val) => {
 			<!-- Categories -->
 			<div class="space-y-4">
 				<div class="flex items-center gap-2">
-					<div class="w-1 h-4 bg-primary rounded-full"></div>
+					<div class="w-1 h-4 bg-primary rounded-full"/>
 					<label class="text-sm font-black text-gray-900 uppercase tracking-widest"
 						>Danh Mục</label
 					>
 				</div>
 				<ClientOnly>
 					<div v-if="isLoadingCategories" class="py-4 flex justify-center">
-						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
+						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
 					</div>
 					<div v-else-if="categories.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
 						<button
@@ -276,7 +267,7 @@ const formatVND = (val) => {
 			<!-- Price Range -->
 			<div class="space-y-6">
 				<div class="flex items-center gap-2">
-					<div class="w-1 h-4 bg-primary rounded-full"></div>
+					<div class="w-1 h-4 bg-primary rounded-full"/>
 					<label class="text-sm font-black text-gray-900 uppercase tracking-widest">Giá sản phẩm</label>
 				</div>
 				
@@ -290,7 +281,7 @@ const formatVND = (val) => {
 								left: `${(minPrice / 30000000) * 100}%`, 
 								right: `${100 - (maxPrice || 30000000) / 30000000 * 100}%` 
 							}"
-						></div>
+						/>
 						
 						<!-- Min Slider -->
 						<input
@@ -336,8 +327,8 @@ const formatVND = (val) => {
 								{l:'20-30tr', min:20000000, max:30000000}
 							]" 
 							:key="range.l"
-							@click="minPrice = range.min; maxPrice = range.max"
 							class="px-3 py-2 bg-white text-[9px] font-black text-gray-500 uppercase rounded-xl border border-gray-100 hover:border-primary hover:text-primary transition-all shadow-sm"
+							@click="minPrice = range.min; maxPrice = range.max"
 						>
 							{{ range.l }}
 						</button>
@@ -348,13 +339,13 @@ const formatVND = (val) => {
 			<!-- Dynamic Options (Brand, Color, VehicleType) -->
 			<ClientOnly>
 				<div v-if="isLoadingOptions" class="py-8 flex justify-center">
-					<div class="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
+					<div class="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"/>
 				</div>
 
 				<div v-else class="space-y-10">
 					<div v-for="option in filteredOptions" :key="option.id" class="space-y-4">
 						<div class="flex items-center gap-2">
-							<div class="w-1 h-4 bg-primary rounded-full"></div>
+							<div class="w-1 h-4 bg-primary rounded-full"/>
 							<h3 class="text-sm font-black text-gray-900 uppercase tracking-widest">
 								{{ getOptionLabel(option.name) }}
 							</h3>

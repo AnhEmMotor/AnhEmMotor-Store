@@ -16,8 +16,6 @@ const calculateTimeLeft = (endDate) => {
 };
 
 const timeLeft = ref({ days: 0, hours: 0, minutes: 0 });
-const timer = null;
-
 onMounted(() => {
 	// Initial calculation
 	// In a real app, you'd update this every minute

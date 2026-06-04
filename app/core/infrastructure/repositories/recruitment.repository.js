@@ -145,7 +145,7 @@ export const recruitmentRepository = {
 	 * Submits a recruitment application
 	 * @param {Object} formData 
 	 */
-	submitApplication: async (formData) => {
+	submitApplication: async () => {
 		// Mock submission delay
 		await new Promise(resolve => setTimeout(resolve, 2000));
 		

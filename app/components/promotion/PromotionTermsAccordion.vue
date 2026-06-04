@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps({
+defineProps({
 	terms: {
 		type: Array,
 		default: () => [],
@@ -44,7 +44,7 @@ const toggle = (index) => {
 				:style="{ maxHeight: activeIndex === index ? '500px' : '0' }"
 			>
 				<div class="px-8 pb-8 text-gray-500 font-medium leading-relaxed">
-					<div class="w-full h-[1px] bg-gray-50 mb-6"></div>
+					<div class="w-full h-[1px] bg-gray-50 mb-6"/>
 					{{ term.content }}
 				</div>
 			</div>

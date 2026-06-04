@@ -1,5 +1,3 @@
-import { newsData } from "../../../constants/news";
-
 /**
  * Infrastructure Layer - Technology Repository
  */

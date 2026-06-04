@@ -1,8 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const instance = useNuxtApp();
-
 // Mock data for demonstration - in reality, we would fetch this by user phone/email
 const services = ref([
 	{

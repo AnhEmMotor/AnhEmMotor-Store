@@ -1,18 +1,18 @@
 <template>
 	<section class="py-20 bg-white relative overflow-hidden">
 		<!-- Subtle background pattern -->
-		<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#de0000 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+		<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#de0000 0.5px, transparent 0.5px); background-size: 24px 24px;"/>
 		
 		<div class="container mx-auto px-6 relative z-10">
 			<div class="flex flex-col lg:flex-row gap-16 items-center">
 				<div class="lg:w-1/2 space-y-10">
 					<div class="space-y-4">
 						<div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full">
-							<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+							<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"/>
 							<span class="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Văn hóa công ty</span>
 						</div>
 						<h2 class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] italic uppercase tracking-tighter">
-							Làm việc tại <br />
+							Làm việc tại <br >
 							<span class="text-primary underline decoration-black/5 underline-offset-8">Môi trường Chuyên nghiệp</span>
 						</h2>
 						<p class="text-base text-gray-500 font-medium leading-relaxed max-w-lg">
@@ -22,7 +22,8 @@
 
 
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-						<div v-for="(item, index) in culture" :key="index" 
+						<div
+v-for="(item, index) in culture" :key="index" 
 							class="reveal reveal-up p-8 rounded-[2rem] bg-gray-50 border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-2xl transition-all duration-500 group"
 							:style="{ transitionDelay: `${index * 150}ms` }"
 						>
@@ -45,8 +46,8 @@
 									src="/img/recruitment/technical.png"
 									alt="Training"
 									class="w-full h-72 object-cover transition-transform duration-1000 group-hover:scale-110"
-								/>
-								<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+								>
+								<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
 							</div>
 							<div class="p-8 bg-primary rounded-[2.5rem] text-white shadow-2xl shadow-primary/30 transform hover:-translate-y-2 transition-transform duration-500">
 								<div class="text-5xl font-black mb-3 italic tracking-tighter">100%</div>
@@ -63,15 +64,15 @@
 									src="/img/recruitment/hero.png"
 									alt="Showroom Team"
 									class="w-full h-80 object-cover transition-transform duration-1000 group-hover:scale-110"
-								/>
-								<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+								>
+								<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
 							</div>
 						</div>
 
 					</div>
 					
 					<!-- Decorative Glow -->
-					<div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full opacity-50 blur-[120px]"></div>
+					<div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full opacity-50 blur-[120px]"/>
 				</div>
 			</div>
 		</div>

@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useCart } from "~/composables/useCart";
 import orderMapper from "~/mappers/order.mapper";
 
-const { cartItems, cartDetails, removeItem, updateQuantity, isPending, clearCart } =
+const { cartItems, cartDetails, removeItem, updateQuantity, isPending } =
 	useCart();
 
 const orderSummary = computed(() =>

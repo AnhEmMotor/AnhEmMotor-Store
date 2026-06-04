@@ -4,15 +4,15 @@
 			src="/assets/image/index/login-banner-branded.png" 
 			alt="AnhEmMotor Showroom" 
 			class="absolute inset-0 w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
-		/>
+		>
 
 
-		<div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+		<div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"/>
 		
 		<div class="relative h-full flex flex-col justify-end p-16 text-white">
 			<div class="mb-8">
 				<h2 class="text-4xl font-extrabold leading-tight mb-4 italic uppercase tracking-tighter">
-					Đồng hành cùng bạn <br />
+					Đồng hành cùng bạn <br >
 					<span class="text-primary">trên mọi hành trình</span>
 				</h2>
 				<p class="text-white/60 text-lg font-medium">Đăng nhập để theo dõi lịch bảo dưỡng, báo giá và nhận ưu đãi đặc quyền từ AnhEm Motor.</p>

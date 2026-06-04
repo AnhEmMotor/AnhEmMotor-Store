@@ -40,7 +40,7 @@ const steps = [
 				<!-- Connector Lines (Mobile & Desktop) -->
 				<div class="absolute top-[35px] md:top-[60px] left-[12%] right-[12%] h-[1.5px] bg-gray-100 z-0">
 					<!-- Progress glow effect -->
-					<div class="absolute inset-0 bg-red-600/30 scale-x-100 origin-left"></div>
+					<div class="absolute inset-0 bg-red-600/30 scale-x-100 origin-left"/>
 				</div>
 
 				<div 

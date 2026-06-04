@@ -161,11 +161,6 @@ watch(slug, () => {
     selectedImage.value = null;
 });
 
-const handleVariantChange = (event) => {
-    const targetSlug = event.target.value;
-    if (targetSlug) navigateTo(`/product/${targetSlug}`);
-};
-
 // Countdown Timer for FOMO
 const timeLeft = ref(3600 * 5 + 1240); // 5h 20m 40s
 let timer = null;
@@ -197,7 +192,7 @@ const onAddToCart = () => {
 
 const buyNow = () => {
     onAddToCart();
-    navigateTo("/cart");
+    navigateTo("/process-order");
 };
 
 const isMotorbike = computed(() => {
@@ -215,8 +210,6 @@ const bookTestDrive = () => {
     navigateTo("/test-drive");
 };
 
-
-const variantSelectId = useId();
 </script>
 
 <template>

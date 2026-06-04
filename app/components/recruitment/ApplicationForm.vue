@@ -231,7 +231,7 @@ const submitForm = async () => {
 			form.value = { name: '', phone: '', email: '', position: '', message: '' };
 			fileName.value = '';
 		}
-	} catch (e) {
+	} catch {
 		alert('Có lỗi xảy ra, vui lòng thử lại sau.');
 	}
 };

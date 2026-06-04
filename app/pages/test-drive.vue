@@ -400,7 +400,7 @@ onMounted(async () => {
 		if (route.query.variantId) {
 			form.productVariantId = parseInt(route.query.variantId);
 		}
-	} catch (e) {
+	} catch {
 		console.warn("[TestDrive] API failed, using Mock Data for UI testing.");
 		// Fallback data in case of connection error
 		variants.value = [
