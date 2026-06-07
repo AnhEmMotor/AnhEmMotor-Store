@@ -118,6 +118,7 @@ export default defineNuxtConfig({
 		},
 		routeRules: {
 			"/contact": { redirect: "/support" },
+			"/news/**": { swr: 3600 },
 			"/api/v1/**": {
 				proxy: "http://localhost:7001/api/v1/**",
 			},
