@@ -1,23 +1,46 @@
 <script setup>
-defineProps({
-	activeTab: {
-		type: String,
-		default: "all",
-	},
+import { newsService } from "@/services/news.service";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { computed, onServerPrefetch } from "vue";
+
+const route = useRoute();
+const queryClient = useQueryClient();
+const activeTab = computed(() => route.query.category || "all");
+
+const queryKey = ["news-categories"];
+const nuxtApp = useNuxtApp();
+const queryFn = () =>
+	nuxtApp.runWithContext(() => newsService.getNewsCategories());
+
+if (import.meta.server) {
+	onServerPrefetch(async () => {
+		await queryClient.prefetchQuery({
+			queryKey,
+			queryFn,
+			staleTime: 5000,
+		});
+	});
+}
+
+const { data: dynamicCategories } = useQuery({
+	queryKey,
+	queryFn,
+	staleTime: 5000,
 });
 
-const emit = defineEmits(["update:activeTab"]);
+const categories = computed(() => {
+	const allNews = {
+		id: "all",
+		name: "Tất cả tin tức",
+		slug: "all",
+		icon: "ph:newspaper-fill",
+	};
+	return [allNews, ...(dynamicCategories.value || [])];
+});
 
-const categories = [
-	{ id: "all", name: "Tất cả tin tức", icon: "ph:newspaper-fill" },
-	{ id: "events", name: "Tư vấn mua xe", icon: "ph:megaphone-fill" },
-	{ id: "events", name: "Kinh nghiệm bán hàng", icon: "ph:megaphone-fill" },
-	{ id: "events", name: "Tin tức showroom", icon: "ph:megaphone-fill" },
-	{ id: "events", name: "So sánh xe", icon: "ph:megaphone-fill" },
-];
-
-const setActiveTab = (id) => {
-	emit("update:activeTab", id);
+const getTabLink = (cat) => {
+	if (cat.id === "all") return "/news";
+	return `/news?category=${cat.slug}`;
 };
 </script>
 
@@ -39,56 +62,51 @@ const setActiveTab = (id) => {
 				class="flex flex-nowrap lg:flex-wrap items-center gap-2 md:gap-4 p-1 md:p-2 bg-gray-50/50 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-gray-100 shadow-sm marquee-container lg:animate-none"
 			>
 				<!-- First Set -->
-				<button
+				<NuxtLink
 					v-for="cat in categories"
 					:key="cat.id"
+					:to="getTabLink(cat)"
 					class="flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-4 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item flex-shrink-0"
 					:class="[
-						activeTab === cat.id
+						activeTab === cat.slug || (activeTab === 'all' && cat.id === 'all')
 							? 'bg-red-600 text-white shadow-lg scale-105 z-20'
 							: 'text-gray-400 hover:text-gray-900 hover:bg-white',
 					]"
-					@click="setActiveTab(cat.id)"
 				>
-					<Icon
-						:name="cat.icon"
-						class="text-base md:text-lg transition-transform duration-500 group-hover:scale-110"
-						:class="
-							activeTab === cat.id
-								? 'text-white'
-								: 'text-gray-400 group-hover:text-red-500'
-						"
-					/>
 					{{ cat.name }}
 					<div
-						v-if="activeTab === cat.id"
+						v-if="
+							activeTab === cat.slug ||
+							(activeTab === 'all' && cat.id === 'all')
+						"
 						class="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_#fff]"
 					/>
-				</button>
+				</NuxtLink>
 
 				<!-- Duplicate Set for Seamless Loop (Mobile Only) -->
-				<button
+				<NuxtLink
 					v-for="cat in categories"
 					:key="`${cat.id}-clone`"
+					:to="getTabLink(cat)"
 					class="flex lg:hidden items-center gap-2 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item flex-shrink-0"
 					:class="[
-						activeTab === cat.id
+						activeTab === cat.slug || (activeTab === 'all' && cat.id === 'all')
 							? 'bg-red-600 text-white shadow-lg scale-105'
 							: 'text-gray-400 hover:text-gray-900 hover:bg-white',
 					]"
-					@click="setActiveTab(cat.id)"
 				>
 					<Icon
 						:name="cat.icon"
 						class="text-base"
 						:class="
-							activeTab === cat.id
+							activeTab === cat.slug ||
+							(activeTab === 'all' && cat.id === 'all')
 								? 'text-white'
 								: 'text-gray-400 group-hover:text-red-500'
 						"
 					/>
 					{{ cat.name }}
-				</button>
+				</NuxtLink>
 			</div>
 		</div>
 	</div>

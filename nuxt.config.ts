@@ -28,7 +28,7 @@ export default defineNuxtConfig({
 			scan: true,
 		},
 		serverBundle: "auto",
-        collections: ['ph', 'lucide', 'fa6-solid', 'fa6-regular']
+		collections: ["ph", "lucide", "fa6-solid", "fa6-regular"],
 	},
 
 	sitemap: {
@@ -118,7 +118,6 @@ export default defineNuxtConfig({
 		},
 		routeRules: {
 			"/contact": { redirect: "/support" },
-			"/news/**": { swr: 3600 },
 			"/api/v1/**": {
 				proxy: "http://localhost:7001/api/v1/**",
 			},
@@ -201,6 +200,4 @@ export default defineNuxtConfig({
 			"core/domain/models/**",
 		],
 	},
-
-
 });

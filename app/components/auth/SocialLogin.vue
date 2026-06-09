@@ -2,6 +2,13 @@
 import IconFacebook from "@/assets/icons/facebook.svg?component";
 import IconGoogle from "@/assets/icons/google.svg?component";
 
+useHead({
+	script: [
+		{ src: "https://accounts.google.com/gsi/client", async: true, defer: true },
+		{ src: "https://connect.facebook.net/vi_VN/sdk.js", async: true, defer: true },
+	],
+});
+
 const authStore = useAuthStore();
 const instance = useNuxtApp();
 

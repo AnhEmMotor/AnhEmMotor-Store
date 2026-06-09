@@ -1,45 +1,36 @@
-import { newsData } from "../../../constants/news";
+import { NEWS_ENDPOINTS } from "../../../constants/endpoints/news.endpoint";
 
 /**
  * Infrastructure Layer - News Repository
  */
 export const newsRepository = {
+	async getNewsCategories() {
+		const axios = useAxios();
+		const response = await axios.get(NEWS_ENDPOINTS.CATEGORIES);
+		return response.data;
+	},
+
 	async getNews(params = {}) {
-		// Mock delay
-		await new Promise(resolve => setTimeout(resolve, 500));
-		
-		let items = [...newsData];
-
-		// Lọc tin tức nổi bật nếu được yêu cầu
-		if (params.isFeatured) {
-			items = items.filter(n => n.featured);
-		}
-
-		const page = params.page || 1;
-		const pageSize = params.pageSize || 10;
-		const totalCount = items.length;
-		const totalPages = Math.ceil(totalCount / pageSize);
-
-		// Cắt mảng lấy đúng số lượng phần tử của trang hiện tại
-		const start = (page - 1) * pageSize;
-		const end = start + pageSize;
-		const paginatedItems = items.slice(start, end);
-
-		return {
-			items: paginatedItems,
-			totalCount,
-			totalPages,
-			pageNumber: page,
-			pageSize
-		};
+		const axios = useAxios();
+		const response = await axios.get(NEWS_ENDPOINTS.PUBLIC_LIST, { params });
+		return response.data;
 	},
 
 	async getNewsDetail(slug) {
-		const news = newsData.find(n => n.slug === slug);
-		return news || null;
+		const axios = useAxios();
+		const response = await axios.get(`${NEWS_ENDPOINTS.DETAIL}/${slug}`);
+		return response.data;
+	},
+
+	async getLatestNews() {
+		const axios = useAxios();
+		const response = await axios.get(NEWS_ENDPOINTS.LATEST_PUBLIC);
+		return response.data;
 	},
 
 	async getFeaturedNews() {
-		return newsData.filter(n => n.featured);
+		const axios = useAxios();
+		const response = await axios.get(NEWS_ENDPOINTS.PUBLIC_LIST, { params: { pageSize: 3, isFeatured: true, sorts: "-createdAt" } });
+		return response.data;
 	}
 };
