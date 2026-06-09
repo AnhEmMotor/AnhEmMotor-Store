@@ -3,7 +3,7 @@ import { ref } from "vue";
 
 import ReelCard from "../ui/ReelCard.vue";
 import VideoModal from "../ui/VideoModal.vue";
-import { REELS } from "@/constants/reel.constant";
+import { REELS } from "~/core/domain/constants/reel.constant";
 
 const activeVideo = ref(null);
 const isOpen = ref(false);

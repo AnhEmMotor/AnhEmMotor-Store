@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useLayoutStore } from "../../stores/layout.store";
+import { useLayoutStore } from "~/core/application/stores/layout.store";
 
 const layoutStore = useLayoutStore();
 const { floatingButtons } = storeToRefs(layoutStore);

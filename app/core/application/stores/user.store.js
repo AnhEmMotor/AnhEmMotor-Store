@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAuthStore } from "./auth.store";
-import { userService } from "@/services/user.service";
-import { userMapper } from "@/mappers/user.mapper";
+import { userService } from "@/core/infrastructure/services/user.service";
+import { userMapper } from "~/core/application/mappers/user.mapper";
 
 export const useUserStore = defineStore("user", () => {
 	const service = userService;

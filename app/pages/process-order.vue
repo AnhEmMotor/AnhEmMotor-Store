@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted } from "vue";
 import { useCart } from "~/composables/useCart";
-import { useAuthStore } from "~/stores/auth.store";
-import { useOrderStore } from "~/stores/order.store";
+import { useAuthStore } from "~/core/application/stores/auth.store";
+import { useOrderStore } from "~/core/application/stores/order.store";
 
 import CheckoutCartEmpty from "@/components/checkout/CheckoutCartEmpty.vue";
 import CheckoutShippingForm from "@/components/checkout/CheckoutShippingForm.vue";

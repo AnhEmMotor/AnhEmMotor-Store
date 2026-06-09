@@ -31,8 +31,8 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useAuthStore } from "../stores/auth.store";
-import { useUserStore } from "../stores/user.store";
+import { useAuthStore } from "~/core/application/stores/auth.store";
+import { useUserStore } from "~/core/application/stores/user.store";
 
 import ProfileSidebar from "@/components/profile/ProfileSidebar.vue";
 import ProfileInfoForm from "@/components/profile/ProfileInfoForm.vue";

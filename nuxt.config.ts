@@ -53,6 +53,15 @@ export default defineNuxtConfig({
 		ssr: {
 			noExternal: ["@tanstack/vue-query"],
 		},
+		server: {
+			proxy: {
+				"/api": {
+					target: "http://localhost:5000",
+					changeOrigin: true,
+					secure: false,
+				},
+			},
+		},
 		plugins: [
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(tailwindcss as any)(),
@@ -178,12 +187,12 @@ export default defineNuxtConfig({
 
 	alias: {
 		"@/stores": "./app/core/application/stores",
-		"@/services": "./app/core/application/services",
+		"@/services": "./app/core/infrastructure/services",
 		"@/mappers": "./app/core/application/mappers",
 		"@/constants": "./app/core/domain/constants",
 		"@/utils": "./app/core/domain/utils",
 		"~/stores": "./app/core/application/stores",
-		"~/services": "./app/core/application/services",
+		"~/services": "./app/core/infrastructure/services",
 		"~/mappers": "./app/core/application/mappers",
 		"~/constants": "./app/core/domain/constants",
 		"~/utils": "./app/core/domain/utils",
@@ -193,7 +202,7 @@ export default defineNuxtConfig({
 		dirs: [
 			"core/domain/constants/**",
 			"core/domain/utils/**",
-			"core/application/services/**",
+			"core/infrastructure/services/**",
 			"core/application/stores/**",
 			"core/application/mappers/**",
 			"core/infrastructure/repositories/**",

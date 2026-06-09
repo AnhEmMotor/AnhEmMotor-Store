@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import productService from "@/services/product.service";
-import productMapper from "@/mappers/product.mapper";
+import productService from "@/core/infrastructure/services/product.service";
+import productMapper from "~/core/application/mappers/product.mapper";
 
 export const useProductStore = defineStore("product", () => {
 	const service = productService;

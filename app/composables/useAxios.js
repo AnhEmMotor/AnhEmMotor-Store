@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useAuthStore } from "@/stores/auth.store";
+import { useAuthStore } from "@/core/application/stores/auth.store";
 
 
 export const useAxios = () => {

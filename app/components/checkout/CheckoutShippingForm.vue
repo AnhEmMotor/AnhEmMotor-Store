@@ -1,5 +1,5 @@
 <script setup>
-import { useOrderStore } from "@/stores/order.store";
+import { useOrderStore } from "@/core/application/stores/order.store";
 
 const orderStore = useOrderStore();
 </script>

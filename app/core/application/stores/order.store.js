@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useQueryClient } from "@tanstack/vue-query";
-import orderService from "@/services/order.service";
-import orderMapper from "@/mappers/order.mapper";
-import { useAuthStore } from "@/stores/auth.store";
+import orderService from "@/core/infrastructure/services/order.service";
+import orderMapper from "~/core/application/mappers/order.mapper";
+import { useAuthStore } from "@/core/application/stores/auth.store";
 
 export const useOrderStore = defineStore("order", () => {
 	const service = orderService;

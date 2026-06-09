@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { feedbackService } from "../services/feedback.service";
+import { feedbackService } from "~/core/infrastructure/services/feedback.service";
 
 export const useFeedbackStore = defineStore("feedback", {
 	state: () => ({

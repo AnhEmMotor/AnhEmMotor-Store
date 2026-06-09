@@ -2,7 +2,7 @@
 
 import BenefitCard from "../ui/BenefitCard.vue";
 import LoanCalculator from "./LoanCalculator.vue";
-import { BENEFITS } from "@/constants/benefit.constant";
+import { BENEFITS } from "~/core/domain/constants/benefit.constant";
 </script>
 
 <template>

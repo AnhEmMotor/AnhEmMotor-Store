@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import { useCart } from "~/composables/useCart";
-import orderMapper from "~/mappers/order.mapper";
+import orderMapper from "~/core/application/mappers/order.mapper";
 
 const { cartItems, cartDetails, removeItem, updateQuantity, isPending } =
 	useCart();

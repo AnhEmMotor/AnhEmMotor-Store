@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
-import { useLayoutStore } from "../../stores/layout.store";
-import { useHomeStore } from "../../stores/home.store";
+import { useLayoutStore } from "~/core/application/stores/layout.store";
+import { useHomeStore } from "~/core/application/stores/home.store";
 
 const layoutStore = useLayoutStore();
 const homeStore = useHomeStore();

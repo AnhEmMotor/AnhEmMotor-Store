@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from "vue";
-import { useCartStore } from "@/stores/useCartStore";
-import { useOrderStore } from "@/stores/order.store";
-import { orderMapper } from "@/mappers/order.mapper";
+import { useCartStore } from "@/core/application/stores/useCartStore";
+import { useOrderStore } from "@/core/application/stores/order.store";
+import { orderMapper } from "~/core/application/mappers/order.mapper";
 
 const emit = defineEmits(["order-success"]);
 

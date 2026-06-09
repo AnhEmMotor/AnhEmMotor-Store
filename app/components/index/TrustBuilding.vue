@@ -2,7 +2,7 @@
 import TrustServiceCard from "../ui/TrustServiceCard.vue";
 import TestimonialCard from "../ui/TestimonialCard.vue";
 import ShowroomMap from "../ui/ShowroomMap.vue";
-import { SHOWROOMS, TESTIMONIALS, TRUST_SERVICES } from "@/constants/trust.constant";
+import { SHOWROOMS, TESTIMONIALS, TRUST_SERVICES } from "~/core/domain/constants/trust.constant";
 
 const isInfoOpen = ref(false);
 

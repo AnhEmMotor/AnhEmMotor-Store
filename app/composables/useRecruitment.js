@@ -1,4 +1,4 @@
-import { recruitmentService } from "../core/application/services/recruitment.service";
+import { recruitmentService } from "~/core/application/services/recruitment.service";
 
 /**
  * Application Layer - Recruitment Composable

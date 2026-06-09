@@ -1,16 +1,26 @@
-import { defineStore } from "pinia";
 
 
-export const useBookingStore = defineStore("booking", () => {
-	const service = bookingService;
+/**
+ * Application Layer - Booking Service
+ */
+export const bookingService = {
+	async createBooking(bookingData) {
+		try {
+			return await bookingRepository.createBooking({
+				fullName: bookingData.fullName,
+				email: bookingData.email || "",
+				phoneNumber: bookingData.phoneNumber,
+				productVariantId: bookingData.productVariantId,
+				preferredDate: bookingData.preferredDate,
+				note: bookingData.note || "",
+				location: bookingData.location || "Cửa hàng",
+				bookingType: bookingData.bookingType || "TestDrive",
+			});
+		} catch (error) {
+			console.error("Service: Failed to create booking:", error);
+			throw error;
+		}
+	},
+};
 
-
-	const createBooking = async (bookingData) => {
-		return await service.createBooking(bookingData);
-	};
-
-	return {
-		createBooking,
-	};
-});
-
+export default bookingService;

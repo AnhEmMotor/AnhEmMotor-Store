@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { aboutService } from "@/services/about.service";
+import { aboutService } from "@/core/infrastructure/services/about.service";
 
 export const useAboutStore = defineStore("about", {
 	state: () => ({

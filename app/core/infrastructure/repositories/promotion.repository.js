@@ -1,4 +1,4 @@
-import { promotionData } from "../../../constants/promotion";
+import { promotionData } from "~/core/domain/constants/promotion";
 
 /**
  * Infrastructure Layer - Promotion Repository

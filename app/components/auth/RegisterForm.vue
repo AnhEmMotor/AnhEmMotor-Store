@@ -1,5 +1,5 @@
 <script setup>
-import { useRegisterStore } from "@/stores/register.store";
+import { useRegisterStore } from "@/core/application/stores/register.store";
 
 const registerStore = useRegisterStore();
 </script>

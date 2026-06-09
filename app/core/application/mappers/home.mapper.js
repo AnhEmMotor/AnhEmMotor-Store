@@ -1,4 +1,4 @@
-import { getImageUrl } from "~/utils/image";
+import { getImageUrl } from "~/core/domain/utils/image";
 
 const homeMapper = {
 	mapHeroStats(stats) {
