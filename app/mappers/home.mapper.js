@@ -38,11 +38,13 @@ const homeMapper = {
 	mapBanners(banners) {
 		return banners.map((banner) => ({
 			id: banner.id,
-			image: getImageUrl(banner.imageUrl),
+			desktopImageUrl: getImageUrl(banner.desktopImageUrl),
+			mobileImageUrl: getImageUrl(banner.mobileImageUrl),
 			title: banner.title,
 			description: banner.description,
-			link: banner.linkUrl,
-			type: banner.type,
+			ctaLink: banner.ctaLink,
+			ctaLabel: banner.ctaLabel,
+			placement: banner.placement,
 		}));
 	},
 };

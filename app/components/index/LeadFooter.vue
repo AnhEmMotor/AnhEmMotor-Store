@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue";
 import { toast } from "vue3-toastify";
 
+import { BIKE_MODELS } from "../../constants/bike.constant";
 
 import BaseInput from "../ui/BaseInput.vue";
 import LeadFeatureItem from "../ui/LeadFeatureItem.vue";
