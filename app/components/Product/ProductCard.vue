@@ -19,8 +19,15 @@ const props = defineProps({
 const selectedVariant = ref(null);
 const selectedColorKey = ref(null);
 const { addItem } = useCart();
+const route = useRoute();
 
 const colorKey = (color, index) => color?.id ?? `index:${index}`;
+const normalizeText = (value) =>
+  String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("vi-VN")
+    .trim();
 
 watch(
   () => props.product,
@@ -59,6 +66,10 @@ const currentImage = computed(() => {
   );
 });
 
+const isPlaceholderImage = computed(() =>
+  currentImage.value.includes("dummyimage.com"),
+);
+
 const currentUrl = computed(() => {
   const slug =
     selectedVariant.value?.url ||
@@ -70,8 +81,7 @@ const currentUrl = computed(() => {
 
 const chipVariants = computed(() => {
   const list = props.product?.variants ?? [];
-  if (list.length <= 1) return [];
-  return list
+  const variants = list
     .filter(
       (v) => (v.option_values_text ?? v.variant_name ?? "").trim().length > 0,
     )
@@ -79,6 +89,13 @@ const chipVariants = computed(() => {
       variant: v,
       label: (v.option_values_text ?? v.variant_name ?? "").trim(),
     }));
+
+  if (variants.length !== 1) return variants;
+
+  const searchTerm = normalizeText(route.query.search);
+  return searchTerm && normalizeText(variants[0].label).includes(searchTerm)
+    ? variants
+    : [];
 });
 
 const applyVariant = (variant) => {
@@ -164,11 +181,15 @@ const toggleCompare = (e) => {
     :to="currentUrl"
     class="group relative bg-white rounded-24 overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 border border-slate-100 flex flex-col h-full"
   >
-    <div class="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden bg-slate-50">
+    <div
+      class="relative h-56 sm:h-64 lg:h-72 overflow-hidden"
+      :class="isPlaceholderImage ? 'bg-slate-900' : 'bg-slate-50'"
+    >
       <img
         :src="currentImage"
         :alt="product.name"
-        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        class="w-full h-full transition-transform duration-700"
+        :class="isPlaceholderImage ? 'object-contain' : 'object-cover group-hover:scale-110'"
       >
 
       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

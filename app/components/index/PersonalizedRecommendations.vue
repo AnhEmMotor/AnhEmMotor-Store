@@ -5,7 +5,7 @@ const productStore = useProductStore();
 
 const { data: products, isPending } = useQuery({
 	queryKey: ["personalized-recommendations"],
-	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: "1" }), // Simulating AI with random/featured for now
+	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: "8" }), // Simulating AI with random/featured for now
 	select: (res) => res.items,
 });
 

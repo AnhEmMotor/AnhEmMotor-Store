@@ -6,7 +6,7 @@ export const productService = {
 		try {
 			const data = await productRepository.getProducts(params);
 			return {
-				items: (data.items || []).map(item => new Product(item)),
+				items: data.items || [],
 				totalCount: data.totalCount,
 				totalPages: data.totalPages,
 			};
@@ -19,7 +19,7 @@ export const productService = {
 	async getProductDetail(slug) {
 		try {
 			const data = await productRepository.getProductDetail(slug);
-			return data ? new Product(data) : null;
+			return data || null;
 		} catch (error) {
 			console.error(`Service: Failed to fetch product detail for ${slug}:`, error);
 			return null;

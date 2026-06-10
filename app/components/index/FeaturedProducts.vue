@@ -6,16 +6,16 @@ const productStore = useProductStore();
 const activeTab = ref("new");
 
 const tabs = [
-	{ id: "new", label: "Mới nhất", categoryIds: "1" },
-	{ id: "best", label: "Bán chạy nhất", categoryIds: "1" },
-	{ id: "promo", label: "Khuyến mãi hot", categoryIds: "1" },
+	{ id: "new", label: "Mới nhất", categoryIds: "8" },
+	{ id: "best", label: "Bán chạy nhất", categoryIds: "8" },
+	{ id: "promo", label: "Khuyến mãi hot", categoryIds: "8" },
 ];
 
 const { data: products, isPending, refetch } = useQuery({
 	queryKey: ["featured-products", activeTab],
 	queryFn: () => {
 		const tab = tabs.find(t => t.id === activeTab.value);
-		return productStore.getProducts({ pageSize: 4, categoryIds: tab ? tab.categoryIds : "1" });
+		return productStore.getProducts({ pageSize: 4, categoryIds: tab ? tab.categoryIds : "8" });
 	},
 	select: (res) => res.items,
 });
@@ -62,7 +62,7 @@ const handleViewDetail = (product) => {
 
 				<div class="flex items-center gap-4">
 					<NuxtLink
-						to="/products"
+						to="/products?page=1&category_ids=8"
 						class="px-8 py-4 bg-white hover:bg-slate-900 hover:text-white border border-slate-200 rounded-xl font-bold transition-all shadow-soft whitespace-nowrap flex items-center gap-2"
 					>
 						Tất cả mẫu xe

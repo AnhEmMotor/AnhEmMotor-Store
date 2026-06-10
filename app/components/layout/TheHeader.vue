@@ -134,15 +134,16 @@ v-for="item in [
 							v-if="isSearchOpen"
 							class="absolute top-full right-0 mt-4 w-[300px] sm:w-87.5 bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-gray-100 rounded-2xl p-4 z-1100 animate-megaSlideIn"
 						>
-							<div class="relative">
+							<form class="relative" @submit.prevent="submitSearch">
 								<Icon name="ph:magnifying-glass-fill" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
 								<input 
+									v-model="searchTerm"
 									type="text" 
 									placeholder="Tìm mẫu xe, phụ tùng..."
 									class="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl pl-11 pr-4 text-xs font-bold focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 transition-all outline-none"
-									auto-focus
+									autofocus
 								>
-							</div>
+							</form>
 						</div>
 					</div>
 
@@ -266,7 +267,7 @@ v-for="item in [
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount, computed, onMounted } from "vue";
+import { ref, onBeforeUnmount, computed, onMounted, watch } from "vue";
 import CartPanel from "../cart/CartPanel.vue";
 import QuickActionModal from "../common/QuickActionModal.vue";
 import TestRideForm from "../service/TestRideForm.vue";
@@ -281,11 +282,29 @@ const isScrolled = ref(false);
 
 const mobileNavActive = ref(false);
 const isSearchOpen = ref(false);
+const searchTerm = ref("");
 const isCartOpen = ref(false);
 const isTestRideModalOpen = ref(false);
 const isQuoteModalOpen = ref(false);
 
 const route = useRoute();
+
+watch(
+	() => route.query.search,
+	(value) => {
+		searchTerm.value = typeof value === "string" ? value : "";
+	},
+	{ immediate: true },
+);
+
+const submitSearch = async () => {
+	const search = searchTerm.value.trim();
+	const query = search ? { search, page: 1 } : { page: 1 };
+
+	isSearchOpen.value = false;
+	await navigateTo({ path: "/products", query });
+};
+
 const isRouteActive = (targetPath) => {
 	if (targetPath === '/') return route.path === '/';
 	

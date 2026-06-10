@@ -17,8 +17,8 @@ function parseArrayQuery(val) {
 
 const pageMode = computed(() => {
 	const ids = parseArrayQuery(route.query.category_ids);
-	if (ids.includes(1) && ids.length === 1) return 'motorcycles';
-	if (ids.some(id => [2, 3].includes(id))) return 'accessories';
+	if (ids.includes(8) && ids.length === 1) return 'motorcycles';
+	if (ids.some(id => [12, 13].includes(id))) return 'accessories';
 	return 'all';
 });
 
@@ -74,7 +74,7 @@ const {
 		const sieveParams = { ...params };
 
 		if (filters.value.search) {
-			sieveParams.filters = `search@=${filters.value.search}`;
+			sieveParams.filters = `search@${filters.value.search}`;
 		}
 
 		if (filters.value.optionValueIds.length > 0) {
@@ -94,7 +94,6 @@ const {
 	},
 	itemsPerPage: 12,
 	filters: filters,
-	debouncedFields: ["search"],
 	dataKey: (res) => res.items,
 });
 
