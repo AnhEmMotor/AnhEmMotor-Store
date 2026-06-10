@@ -21,38 +21,48 @@ let bannerTimer = null;
 const fallbackBanners = [
 	{
 		id: "fb1",
-		image: "/assets/image/index/banner1.png",
+		desktopImageUrl: "/assets/image/index/banner1.png",
+		mobileImageUrl: "/assets/image/index/banner1.png",
 		title: "Showroom Sang Trọng",
 		description: "Trải nghiệm không gian trưng bày xe phân khối lớn hiện đại và đẳng cấp nhất khu vực.",
-		link: "/products",
+		ctaLink: "/products",
+		ctaLabel: "Khám phá ngay"
 	},
 	{
 		id: "fb2",
-		image: "/assets/image/index/banner2.png",
+		desktopImageUrl: "/assets/image/index/banner2.png",
+		mobileImageUrl: "/assets/image/index/banner2.png",
 		title: "Dịch Vụ Chuyên Nghiệp",
 		description: "Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, chăm sóc xế yêu của bạn tốt nhất.",
-		link: "/support",
+		ctaLink: "/support",
+		ctaLabel: "Đặt lịch ngay"
 	},
 	{
 		id: "fb3",
-		image: "/assets/image/index/banner3.png",
+		desktopImageUrl: "/assets/image/index/banner3.png",
+		mobileImageUrl: "/assets/image/index/banner3.png",
 		title: "Phụ Tùng Chính Hãng",
 		description: "Cung cấp đầy đủ các loại phụ tùng, đồ chơi xe máy chính hãng từ các thương hiệu hàng đầu thế giới.",
-		link: "/products",
+		ctaLink: "/products",
+		ctaLabel: "Mua ngay"
 	},
 	{
 		id: "fb4",
-		image: "/assets/image/index/banner4.png",
+		desktopImageUrl: "/assets/image/index/banner4.png",
+		mobileImageUrl: "/assets/image/index/banner4.png",
 		title: "Ưu Đãi Ngập Tràn",
 		description: "Hỗ trợ trả góp 0%, duyệt hồ sơ nhanh chóng và nhiều quà tặng hấp dẫn khi mua xe mới.",
-		link: "/promotion",
+		ctaLink: "/promotion",
+		ctaLabel: "Xem ưu đãi"
 	},
 	{
 		id: "fb5",
-		image: "/assets/image/index/banner5.png",
+		desktopImageUrl: "/assets/image/index/banner5.png",
+		mobileImageUrl: "/assets/image/index/banner5.png",
 		title: "AnhEm Motor",
 		description: "Hệ thống cửa hàng xe máy uy tín, phục vụ tận tâm 24/7.",
-		link: "/about",
+		ctaLink: "/about",
+		ctaLabel: "Tìm hiểu thêm"
 	},
 ];
 
@@ -142,11 +152,12 @@ onUnmounted(() => {
 				v-for="(banner, index) in banners"
 				v-show="index === currentBannerIndex"
 				:key="banner.id || index"
-				class="absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] scale-110 active:scale-100 animate-ken-burns"
-				:style="{
-					backgroundImage: `url('${banner.image || '/assets/image/index/index-banner-bg.png'}')`,
-				}"
+				class="absolute inset-0 transition-transform duration-[10000ms] scale-110 active:scale-100 animate-ken-burns"
 			>
+				<picture>
+					<source media="(max-width: 767px)" :srcset="banner.mobileImageUrl || '/assets/image/index/index-banner-bg.png'">
+					<img :src="banner.desktopImageUrl || '/assets/image/index/index-banner-bg.png'" alt="Banner" class="w-full h-full object-cover">
+				</picture>
 				<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 			</div>
 		</TransitionGroup>
@@ -154,9 +165,12 @@ onUnmounted(() => {
 		<!-- Default Background if no banners -->
 		<div
 			v-if="banners.length === 0"
-			class="absolute inset-0 bg-cover bg-center"
-			style="background-image: url('/assets/image/index/index-banner-bg.png')"
+			class="absolute inset-0"
 		>
+			<picture>
+				<source media="(max-width: 767px)" srcset="/assets/image/index/index-banner-bg.png">
+				<img src="/assets/image/index/index-banner-bg.png" alt="Banner" class="w-full h-full object-cover">
+			</picture>
 			<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 		</div>
 
@@ -208,10 +222,10 @@ onUnmounted(() => {
 
 				<div class="flex flex-wrap gap-4 pt-6">
 					<NuxtLink
-						:to="activeBanner?.link || '/products'"
+						:to="activeBanner?.ctaLink || '/products'"
 						class="h-14 px-8 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 hover:-translate-y-1 flex items-center gap-3 group"
 					>
-						{{ activeBanner?.link ? "Khám phá ngay" : "Mua ngay" }}
+						{{ activeBanner?.ctaLabel || "Khám phá ngay" }}
 						<Icon
 							name="ph:arrow-right-bold"
 							class="text-lg transition-transform group-hover:translate-x-1"
