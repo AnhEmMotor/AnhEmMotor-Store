@@ -20,7 +20,6 @@ export const newsService = {
 				isFeatured: true,
 				sorts: "-createdAt",
 			});
-			console.log(data);
 			return (data.items || []).map((item) => ({
 				id: item.id,
 				title: item.title,
