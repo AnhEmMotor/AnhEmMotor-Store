@@ -29,12 +29,6 @@ const nextBanner = () => {
 	resetTimer();
 };
 
-const prevBanner = () => {
-	if (props.banners.length <= 1) return;
-	slideDirection.value = "prev";
-	currentBannerIndex.value = (currentBannerIndex.value - 1 + props.banners.length) % props.banners.length;
-	resetTimer();
-};
 
 const setBanner = (index) => {
 	slideDirection.value = index > currentBannerIndex.value ? "next" : "prev";
@@ -110,7 +104,7 @@ onUnmounted(() => {
 					</div>
 				</Transition>
 
-				<div class="flex flex-wrap gap-4 pt-4" v-if="activeBanner?.ctaLink">
+				<div v-if="activeBanner?.ctaLink" class="flex flex-wrap gap-4 pt-4">
 					<NuxtLink
 						:to="activeBanner.ctaLink"
 						class="h-12 px-6 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 hover:-translate-y-1 flex items-center gap-2 group"
@@ -128,8 +122,8 @@ onUnmounted(() => {
 				v-for="(_, index) in banners"
 				:key="index"
 				class="group relative flex items-center justify-center p-2 outline-none"
-				@click="setBanner(index)"
 				aria-label="Chuyển banner"
+				@click="setBanner(index)"
 			>
 				<!-- Visual Dot -->
 				<div

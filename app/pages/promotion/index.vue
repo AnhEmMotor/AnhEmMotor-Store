@@ -66,7 +66,7 @@ watch(promotionPage, () => {
 <template>
 	<div class="bg-white min-h-screen">
 		<!-- [1] HERO SECTION -->
-		<CommonBannerCarousel v-if="promotionStore.banners.length > 0" :banners="promotionStore.banners" defaultBg="/assets/image/index/index-banner-bg.png" />
+		<CommonBannerCarousel v-if="promotionStore.banners.length > 0" :banners="promotionStore.banners" default-bg="/assets/image/index/index-banner-bg.png" />
 		<PromotionBanner v-else />
 
 		<!-- [2] FILTER SECTION -->

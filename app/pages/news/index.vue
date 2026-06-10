@@ -1,4 +1,5 @@
 <script setup>
+import { newsService } from "~/services/news.service";
 definePageMeta({
 	key: (route) => route.path,
 });
@@ -10,7 +11,6 @@ useSeoMeta({
 });
 
 const newsStore = useNewsStore();
-import { newsService } from "~/services/news.service";
 const route = useRoute();
 
 const filters = reactive({
@@ -47,11 +47,6 @@ const {
 await useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
 await useAsyncData("news-banners", () => newsStore.fetchBanners());
 
-const featuredNews = computed(() => {
-	return (
-		newsStore.featuredNews.find((n) => n.isHot) || newsStore.featuredNews[0]
-	);
-});
 
 // Watch for page changes to smoothly scroll directly to the news grid section
 watch(
@@ -88,7 +83,7 @@ onMounted(() => {
 <template>
 	<div class="bg-white min-h-screen font-['Manrope']">
 		<!-- [1] HERO SECTION -->
-		<CommonBannerCarousel v-if="newsStore.banners.length > 0" :banners="newsStore.banners" defaultBg="/assets/image/index/index-banner-bg.png" />
+		<CommonBannerCarousel v-if="newsStore.banners.length > 0" :banners="newsStore.banners" default-bg="/assets/image/index/index-banner-bg.png" />
 		<NewsBanner v-else />
 
 		<!-- [2] STICKY SUB-NAVIGATION -->
@@ -206,7 +201,7 @@ onMounted(() => {
 				<h2
 					class="text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter leading-tight"
 				>
-					Đừng bỏ lỡ <br /><span class="text-red-600 italic"
+					Đừng bỏ lỡ <br ><span class="text-red-600 italic"
 						>mọi chuyển động</span
 					>
 				</h2>

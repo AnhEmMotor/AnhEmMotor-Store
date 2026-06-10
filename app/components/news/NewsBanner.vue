@@ -26,7 +26,7 @@ defineProps({
 				:src="backgroundImage"
 				class="w-full h-full object-cover opacity-40 scale-105"
 				:alt="title"
-			/>
+			>
 			<div
 				class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-transparent"
 			/>
@@ -68,7 +68,7 @@ defineProps({
 							src="/premium_motorcycle_showroom_visit_1778827603878.png"
 							class="w-full aspect-[4/5] object-cover scale-105 group-hover:scale-110 transition-transform duration-1000"
 							alt="AnhEm Motor Showroom"
-						/>
+						>
 						<!-- Highlight Tag on Image -->
 						<div
 							class="absolute top-10 right-10 w-24 h-24 bg-red-600 rounded-full flex flex-col items-center justify-center text-white shadow-2xl rotate-12 group-hover:rotate-0 transition-transform duration-700 border-4 border-white/20"

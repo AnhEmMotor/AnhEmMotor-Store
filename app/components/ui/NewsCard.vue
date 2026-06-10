@@ -22,7 +22,7 @@ defineProps({
 				:src="news.image"
 				:alt="news.title"
 				class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
-			/>
+			>
 
 			<!-- Category Badge -->
 			<div class="absolute top-4 left-4">
