@@ -31,9 +31,9 @@ const homeService = {
 		}
 	},
 
-	async getBanners() {
+	async getBanners(placement) {
 		try {
-			return await homeRepository.getBanners();
+			return await homeRepository.getBanners(placement);
 		} catch (error) {
 			console.error("Service: Failed to fetch banners:", error);
 			return [];

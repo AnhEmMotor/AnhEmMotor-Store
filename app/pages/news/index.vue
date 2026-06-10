@@ -45,6 +45,7 @@ const {
 });
 
 await useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
+await useAsyncData("news-banners", () => newsStore.fetchBanners());
 
 const featuredNews = computed(() => {
 	return (
@@ -87,7 +88,8 @@ onMounted(() => {
 <template>
 	<div class="bg-white min-h-screen font-['Manrope']">
 		<!-- [1] HERO SECTION -->
-		<NewsBanner />
+		<CommonBannerCarousel v-if="newsStore.banners.length > 0" :banners="newsStore.banners" defaultBg="/assets/image/index/index-banner-bg.png" />
+		<NewsBanner v-else />
 
 		<!-- [2] STICKY SUB-NAVIGATION -->
 		<div

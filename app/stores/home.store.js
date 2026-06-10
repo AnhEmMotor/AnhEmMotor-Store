@@ -52,7 +52,7 @@ export const useHomeStore = defineStore("home", () => {
 					homeService.getHeroStats(),
 					homeService.getSearchPhrases(),
 					homeService.getFeaturedProducts(),
-					homeService.getBanners(),
+					homeService.getBanners("Home"),
 				]);
 
 			brands.value = homeMapper.mapBrands(rawBrands);

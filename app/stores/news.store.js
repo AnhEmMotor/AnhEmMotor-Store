@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import { newsService } from "@/services/news.service";
+import homeService from "@/services/home.service";
 
 export const useNewsStore = defineStore("news", {
 	state: () => ({
 		featuredNews: [],
 		latestNews: [],
 		currentNews: null,
+		banners: [],
 		isLoading: false,
 	}),
 
@@ -44,6 +46,16 @@ export const useNewsStore = defineStore("news", {
 				return null;
 			} finally {
 				this.isLoading = false;
+			}
+		},
+
+		async fetchBanners() {
+			try {
+				const data = await homeService.getBanners("News");
+				this.banners = data;
+			} catch (error) {
+				console.error("fetchBanners Error:", error);
+				this.banners = [];
 			}
 		},
 	},

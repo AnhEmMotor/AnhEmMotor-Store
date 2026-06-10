@@ -41,9 +41,10 @@ export const homeRepository = {
 		return data.items || [];
 	},
 
-	async getBanners() {
+	async getBanners(placement) {
 		const axios = useAxios();
-		const { data } = await axios.get("/api/v1/banners/active");
-		return data || [];
+		const url = placement ? `/api/v1/banners/store?placement=${placement}` : "/api/v1/banners/store";
+		const { data } = await axios.get(url);
+		return Array.isArray(data) ? data : (data.data || []);
 	},
 };

@@ -8,6 +8,7 @@ const promotionStore = usePromotionStore();
 const activeTab = ref('all');
 
 await useAsyncData("promotions", () => promotionStore.fetchAllPromotions());
+await useAsyncData("promotion-banners", () => promotionStore.fetchBanners());
 
 const filteredPromotions = computed(() => {
 	// Simple mock filtering for demo purposes
@@ -65,7 +66,8 @@ watch(promotionPage, () => {
 <template>
 	<div class="bg-white min-h-screen">
 		<!-- [1] HERO SECTION -->
-		<PromotionBanner />
+		<CommonBannerCarousel v-if="promotionStore.banners.length > 0" :banners="promotionStore.banners" defaultBg="/assets/image/index/index-banner-bg.png" />
+		<PromotionBanner v-else />
 
 		<!-- [2] FILTER SECTION -->
 		<div id="promotion-content" class="bg-white border-b border-gray-100 sticky top-[72px] z-50 scroll-mt-[72px]">
