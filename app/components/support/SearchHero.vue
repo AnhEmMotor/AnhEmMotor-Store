@@ -1,13 +1,13 @@
 <template>
 	<section class="relative pt-16 pb-20 overflow-hidden bg-gray-900">
-		<!-- Background Image with Lighter Overlay -->
+		
 		<div class="absolute inset-0 z-0">
 			<img 
 				src="/images/support/hero-bg.png" 
 				alt="AnhEm Motor Support Team" 
 				class="w-full h-full object-cover opacity-70"
 			>
-			<!-- Softer Gradient to highlight image -->
+			
 			<div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-white"/>
 		</div>
 
@@ -24,7 +24,7 @@
 					</h1>
 				</div>
 
-				<!-- Global Search Bar -->
+				
 				<div class="relative group max-w-xl mx-auto pt-2">
 					<div class="absolute -inset-1 bg-gradient-to-r from-red-600 to-red-900 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"/>
 					<div class="relative flex items-center bg-white rounded-xl overflow-hidden shadow-2xl">
@@ -42,7 +42,7 @@
 					</div>
 				</div>
 
-				<!-- Quick Keywords -->
+				
 				<div class="flex flex-wrap justify-center gap-4 pt-1">
 					<span class="text-[9px] font-extrabold text-white/50 uppercase tracking-widest drop-shadow-sm">Từ khóa:</span>
 					<a

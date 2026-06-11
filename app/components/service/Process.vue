@@ -1,12 +1,12 @@
 <template>
 	<section ref="processRef" class="bg-gray-50 py-16 border-y border-gray-100 overflow-hidden relative">
-		<!-- Background Accents -->
+		
 		<div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"/>
 		<div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"/>
 		
 		<div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 relative z-10">
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
-				<!-- Image Left -->
+				
 				<div 
 					class="lg:col-span-5 relative order-2 lg:order-1 transition-all duration-1000"
 					:class="isVisible ? 'opacity-100 -translate-x-0' : 'opacity-0 -translate-x-20'"
@@ -15,14 +15,14 @@
 						<img src="/service-process.png" alt="Customer Service" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000" >
 						<div class="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"/>
 					</div>
-					<!-- Experience Badge -->
+					
 					<div class="absolute -top-8 -right-8 w-44 h-44 bg-primary rounded-full flex flex-col items-center justify-center text-white border-[10px] border-gray-50 shadow-2xl group-hover:scale-110 transition-transform duration-500 z-20">
 						<span class="text-4xl font-black">10+</span>
 						<span class="text-[9px] font-black uppercase tracking-widest text-white/80">Năm Kinh Nghiệm</span>
 					</div>
 				</div>
 
-				<!-- Content Right -->
+				
 				<div 
 					class="lg:col-span-7 space-y-12 order-1 lg:order-2 transition-all duration-1000 delay-300"
 					:class="isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'"

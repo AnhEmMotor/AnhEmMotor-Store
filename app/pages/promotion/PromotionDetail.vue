@@ -20,7 +20,7 @@ useSeoMeta({
 	ogImage: promotion.value.image,
 });
 
-// Mock related promotions
+
 const relatedPromotions = computed(() => {
 	return promotionStore.promotions.filter(p => p.slug !== slug).slice(0, 3);
 });
@@ -28,17 +28,17 @@ const relatedPromotions = computed(() => {
 
 <template>
 	<div class="bg-white min-h-screen pb-20">
-		<!-- [1] HERO LANDING SECTION -->
+		
 		<PromotionDetailHero :promotion="promotion" />
 
-		<!-- [2] MAIN CONTENT GRID -->
+		
 		<div class="container mx-auto px-6 mt-12 md:mt-20">
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-20">
 				
-				<!-- LEFT COLUMN: CONTENT -->
+				
 				<div class="lg:col-span-8 space-y-20">
 					
-					<!-- BENEFITS CARDS -->
+					
 					<section class="space-y-10">
 						<div class="flex flex-col gap-2">
 							<span class="text-[10px] font-black text-red-600 uppercase tracking-[0.2em]">Đặc quyền của bạn</span>
@@ -61,12 +61,12 @@ const relatedPromotions = computed(() => {
 						</div>
 					</section>
 
-					<!-- RICH CONTENT -->
+					
 					<section class="prose prose-lg max-w-none prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-p:text-gray-500 prose-p:leading-relaxed">
 						<div v-html="promotion.content"/>
 					</section>
 
-					<!-- APPLICABLE MODELS -->
+					
 					<section v-if="promotion.targetBikes?.length" class="space-y-10">
 						<div class="flex flex-col gap-2">
 							<span class="text-[10px] font-black text-red-600 uppercase tracking-[0.2em]">Sản phẩm tiêu biểu</span>
@@ -91,7 +91,7 @@ const relatedPromotions = computed(() => {
 						</div>
 					</section>
 
-					<!-- PROCESS STEPS -->
+					
 					<section class="py-16 bg-gray-950 rounded-[3rem] px-8 md:px-12 relative overflow-hidden">
 						<div class="absolute top-0 right-0 w-64 h-64 bg-red-600/10 blur-[80px] rounded-full"/>
 						<div class="relative z-10 space-y-12">
@@ -111,14 +111,14 @@ const relatedPromotions = computed(() => {
 											<p class="text-gray-400 text-xs font-medium">{{ step.desc }}</p>
 										</div>
 									</div>
-									<!-- Connector Line -->
+									
 									<div v-if="idx < 3" class="hidden lg:block absolute top-8 left-[70%] w-[60%] h-[1px] border-t border-dashed border-white/20"/>
 								</div>
 							</div>
 						</div>
 					</section>
 
-					<!-- TERMS & CONDITIONS -->
+					
 					<section class="space-y-10">
 						<div class="flex flex-col gap-2">
 							<span class="text-[10px] font-black text-red-600 uppercase tracking-[0.2em]">Quy định chi tiết</span>
@@ -127,7 +127,7 @@ const relatedPromotions = computed(() => {
 						<PromotionTermsAccordion :terms="promotion.terms" />
 					</section>
 
-					<!-- GALLERY / SOCIAL PROOF -->
+					
 					<section class="space-y-10">
 						<div class="flex flex-col gap-2 text-center md:text-left">
 							<span class="text-[10px] font-black text-red-600 uppercase tracking-[0.2em]">Khoảnh khắc thực tế</span>
@@ -141,14 +141,14 @@ const relatedPromotions = computed(() => {
 					</section>
 				</div>
 
-				<!-- RIGHT COLUMN: STICKY CTA -->
+				
 				<div class="lg:col-span-4">
 					<PromotionStickyCTA :promotion="promotion" />
 				</div>
 			</div>
 		</div>
 
-		<!-- RELATED PROMOTIONS -->
+		
 		<div class="bg-gray-50 mt-32 py-32 border-y border-gray-100">
 			<div class="container mx-auto px-6 space-y-16">
 				<div class="flex flex-col md:flex-row justify-between items-end gap-10">
@@ -171,7 +171,7 @@ const relatedPromotions = computed(() => {
 <style scoped>
 @reference "../../assets/main.css";
 
-/* Reveal animations for better scrolling experience */
+
 section {
 	@apply opacity-0 translate-y-8;
 	animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;

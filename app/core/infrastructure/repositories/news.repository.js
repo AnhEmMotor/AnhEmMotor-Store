@@ -1,8 +1,6 @@
 import { NEWS_ENDPOINTS } from "../../../constants/endpoints/news.endpoint";
 
-/**
- * Infrastructure Layer - News Repository
- */
+
 export const newsRepository = {
 	async getNewsCategories() {
 		const axios = useAxios();

@@ -20,7 +20,7 @@ const handleContactSubmit = async (data) => {
 		resetForm();
 	}
 };
-// Scroll Reveal Logic
+
 onMounted(() => {
 	const observer = new IntersectionObserver((entries) => {
 		entries.forEach(entry => {
@@ -36,23 +36,23 @@ onMounted(() => {
 
 <template>
 	<div class="bg-white min-h-screen overflow-x-hidden">
-		<!-- [1] NEW HERO: SEARCH -->
+		
 		<SupportSearchHero class="reveal reveal-up" />
 
-		<!-- [2] SUPPORT CATEGORIES (Danh mục câu hỏi) -->
+		
 		<SupportCategories class="bg-white reveal reveal-up" />
 
-		<!-- [3] FAQ SECTION (Câu hỏi thường gặp) -->
+		
 		<SupportFAQ class="reveal reveal-up" />
 
-		<!-- [4] CONTACT SECTION (Form đăng ký liên hệ) -->
+		
 		<section class="relative py-24 bg-white overflow-hidden border-t border-gray-100 reveal reveal-up">
-			<!-- Background Decorative Elements -->
+			
 			<div class="absolute top-0 right-0 w-1/3 h-full bg-red-600/5 -skew-x-12 transform translate-x-1/4"/>
 			
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-stretch">
-					<!-- Info Side -->
+					
 					<div class="flex flex-col reveal reveal-left">
 						<div class="space-y-6 flex-1">
 							<div class="space-y-6">
@@ -71,7 +71,7 @@ onMounted(() => {
 							</div>
 						</div>
 
-						<!-- Quick Support Indicators -->
+						
 						<div class="space-y-5 pt-12 border-t border-gray-100 max-w-sm mt-12">
 							<div v-for="(indicator, idx) in indicators" :key="idx" class="flex items-center gap-4 group cursor-default">
 								<div class="w-8 h-8 rounded-xl bg-primary/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 group-hover:rotate-12">
@@ -81,7 +81,7 @@ onMounted(() => {
 							</div>
 						</div>
 
-						<!-- NEW: Quick Channels -->
+						
 						<div class="mt-12 grid grid-cols-2 gap-6 max-w-md">
 							<a href="tel:1900xxxx" class="flex flex-col p-6 bg-gray-50 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:shadow-primary/10 transition-all group border border-gray-100">
 								<Icon name="ph:phone-call-fill" class="text-4xl text-primary group-hover:scale-110 transition-transform mb-6" />
@@ -95,7 +95,7 @@ onMounted(() => {
 							</a>
 						</div>
 
-						<!-- RESTORED: Commitment Cards -->
+						
 						<div class="mt-10 space-y-6">
 							<div class="flex items-start gap-6 p-6 rounded-[2.5rem] border border-gray-100 hover:shadow-xl hover:shadow-gray-100 transition-all bg-gray-50/30 group">
 								<div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors duration-500">
@@ -122,7 +122,7 @@ onMounted(() => {
 						</div>
 					</div>
 
-					<!-- Form Side -->
+					
 					<div class="bg-white rounded-[3rem] shadow-2xl shadow-gray-200/80 border border-gray-50 overflow-hidden reveal reveal-right transform hover:scale-[1.01] transition-transform duration-700">
 						<div class="bg-primary/5 p-8 border-b border-gray-50">
 							<h3 class="text-xl font-black text-gray-900 uppercase tracking-wider">Gửi yêu cầu hỗ trợ</h3>
@@ -135,7 +135,7 @@ onMounted(() => {
 							@submit="handleContactSubmit"
 						/>
 						
-						<!-- [5] PROCESS TIMELINE (Integrated) -->
+						
 						<div class="px-6 sm:px-10 pb-12 border-t border-gray-50 bg-gray-50/50">
 							<SupportTimeline />
 						</div>
@@ -144,7 +144,7 @@ onMounted(() => {
 			</div>
 		</section>
 
-		<!-- [5] STORE LOCATOR -->
+		
 		<SupportStoreLocator class="bg-white reveal reveal-up" />
 	</div>
 </template>

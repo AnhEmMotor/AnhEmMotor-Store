@@ -1,6 +1,4 @@
-/**
- * Infrastructure Layer - Layout Repository
- */
+
 export const layoutRepository = {
 	async getNavItems() {
 		return [

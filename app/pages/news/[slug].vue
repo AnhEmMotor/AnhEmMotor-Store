@@ -55,11 +55,11 @@ const copyLink = () => {
 <template>
 	<div class="bg-white min-h-screen pb-24 font-['Manrope']">
 		<div v-if="news">
-			<!-- [1] IMMERSIVE HERO LANDING SECTION -->
+			
 			<section
 				class="relative min-h-[500px] md:min-h-[600px] flex items-end overflow-hidden text-white"
 			>
-				<!-- High-quality Immersive Backdrop -->
+				
 				<div class="absolute inset-0 z-0">
 					<img
 						v-if="news.image"
@@ -67,14 +67,14 @@ const copyLink = () => {
 						class="w-full h-full object-cover"
 						:alt="news.title"
 					>
-					<!-- Lớp phủ mờ để đảm bảo chữ màu trắng dễ đọc -->
+					
 					<div class="absolute inset-0 bg-black/40" />
 				</div>
 
-				<!-- Content Area -->
+				
 				<div class="container mx-auto px-6 relative z-10 py-16 md:py-24">
 					<div class="max-w-5xl space-y-8">
-						<!-- Category & Status Badge -->
+						
 						<div class="flex flex-wrap items-center gap-4 animate-fade-in">
 							<span
 								class="px-5 py-1.5 bg-red-600 text-white rounded-full text-[10px] font-black uppercase tracking-widest"
@@ -83,7 +83,7 @@ const copyLink = () => {
 							</span>
 						</div>
 
-						<!-- Headline Title -->
+						
 						<div class="space-y-6 animate-slide-up">
 							<h1
 								class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1]"
@@ -92,7 +92,7 @@ const copyLink = () => {
 							</h1>
 						</div>
 
-						<!-- Metadata & Sharing Row -->
+						
 						<div
 							class="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-6 animate-slide-up delay-200"
 						>
@@ -112,18 +112,18 @@ const copyLink = () => {
 				</div>
 			</section>
 
-			<!-- [2] MAIN CONTENT & SIDEBAR GRID -->
+			
 			<main class="container mx-auto px-6 mt-4 md:mt-12">
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-20">
-					<!-- LEFT COLUMN: ARTICLE BODY -->
+					
 					<article class="lg:col-span-8 space-y-16">
-						<!-- Custom Rich Text Renderer (Tailwind CSS Typography matching) -->
+						
 						<div
 							class="prose prose-lg max-w-none prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-headings:text-gray-950 prose-p:text-gray-600 prose-p:leading-relaxed font-sans"
 							v-html="news.content"
 						/>
 
-						<!-- Linked Products Section -->
+						
 						<div
 							v-if="news.linkedProducts && news.linkedProducts.length"
 							class="pt-10 border-t border-gray-100 space-y-6"
@@ -162,7 +162,7 @@ const copyLink = () => {
 							</div>
 						</div>
 
-						<!-- Article Footer & Social Share Pill Block -->
+						
 						<div
 							class="pt-10 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
 						>
@@ -197,7 +197,7 @@ const copyLink = () => {
 						</div>
 					</article>
 
-					<!-- RIGHT COLUMN: SIDEBAR -->
+					
 					<aside class="lg:col-span-4">
 						<div class="sticky top-28">
 							<NewsSidebar :related-news="latestNews || []" />
@@ -207,7 +207,7 @@ const copyLink = () => {
 			</main>
 		</div>
 
-		<!-- [3] EMPTY STATE (Article Not Found) -->
+		
 		<div v-else class="container mx-auto px-6 py-32 text-center max-w-md">
 			<div
 				class="w-24 h-24 bg-gray-50 rounded-[2rem] flex items-center justify-center mx-auto mb-8 border border-dashed border-gray-200"

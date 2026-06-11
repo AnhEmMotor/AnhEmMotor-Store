@@ -79,9 +79,9 @@ const handleSubmit = async () => {
 		});
 
 		isSuccess.value = true;
-	} catch (error) {
+	} catch {
 		alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng kiểm tra lại thông tin.");
-		console.error(error);
+
 	} finally {
 		isSubmitting.value = false;
 	}
@@ -92,7 +92,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 
 <template>
 	<div class="booking-page min-h-screen bg-[#FDFDFD] py-8 lg:py-12">
-		<!-- Decorative Background -->
+		
 		<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
 			<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-red-600/5 rounded-full blur-[120px]"/>
 			<div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[100px]"/>
@@ -100,7 +100,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 
 		<div class="container mx-auto px-6 relative z-10">
 			<div class="max-w-7xl mx-auto">
-				<!-- Header Section -->
+				
 				<div class="mb-4 animate-reveal-down">
 					<h1 class="text-3xl lg:text-4xl font-[1000] text-gray-900 leading-none tracking-tighter uppercase italic">
 						Đăng ký <span class="text-red-600">Dịch vụ</span>
@@ -114,13 +114,13 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 				</div>
 
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-					<!-- Left: Form (Condensed) -->
+					
 					<div class="lg:col-span-8 animate-reveal-up pb-6">
 						<div class="bg-white rounded-[2rem] p-5 lg:p-6 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.04)] border border-gray-100 relative overflow-hidden">
 							<div class="absolute top-0 left-0 w-full h-2 bg-red-600"/>
 							<div v-if="!isSuccess">
 								<form class="space-y-3" @submit.prevent="handleSubmit">
-									<!-- Customer Info -->
+									
 									<section class="space-y-3">
 										<div class="flex items-center justify-between pb-2 border-b border-gray-50">
 											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-start gap-2 text-left leading-tight">
@@ -145,7 +145,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 										</div>
 									</section>
 
-									<!-- Vehicle Info -->
+									
 									<section class="space-y-3">
 										<div class="flex items-center justify-between pb-2 border-b border-gray-50">
 											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-start gap-2 text-left leading-tight">
@@ -158,7 +158,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 											<label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Dòng xe đang sử dụng *</label>
 											<input v-model="form.motorcycleModel" type="text" required placeholder="Nhập tên xe (VD: SH 150i, Exciter...)" class="booking-input uppercase">
 											
-											<!-- Brand Suggestions -->
+											
 											<div class="flex flex-wrap gap-2 mt-1.5">
 												<button 
 													v-for="brand in ['Honda', 'Yamaha', 'Piaggio', 'Suzuki', 'SYM']" 
@@ -230,7 +230,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 										</div>
 									</section>
 
-									<!-- Schedule -->
+									
 									<section class="space-y-3">
 										<div class="flex items-center justify-between pb-2 border-b border-gray-50">
 											<h2 class="text-lg font-black text-gray-900 uppercase tracking-tight flex items-start gap-2 text-left leading-tight">
@@ -263,7 +263,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 										</div>
 									</section>
 
-									<!-- Confirmation -->
+									
 									<div class="pt-1">
 										<label class="flex items-start gap-3 p-3.5 sm:gap-4 sm:p-4 bg-gray-50 rounded-2xl border border-gray-100 cursor-pointer group hover:bg-white hover:border-red-600/30 transition-all">
 											<div class="relative flex items-center justify-center mt-0.5 sm:mt-1">
@@ -283,14 +283,14 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 										<Icon v-else name="svg-spinners:ring-resize" class="text-sm" />
 									</button>
 
-									<!-- Cancel Button -->
+									
 									<button type="button" class="w-full py-3.5 bg-white border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] rounded-[1.25rem] hover:bg-gray-50 hover:text-red-600 hover:border-red-600/30 transition-all mt-2" @click="router.back()">
 										Hủy bỏ yêu cầu
 									</button>
 								</form>
 							</div>
 
-							<!-- Success State -->
+							
 							<div v-else class="py-20 text-center space-y-8">
 								<div class="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-xl">
 									<Icon name="ph:check-circle-fill" class="text-5xl" />
@@ -313,10 +313,10 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 						</div>
 					</div>
 
-					<!-- Right: Booking Summary Sticky (40%) -->
+					
 					<div class="lg:col-span-4 animate-reveal-right">
 						<div class="sticky top-10 space-y-4">
-							<!-- Summary Card -->
+							
 							<div class="bg-[#0D1117] rounded-[2rem] p-8 lg:p-10 text-white relative overflow-hidden shadow-xl border border-white/5">
 								<div class="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl"/>
 								
@@ -357,7 +357,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 										</div>
 									</div>
 
-									<!-- Trust Signals -->
+									
 									<div class="space-y-3 pt-6 border-t border-white/5">
 										<div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
 											<div class="w-8 h-8 bg-red-600/10 rounded-lg flex items-center justify-center">
@@ -381,7 +381,7 @@ useHead({ title: 'Đăng ký Dịch vụ | AnhEm Motor' });
 								</div>
 							</div>
 
-							<!-- Support & Info Blocks -->
+							
 							<div class="grid grid-cols-1 gap-3">
 								<div class="bg-white rounded-2xl p-4 border border-gray-100 flex items-center gap-3 group hover:border-red-600/30 transition-all">
 									<div class="w-10 h-10 bg-red-600/5 rounded-xl flex items-center justify-center group-hover:bg-red-600 transition-all">

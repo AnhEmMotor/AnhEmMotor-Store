@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue';
 
-// Explicit imports for stability
+
 const router = useRouter();
 
 const isSubmitting = ref(false);
@@ -23,7 +23,7 @@ const handleSubmit = async () => {
 	if (!form.subject) return alert("Vui lòng chọn lĩnh vực.");
 	isSubmitting.value = true;
 	
-	// Simulated submission
+	
 	setTimeout(() => {
 		isSubmitting.value = false;
 		isSuccess.value = true;
@@ -36,12 +36,12 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 
 <template>
 	<div class="fb-page-container min-h-screen relative overflow-hidden flex flex-col bg-[#FDFDFD]">
-		<!-- Premium Background Image -->
+		
 		<div class="fb-bg-image">
 			<img src="/premium_motorcycle_showroom_visit_1778827603878.png" alt="AnhEm Motor Showroom" class="fb-bg-img" >
 			<div class="fb-bg-overlay"/>
 			
-			<!-- Decorative Premium Elements -->
+			
 			<div class="fb-glow fb-glow-1"/>
 			<div class="fb-glow fb-glow-2"/>
 			<div class="fb-glow fb-glow-3"/>
@@ -50,7 +50,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 
 		<div class="container mx-auto px-6 relative z-10 pt-24 pb-12 flex-grow">
 			<div class="max-w-3xl mx-auto">
-				<!-- Point 1: Reduced hero spacing so form is visible sooner -->
+				
 				<div class="text-center mb-6 fb-reveal">
 					<div class="fb-badge">
 						<Icon name="ph:shooting-star-fill" class="fb-text-red text-sm" />
@@ -63,7 +63,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 						Bạn muốn AnhEm Motor cải thiện điều gì? Mọi ý kiến của bạn là chìa khóa để chúng tôi nâng tầm dịch vụ mỗi ngày.
 					</p>
 
-					<!-- Point 10: Trust elements - concise & clean -->
+					
 					<div class="fb-trust-row">
 						<div v-for="trust in ['Mọi góp ý đều được xem xét', 'Bảo mật thông tin khách hàng', 'Phản hồi trong vòng 24h']" :key="trust" class="fb-trust-item">
 							<Icon name="ph:check-circle-fill" class="fb-text-red text-[14px]" />
@@ -127,7 +127,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 					</form>
 				</div>
 
-				<!-- Point 7: Stats with dividers and larger numbers -->
+				
 				<div class="fb-stats-grid">
 					<div v-for="(stat, index) in stats" :key="stat.label" class="fb-stat-item" :class="{ 'fb-stat-divider': index < stats.length - 1 }">
 						<p class="fb-stat-value">{{ stat.value }}</p>
@@ -137,7 +137,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 			</div>
 		</div>
 
-		<!-- Success Modal -->
+		
 		<div v-if="isSuccess" class="fb-modal-overlay">
 			<div class="fb-modal-content">
 				<div class="fb-success-icon-box">
@@ -152,10 +152,10 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 </template>
 
 <style>
-/* Import Manrope from Google Fonts */
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap');
 
-/* Global style to avoid Scoped CSS 404 errors */
+
 .fb-page-container, .fb-page-container * { font-family: 'Manrope', sans-serif; }
 .fb-bg-image {
 	position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: #f8fafc;
@@ -207,7 +207,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 .fb-trust-item { display: flex; align-items: center; gap: 0.5rem; }
 .fb-trust-text { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #4b5563; font-weight: 700; }
 
-/* Point 2: Card - stronger shadow, subtle border for depth on white bg */
+
 .fb-card {
 	background: #fcfcfc; border-radius: 28px; border: 1px solid #e5e7eb; overflow: hidden; position: relative;
 	box-shadow: 0 20px 60px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
@@ -218,7 +218,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 
 .fb-label-small { font-size: 10px; font-weight: 800; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.15em; padding-left: 0.2rem; display: block; margin-bottom: 0.4rem; }
 
-/* Point 3: Emoji - larger 60px boxes, clearer hover states */
+
 .fb-rating-section { text-align: center; border-bottom: 1px solid #f3f4f6; padding-bottom: 2rem; }
 .fb-emoji-grid { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.25rem; }
 .fb-emoji-btn { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; transition: all 0.3s; cursor: pointer; background: none; border: none; padding: 0.25rem; }
@@ -228,7 +228,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 .fb-emoji-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #9ca3af; letter-spacing: 0.04em; }
 .fb-emoji-btn.active .fb-emoji-label { color: #E31837; font-weight: 800; }
 
-/* Point 4: Pills - clearer selected state */
+
 .fb-pill-grid { display: flex; flex-wrap: wrap; gap: 0.625rem; margin-top: 0.75rem; }
 .fb-pill { padding: 0.625rem 1.25rem; border-radius: 999px; font-size: 13px; font-weight: 600; transition: all 0.25s; border: 1.5px solid #e5e7eb; background: #fff; color: #6b7280; cursor: pointer; }
 .fb-pill:hover { background: #f9fafb; border-color: #d1d5db; color: #374151; }
@@ -240,14 +240,14 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 .fb-input-box { position: relative; }
 .fb-input-icon { position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); color: #9ca3af; transition: color 0.3s; }
 
-/* Point 5: Input - clearer border, taller height */
+
 .fb-input { width: 100%; height: 50px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px; padding-left: 3rem; padding-right: 1.25rem; font-size: 13.5px; font-weight: 600; color: #111827; outline: none; transition: all 0.25s; font-family: 'Manrope', sans-serif; }
 .fb-input::placeholder { color: #d1d5db; font-weight: 400; }
 .fb-textarea { height: auto; padding-top: 1rem; min-height: 140px; padding-left: 1.25rem; }
 .fb-input-box:focus-within .fb-input-icon { color: #E31837; }
 .fb-input:focus { border-color: #E31837; box-shadow: 0 0 0 3px rgba(227,24,55,0.08); }
 
-/* Point 6: CTA - softer glow, more elegant */
+
 .fb-submit-btn {
 	width: 100%; padding: 1.25rem; background: linear-gradient(135deg, #FF2D55 0%, #E31837 100%);
 	color: #fff; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.3em; border-radius: 16px; border: none;
@@ -256,7 +256,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 }
 .fb-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(227,24,55,0.28); }
 
-/* Point 7: Stats - larger numbers, dividers */
+
 .fb-stats-grid { margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; text-align: center; background: #fff; border-radius: 20px; border: 1px solid #e5e7eb; overflow: hidden; }
 @media (min-width: 768px) { .fb-stats-grid { grid-template-columns: 1fr 1fr 1fr; } }
 .fb-stat-item { padding: 1.75rem 1rem; position: relative; }
@@ -275,58 +275,58 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 .fb-reveal { animation: fbReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 @keyframes fbReveal { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ===================== */
-/* MOBILE RESPONSIVE     */
-/* ===================== */
+
+
+
 @media (max-width: 640px) {
-	/* Point 1: Tighten hero spacing on mobile */
+	
 	.fb-page-container .container { padding-top: 5rem !important; padding-bottom: 2rem !important; }
 
-	/* Title size mobile */
+	
 	.fb-main-title { font-size: 28px; letter-spacing: -0.03em; margin-bottom: 1rem; }
 	
-	/* Subtitle smaller on mobile */
+	
 	.fb-subtitle { font-size: 14px; line-height: 1.6; }
 
-	/* Badge compact */
+	
 	.fb-badge { margin-bottom: 1rem; padding: 0.3rem 0.875rem; }
 
-	/* Trust items: stack vertically on mobile */
+	
 	.fb-trust-row { flex-direction: column; align-items: flex-start; gap: 0.625rem; margin-top: 1.25rem; padding: 1rem 1.25rem; background: #f9fafb; border-radius: 16px; }
 	.fb-trust-item { width: 100%; }
 	.fb-trust-text { font-size: 12px; }
 
-	/* Card: reduce border radius on mobile for edge-to-edge feel */
+	
 	.fb-card { border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); }
 
-	/* Form inner: tighter padding */
+	
 	.fb-form-inner { padding: 1.25rem; gap: 2rem; }
 
-	/* Emoji: 5-column grid, fixed square boxes, no text wrapping */
+	
 	.fb-emoji-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.375rem; width: 100%; justify-items: center; }
 	.fb-emoji-btn { flex: unset; min-width: unset; width: 100%; }
 	.fb-emoji-box { width: 100%; height: 52px; border-radius: 12px; font-size: 20px; }
 	.fb-emoji-label { font-size: 8px; letter-spacing: 0; white-space: nowrap; }
 
-	/* Pills: more compact on mobile */
+	
 	.fb-pill { padding: 0.5rem 0.875rem; font-size: 12px; }
 
-	/* Inputs: full width, comfortable height */
+	
 	.fb-grid-2 { grid-template-columns: 1fr; gap: 1rem; }
 	.fb-input { height: 52px; font-size: 15px; border-radius: 14px; }
 	.fb-textarea { min-height: 120px; }
 
-	/* CTA button: comfortable tap target */
+	
 	.fb-submit-btn { padding: 1rem; font-size: 13px; letter-spacing: 0.2em; border-radius: 14px; }
 
-	/* Stats: 2 column on mobile, hide divider between them */
+	
 	.fb-stats-grid { grid-template-columns: 1fr 1fr; border-radius: 16px; }
 	.fb-stat-item { padding: 1.25rem 0.75rem; }
 	.fb-stat-value { font-size: 28px; }
 	.fb-stat-label { font-size: 9px; }
 	.fb-stat-divider::after { display: none; }
 
-	/* Modal compact */
+	
 	.fb-modal-content { border-radius: 28px; padding: 2rem 1.5rem; }
 	.fb-success-icon-box { width: 5rem; height: 5rem; margin-bottom: 1.5rem; }
 	.fb-modal-title { font-size: 22px; }

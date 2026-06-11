@@ -1,6 +1,6 @@
 <template>
 	<section class="py-20 bg-white relative overflow-hidden">
-		<!-- Subtle background pattern -->
+		
 		<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#de0000 0.5px, transparent 0.5px); background-size: 24px 24px;"/>
 		
 		<div class="container mx-auto px-6 relative z-10">
@@ -38,7 +38,7 @@ v-for="(item, index) in culture" :key="index"
 				</div>
 
 				<div class="lg:w-1/2 relative">
-					<!-- Image Grid with staggered layout -->
+					
 					<div class="grid grid-cols-2 gap-6">
 						<div class="space-y-6 pt-16">
 							<div class="relative group overflow-hidden rounded-[2.5rem] shadow-2xl shadow-black/10">
@@ -71,7 +71,7 @@ v-for="(item, index) in culture" :key="index"
 
 					</div>
 					
-					<!-- Decorative Glow -->
+					
 					<div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full opacity-50 blur-[120px]"/>
 				</div>
 			</div>

@@ -17,15 +17,15 @@ const calculateTimeLeft = (endDate) => {
 
 const timeLeft = ref({ days: 0, hours: 0, minutes: 0 });
 onMounted(() => {
-	// Initial calculation
-	// In a real app, you'd update this every minute
-	timeLeft.value = calculateTimeLeft('2025-10-15'); // Using hardcoded or promotion.endDate
+	
+	
+	timeLeft.value = calculateTimeLeft('2025-10-15'); 
 });
 </script>
 
 <template>
 	<section class="relative min-h-[500px] md:min-h-[650px] flex items-center overflow-hidden bg-gray-950 text-white">
-		<!-- Background Visual -->
+		
 		<div class="absolute inset-0 z-0">
 			<img 
 				:src="promotion.image" 
@@ -38,7 +38,7 @@ onMounted(() => {
 
 		<div class="container mx-auto px-6 relative z-10 py-20">
 			<div class="max-w-4xl space-y-8">
-				<!-- Status Badge -->
+				
 				<div class="flex flex-wrap items-center gap-4 animate-fade-in">
 					<div 
 						class="px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border"
@@ -52,7 +52,7 @@ onMounted(() => {
 					</div>
 				</div>
 
-				<!-- Title -->
+				
 				<div class="space-y-4 animate-slide-up">
 					<h1 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[1.05]">
 						{{ promotion.title }}
@@ -62,9 +62,9 @@ onMounted(() => {
 					</p>
 				</div>
 
-				<!-- Countdown & CTA -->
+				
 				<div class="flex flex-col md:flex-row items-start md:items-center gap-10 pt-6 animate-slide-up delay-200">
-					<!-- Countdown -->
+					
 					<div class="flex items-center gap-6 p-6 bg-white/5 backdrop-blur-xl rounded-3xl border border-white/10">
 						<div class="text-center min-w-[60px]">
 							<span class="block text-4xl font-black text-red-500 tabular-nums leading-none">03</span>
@@ -90,7 +90,7 @@ onMounted(() => {
 			</div>
 		</div>
 
-		<!-- Decorative Elements -->
+		
 		<div class="absolute bottom-0 right-0 w-1/3 h-full hidden lg:block pointer-events-none">
 			<div class="absolute inset-0 bg-gradient-to-l from-red-600/20 via-transparent to-transparent"/>
 			<div class="h-full flex items-center justify-end pr-20 opacity-20">

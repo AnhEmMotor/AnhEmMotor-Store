@@ -1,9 +1,7 @@
-/**
- * Infrastructure Layer - App Repository
- */
+
 export const appRepository = {
 	getAppContent: async () => {
-		// Mock dynamic API call response matching AnhEmMotor Clean Architecture standards
+		
 		return {
 			title: "ANHEMMOTO APP",
 			subtitle: "Trải nghiệm hoàn toàn mới",

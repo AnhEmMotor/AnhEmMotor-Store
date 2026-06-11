@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 
-// Mock data for demonstration - in reality, we would fetch this by user phone/email
+
 const services = ref([
 	{
 		id: 1,
@@ -83,7 +83,7 @@ const formatPrice = (price) => {
 
 <template>
 	<div class="space-y-5">
-		<!-- Header -->
+		
 		<div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
 			<div class="flex items-center justify-between mb-2">
 				<h2 class="text-xl font-black text-gray-900 uppercase tracking-tight">Dịch vụ sử dụng</h2>
@@ -94,7 +94,7 @@ const formatPrice = (price) => {
 			<p class="text-xs text-gray-500 font-medium">Theo dõi lịch sử bảo dưỡng và sửa chữa xe của bạn.</p>
 		</div>
 
-		<!-- Filters -->
+		
 		<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
 			<button 
 				v-for="filter in filters" 
@@ -112,7 +112,7 @@ const formatPrice = (price) => {
 			</button>
 		</div>
 
-		<!-- Services List -->
+		
 		<div v-if="filteredServices.length > 0" class="grid grid-cols-1 gap-4">
 			<div 
 				v-for="service in filteredServices" 
@@ -156,7 +156,7 @@ const formatPrice = (price) => {
 					</div>
 				</div>
 				
-				<!-- Footer/Actions -->
+				
 				<div class="mt-5 pt-4 border-t border-gray-50 flex items-center justify-between">
 					<div class="flex items-center gap-2">
 						<div class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
@@ -172,7 +172,7 @@ const formatPrice = (price) => {
 			</div>
 		</div>
 
-		<!-- Empty State -->
+		
 		<div v-else class="bg-white rounded-lg p-12 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
 			<div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
 				<Icon name="ph:wrench-duotone" class="text-4xl text-gray-200" />

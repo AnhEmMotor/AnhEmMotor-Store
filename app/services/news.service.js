@@ -6,7 +6,7 @@ export const newsService = {
 				id: item.id,
 				name: item.name,
 				slug: item.slug,
-				icon: item.icon || "ph:newspaper-fill", // Default icon
+				icon: item.icon || "ph:newspaper-fill", 
 			}));
 		} catch {
 			return [];

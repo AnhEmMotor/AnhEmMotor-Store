@@ -25,7 +25,7 @@ const steps = [
 
 <template>
 	<section class="py-12 md:py-20 bg-white relative overflow-hidden font-['Manrope']">
-		<!-- Decorative Background - Subtle & Clean -->
+		
 		<div class="absolute inset-0 opacity-[0.03] pointer-events-none">
 			<img src="https://images.unsplash.com/photo-1558981403-c5f97dbbe480?q=80&w=1200" class="w-full h-full object-cover" alt="Background">
 		</div>
@@ -37,9 +37,9 @@ const steps = [
 			</div>
 
 			<div class="grid grid-cols-4 gap-2 md:gap-4 relative">
-				<!-- Connector Lines (Mobile & Desktop) -->
+				
 				<div class="absolute top-[35px] md:top-[60px] left-[12%] right-[12%] h-[1.5px] bg-gray-100 z-0">
-					<!-- Progress glow effect -->
+					
 					<div class="absolute inset-0 bg-red-600/30 scale-x-100 origin-left"/>
 				</div>
 
@@ -49,13 +49,13 @@ const steps = [
 					class="relative group z-10"
 				>
 					<div class="flex flex-col items-center text-center space-y-4 md:space-y-8">
-						<!-- 3D Image Icon -->
+						
 						<div class="relative">
 							<div class="w-14 h-14 md:w-32 md:h-32 rounded-xl md:rounded-[2.5rem] bg-white flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-all duration-700 shadow-lg group-hover:shadow-red-600/10">
 								<img :src="step.icon" class="w-10 h-10 md:w-20 md:h-20 object-contain" :alt="step.title">
 							</div>
 							
-							<!-- Step Number -->
+							
 							<div class="absolute -top-2 -right-2 md:-top-4 md:-right-4 w-6 h-6 md:w-12 md:h-12 rounded-full bg-gray-950 text-white flex items-center justify-center font-black text-[8px] md:text-xs shadow-xl border-2 md:border-4 border-white">
 								{{ index + 1 }}
 							</div>

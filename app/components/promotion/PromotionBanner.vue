@@ -9,7 +9,7 @@ const scrollToOffers = () => {
 
 <template>
 	<section class="relative min-h-[620px] lg:h-[750px] flex items-center bg-gray-900 overflow-hidden font-['Manrope']">
-		<!-- Background Image with Deep Overlay -->
+		
 		<div class="absolute inset-0 z-0">
 			<img 
 				src="https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?q=80&w=1920" 
@@ -21,7 +21,7 @@ const scrollToOffers = () => {
 
 		<div class="container mx-auto px-4 relative z-10">
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-				<!-- Left Content -->
+				
 				<div class="max-w-2xl animate-fade-in-left">
 					<div class="inline-flex items-center gap-3 px-5 py-2.5 bg-red-600/10 border border-red-600/20 rounded-full mb-10 backdrop-blur-sm">
 						<span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-pulse shadow-[0_0_15px_rgba(230,0,35,0.8)]"/>
@@ -56,9 +56,9 @@ const scrollToOffers = () => {
 					</div>
 				</div>
 
-				<!-- Right Visual Element - Focal Object -->
+				
 				<div class="hidden lg:block relative group animate-fade-in-right">
-					<!-- Glow effect -->
+					
 					<div class="absolute -inset-20 bg-red-600/15 rounded-full blur-[100px] group-hover:bg-red-600/25 transition-all duration-1000"/>
 					
 					<div class="relative rounded-[3rem] overflow-hidden border border-white/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-1000 group-hover:border-red-600/20">
@@ -67,7 +67,7 @@ const scrollToOffers = () => {
 							class="w-full aspect-[4/5] object-cover scale-105 group-hover:scale-110 transition-transform duration-1000"
 							alt="Honda SH 2025"
 						>
-						<!-- Promotion Tag on Image -->
+						
 						<div class="absolute top-10 right-10 w-24 h-24 bg-red-600 rounded-full flex flex-col items-center justify-center text-white shadow-2xl rotate-12 group-hover:rotate-0 transition-transform duration-700 border-4 border-white/20">
 							<span class="text-[10px] font-black uppercase">Giảm tới</span>
 							<span class="text-xl font-black italic">10Tr</span>
@@ -94,7 +94,7 @@ const scrollToOffers = () => {
 			</div>
 		</div>
 
-		<!-- Decorative Elements -->
+		
 		<div class="absolute top-1/4 -right-20 w-96 h-96 bg-red-600/5 rounded-full blur-[120px] pointer-events-none"/>
 		<div class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent z-10"/>
 	</section>

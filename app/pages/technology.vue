@@ -11,7 +11,7 @@ useSeoMeta({
   description: 'Khám phá hệ sinh thái kết nối đa nền tảng, hiệu suất động cơ vượt trội và giải pháp quản lý kinh doanh thông minh tại AnhEm Motor.'
 })
 
-// State
+
 const connectivityFeatures = ref([])
 const engineTechs = ref([])
 const safetyFeatures = ref([])
@@ -19,7 +19,7 @@ const interactionCards = ref([])
 const managementFeatures = ref([])
 const isLoading = ref(true)
 
-// Fetch Data via Service (Clean Architecture)
+
 const fetchData = async () => {
   try {
     isLoading.value = true
@@ -36,14 +36,12 @@ const fetchData = async () => {
     safetyFeatures.value = safety
     interactionCards.value = cards
     managementFeatures.value = management
-  } catch (error) {
-    console.error('Error fetching technology data:', error)
-  } finally {
+  } catch {} finally {
     isLoading.value = false
   }
 }
 
-// Scroll Reveal Logic
+
 onMounted(async () => {
   await fetchData()
   
@@ -61,13 +59,13 @@ onMounted(async () => {
 
 <template>
   <div class="tech-page bg-[#0a0a0a] text-white overflow-hidden relative">
-    <!-- Ambient Background Elements -->
+    
     <div class="fixed inset-0 pointer-events-none z-0">
       <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[120px] animate-pulse"/>
       <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[120px] animate-pulse delay-1000"/>
     </div>
 
-    <!-- Components composing the page -->
+    
     <TechnologyTechHero />
     
     <div v-if="!isLoading">
@@ -78,12 +76,12 @@ onMounted(async () => {
       <TechnologyTechManagement :features="managementFeatures" />
     </div>
     
-    <!-- Loading State -->
+    
     <div v-else class="h-[50vh] flex items-center justify-center">
       <div class="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin"/>
     </div>
 
-    <!-- Final Call to Action -->
+    
     <section class="py-24 px-4 relative overflow-hidden text-center border-t border-white/5 z-10">
       <div class="absolute inset-0 bg-[#0a0a0a] z-0"/>
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/10 rounded-full blur-[120px] z-10 animate-pulse"/>

@@ -16,7 +16,7 @@ const props = defineProps({
     },
     type: {
         type: String,
-        default: 'Maintenance' // 'Maintenance' or 'TestDrive'
+        default: 'Maintenance' 
     }
 });
 
@@ -90,9 +90,9 @@ const handleSubmit = async () => {
 
 
         isSuccess.value = true;
-    } catch (error) {
+    } catch {
         alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng kiểm tra lại thông tin.");
-        console.error(error);
+
     } finally {
         isSubmitting.value = false;
     }
@@ -114,14 +114,14 @@ const close = () => {
     >
         <div v-if="isOpen" class="fixed inset-0 z-[2000] flex items-center justify-center p-4 lg:p-10">
 
-            <!-- Backdrop -->
+            
             <div class="absolute inset-0 bg-gray-900/80 backdrop-blur-md" @click="close"/>
 
-            <!-- Modal Content -->
+            
             <div class="relative w-full max-w-4xl bg-white rounded-[2.5rem] lg:rounded-[4rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row border border-white/20 max-h-[95vh]">
 
                 
-                <!-- Left: Info -->
+                
                 <div class="lg:w-1/3 bg-gray-900 p-8 lg:p-12 text-white flex flex-col justify-between relative overflow-y-auto lg:overflow-hidden no-scrollbar">
 
 
@@ -155,7 +155,7 @@ const close = () => {
                     </div>
                 </div>
 
-                <!-- Right: Form -->
+                
                 <div class="lg:w-2/3 p-8 lg:p-14 bg-white relative overflow-y-auto max-h-[90vh] lg:max-h-none no-scrollbar">
 
                     <button class="absolute top-8 right-8 w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all shadow-sm" @click="close">
@@ -170,7 +170,7 @@ const close = () => {
                         </div>
 
                         <form class="space-y-6" @submit.prevent="handleSubmit">
-                            <!-- User Info -->
+                            
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-2 md:col-span-2">
                                     <label class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Họ tên khách hàng *</label>
@@ -186,7 +186,7 @@ const close = () => {
                                 </div>
                             </div>
 
-                            <!-- Motorcycle Info (Only for Maintenance) -->
+                            
                             <div v-if="type === 'Maintenance'" class="space-y-6 pt-4 border-t border-gray-50">
                                 <div class="mb-4">
                                     <h3 class="text-xl font-black text-gray-900 uppercase mb-2">Thông tin phương tiện</h3>
@@ -200,7 +200,7 @@ const close = () => {
                                     <label class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Tình trạng xe / Yêu cầu chi tiết *</label>
                                     <textarea v-model="form.condition" required rows="3" placeholder="Mô tả tình trạng xe hoặc yêu cầu của bạn..." class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-medium focus:ring-2 focus:ring-red-600/20 transition-all"/>
                                     
-                                    <!-- Suggestions -->
+                                    
                                     <div class="flex flex-wrap gap-2 mt-2">
                                         <button 
                                             v-for="sug in ['Bảo dưỡng định kỳ', 'Xe khó nổ máy', 'Phanh không ăn', 'Có tiếng động lạ', 'Thay lốp mới']" 
@@ -216,7 +216,7 @@ const close = () => {
                             </div>
 
 
-                            <!-- Schedule -->
+                            
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="space-y-2">
                                     <label class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Ngày hẹn *</label>

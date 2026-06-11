@@ -146,7 +146,7 @@ onUnmounted(() => {
 
 <template>
 	<section class="relative min-h-[520px] md:min-h-[620px] flex items-center overflow-hidden">
-		<!-- Background Layers with Transition -->
+		
 		<TransitionGroup :name="slideDirection === 'next' ? 'slide-next' : 'slide-prev'">
 			<div
 				v-for="(banner, index) in banners"
@@ -162,7 +162,7 @@ onUnmounted(() => {
 			</div>
 		</TransitionGroup>
 
-		<!-- Default Background if no banners -->
+		
 		<div
 			v-if="banners.length === 0"
 			class="absolute inset-0"
@@ -242,7 +242,7 @@ onUnmounted(() => {
 			</div>
 		</div>
 
-		<!-- Navigation Dots -->
+		
 		<div v-if="banners.length > 1" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
 			<button
 				v-for="(_, index) in banners"
@@ -262,7 +262,7 @@ onUnmounted(() => {
 			</button>
 		</div>
 
-		<!-- Side Navigation Arrows -->
+		
 		<div v-if="banners.length > 1" class="hidden md:flex absolute inset-y-0 left-4 right-4 items-center justify-between pointer-events-none z-20">
 			<button
 				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
@@ -324,7 +324,7 @@ onUnmounted(() => {
 	animation: progress 5s linear forwards;
 }
 
-/* Transitions */
+
 .slide-next-enter-active,
 .slide-next-leave-active,
 .slide-prev-enter-active,
@@ -332,7 +332,7 @@ onUnmounted(() => {
 	transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Slide Next (Right to Left) */
+
 .slide-next-enter-from {
 	transform: translateX(100%) scale(1.1);
 	opacity: 0;
@@ -342,7 +342,7 @@ onUnmounted(() => {
 	opacity: 0;
 }
 
-/* Slide Prev (Left to Right) */
+
 .slide-prev-enter-from {
 	transform: translateX(-100%) scale(1.1);
 	opacity: 0;

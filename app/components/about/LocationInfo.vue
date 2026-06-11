@@ -51,7 +51,7 @@ defineEmits(['search']);
 			</div>
 		</div>
 
-		<!-- Value Props -->
+		
 		<div class="border-t border-gray-100 pt-8 space-y-4 mb-10">
 			<div class="flex items-center text-sm font-bold text-gray-600">
 				<span class="text-red-500 mr-3">✔</span> Xe chính hãng, nguồn gốc rõ ràng

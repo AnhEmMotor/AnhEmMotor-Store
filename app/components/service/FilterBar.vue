@@ -1,6 +1,6 @@
 <template>
 	<div class="sticky top-[64px] lg:top-[72px] z-30 bg-white/80 backdrop-blur-xl border-b border-gray-100/50 shadow-[0_4px_20px_-5px_rgba(0,0,0,0.05)] w-full py-2.5 font-['Manrope']">
-		<!-- Mobile: Horizontal Scroll with Full Visibility -->
+		
 		<div
 			ref="scrollContainer"
 			class="flex overflow-x-auto lg:hidden no-scrollbar scroll-smooth px-4 gap-2 py-1.5"
@@ -28,7 +28,7 @@
 			</button>
 		</div>
 
-		<!-- Desktop: Centered Grid Layout -->
+		
 		<div class="hidden lg:flex justify-center">
 			<div class="flex flex-wrap items-center justify-center gap-2.5 p-1.5 bg-gray-50/50 backdrop-blur-xl rounded-2xl border border-gray-100 shadow-sm max-w-5xl">
 				<button

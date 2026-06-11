@@ -16,7 +16,7 @@ const newsMapper = {
 					formattedDate = d.toLocaleDateString("vi-VN");
 				}
 			} catch {
-				// Ignore
+				
 			}
 		}
 		if (!formattedDate && raw.date) {
@@ -37,7 +37,7 @@ const newsMapper = {
 			author: raw.authorName || "AnhEm Motor",
 			createdAt: raw.createdAt || raw.publishedDate,
 			publishedAt: raw.publishedDate || raw.publishedAt || raw.createdAt,
-			date: formattedDate || raw.publishedDate, // Used by NewsCard
+			date: formattedDate || raw.publishedDate, 
 			featured: raw.isFeatured || raw.featured || false,
 			isHot: raw.isHot || false,
 		};

@@ -1,6 +1,4 @@
-/**
- * Entity for About Page content
- */
+
 export class AboutContent {
 	constructor(data = {}) {
 		this.mission = {

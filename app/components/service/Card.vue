@@ -5,7 +5,7 @@
 			service.isFeatured ? 'ring-2 ring-red-600 bg-gray-50' : ''
 		]"
 	>
-		<!-- Accent bar left -->
+		
 		<div class="absolute left-0 top-10 bottom-10 w-0 group-hover:w-[4px] bg-red-600 transition-all duration-300 rounded-r-full"/>
 
 		<div class="flex justify-between items-start mb-6">

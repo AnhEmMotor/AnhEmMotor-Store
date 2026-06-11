@@ -6,8 +6,8 @@ export const useAxios = () => {
 	const config = useRuntimeConfig();
 	const nuxtApp = useNuxtApp();
 
-	// Use nuxtApp context for request-scoped, non-serializable state
-	// This avoids serialization errors during SSR
+	
+	
 	if (!nuxtApp._axiosRefreshState) {
 		nuxtApp._axiosRefreshState = {
 			isRefreshing: false,

@@ -20,7 +20,7 @@ defineProps({
 	<section
 		class="relative min-h-[400px] lg:h-[450px] flex items-center bg-gray-950 overflow-hidden font-['Manrope']"
 	>
-		<!-- Background Image with Deep Overlay -->
+		
 		<div class="absolute inset-0 z-0">
 			<img
 				:src="backgroundImage"
@@ -34,7 +34,7 @@ defineProps({
 
 		<div class="container mx-auto px-4 relative z-10">
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-				<!-- Left Content -->
+				
 				<div class="max-w-2xl animate-fade-in-left">
 					<h1
 						class="text-3xl md:text-6xl lg:text-7xl font-black text-white mb-6 md:mb-8 leading-[1.1] tracking-tight uppercase"
@@ -54,9 +54,9 @@ defineProps({
 					</p>
 				</div>
 
-				<!-- Right Visual Element - Showroom Spotlight Card -->
+				
 				<div class="hidden lg:block relative group animate-fade-in-right">
-					<!-- Glow effect -->
+					
 					<div
 						class="absolute -inset-20 bg-red-600/15 rounded-full blur-[100px] group-hover:bg-red-600/25 transition-all duration-1000"
 					/>
@@ -69,7 +69,7 @@ defineProps({
 							class="w-full aspect-[4/5] object-cover scale-105 group-hover:scale-110 transition-transform duration-1000"
 							alt="AnhEm Motor Showroom"
 						>
-						<!-- Highlight Tag on Image -->
+						
 						<div
 							class="absolute top-10 right-10 w-24 h-24 bg-red-600 rounded-full flex flex-col items-center justify-center text-white shadow-2xl rotate-12 group-hover:rotate-0 transition-transform duration-700 border-4 border-white/20"
 						>
@@ -122,7 +122,7 @@ defineProps({
 			</div>
 		</div>
 
-		<!-- Decorative Elements -->
+		
 		<div
 			class="absolute top-1/4 -right-20 w-96 h-96 bg-red-600/5 rounded-full blur-[120px] pointer-events-none"
 		/>

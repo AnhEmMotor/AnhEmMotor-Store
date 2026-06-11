@@ -1,9 +1,7 @@
-/**
- * Infrastructure Layer - Technology Repository
- */
+
 export const technologyRepository = {
     async getConnectivityFeatures() {
-        // Mocking API response for now
+        
         return [
             {
                 title: 'Dự báo bảo dưỡng thông minh',

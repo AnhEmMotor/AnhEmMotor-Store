@@ -1,7 +1,7 @@
 <template>
 	<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-			<!-- Branch Info -->
+			
 			<div class="lg:col-span-5 space-y-10">
 				<div class="space-y-4">
 					<h2 class="text-xs font-extrabold text-red-600 uppercase tracking-[0.3em]">Hệ thống showroom</h2>
@@ -37,7 +37,7 @@
 							</div>
 						</div>
 
-						<!-- Additional Info to fill whitespace -->
+						
 						<div class="grid grid-cols-2 gap-4 mb-8 pt-6 border-t border-gray-50">
 							<div class="space-y-1">
 								<span class="text-[9px] font-extrabold text-gray-400 uppercase tracking-widest">Giờ hoạt động</span>
@@ -49,7 +49,7 @@
 							</div>
 						</div>
 
-						<!-- Action Buttons -->
+						
 						<div class="flex gap-3">
 							<a :href="'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(store.address)" target="_blank" class="flex-1 px-6 py-4 bg-gray-900 text-white rounded-xl text-[11px] font-extrabold uppercase tracking-widest text-center hover:bg-red-600 transition-colors flex items-center justify-center gap-2 group">
 								<Icon name="fa6-solid:directions" class="group-hover:rotate-12 transition-transform" />
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 
-			<!-- Map View -->
+			
 			<div class="lg:col-span-7 h-[600px] lg:h-[700px] sticky top-24">
 				<div class="w-full h-full bg-gray-100 rounded-[24px] overflow-hidden border-8 border-white shadow-xl relative">
 					<iframe 
@@ -77,7 +77,7 @@
 						class="absolute inset-0 grayscale-[0.2] contrast-[1.1] transition-all duration-700"
 					/>
 					
-					<!-- Map Overlay -->
+					
 					<div class="absolute bottom-10 left-10 right-10 p-6 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl flex items-center justify-between">
 						<div class="flex items-center gap-4">
 							<div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white">

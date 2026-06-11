@@ -144,13 +144,13 @@ const toggleOption = (val) => {
 	const isAlreadySelected = isSelected(val);
 	
 	if (isAlreadySelected) {
-		// Remove all IDs in this group
+		
 		ids.forEach(id => {
 			const index = current.indexOf(id);
 			if (index > -1) current.splice(index, 1);
 		});
 	} else {
-		// Add all IDs in this group that aren't already there
+		
 		ids.forEach(id => {
 			if (!current.includes(id)) current.push(id);
 		});
@@ -203,7 +203,7 @@ const formatVND = (val) => {
 		</div>
 
 		<div class="flex-1 overflow-y-auto p-6 space-y-10 custom-scrollbar">
-			<!-- Brands -->
+			
 			<div class="space-y-4">
 				<div class="flex items-center gap-2">
 					<div class="w-1 h-4 bg-primary rounded-full"/>
@@ -233,7 +233,7 @@ const formatVND = (val) => {
 				</ClientOnly>
 			</div>
 
-			<!-- Categories -->
+			
 			<div class="space-y-4">
 				<div class="flex items-center gap-2">
 					<div class="w-1 h-4 bg-primary rounded-full"/>
@@ -264,7 +264,7 @@ const formatVND = (val) => {
 			</div>
 
 
-			<!-- Price Range -->
+			
 			<div class="space-y-6">
 				<div class="flex items-center gap-2">
 					<div class="w-1 h-4 bg-primary rounded-full"/>
@@ -272,9 +272,9 @@ const formatVND = (val) => {
 				</div>
 				
 				<div class="space-y-8 px-2">
-					<!-- Range Slider Container -->
+					
 					<div class="relative h-2 bg-gray-100 rounded-full">
-						<!-- Active Track Highlight -->
+						
 						<div 
 							class="absolute h-full bg-primary rounded-full shadow-[0_0_10px_rgba(227,24,55,0.3)] will-change-[left,right]"
 							:style="{ 
@@ -283,7 +283,7 @@ const formatVND = (val) => {
 							}"
 						/>
 						
-						<!-- Min Slider -->
+						
 						<input
 							v-model.number="minPrice"
 							type="range"
@@ -294,7 +294,7 @@ const formatVND = (val) => {
 							@input="minPrice = Math.min(minPrice, (maxPrice || 30000000) - 500000)"
 						>
 						
-						<!-- Max Slider -->
+						
 						<input
 							v-model.number="maxPrice"
 							type="range"
@@ -306,7 +306,7 @@ const formatVND = (val) => {
 						>
 					</div>
 
-					<!-- Labels -->
+					
 					<div class="flex items-center justify-between">
 						<div class="space-y-1">
 							<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Từ</span>
@@ -318,7 +318,7 @@ const formatVND = (val) => {
 						</div>
 					</div>
 
-					<!-- Quick Presets -->
+					
 					<div class="flex flex-wrap gap-2 pt-2">
 						<button 
 							v-for="range in [
@@ -336,7 +336,7 @@ const formatVND = (val) => {
 				</div>
 			</div>
 
-			<!-- Dynamic Options (Brand, Color, VehicleType) -->
+			
 			<ClientOnly>
 				<div v-if="isLoadingOptions" class="py-8 flex justify-center">
 					<div class="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"/>
@@ -352,7 +352,7 @@ const formatVND = (val) => {
 						</div>
 						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
 							<template v-for="val in option.values" :key="val.id">
-								<!-- Default Button -->
+								
 								<button
 									class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
 									:class="[
@@ -401,14 +401,14 @@ const formatVND = (val) => {
 }
 
 .custom-scrollbar {
-	scrollbar-width: none; /* Firefox */
-	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; 
+	-ms-overflow-style: none; 
 }
 .custom-scrollbar::-webkit-scrollbar {
-	display: none; /* Chrome, Safari and Opera */
+	display: none; 
 }
 
-/* Custom Multi-Range Slider Styling */
+
 input[type="range"] {
 	pointer-events: none;
 }
@@ -456,7 +456,7 @@ input[type="range"]::-moz-range-thumb:hover {
 	border-color: #ffffff;
 }
 
-/* Remove default track styles to avoid overlapping tracks */
+
 input[type="range"]::-webkit-slider-runnable-track {
 	background: transparent;
 	border: none;

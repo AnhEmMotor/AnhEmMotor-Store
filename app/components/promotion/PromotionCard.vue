@@ -12,7 +12,7 @@ defineProps({
 		:to="`/promotion/${promotion.slug}`"
 		class="group flex flex-col bg-white rounded-[2rem] border border-gray-100 hover:border-red-100 hover:shadow-[0_20px_50px_rgba(230,0,35,0.08)] transition-all duration-700 h-full overflow-hidden"
 	>
-		<!-- Image Container -->
+		
 		<div class="relative aspect-[16/10] overflow-hidden">
 			<img
 				:src="promotion.image"
@@ -20,7 +20,7 @@ defineProps({
 				class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
 			>
 			
-			<!-- Badges -->
+			
 			<div class="absolute top-4 left-4 flex flex-col gap-2">
 				<div class="flex items-center gap-2">
 					<span v-if="promotion.isHot" class="px-4 py-1.5 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg shadow-red-600/30 animate-pulse">
@@ -35,7 +35,7 @@ defineProps({
 				</span>
 			</div>
 
-			<!-- Overlay Info -->
+			
 			<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
 				<div class="flex items-center gap-2 text-white/80 text-[10px] font-black uppercase tracking-widest">
 					<Icon name="ph:clock-fill" />
@@ -44,7 +44,7 @@ defineProps({
 			</div>
 		</div>
 
-		<!-- Content -->
+		
 		<div class="p-4 md:p-8 flex flex-col flex-1">
 			<div class="flex items-center gap-2 md:gap-3 mb-2 md:mb-4">
 				<div class="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-red-50 transition-colors">
@@ -61,7 +61,7 @@ defineProps({
 				{{ promotion.shortDescription }}
 			</p>
 
-			<!-- CTA Section -->
+			
 			<div class="mt-auto pt-3 md:pt-6 border-t border-gray-50 flex items-center justify-between">
 				<div class="flex flex-col">
 					<span class="text-[8px] md:text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5 md:mb-1">Ưu đãi</span>

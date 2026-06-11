@@ -1,6 +1,4 @@
-/**
- * Domain Layer - App Entities
- */
+
 export class AppFeature {
 	constructor(data = {}) {
 		this.icon = data.icon || "ph:sparkle-fill";

@@ -31,7 +31,7 @@ class="text-[15px] font-extrabold text-gray-900 uppercase tracking-tight transit
 					<p class="text-[13px] text-gray-500 font-medium leading-relaxed px-2 line-clamp-2">{{ cat.desc }}</p>
 				</div>
 				
-				<!-- Mini CTA -->
+				
 				<div class="pt-2">
 					<div class="inline-flex items-center gap-2 transition-all duration-500">
 						<span
@@ -47,7 +47,7 @@ name="fa6-solid:arrow-right" class="text-[9px] text-red-600 transition-all"
 			</div>
 		</div>
 
-		<!-- Dynamic Detail Panel -->
+		
 		<transition name="panel">
 			<div v-if="activeIdx !== -1" class="mt-12 bg-gray-50 rounded-3xl p-10 border border-gray-100 relative overflow-hidden">
 				<div class="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full -translate-y-1/2 translate-x-1/2"/>

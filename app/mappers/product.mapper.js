@@ -175,7 +175,7 @@ const productMapper = {
 
 		let specifications = [];
 		if (product.specifications) {
-			// Handle array of {key, label, value} or {Key, Label, Value}
+			
 			if (Array.isArray(product.specifications)) {
 				specifications = product.specifications.map(s => ({
 					key: s.key || s.Key || "",
@@ -209,9 +209,7 @@ const productMapper = {
 					...h,
 					image: h.image ? getImageUrl(h.image) : null,
 				}));
-			} catch (e) {
-				console.error("Failed to parse highlights", e);
-			}
+			} catch {}
 		}
 
 		const mapColors = (variantLike) => {

@@ -14,7 +14,7 @@
 			</div>
 			
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-				<!-- Showroom Card -->
+				
 				<div class="relative group overflow-hidden rounded-[28px] shadow-2xl aspect-[4/5] bg-gray-100">
 					<img 
 						src="/images/about/interior.png" 
@@ -29,7 +29,7 @@
 					</div>
 				</div>
 
-				<!-- Team Card -->
+				
 				<div class="relative group overflow-hidden rounded-[28px] shadow-2xl aspect-[4/5] bg-gray-100">
 					<img 
 						src="/images/about/team.png" 
@@ -44,7 +44,7 @@
 					</div>
 				</div>
 				
-				<!-- Maintenance Card -->
+				
 				<div class="relative group overflow-hidden rounded-[28px] shadow-2xl aspect-[4/5] bg-gray-100">
 					<img 
 						src="/images/about/maintenance.png" 

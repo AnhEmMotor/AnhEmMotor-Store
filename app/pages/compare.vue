@@ -17,9 +17,7 @@ const fetchComparisonData = async () => {
 		const promises = compareProducts.value.map(p => productStore.fetchFullProductDetail(p.slug));
 		const results = await Promise.all(promises);
 		detailedProducts.value = results.filter(Boolean);
-	} catch (error) {
-		console.error("Failed to fetch comparison data", error);
-	} finally {
+	} catch {} finally {
 		isLoading.value = false;
 	}
 };
@@ -27,7 +25,7 @@ const fetchComparisonData = async () => {
 onMounted(fetchComparisonData);
 watch(compareProducts, fetchComparisonData, { deep: true });
 
-// Common specification keys for motorcycle comparison
+
 const specGroups = [
 	{
 		name: 'Động cơ & Truyền động',
@@ -100,7 +98,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 <template>
 	<div class="min-h-screen bg-gray-50 pt-32 pb-24">
 		<div class="max-w-[1400px] mx-auto px-6">
-			<!-- Header -->
+			
 			<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
 				<div>
 					<div class="flex items-center gap-3 text-[#CC0000] font-black uppercase tracking-[0.3em] text-[10px] mb-3">
@@ -130,7 +128,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 				</div>
 			</div>
 
-			<!-- Comparison Table -->
+			
 			<div v-if="compareProducts.length === 0" class="bg-white rounded-[40px] p-24 text-center border border-gray-100 shadow-xl">
 				<div class="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8">
 					<Icon name="fa6-solid:motorcycle" class="text-5xl text-gray-200" />
@@ -143,10 +141,10 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 			</div>
 
 			<div v-else class="relative">
-				<!-- Horizontal Scroll Wrapper for Mobile -->
+				
 				<div class="overflow-x-auto pb-8 -mx-6 px-6 scrollbar-hide">
 					<div class="min-w-[900px] lg:min-w-0">
-						<!-- Sticky Header for Products -->
+						
 						<div class="sticky top-20 z-40 bg-gray-50/80 backdrop-blur-md pb-6">
 							<div class="grid grid-cols-12 gap-4 lg:gap-6 items-stretch">
 								<div class="col-span-3"/>
@@ -173,7 +171,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 										Chi tiết
 									</NuxtLink>
 								</div>
-								<!-- Empty Slots if < 3 -->
+								
 								<div 
 									v-for="i in (3 - detailedProducts.length)" 
 									:key="'empty-' + i"
@@ -188,7 +186,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 							</div>
 						</div>
 
-						<!-- Spec Sections -->
+						
 						<div class="space-y-8 lg:space-y-12">
 							<div v-for="group in specGroups" :key="group.name" class="reveal reveal-up">
 								<div class="bg-black text-white p-4 lg:p-6 rounded-t-[2rem] flex items-center gap-4">
@@ -212,7 +210,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 										>
 											<span class="text-xs lg:text-sm font-bold text-gray-900 leading-relaxed">{{ getSpecValue(item, key) }}</span>
 										</div>
-										<!-- Empty slots alignment -->
+										
 										<div v-for="i in (3 - detailedProducts.length)" :key="'empty-val-' + i" class="col-span-3 p-4 lg:p-6 text-center text-gray-300">
 											—
 										</div>

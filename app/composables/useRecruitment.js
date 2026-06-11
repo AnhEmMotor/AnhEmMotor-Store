@@ -1,9 +1,6 @@
 import { recruitmentService } from "../core/application/services/recruitment.service";
 
-/**
- * Application Layer - Recruitment Composable
- * Connects the UI to the Recruitment Service
- */
+
 export function useRecruitment() {
 	const jobs = ref([]);
 	const faqs = ref([]);

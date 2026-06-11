@@ -1,12 +1,12 @@
 <template>
 	<section id="apply-form" class="py-20 bg-white overflow-hidden relative">
 
-		<!-- Background decorative light -->
+		
 		<div class="absolute bottom-0 right-0 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] pointer-events-none"/>
 
 		<div class="container mx-auto px-6">
 			<div class="flex flex-col lg:flex-row gap-16 items-start">
-				<!-- Process Section -->
+				
 				<div class="lg:w-5/12 space-y-12">
 					<div class="space-y-4">
 						<div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full">
@@ -24,7 +24,7 @@
 
 
 					<div class="space-y-12 relative">
-						<!-- Progress Line -->
+						
 						<div class="absolute left-7 top-0 bottom-0 w-[2px] bg-gray-100"/>
 
 						<div v-for="(step, index) in steps" :key="index" class="relative flex gap-10 group">
@@ -51,10 +51,10 @@
 					</div>
 				</div>
 
-				<!-- Form Section -->
+				
 				<div class="lg:w-7/12 w-full">
 					<div class="bg-[#0a0a0a] rounded-[3.5rem] p-10 md:p-16 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.4)] relative overflow-hidden group">
-						<!-- Glows -->
+						
 						<div class="absolute top-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-[100px] -mr-40 -mt-40 group-hover:bg-primary/30 transition-all duration-1000"/>
 						<div class="absolute bottom-0 left-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -ml-32 -mb-32"/>
 
@@ -166,7 +166,7 @@
 
 <script setup>
 const props = defineProps({
-	preSelectedPosition: String
+	preSelectedPosition: { type: String, default: '' }
 });
 
 const form = ref({

@@ -1,9 +1,7 @@
 import { technologyRepository } from "../../infrastructure/repositories/technology.repository";
 import { TechFeature, EngineTech, InteractionCard, ManagementFeature } from "../../domain/models/technology.model";
 
-/**
- * Application Layer - Technology Service
- */
+
 export const technologyService = {
     async getConnectivityFeatures() {
         const data = await technologyRepository.getConnectivityFeatures();

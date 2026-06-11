@@ -53,8 +53,8 @@ export const useNewsStore = defineStore("news", {
 			try {
 				const data = await homeService.getBanners("News");
 				this.banners = data;
-			} catch (error) {
-				console.error("fetchBanners Error:", error);
+			} catch {
+
 				this.banners = [];
 			}
 		},

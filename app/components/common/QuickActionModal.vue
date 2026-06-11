@@ -47,7 +47,7 @@ const props = defineProps({
 
 defineEmits(['close']);
 
-// Lock scroll when open
+
 watch(() => props.isOpen, (val) => {
 	if (val) {
 		document.body.style.overflow = 'hidden';

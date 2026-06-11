@@ -7,7 +7,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 export default defineNuxtConfig({
 	ssr: true,
 	compatibilityDate: "2025-07-15",
-	// Force reload to pick up new components and public assets
+	
 	devtools: { enabled: true },
 	srcDir: "app",
 
@@ -54,8 +54,10 @@ export default defineNuxtConfig({
 			noExternal: ["@tanstack/vue-query"],
 		},
 		plugins: [
+			
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(tailwindcss as any)(),
+			
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(svgLoader as any)(),
 			{

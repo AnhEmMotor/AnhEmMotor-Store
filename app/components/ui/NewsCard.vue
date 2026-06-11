@@ -16,7 +16,7 @@ defineProps({
 		:to="`/news/${news.slug}`"
 		class="group flex flex-col bg-white rounded-[2rem] border border-gray-100 hover:border-red-100 hover:shadow-[0_20px_50px_rgba(230,0,35,0.08)] transition-all duration-700 h-full overflow-hidden"
 	>
-		<!-- Image Container -->
+		
 		<div class="relative aspect-[16/10] overflow-hidden">
 			<img
 				:src="news.image"
@@ -24,7 +24,7 @@ defineProps({
 				class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
 			>
 
-			<!-- Category Badge -->
+			
 			<div class="absolute top-4 left-4">
 				<span
 					class="px-4 py-1.5 bg-gray-900 text-white text-[9px] font-black uppercase tracking-widest rounded-full shadow-lg transition-colors group-hover:bg-red-600"
@@ -34,7 +34,7 @@ defineProps({
 			</div>
 		</div>
 
-		<!-- Content -->
+		
 		<div class="p-6 md:p-8 flex flex-col flex-1">
 			<div class="flex items-center gap-3 mb-4">
 				<div
@@ -60,7 +60,7 @@ defineProps({
 				{{ news.title }}
 			</h3>
 
-			<!-- CTA Section -->
+			
 			<div
 				class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between"
 			>

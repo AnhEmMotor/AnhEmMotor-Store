@@ -6,7 +6,7 @@
 				<p class="text-4xl font-extrabold text-gray-900 uppercase tracking-tight">Câu hỏi thường gặp</p>
 			</div>
 
-			<!-- Search & Categories Bar -->
+			
 			<div class="mb-12 space-y-6">
 				<div class="relative max-w-2xl mx-auto">
 					<Icon name="fa6-solid:magnifying-glass" class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
@@ -31,7 +31,7 @@
 				</div>
 			</div>
 
-			<!-- FAQ List -->
+			
 			<div class="space-y-3">
 				<div
 v-for="(faq, idx) in filteredFaqs" :key="idx" 
@@ -62,7 +62,7 @@ class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hove
 					</div>
 				</div>
 
-				<!-- Empty State -->
+				
 				<div v-if="filteredFaqs.length === 0" class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
 					<Icon name="fa6-solid:face-frown" class="text-4xl text-gray-200 mb-4" />
 					<p class="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Không tìm thấy câu hỏi phù hợp</p>

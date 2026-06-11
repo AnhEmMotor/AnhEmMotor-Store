@@ -1,11 +1,9 @@
 
 
-/**
- * Application Layer - Booking Service
- */
+
 export const bookingService = {
 	async createBooking(bookingData) {
-		try {
+		
 			return await bookingRepository.createBooking({
 				fullName: bookingData.fullName,
 				email: bookingData.email || "",
@@ -16,10 +14,7 @@ export const bookingService = {
 				location: bookingData.location || "Cửa hàng",
 				bookingType: bookingData.bookingType || "TestDrive",
 			});
-		} catch (error) {
-			console.error("Service: Failed to create booking:", error);
-			throw error;
-		}
+		
 	},
 };
 

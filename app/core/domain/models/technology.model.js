@@ -1,6 +1,4 @@
-/**
- * Entity for Technology Feature
- */
+
 export class TechFeature {
     constructor(data = {}) {
         this.title = data.title || "";
@@ -9,9 +7,7 @@ export class TechFeature {
     }
 }
 
-/**
- * Entity for Engine Technology
- */
+
 export class EngineTech {
     constructor(data = {}) {
         this.name = data.name || "";
@@ -31,9 +27,7 @@ export class InteractionCard {
     }
 }
 
-/**
- * Entity for Management Feature
- */
+
 export class ManagementFeature {
     constructor(data = {}) {
         this.title = data.title || "";

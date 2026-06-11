@@ -11,9 +11,9 @@ await useAsyncData("promotions", () => promotionStore.fetchAllPromotions());
 await useAsyncData("promotion-banners", () => promotionStore.fetchBanners());
 
 const filteredPromotions = computed(() => {
-	// Simple mock filtering for demo purposes
+	
 	if (activeTab.value === 'all') return promotionStore.promotions;
-	return promotionStore.promotions.slice(0, 3); // Just show some items for other tabs
+	return promotionStore.promotions.slice(0, 3); 
 });
 
 const featuredPromotion = computed(() => {
@@ -28,7 +28,7 @@ const regularPromotions = computed(() => {
 	return [];
 });
 
-// Scroll Reveal Logic
+
 onMounted(() => {
 	const observer = new IntersectionObserver((entries) => {
 		entries.forEach(entry => {
@@ -41,7 +41,7 @@ onMounted(() => {
 	document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
 })
 
-// Testimonial Pagination Logic (Local client-side pagination)
+
 const promotionPage = ref(1);
 const itemsPerPage = 6;
 const totalPromotionPages = computed(() => Math.ceil(regularPromotions.value.length / itemsPerPage));
@@ -50,7 +50,7 @@ const paginatedRegularPromotions = computed(() => {
 	return regularPromotions.value.slice(start, start + itemsPerPage);
 });
 
-// Watch for page changes to smoothly scroll directly to the promotions list grid section
+
 watch(promotionPage, () => {
 	if (import.meta.client) {
 		setTimeout(() => {
@@ -65,25 +65,25 @@ watch(promotionPage, () => {
 
 <template>
 	<div class="bg-white min-h-screen">
-		<!-- [1] HERO SECTION -->
+		
 		<CommonBannerCarousel v-if="promotionStore.banners.length > 0" :banners="promotionStore.banners" default-bg="/assets/image/index/index-banner-bg.png" />
 		<PromotionBanner v-else />
 
-		<!-- [2] FILTER SECTION -->
+		
 		<div id="promotion-content" class="bg-white border-b border-gray-100 sticky top-[72px] z-50 scroll-mt-[72px]">
 			<div class="container mx-auto px-4">
 				<PromotionFilters v-model:active-tab="activeTab" />
 			</div>
 		</div>
 
-		<!-- [3] PROMOTION STEPS -->
+		
 		<PromotionSteps class="reveal reveal-up" />
 
 		<main class="py-8 md:py-20 bg-gray-50/20 font-['Manrope']">
 			<div class="container mx-auto px-4 md:px-8">
 				
 				<div v-if="promotionStore.promotions.length > 0" class="space-y-12 md:space-y-20">
-					<!-- [4] FEATURED PROMOTION (Option 3 from MD) -->
+					
 					<section v-if="activeTab === 'all' && promotionPage === 1 && featuredPromotion" class="transition-all duration-700">
 						<div class="inline-flex items-center gap-4 px-6 py-2.5 bg-red-600/5 rounded-full mb-12 border border-red-600/10 backdrop-blur-sm">
 							<Icon name="ph:fire-fill" class="text-red-600 animate-bounce" />
@@ -94,7 +94,7 @@ watch(promotionPage, () => {
 							:to="`/promotion/${featuredPromotion.slug}`"
 							class="group relative flex flex-col lg:flex-row bg-white rounded-[2rem] md:rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-30px_rgba(0,0,0,0.07)] border border-gray-100 hover:shadow-red-600/10 transition-all duration-1000"
 						>
-							<!-- Image - 60% Width -->
+							
 							<div class="lg:w-[60%] relative overflow-hidden aspect-video lg:min-h-[550px]">
 								<img 
 									:src="featuredPromotion.image" 
@@ -103,7 +103,7 @@ watch(promotionPage, () => {
 								>
 								<div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 via-transparent to-transparent"/>
 								
-								<!-- Countdown Overlay -->
+								
 								<div class="absolute bottom-6 md:bottom-12 left-6 md:left-12 p-4 md:p-8 bg-black/20 backdrop-blur-2xl border border-white/10 rounded-2xl md:rounded-[2.5rem]">
 									<div class="flex items-center gap-4 md:gap-6">
 										<div class="text-center">
@@ -119,7 +119,7 @@ watch(promotionPage, () => {
 								</div>
 							</div>
 							
-							<!-- Content - 40% Width -->
+							
 							<div class="lg:w-[40%] p-8 md:p-16 lg:p-24 flex flex-col justify-center bg-white relative">
 								<div class="space-y-6 md:space-y-12">
 									<div class="flex items-center gap-3 md:gap-5">
@@ -153,7 +153,7 @@ watch(promotionPage, () => {
 						</NuxtLink>
 					</section>
 
-					<!-- [5] PROMOTION GRID -->
+					
 					<section id="promotion-grid-section" class="space-y-16">
 						<div class="flex items-end justify-between border-b border-gray-100 pb-10">
 							<div class="space-y-3">
@@ -176,7 +176,7 @@ watch(promotionPage, () => {
 							</div>
 						</div>
 
-						<!-- Promotion Local Pagination Component -->
+						
 						<div v-if="totalPromotionPages > 1" class="flex justify-center pt-16">
 							<UiBasePagination
 								:current-page="promotionPage"
@@ -187,7 +187,7 @@ watch(promotionPage, () => {
 					</section>
 				</div>
 
-				<!-- [6] EMPTY STATE -->
+				
 				<div v-else class="text-center py-48 bg-white rounded-[4rem] border-2 border-dashed border-gray-100">
 					<div class="w-32 h-32 bg-gray-50 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10">
 						<Icon name="ph:ticket-fill" class="text-6xl text-gray-200" />
@@ -205,13 +205,13 @@ watch(promotionPage, () => {
 			</div>
 		</main>
 		
-		<!-- [7] FAQ SECTION -->
+		
 		<PromotionFAQ class="reveal reveal-up" />
 
-		<!-- [8] SHOWROOM SECTION -->
+		
 		<PromotionShowroom class="reveal reveal-up" />
 		
-		<!-- [9] CALL TO ACTION -->
+		
 		<section class="py-16 md:py-24 bg-gray-950 relative overflow-hidden font-['Manrope']">
 			<div class="absolute inset-0 opacity-30 bg-[url('/final_cta_rider_adventure_1778828626734.png')] bg-cover bg-center scale-110"/>
 			<div class="absolute inset-0 bg-gradient-to-b from-gray-950 via-transparent to-gray-950"/>

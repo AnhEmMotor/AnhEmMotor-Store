@@ -17,7 +17,7 @@ v-for="(job, index) in jobs" :key="job.id"
 					class="reveal reveal-up bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col h-full relative overflow-hidden"
 					:style="{ transitionDelay: `${index * 150}ms` }"
 				>
-					<!-- Top Accent -->
+					
 
 					<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700"/>
 
@@ -59,7 +59,7 @@ v-for="(job, index) in jobs" :key="job.id"
 			</div>
 		</div>
 
-		<!-- Job Detail Modal -->
+		
 		<Teleport to="body">
 			<Transition
 				enter-active-class="transition duration-500 ease-out"
@@ -74,7 +74,7 @@ v-for="(job, index) in jobs" :key="job.id"
 						class="bg-white w-full max-w-3xl rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden animate-slide-up relative"
 						@click.stop
 					>
-						<!-- Modal Header Image/Pattern -->
+						
 						<div class="h-32 bg-gray-900 relative overflow-hidden">
 							<div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E');"/>
 							<div class="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-white via-white/50 to-transparent"/>

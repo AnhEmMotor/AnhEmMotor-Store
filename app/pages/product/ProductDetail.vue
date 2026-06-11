@@ -59,7 +59,7 @@ const formattedPrice = computed(() =>
 const installmentPrice = computed(() => {
     const price = currentVariant.value?.price || 0;
     if (!price) return "0đ";
-    // Dummy calc: (Price * 1.1) / 24 months
+    
     const monthly = Math.round((price * 1.1) / 24 / 1000) * 1000;
     return new Intl.NumberFormat("vi-VN", {
         style: "currency",
@@ -201,7 +201,7 @@ const isMotorbike = computed(() => {
 });
 
 const openConsultation = () => {
-    // Placeholder for consultation logic (e.g., open a modal or navigate to contact)
+    
     window.open("https://zalo.me/your-zalo-id", "_blank");
 };
 
@@ -215,7 +215,7 @@ const bookTestDrive = () => {
 <template>
     <div class="min-h-screen bg-white">
         <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-12 py-6">
-            <!-- Breadcrumb -->
+            
             <nav v-if="detail?.product" class="flex mb-10 text-[10px] font-black uppercase tracking-[0.2em]" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center gap-2">
                     <li><NuxtLink to="/" class="text-gray-400 hover:text-primary transition-colors">Trang chủ</NuxtLink></li>
@@ -248,12 +248,12 @@ const bookTestDrive = () => {
             </div>
 
             <div v-else class="space-y-16 lg:space-y-24">
-                <!-- Hero Section -->
+                
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 relative">
-                    <!-- Spotlight Effect -->
+                    
                     <div class="absolute -top-12 left-0 w-full h-full spotlight pointer-events-none"/>
 
-                    <!-- Image Gallery -->
+                    
                     <div class="lg:col-span-7 space-y-8">
                         <div class="relative">
                             <div class="relative aspect-[16/10] rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 group z-10">
@@ -263,7 +263,7 @@ const bookTestDrive = () => {
                                 </div>
                                 <img :src="mainImage" :alt="detail.product.name" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="eager">
                             </div>
-                            <!-- Reflection -->
+                            
                             <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-20 reflection opacity-30 z-0"/>
                         </div>
 
@@ -278,7 +278,7 @@ v-for="(photo, index) in allPhotos" :key="index"
                             </button>
                         </div>
 
-                        <!-- Moved Description & Trust Badges here for balance -->
+                        
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-4">
                             <div class="md:col-span-7 space-y-4 border-l-2 border-primary/20 pl-6">
                                 <div class="text-primary font-black uppercase tracking-[0.3em] text-xs italic">
@@ -299,7 +299,7 @@ v-for="(photo, index) in allPhotos" :key="index"
                         </div>
                     </div>
 
-                    <!-- Info Column -->
+                    
                     <div class="lg:col-span-5">
                         <div class="sticky top-28 space-y-8">
                             <div class="space-y-4">
@@ -326,7 +326,7 @@ v-for="(photo, index) in allPhotos" :key="index"
                                 </div>
                             </div>
 
-                            <!-- Variant & Color Selection -->
+                            
                             <div v-if="Object.keys(variantGroups).length > 0" class="space-y-4">
                                 <div class="space-y-3">
                                     <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Cấu hình & Màu sắc</label>
@@ -353,7 +353,7 @@ v-for="(photo, index) in allPhotos" :key="index"
                                 </div>
                             </div>
 
-                            <!-- Actions -->
+                            
                             <div class="space-y-4 pt-2">
                                 <div class="flex items-center justify-between px-6 py-4 bg-dark-900 rounded-[1.5rem] border border-white/10 shadow-xl">
                                     <div class="flex items-center gap-3">
@@ -407,7 +407,7 @@ v-for="(photo, index) in allPhotos" :key="index"
                     </div>
                 </div>
 
-                <!-- Highlights Section -->
+                
                 <div v-if="highlights.length > 0" class="space-y-24 lg:space-y-32 relative">
                     <div class="absolute inset-0 bg-gradient-to-b from-gray-50/30 via-white to-gray-50/30 -z-10 rounded-[3rem]"/>
 
@@ -439,9 +439,9 @@ v-for="(photo, index) in allPhotos" :key="index"
                     </div>
                 </div>
 
-                <!-- Comparison Section -->
+                
                 <div class="space-y-20 relative">
-                    <!-- Section Header -->
+                    
                     <div class="text-center space-y-6 reveal-up">
                         <div class="flex justify-center">
                             <span class="px-6 py-2 bg-dark-900 text-primary text-[10px] font-black uppercase tracking-[0.4em] rounded-full border border-primary/20 shadow-[0_0_20px_rgba(227,24,55,0.1)]">
@@ -457,12 +457,12 @@ v-for="(photo, index) in allPhotos" :key="index"
                     </div>
 
                     <div class="max-w-6xl mx-auto relative px-4">
-                        <!-- Background Glows -->
+                        
                         <div class="absolute -top-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10 animate-pulse"/>
                         <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10"/>
 
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 rounded-[3.5rem] overflow-hidden border border-gray-100 shadow-2xl bg-white/50 backdrop-blur-xl">
-                            <!-- Left: Features -->
+                            
                             <div class="lg:col-span-4 p-8 lg:p-12 space-y-8 bg-gray-50/50">
                                 <div class="space-y-2 pt-4">
                                     <h3 class="text-2xl font-black text-gray-900 uppercase italic tracking-tighter">ĐẶC QUYỀN <span class="text-primary">SỞ HỮU</span></h3>
@@ -477,9 +477,9 @@ v-for="feat in ['Thời gian Bảo hành', 'Cứu hộ tận nơi', 'Hỗ trợ 
                                 </div>
                             </div>
 
-                            <!-- Middle: AnhEm Motor (The Premium One) -->
+                            
                             <div class="lg:col-span-4 bg-dark-900 p-8 lg:p-12 relative overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.3)] z-10 scale-105 lg:-my-6 lg:rounded-[3rem]">
-                                <!-- Premium Accents -->
+                                
                                 <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] group-hover:bg-primary/20 transition-all duration-700"/>
                                 <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-primary/5 blur-[80px]"/>
                                 
@@ -504,7 +504,7 @@ v-for="feat in ['Thời gian Bảo hành', 'Cứu hộ tận nơi', 'Hỗ trợ 
                                 </div>
                             </div>
 
-                            <!-- Right: Competitors -->
+                            
                             <div class="lg:col-span-4 p-8 lg:p-12 space-y-8 bg-white/30 text-center">
                                 <div class="space-y-2 pt-4 opacity-50">
                                     <h3 class="text-2xl font-black text-gray-400 uppercase italic tracking-tighter">PHỔ THÔNG</h3>
@@ -524,7 +524,7 @@ v-for="feat in ['Thời gian Bảo hành', 'Cứu hộ tận nơi', 'Hỗ trợ 
                     </div>
                 </div>
 
-                <!-- Social Proof -->
+                
                 <div class="space-y-16">
                     <div class="text-center space-y-4">
                         <div class="flex justify-center items-center gap-1 text-yellow-400">
@@ -556,9 +556,9 @@ v-for="feat in ['Thời gian Bảo hành', 'Cứu hộ tận nơi', 'Hỗ trợ 
                     </div>
                 </div>
 
-                <!-- Final CTA Section -->
+                
                 <div class="relative rounded-[3.5rem] overflow-hidden bg-dark-900 py-16 lg:py-24 shadow-2xl mx-4 lg:mx-0 group border border-white/5">
-                    <!-- Dynamic Background Accents -->
+                    
                     <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"/>
                     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-[120px]"/>
                     
@@ -588,20 +588,20 @@ v-for="feat in ['Thời gian Bảo hành', 'Cứu hộ tận nơi', 'Hỗ trợ 
                             </div>
                         </div>
 
-                        <!-- Product Cutout Image -->
+                        
                         <div class="relative lg:h-[400px] flex items-center justify-center reveal-up delay-200">
                             <div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl scale-150 animate-pulse"/>
                             <img
 :src="mainImage" :alt="detail.product.name" 
                                 class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
                             >
-                            <!-- Reflection Shadow -->
+                            
                             <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[80%] h-12 bg-black/40 blur-2xl rounded-full"/>
                         </div>
                     </div>
                 </div>
 
-                <!-- Specifications -->
+                
                 <div v-if="specifications.length > 0" class="space-y-16">
                     <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-gray-100 pb-10">
                         <div class="space-y-3">
@@ -620,7 +620,7 @@ v-for="group in specGroups" :key="group.title"
                             class="premium-card rounded-[2.5rem] bg-white/50 backdrop-blur-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
                             :class="[isGroupExpanded(group.title) ? 'shadow-xl border-primary/20' : 'hover:border-primary/10']"
                         >
-                            <!-- Accordion Header -->
+                            
                             <button 
                                 class="flex items-center justify-between gap-5 p-8 w-full text-left group/header"
                                 @click="toggleGroup(group.title)"
@@ -644,7 +644,7 @@ class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center t
                                 />
                             </button>
 
-                            <!-- Accordion Content -->
+                            
                             <div 
                                 class="grid transition-all duration-500 ease-in-out px-8"
                                 :class="[isGroupExpanded(group.title) ? 'grid-rows-[1fr] opacity-100 pb-10' : 'grid-rows-[0fr] opacity-0 pb-0']"
@@ -667,7 +667,7 @@ class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center t
             </div>
         </div>
 
-        <!-- Booking Modal -->
+        
         <ProductBookingModal 
             :is-open="isBookingModalOpen" 
             :product="detail?.product"
@@ -686,14 +686,14 @@ class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center t
 .text-primary { color: #e31837; }
 .bg-primary { background-color: #e31837; }
 
-/* Premium Gradients */
+
 .bg-gradient-premium {
     background: linear-gradient(135deg, #e31837 0%, #9b1025 100%);
 }
 .bg-dark-900 { background-color: #0a0a0a; }
 .bg-dark-800 { background-color: #1a1a1a; }
 
-/* Spotlight & Reflection */
+
 .spotlight {
     background: radial-gradient(circle at 50% 50%, rgba(227, 24, 55, 0.08) 0%, transparent 70%);
 }
@@ -706,7 +706,7 @@ class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center t
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Custom Animations */
+
 @keyframes pulse-glow {
     0%, 100% { box-shadow: 0 0 20px rgba(227, 24, 55, 0.2); }
     50% { box-shadow: 0 0 40px rgba(227, 24, 55, 0.4); }
@@ -719,11 +719,11 @@ class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center t
 }
 .reveal-up { animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-/* Typography */
+
 .tracking-tighter { letter-spacing: -0.06em; }
 .tracking-widest { letter-spacing: 0.15em; }
 
-/* Card styles */
+
 .premium-card {
     background: white;
     border: 1px solid rgba(0,0,0,0.05);

@@ -15,7 +15,7 @@
       </p>
     </div>
     
-    <!-- Scroll Indicator -->
+    
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-50">
       <span class="text-[10px] uppercase tracking-[0.3em] font-bold">Discover</span>
       <div class="w-px h-12 bg-gradient-to-b from-red-600 to-transparent"/>

@@ -1,6 +1,4 @@
-/**
- * Application Layer - Product Service
- */
+
 export const productService = {
 	async getProducts(params) {
 		try {
@@ -10,8 +8,8 @@ export const productService = {
 				totalCount: data.totalCount,
 				totalPages: data.totalPages,
 			};
-		} catch (error) {
-			console.error("Service: Failed to fetch products:", error);
+		} catch {
+
 			return { items: [], totalCount: 0 };
 		}
 	},
@@ -20,8 +18,8 @@ export const productService = {
 		try {
 			const data = await productRepository.getProductDetail(slug);
 			return data ? new Product(data) : null;
-		} catch (error) {
-			console.error(`Service: Failed to fetch product detail for ${slug}:`, error);
+		} catch {
+
 			return null;
 		}
 	},

@@ -10,7 +10,7 @@ const subTabs = [
 	{ id: "feedback", label: "Phản hồi", icon: "fa6-solid:comment-dots" },
 ];
 
-// Mock data for demonstration
+
 const notifications = ref({
 	news: [
 		{
@@ -73,7 +73,7 @@ function markAsRead(type, id) {
 
 <template>
 	<div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden animate-fadeIn">
-		<!-- Header & Sub-tabs -->
+		
 		<div class="p-6 pb-5 border-b border-gray-100">
 			<h3 class="text-xl font-bold text-gray-900 mb-5">Thông báo của tôi</h3>
 			
@@ -96,11 +96,11 @@ v-if="notifications[tab.id]?.filter(n => !n.isRead).length > 0"
 			</div>
 		</div>
 
-		<!-- Content -->
+		
 		<div class="p-6">
 			<Transition name="fade" mode="out-in">
 				<div :key="activeSubTab" class="space-y-3">
-					<!-- News & Promotions & Feedback -->
+					
 					<div v-if="activeSubTab !== 'vouchers'" class="space-y-3">
 						<div v-if="notifications[activeSubTab].length === 0" class="flex flex-col items-center justify-center py-20 text-gray-400">
 							<Icon name="ph:bell-slash-bold" class="text-6xl mb-4 opacity-20" />
@@ -135,20 +135,20 @@ v-if="notifications[tab.id]?.filter(n => !n.isRead).length > 0"
 						</div>
 					</div>
 
-					<!-- Vouchers -->
+					
 					<div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div
 							v-for="voucher in notifications.vouchers"
 							:key="voucher.id"
 							class="relative flex bg-white rounded-md border border-gray-100 overflow-hidden group hover:shadow-lg transition-all"
 						>
-							<!-- Left Side (Icon/Accent) -->
+							
 							<div class="w-24 bg-primary/10 flex flex-col items-center justify-center p-4 gap-2 border-r border-dashed border-gray-200">
 								<Icon name="ph:ticket-bold" class="text-3xl text-primary" />
 								<span class="text-[10px] font-bold text-primary uppercase">AnhEm</span>
 							</div>
 							
-							<!-- Right Side (Info) -->
+							
 							<div class="flex-1 p-4">
 								<h4 class="font-bold text-gray-900 text-sm mb-1">{{ voucher.title }}</h4>
 								<p class="text-xs text-gray-500 mb-3">Hết hạn: {{ voucher.expiry }}</p>
@@ -163,7 +163,7 @@ v-if="notifications[tab.id]?.filter(n => !n.isRead).length > 0"
 								</div>
 							</div>
 
-							<!-- Decorative circles for dashed effect -->
+							
 							<div class="absolute top-1/2 -translate-y-1/2 left-24 -translate-x-1/2 w-4 h-4 bg-white border border-gray-100 rounded-full" />
 						</div>
 					</div>

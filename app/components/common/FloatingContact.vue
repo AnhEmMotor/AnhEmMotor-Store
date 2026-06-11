@@ -20,13 +20,13 @@ const scrollToTop = () => {
 		v-if="isVisible"
 		class="fixed bottom-20 right-4 sm:bottom-10 sm:right-6 z-1000 flex flex-col items-end gap-3 sm:gap-4"
 	>
-		<!-- AI CHAT WINDOW (UI ONLY) -->
+		
 		<Transition name="chat-slide">
 			<div
 				v-if="isAiOpen"
 				class="absolute bottom-16 sm:bottom-20 right-0 w-[calc(100vw-2rem)] sm:w-95 h-[60vh] sm:h-137.5 bg-white shadow-[0_30px_90px_-15px_rgba(0,0,0,0.3)] border border-gray-100 rounded-4xl sm:rounded-[2.5rem] flex flex-col overflow-hidden z-1000 origin-bottom-right"
 			>
-				<!-- Chat Header -->
+				
 				<div class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
 					<div class="flex items-center gap-2">
 						<div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
@@ -45,9 +45,9 @@ const scrollToTop = () => {
 					</button>
 				</div>
 
-				<!-- Chat Messages (Scrollable Area) -->
+				
 				<div class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50">
-					<!-- AI Message -->
+					
 					<div class="flex gap-2.5 max-w-[90%] sm:max-w-[85%]">
 						<div class="w-7 h-7 rounded-full bg-slate-900 shrink-0 flex items-center justify-center text-white">
 							<Icon name="fa6-solid:robot" class="text-[9px] sm:text-[10px]" />
@@ -58,14 +58,14 @@ const scrollToTop = () => {
 						</div>
 					</div>
 
-					<!-- User Message (Mock) -->
+					
 					<div class="flex flex-row-reverse gap-2.5 max-w-[90%] sm:max-w-[85%] ml-auto">
 						<div class="bg-primary text-white p-3 sm:p-4 rounded-2xl rounded-tr-none shadow-lg shadow-primary/20">
 							<p class="text-[11px] sm:text-xs leading-relaxed font-bold">Tôi muốn xem bảng giá xe Honda SH 2024</p>
 						</div>
 					</div>
 
-					<!-- Typing Indicator (Mock) -->
+					
 					<div class="flex gap-2.5 items-center opacity-50">
 						<div class="w-7 h-7 rounded-full bg-slate-900 shrink-0 flex items-center justify-center text-white">
 							<Icon name="fa6-solid:robot" class="text-[9px] sm:text-[10px]" />
@@ -78,7 +78,7 @@ const scrollToTop = () => {
 					</div>
 				</div>
 
-				<!-- Chat Input -->
+				
 				<div class="p-4 bg-white border-t border-gray-100 shrink-0">
 					<div class="relative flex items-center">
 						<input 
@@ -136,7 +136,7 @@ const scrollToTop = () => {
 			</button>
 		</TransitionGroup>
 
-		<!-- AI Support Button Toggle -->
+		
 		<button
 			class="floating-icon-button floating-chatbot-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl border-4 border-white/20 hover:scale-110 active:scale-95 text-white animate-bounce-subtle group relative"
 			:class="isAiOpen ? 'bg-primary border-primary/20 rotate-180' : 'bg-slate-900'"
@@ -152,7 +152,7 @@ const scrollToTop = () => {
 			</div>
 		</button>
 
-		<!-- Main Contact Toggle (Social/Phone) -->
+		
 		<button
 			:class="[
 				'floating-icon-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl relative z-101 border-4 border-white/20 overflow-hidden text-white',
@@ -229,7 +229,7 @@ const scrollToTop = () => {
 	opacity: 0;
 }
 
-/* AI Chat Animation */
+
 .chat-slide-enter-active,
 .chat-slide-leave-active {
 	transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);

@@ -60,9 +60,7 @@ export const useHomeStore = defineStore("home", () => {
 			searchPhrases.value = rawPhrases;
 			featuredProducts.value = homeMapper.mapProducts(rawProducts);
 			banners.value = homeMapper.mapBanners(rawBanners);
-		} catch (error) {
-			console.error("Home data fetch error:", error);
-		} finally {
+		} catch {} finally {
 			isLoading.value = false;
 		}
 	};

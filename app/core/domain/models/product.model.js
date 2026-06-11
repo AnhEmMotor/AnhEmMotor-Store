@@ -1,6 +1,4 @@
-/**
- * Entity for Product
- */
+
 export class Product {
 	constructor(data = {}) {
 		this.id = data.id || null;

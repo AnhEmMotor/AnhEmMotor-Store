@@ -167,9 +167,7 @@ onMounted(async () => {
 			}
 		});
 		variants.value = allVariants;
-	} catch (_e) {
-		console.error("Failed to fetch variants", _e);
-	}
+	} catch {}
 });
 
 const handleSubmit = async () => {

@@ -9,7 +9,7 @@
             <div class="absolute inset-0 bg-gradient-to-tr from-red-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"/>
           </div>
           
-          <!-- Tech Badges -->
+          
           <div class="absolute top-8 -left-8 z-20 bg-black/60 backdrop-blur-xl p-4 rounded-xl border border-white/10 shadow-2xl hidden xl:block hover:-translate-y-2 transition-transform cursor-default">
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 bg-red-600/20 rounded-full flex items-center justify-center text-red-500">

@@ -1,15 +1,10 @@
-/**
- * Infrastructure Layer - About Repository
- * Handles data fetching from external sources (API, Mock, LocalStorage)
- */
+
 export const aboutRepository = {
-	/**
-	 * Fetches the main content for the about page
-	 */
+	
 	getAboutContent: async () => {
-		// In a real app, this would be an API call:
-		// const response = await $fetch('/api/about');
-		// return response;
+		
+		
+		
 		
 		return {
 			mission: {
@@ -58,9 +53,7 @@ export const aboutRepository = {
 		};
 	},
 
-	/**
-	 * Fetches store locations
-	 */
+	
 	getLocations: async () => {
 		return [
 			{ title: "Cơ Sở 2 - TP. Đồng Nai", address: "193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam" },

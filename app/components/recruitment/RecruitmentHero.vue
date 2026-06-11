@@ -1,6 +1,6 @@
 <template>
 	<section class="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a] pt-20">
-		<!-- Background Image with Advanced Overlay -->
+		
 		<div class="absolute inset-0 z-0">
 			<img
 				src="/img/recruitment/hero.png"
@@ -12,11 +12,11 @@
 		</div>
 
 
-		<!-- Animated Decorative Blobs & Shapes -->
+		
 		<div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse"/>
 		<div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[100px] animate-pulse delay-700"/>
 		
-		<!-- Floating Geometric Shapes -->
+		
 		<div class="absolute top-1/3 left-1/4 w-12 h-12 border border-white/10 rounded-lg rotate-12 animate-float-slow opacity-20"/>
 		<div class="absolute bottom-1/3 right-1/3 w-16 h-16 border border-primary/20 rounded-full animate-float-slow delay-1000 opacity-30"/>
 
@@ -59,7 +59,7 @@
 					</button>
 				</div>
 
-				<!-- Stats Quick View -->
+				
 				<div class="grid grid-cols-2 md:grid-cols-3 gap-10 mt-16 pt-10 border-t border-white/5 animate-fade-in-up delay-400">
 					<div v-for="stat in [{v:'10+',l:'Năm kinh nghiệm'}, {v:'50+',l:'Cộng sự tài năng'}, {v:'98%',l:'Mức độ hài lòng'}]" :key="stat.l">
 						<div class="text-3xl font-black text-white mb-1 italic tracking-tighter">{{ stat.v }}</div>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 
-		<!-- Bottom Fade -->
+		
 		<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent z-20"/>
 	</section>
 </template>

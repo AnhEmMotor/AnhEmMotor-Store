@@ -37,7 +37,7 @@ async function handleLogin() {
 		const route = useRoute();
 		const redirect = route.query.redirect || "/";
 		router.push(redirect);
-	} catch (error) {
+	} catch {
 		const errorMessage = error.response?.data?.message || "Email hoặc mật khẩu không đúng!";
 		instance.$toast.error(errorMessage);
 	} finally {

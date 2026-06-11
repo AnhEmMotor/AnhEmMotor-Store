@@ -22,7 +22,7 @@ await useAsyncData("about-content", async () => {
 	return true;
 });
 
-// Animation logic
+
 if (import.meta.client) {
 	onMounted(() => {
 		const observerOptions = {

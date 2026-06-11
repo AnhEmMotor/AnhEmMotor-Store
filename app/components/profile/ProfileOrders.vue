@@ -101,7 +101,7 @@ const handleUpdateOrder = async () => {
 		toast.success("Cập nhật thông tin đơn hàng thành công!");
 		isEditing.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch (error) {
+	} catch {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi cập nhật đơn hàng.";
@@ -142,7 +142,7 @@ const confirmCancel = async () => {
 		toast.success("Hủy đơn hàng thành công!");
 		isCancelModalOpen.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch (error) {
+	} catch {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi hủy đơn hàng.";
@@ -196,7 +196,7 @@ const canEdit = (statusId) => {
 			/>
 		</template>
 
-		<!-- Modals -->
+		
 		<Teleport to="body">
 			<OrderEditModal
 				v-model:form="editForm"

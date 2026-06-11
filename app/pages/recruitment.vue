@@ -1,15 +1,15 @@
 <template>
 	<div class="recruitment-page bg-white overflow-hidden relative">
 
-		<!-- Scroll Progress Bar -->
+		
 		<div class="fixed top-0 left-0 h-1 bg-primary z-[100] transition-all duration-150" :style="{ width: `${scrollProgress}%` }"/>
 
-		<!-- Advanced Ambient Background -->
+		
 		<div class="fixed inset-0 pointer-events-none z-0">
 			<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[120px] animate-pulse"/>
 			<div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-red-600/5 rounded-full blur-[120px] animate-pulse delay-1000"/>
 			
-			<!-- Floating Particles -->
+			
 			<div
 v-for="i in 6" :key="i" 
 				class="absolute bg-primary/10 rounded-full blur-xl animate-float-slow"
@@ -26,32 +26,32 @@ v-for="i in 6" :key="i"
 
 
 		<main class="relative z-10">
-			<!-- Hero Section -->
+			
 			<RecruitmentHero
 				@scroll-to-jobs="scrollTo('jobs')"
 				@scroll-to-form="scrollTo('apply-form')"
 			/>
 
-			<!-- Culture & Environment -->
+			
 			<div class="reveal reveal-up">
 				<RecruitmentEnvironmentSection />
 			</div>
 
-			<!-- Job Listings -->
+			
 			<div id="jobs" class="reveal reveal-up">
 				<RecruitmentJobsList
 					@apply-job="handleApplyJob"
 				/>
 			</div>
 
-			<!-- Application Process & Form -->
+			
 			<div id="apply-form" class="reveal reveal-up">
 				<RecruitmentApplicationForm
 					:pre-selected-position="selectedPosition"
 				/>
 			</div>
 
-			<!-- FAQ Section -->
+			
 			<section class="py-20 bg-gray-50/50 relative overflow-hidden">
 				<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] rounded-full"/>
 				
@@ -101,9 +101,9 @@ v-for="i in 6" :key="i"
 				</div>
 			</section>
 
-			<!-- Final CTA -->
+			
 			<section class="py-24 bg-[#0a0a0a] relative overflow-hidden text-center">
-				<!-- Animated Background -->
+				
 				<div class="absolute inset-0 z-0">
 					<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[150px] animate-pulse"/>
 				</div>
@@ -143,14 +143,14 @@ useHead({
 	]
 });
 
-// Scroll Progress Logic
+
 const updateScrollProgress = () => {
 	const winScroll = document.documentElement.scrollTop;
 	const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 	scrollProgress.value = (winScroll / height) * 100;
 };
 
-// Scroll Reveal Logic
+
 onMounted(async () => {
 	await fetchFaqs();
 	window.addEventListener('scroll', updateScrollProgress);
@@ -185,7 +185,7 @@ const handleApplyJob = (position) => {
 </script>
 
 <style>
-/* Import Manrope from Google Fonts */
+
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap');
 
 .recruitment-page, .recruitment-page * {

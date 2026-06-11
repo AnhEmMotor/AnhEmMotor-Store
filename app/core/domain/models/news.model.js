@@ -1,6 +1,4 @@
-/**
- * Entity for News
- */
+
 export class News {
 	constructor(data = {}) {
 		this.id = data.id || null;

@@ -3,7 +3,7 @@
 		<div class="container mx-auto px-4">
 			<div class="bg-gray-900 rounded-[3rem] overflow-hidden relative shadow-2xl">
 				<div class="flex flex-col lg:flex-row items-stretch">
-					<!-- Text Content -->
+					
 					<div class="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center space-y-8 z-10">
 						<div class="inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-600/20 rounded-full w-fit">
 							<span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"/>
@@ -47,7 +47,7 @@
 						</div>
 					</div>
 					
-					<!-- Image with Overlay -->
+					
 					<div class="lg:w-1/2 relative min-h-[400px]">
 						<img 
 							src="/premium_motorcycle_showroom_visit_1778827603878.png" 
@@ -56,7 +56,7 @@
 						>
 						<div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/40 to-transparent"/>
 						
-						<!-- Floating Stats -->
+						
 						<div class="absolute bottom-10 right-10 p-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl animate-bounce-slow">
 							<div class="flex flex-col text-center">
 								<span class="text-3xl font-black text-white leading-none">500+</span>

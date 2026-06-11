@@ -60,7 +60,7 @@ onUnmounted(() => {
 
 <template>
 	<section class="relative min-h-[300px] md:min-h-[400px] flex items-center overflow-hidden w-full">
-		<!-- Background Layers with Transition -->
+		
 		<TransitionGroup :name="slideDirection === 'next' ? 'slide-next' : 'slide-prev'">
 			<div
 				v-for="(banner, index) in banners"
@@ -76,7 +76,7 @@ onUnmounted(() => {
 			</div>
 		</TransitionGroup>
 
-		<!-- Default Background if no banners -->
+		
 		<div
 			v-if="banners.length === 0"
 			class="absolute inset-0"
@@ -116,7 +116,7 @@ onUnmounted(() => {
 			</div>
 		</div>
 
-		<!-- Navigation Dots -->
+		
 		<div v-if="banners.length > 1" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1 z-20">
 			<button
 				v-for="(_, index) in banners"
@@ -125,17 +125,17 @@ onUnmounted(() => {
 				aria-label="Chuyển banner"
 				@click="setBanner(index)"
 			>
-				<!-- Visual Dot -->
+				
 				<div
 					class="relative rounded-full overflow-hidden transition-all duration-300 flex-shrink-0"
 					:class="index === currentBannerIndex ? 'w-8 h-2' : 'w-2 h-2 group-hover:w-3'"
 				>
-					<!-- Background Track -->
+					
 					<div
 						class="absolute inset-0 transition-colors duration-300"
 						:class="index === currentBannerIndex ? 'bg-white/30' : 'bg-white/50 group-hover:bg-white/80'"
 					/>
-					<!-- Progress indicator for active dot -->
+					
 					<div
 						v-if="index === currentBannerIndex"
 						class="absolute inset-0 bg-primary origin-left animate-progress"
@@ -166,7 +166,6 @@ onUnmounted(() => {
 	animation: progress 5s linear forwards;
 }
 
-/* Transitions */
 .slide-next-enter-active,
 .slide-next-leave-active,
 .slide-prev-enter-active,

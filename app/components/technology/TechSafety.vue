@@ -24,7 +24,7 @@
           <div class="absolute -inset-4 bg-white/5 rounded-[2rem] group-hover:bg-red-600/10 transition-all duration-700"/>
           <div class="relative overflow-hidden rounded-[2rem] border border-white/10 shadow-2xl group-hover:shadow-red-600/20 transition-all duration-700">
             <img src="/images/technology/safety_action.png" alt="Safety in Action" class="w-full transform group-hover:scale-105 group-hover:-rotate-1 transition-all duration-1000" >
-            <!-- Scanner Effect -->
+            
             <div class="absolute top-0 left-0 w-full h-[2px] bg-red-600 shadow-[0_0_15px_rgba(220,38,38,1)] animate-scanner opacity-0 group-hover:opacity-100"/>
           </div>
         </div>

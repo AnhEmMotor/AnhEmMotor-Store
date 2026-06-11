@@ -26,7 +26,7 @@ const searchLocation = (address) => {
 			</div>
 
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-				<!-- Map Column (65% approx) -->
+				
 				<div class="lg:col-span-8 rounded-[28px] overflow-hidden shadow-2xl h-[400px] md:h-[650px] border-[12px] border-white relative group">
 					<iframe
 						id="mapFrame"
@@ -38,7 +38,7 @@ const searchLocation = (address) => {
 					/>
 				</div>
 
-				<!-- Info Column (35% approx) -->
+				
 				<div class="lg:col-span-4 space-y-6">
 					<AboutLocationInfo 
 						address="193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam"

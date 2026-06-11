@@ -98,7 +98,7 @@ const {
 	dataKey: (res) => res.items,
 });
 
-// Watch for URL changes to sync filters back (Crucial for Header links)
+
 watch(
 	() => route.query,
 	(newQuery) => {
@@ -203,7 +203,7 @@ const formatVND = (value) => {
 							>Đang lọc theo:</span
 						>
 
-						<!-- Price Chip -->
+						
 						<button
 							v-if="filters.minPrice !== null || filters.maxPrice !== null"
 							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"

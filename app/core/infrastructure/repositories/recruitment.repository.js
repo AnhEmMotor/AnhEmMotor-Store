@@ -1,13 +1,8 @@
-/**
- * Infrastructure Layer - Recruitment Repository
- * Handles data fetching and application submissions
- */
+
 export const recruitmentRepository = {
-	/**
-	 * Fetches available job positions
-	 */
+	
 	getJobs: async () => {
-		// Mock data - In production, this would be an API call
+		
 		return [
 			{
 				id: 1,
@@ -117,9 +112,7 @@ export const recruitmentRepository = {
 		];
 	},
 
-	/**
-	 * Fetches recruitment FAQs
-	 */
+	
 	getFaqs: async () => {
 		return [
 			{
@@ -141,17 +134,14 @@ export const recruitmentRepository = {
 		];
 	},
 
-	/**
-	 * Submits a recruitment application
-	 * @param {Object} formData 
-	 */
+	
 	submitApplication: async () => {
-		// Mock submission delay
+		
 		await new Promise(resolve => setTimeout(resolve, 2000));
 		
-		// In production:
-		// const axios = useAxios();
-		// return await axios.post('/api/recruitment/apply', formData);
+		
+		
+		
 		
 		return { success: true, message: 'Application submitted successfully' };
 	}

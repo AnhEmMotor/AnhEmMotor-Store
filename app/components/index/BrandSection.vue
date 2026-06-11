@@ -1,6 +1,6 @@
 <template>
 	<div class="brands-section overflow-hidden relative">
-		<!-- Gradient Fades for depth -->
+		
 		<div class="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"/>
 		<div class="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"/>
 
@@ -12,10 +12,10 @@
 			</div>
 		</div>
 
-		<!-- Marquee Container -->
+		
 		<div class="marquee-wrapper">
 			<div class="marquee-content group">
-				<!-- First Set -->
+				
 				<div
 					v-for="(brand, index) in homeStore.brands"
 					:key="`brand-${index}`"
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 
-				<!-- Second Set for Seamless Loop -->
+				
 				<div
 					v-for="(brand, index) in homeStore.brands"
 					:key="`brand-clone-${index}`"
@@ -96,7 +96,7 @@ const homeStore = useHomeStore();
 
 @keyframes marquee {
 	0% { transform: translateX(0); }
-	100% { transform: translateX(calc(-50% - 1.25rem)); } /* Adjust based on gap */
+	100% { transform: translateX(calc(-50% - 1.25rem)); } 
 }
 
 .brand-card {

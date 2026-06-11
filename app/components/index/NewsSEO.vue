@@ -58,7 +58,7 @@ const newsStore = useNewsStore();
 					<div class="relative z-10">
                         <YoutubeReview />
                     </div>
-                    <!-- Subtle decoration -->
+                    
                     <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"/>
 				</div>
 			</div>

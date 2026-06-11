@@ -6,7 +6,7 @@ import { SHOWROOMS, TESTIMONIALS, TRUST_SERVICES } from "@/constants/trust.const
 
 const isInfoOpen = ref(false);
 
-// Testimonial Pagination Logic (Local client-side pagination)
+
 const feedbackPage = ref(1);
 const itemsPerPage = 6;
 const totalFeedbackPages = computed(() => Math.ceil(TESTIMONIALS.length / itemsPerPage));
@@ -57,7 +57,7 @@ const paginatedTestimonials = computed(() => {
                         </p>
 					</div>
 
-                    <!-- Showroom Info Card - Static on Desktop -->
+                    
                     <div class="hidden lg:flex flex-col bg-slate-50 p-10 rounded-[40px] border border-slate-100 shadow-soft space-y-8">
                         <div class="flex items-center gap-6">
                             <div class="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center shrink-0">
@@ -100,7 +100,7 @@ const paginatedTestimonials = computed(() => {
 					<div class="relative w-full h-[450px] lg:h-[600px] rounded-[32px] lg:rounded-[50px] overflow-hidden shadow-elevated group bg-white">
                         <ShowroomMap :showroom="SHOWROOMS[0]" class="w-full h-full" />
                         
-                        <!-- Toggle Showroom Info Button (Mobile only) -->
+                        
                         <button 
                             v-if="!isInfoOpen"
                             class="lg:hidden absolute bottom-4 right-4 z-20 bg-primary text-white font-black text-xs flex items-center gap-2 px-5 py-3.5 rounded-full shadow-lg shadow-primary/30 active:scale-95 transition-all duration-300 animate-bounce"
@@ -119,7 +119,7 @@ const paginatedTestimonials = computed(() => {
                                     : 'hidden'
                             ]"
                         >
-                            <!-- Close Button (Mobile only) -->
+                            
                             <button 
                                 class="absolute top-4 right-4 w-8 h-8 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-500 rounded-full flex items-center justify-center transition-colors duration-200"
                                 @click="isInfoOpen = false"
@@ -166,7 +166,7 @@ const paginatedTestimonials = computed(() => {
 				</div>
 			</div>
 
-            <!-- Testimonials Grid Row - Full Width Below Map/Showroom on PC -->
+            
             <div class="mt-24 pt-20 border-t border-slate-100/80">
                 <div class="space-y-4 text-center max-w-3xl mx-auto mb-16">
                     <div class="text-primary font-bold uppercase tracking-widest text-sm">Đánh giá thực tế</div>
@@ -192,7 +192,7 @@ const paginatedTestimonials = computed(() => {
                     />
                 </div>
 
-                <!-- Testimonial Local Pagination Component -->
+                
                 <div v-if="totalFeedbackPages > 1" class="flex justify-center pt-16">
                     <UiBasePagination
                         :current-page="feedbackPage"

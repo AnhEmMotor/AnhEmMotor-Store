@@ -9,7 +9,7 @@ defineProps({
 
 <template>
 	<section class="relative min-h-[620px] flex items-center overflow-hidden">
-		<!-- Background Image with Overlay -->
+		
 		<div class="absolute inset-0 z-0">
 			<img
 				src="/images/about/hero-showroom.png"

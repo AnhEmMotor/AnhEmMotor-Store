@@ -24,15 +24,15 @@ const setActiveTab = (id) => {
 
 <template>
 	<div class="w-full overflow-hidden py-4 md:py-16 font-['Manrope'] relative">
-		<!-- Gradient Fades for depth -->
+		
 		<div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none lg:hidden"/>
 		<div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none lg:hidden"/>
 
 		<div class="flex lg:justify-center overflow-x-auto lg:overflow-visible no-scrollbar scroll-smooth px-4 md:px-0">
-			<!-- Animated Wrapper for Mobile -->
+			
 			<div class="flex flex-nowrap lg:flex-wrap items-center gap-2 md:gap-4 p-1 md:p-2 bg-gray-50/50 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-gray-100 shadow-sm marquee-container lg:animate-none">
 				
-				<!-- First Set -->
+				
 				<button 
 					v-for="cat in categories" 
 					:key="cat.id"
@@ -53,7 +53,7 @@ const setActiveTab = (id) => {
 					<div v-if="activeTab === cat.id" class="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_#fff]"/>
 				</button>
 
-				<!-- Duplicate Set for Seamless Loop (Mobile Only) -->
+				
 				<button 
 					v-for="cat in categories" 
 					:key="`${cat.id}-clone`"

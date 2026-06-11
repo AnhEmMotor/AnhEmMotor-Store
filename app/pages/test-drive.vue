@@ -1,6 +1,6 @@
 <template>
 	<div class="min-h-screen bg-white test-drive-page">
-		<!-- [1] HERO SECTION - Compacted -->
+		
 		<section class="relative h-[45vh] min-h-[400px] flex items-center overflow-hidden">
 			<div class="absolute inset-0 z-0">
 				<img 
@@ -28,14 +28,14 @@
 			<div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white to-transparent"/>
 		</section>
 
-		<!-- [2] MAIN REGISTRATION AREA -->
+		
 		<section class="relative z-20 -mt-12 pb-12">
 			<div class="container mx-auto px-6">
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 					
-					<!-- Left Panel: Benefits & Vehicle -->
+					
 					<div class="lg:col-span-4 space-y-6 order-1">
-						<!-- Vehicle Preview Card -->
+						
 						<div 
 							class="bg-white rounded-[20px] p-6 shadow-lg border border-gray-100 overflow-hidden relative group min-h-[350px] flex flex-col justify-center cursor-pointer hover:border-primary/30 transition-all duration-500"
 							@click="scrollToSelect"
@@ -70,7 +70,7 @@
 							</div>
 						</div>
 
-						<!-- Quick Stats -->
+						
 						<div class="grid grid-cols-2 gap-4">
 							<div class="bg-gray-950 rounded-[20px] p-4 text-white text-center">
 								<p class="text-[22px] font-extrabold leading-none">500+</p>
@@ -83,7 +83,7 @@
 						</div>
 					</div>
 
-					<!-- Right Panel: Form -->
+					
 					<div class="lg:col-span-8 order-2">
 						<div class="bg-white rounded-[20px] shadow-xl border border-gray-100 overflow-hidden">
 							<div class="p-6 lg:p-8 space-y-8">
@@ -173,7 +173,7 @@
 			</div>
 		</section>
 
-		<!-- [3] PROCESS & FAQ - Compacted -->
+		
 		<section class="py-12 bg-gray-50">
 			<div class="container mx-auto px-6">
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -342,7 +342,7 @@ const faqs = [
 
 onMounted(async () => {
 	try {
-		// Attempt to fetch from API
+		
 		const res = await productStore.getProducts({ pageSize: 100 });
 		
 		if (res?.items && res.items.length > 0) {
@@ -360,7 +360,7 @@ onMounted(async () => {
 				}))
 			);
 		} else {
-			// Fallback to high-quality Mock Data for UI testing
+			
 			variants.value = [
 				{
 					id: 999,
@@ -401,8 +401,8 @@ onMounted(async () => {
 			form.productVariantId = parseInt(route.query.variantId);
 		}
 	} catch {
-		console.warn("[TestDrive] API failed, using Mock Data for UI testing.");
-		// Fallback data in case of connection error
+
+		
 		variants.value = [
 			{
 				id: 999,
@@ -433,7 +433,7 @@ onMounted(async () => {
 const handleSubmit = async () => {
 	if (!form.productVariantId) return;
 	
-	// Basic Validation
+	
 	const phoneRegex = /^[0-9]{10,11}$/;
 	if (!phoneRegex.test(form.phone)) {
 		alert("Vui lòng nhập số điện thoại hợp lệ (10-11 số).");
@@ -468,8 +468,8 @@ const handleSubmit = async () => {
 
 		isSuccess.value = true;
 		window.scrollTo({ top: 0, behavior: 'smooth' });
-	} catch (error) {
-		console.error("[TestDrive] Booking error:", error);
+	} catch {
+
 		alert(error.message || "Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại sau.");
 	} finally {
 		isSubmitting.value = false;

@@ -7,7 +7,7 @@
 			isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
 		]"
 	>
-		<!-- Image Side -->
+		
 		<div 
 			class="w-full lg:w-1/2 relative transition-all duration-1000 delay-300"
 			:class="isVisible ? 'opacity-100 translate-x-0' : (isReversed ? 'opacity-0 translate-x-20' : 'opacity-0 -translate-x-20')"
@@ -20,13 +20,13 @@
 				>
 				<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"/>
 				
-				<!-- Icon Overlay (Floating) -->
+				
 				<div class="absolute top-8 left-8 w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-2xl border border-gray-50 transform group-hover:-translate-y-2 group-hover:rotate-6 transition-all duration-500">
 					<Icon v-if="!isEmoji(service.icon)" :name="service.icon || 'fa6-solid:wrench'" class="text-3xl text-primary" />
 					<span v-else class="text-3xl">{{ service.icon }}</span>
 				</div>
 			</div>
-			<!-- Decorative Background Blobs -->
+			
 			<div 
 				:class="[
 					'absolute -top-10 -bottom-10 w-2/3 bg-primary/5 rounded-[4rem] blur-3xl -z-10 animate-pulse-slow',
@@ -35,7 +35,7 @@
 			/>
 		</div>
 
-		<!-- Content Side -->
+		
 		<div 
 			class="w-full lg:w-1/2 space-y-8 transition-all duration-1000 delay-500"
 			:class="isVisible ? 'opacity-100 translate-x-0' : (isReversed ? 'opacity-0 -translate-x-20' : 'opacity-0 translate-x-20')"

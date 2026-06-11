@@ -48,7 +48,7 @@ await useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
 await useAsyncData("news-banners", () => newsStore.fetchBanners());
 
 
-// Watch for page changes to smoothly scroll directly to the news grid section
+
 watch(
 	() => pagination.currentPage,
 	() => {
@@ -63,7 +63,7 @@ watch(
 	},
 );
 
-// Scroll Reveal Logic
+
 onMounted(() => {
 	const observer = new IntersectionObserver(
 		(entries) => {
@@ -82,11 +82,11 @@ onMounted(() => {
 
 <template>
 	<div class="bg-white min-h-screen font-['Manrope']">
-		<!-- [1] HERO SECTION -->
+		
 		<CommonBannerCarousel v-if="newsStore.banners.length > 0" :banners="newsStore.banners" default-bg="/assets/image/index/index-banner-bg.png" />
 		<NewsBanner v-else />
 
-		<!-- [2] STICKY SUB-NAVIGATION -->
+		
 		<div
 			id="news-content"
 			class="bg-white sticky top-[72px] z-50 scroll-mt-[72px]"
@@ -96,14 +96,14 @@ onMounted(() => {
 			</div>
 		</div>
 
-		<!-- [3] MAIN CONTENT SECTION -->
+		
 		<main class="py-4 md:py-8 bg-gray-50/20">
 			<div class="container mx-auto px-4 md:px-8">
 				<div
 					v-if="newsStore.featuredNews.length > 0"
 					class="space-y-12 md:space-y-24"
 				>
-					<!-- [5] NEWS GRID -->
+					
 					<section id="news-grid-section" class="space-y-16">
 						<div v-if="isInitialLoading" class="flex justify-center py-24">
 							<Icon
@@ -127,7 +127,7 @@ onMounted(() => {
 								</div>
 							</div>
 
-							<!-- EMPTY GRID STATE -->
+							
 							<div
 								v-else
 								class="text-center py-24 bg-white rounded-[3rem] border border-dashed border-gray-100"
@@ -159,7 +159,7 @@ onMounted(() => {
 					</section>
 				</div>
 
-				<!-- [6] MAIN EMPTY STATE -->
+				
 				<div
 					v-else
 					class="text-center py-48 bg-white rounded-[4rem] border-2 border-dashed border-gray-100"
@@ -188,7 +188,7 @@ onMounted(() => {
 			</div>
 		</main>
 
-		<!-- [7] CALL TO ACTION - DARK MYSTERY -->
+		
 		<section class="py-12 md:py-16 bg-gray-950 relative overflow-hidden">
 			<div
 				class="absolute inset-0 opacity-40 bg-[url('/final_cta_rider_adventure_1778828626734.png')] bg-cover bg-center scale-110"

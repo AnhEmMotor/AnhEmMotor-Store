@@ -9,10 +9,10 @@ defineProps({
 
 <template>
 	<div>
-		<!-- DESKTOP STICKY SIDEBAR -->
+		
 		<div class="hidden lg:block sticky top-32 space-y-6">
 			<div class="bg-white rounded-[2.5rem] p-10 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden relative">
-				<!-- Brand Accent -->
+				
 				<div class="absolute top-0 left-0 right-0 h-2 bg-red-600"/>
 
 				<div class="space-y-8">
@@ -34,7 +34,7 @@ defineProps({
 							<span class="font-bold text-gray-600">Suất ưu đãi còn lại:</span>
 							<span class="font-black text-red-600">{{ promotion.remainingSlots || 0 }}/100</span>
 						</div>
-						<!-- Progress Bar -->
+						
 						<div class="h-2 bg-gray-100 rounded-full overflow-hidden">
 							<div 
 								class="h-full bg-red-600 transition-all duration-1000" 
@@ -61,7 +61,7 @@ defineProps({
 				</div>
 			</div>
 
-			<!-- Quick Support -->
+			
 			<div class="bg-gray-900 rounded-[2.5rem] p-8 text-white">
 				<div class="flex items-center gap-4">
 					<div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
@@ -75,7 +75,7 @@ defineProps({
 			</div>
 		</div>
 
-		<!-- MOBILE BOTTOM STICKY BAR -->
+		
 		<div class="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-white border-t border-gray-100 p-4 sm:p-6 shadow-[0_-20px_40px_rgba(0,0,0,0.1)] translate-y-0 animate-slide-up-mobile">
 			<div class="flex items-center justify-between gap-4">
 				<div class="flex flex-col">

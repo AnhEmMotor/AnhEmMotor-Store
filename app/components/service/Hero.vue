@@ -1,22 +1,22 @@
 <template>
 	<section class="relative w-full h-[50vh] md:h-[65vh] min-h-[450px] overflow-hidden flex items-center bg-gray-900">
-		<!-- Background Image with Multi-layer Parallax Feel -->
+		
 		<div class="absolute inset-0 z-0 overflow-hidden">
 			<img
 				src="/service-hero-cinematic.png"
 				alt="Cinematic Service"
 				class="w-full h-full object-cover transform animate-premium-zoom"
 			>
-			<!-- Dynamic Overlays -->
+			
 			<div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/70 to-transparent z-10" />
 			<div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-gray-950/20 z-10" />
-			<!-- Subtle Light Beam -->
+			
 			<div class="absolute top-0 right-0 w-1/2 h-full bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4 z-10 animate-pulse-slow" />
 		</div>
 
 		<div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 relative z-20 w-full pt-24">
 			<div class="max-w-4xl">
-				<!-- Badges (Staggered Entrance) -->
+				
 				<div class="flex flex-wrap gap-3 mb-8 animate-reveal-down">
 					<div class="inline-flex items-center gap-2.5 px-4 py-2 bg-primary text-white rounded-2xl shadow-[0_10px_30px_-5px_rgba(230,0,35,0.4)] border border-primary/20">
 						<Icon name="fa6-solid:shield-halved" class="text-xs" />
@@ -28,7 +28,7 @@
 					</div>
 				</div>
 
-				<!-- Main Headline (Split Reveal Feel) -->
+				
 				<div class="space-y-6">
 					<h1 class="text-4xl md:text-6xl lg:text-7xl font-[1000] text-white leading-[0.95] tracking-tight animate-reveal-left">
 						DỊCH VỤ <br>
@@ -42,7 +42,7 @@
 					</p>
 				</div>
 
-				<!-- CTA Buttons and Stats -->
+				
 				<div class="flex flex-wrap items-center gap-5 pt-10 animate-reveal-up opacity-0 [animation-delay:600ms] fill-mode-forwards">
 					<button
 						class="px-8 py-4 bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl shadow-[0_15px_30px_-10px_rgba(230,0,35,0.5)] hover:shadow-[0_20px_40px_-10px_rgba(230,0,35,0.6)] hover:scale-105 active:scale-95 transition-all duration-500 flex items-center gap-3 group overflow-hidden relative"
@@ -77,7 +77,7 @@
 			</div>
 		</div>
 
-		<!-- Subtle Bottom Decoration -->
+		
 		<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white via-white/50 to-transparent z-[5]" />
 	</section>
 </template>

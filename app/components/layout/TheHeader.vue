@@ -5,18 +5,18 @@
 	>
 
 
-		<!-- TẦNG 1: TOP BAR (MINIMAL & COHESIVE) -->
+		
 		<div class="h-9 bg-gray-50/50 backdrop-blur-sm border-b border-gray-100 hidden lg:block overflow-hidden">
 		<div class="max-w-360 mx-auto px-10 h-full flex items-center justify-between">
-				<!-- LEFT: PROMO / BRAND SLOGAN -->
+				
 				<div class="flex items-center gap-2">
 					<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"/>
 					<p class="text-[9px] font-black text-gray-400 uppercase tracking-[0.25em]">Hệ thống xe máy chính hãng AnhEm Motor</p>
 				</div>
 
-				<!-- RIGHT: QUICK LINKS -->
+				
 				<div class="flex items-center gap-6 h-full">
-					<!-- PREMIUM GLOWING APP LINK -->
+					
 					<NuxtLink 
 						to="/app" 
 						class="text-[9px] font-[1000] uppercase tracking-widest text-white px-3 py-1 bg-linear-to-r from-red-600 to-red-800 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 relative z-10 shrink-0 font-sans"
@@ -28,7 +28,7 @@
 						</span>
 					</NuxtLink>
 
-					<!-- OTHER QUICK LINKS -->
+					
 					<NuxtLink
 v-for="item in [
 						{ name: 'Về AnhEm Motor', path: '/about' },
@@ -43,14 +43,14 @@ v-for="item in [
 			</div>
 		</div>
 
-		<!-- TẦNG 2: MAIN HEADER (PREMIUM & INTEGRATED) -->
+		
 		<div 
 			class="py-2 sm:py-3 bg-white/70 backdrop-blur-xl transition-all duration-500 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)]"
 			:class="[isScrolled ? 'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]' : '']"
 		>
 			<div class="max-w-360 mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2 sm:gap-6">
 				
-				<!-- Mobile Menu Toggle (Moved to Left) -->
+				
 				<button
 					class="xl:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full text-gray-900 hover:bg-gray-100 transition-all shrink-0 group"
 					aria-label="Mở menu"
@@ -61,19 +61,19 @@ v-for="item in [
 					<span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary"/>
 				</button>
 
-				<!-- LOGO (ENHANCED BRANDING) -->
+				
 				<NuxtLink to="/" class="flex items-center gap-2 sm:gap-3 shrink-0 group relative ">
 
-					<!-- Logo Icon with Premium Glow -->
+					
 					<div class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center p-0.5 bg-white rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 group-hover:shadow-[0_0_25px_rgba(230,0,35,0.2)] group-hover:scale-110 group-hover:border-primary/20 transition-all duration-500 z-10">
 						<img src="/assets/image/logo.webp" alt="Logo" class="w-full h-full object-cover rounded-full">
 					</div>
 					
-					<!-- Text Branding (Always visible on mobile now) -->
+					
 					<div class="flex flex-col leading-[0.8] transition-transform duration-500 group-hover:translate-x-1 header-text-brand">
 						<div class="relative overflow-hidden pr-2">
 							<span class="text-[18px] sm:text-[22px] font-[1000] text-gray-950 uppercase tracking-[-0.04em] italic block">AnhEm</span>
-							<!-- Subtle sweep effect on hover -->
+							
 							<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-sweep"/>
 						</div>
 
@@ -81,10 +81,10 @@ v-for="item in [
 					</div>
 				</NuxtLink>
 
-				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
+				
 				<nav class="hidden xl:block">
 					<ul class="flex items-center gap-4">
-						<!-- XE MÁY -->
+						
 						<li class="group relative py-2">
 							<NuxtLink to="/products?category_ids=8" class="nav-link-refined" :class="{ 'active': isRouteActive('/products?category_ids=8') }">
 								XE MÁY
@@ -110,16 +110,16 @@ v-for="item in [
 						<li><NuxtLink to="/products?category_ids=12,13" class="nav-link-refined" :class="{ 'active': isRouteActive('/products?category_ids=12,13') }">PHỤ TÙNG & PHỤ KIỆN<span class="nav-dot-floating" :class="{ 'active': isRouteActive('/products?category_ids=12,13') }"/></NuxtLink></li>
 						<li><NuxtLink to="/compare" class="nav-link-refined" :class="{ 'active': isRouteActive('/compare') }">SO SÁNH XE <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/compare') }"/></NuxtLink></li>
 						
-						<!-- KHÁM PHÁ -->
+						
 						<li><NuxtLink to="/technology" class="nav-link-refined" :class="{ 'active': isRouteActive('/technology') }">CÔNG NGHỆ <span class="nav-dot-floating" :class="{ 'active': isRouteActive('/technology') }"/></NuxtLink></li>
 
 					</ul>
 				</nav>
 
 
-				<!-- ACTIONS & MOBILE MENU -->
+				
 				<div class="flex items-center gap-2 sm:gap-4 ml-auto">
-					<!-- Search Toggle -->
+					
 					<div class="relative">
 						<button 
 							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
@@ -129,7 +129,7 @@ v-for="item in [
 							<Icon :name="isSearchOpen ? 'lucide:x' : 'lucide:search'" class="w-5 h-5" />
 						</button>
 
-						<!-- Search Dropdown (Refined) -->
+						
 						<div 
 							v-if="isSearchOpen"
 							class="absolute top-full right-0 mt-4 w-[300px] sm:w-87.5 bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-gray-100 rounded-2xl p-4 z-1100 animate-megaSlideIn"
@@ -146,7 +146,7 @@ v-for="item in [
 						</div>
 					</div>
 
-					<!-- PREMIUM CTA GROUP (Hidden on mobile for better space) -->
+					
 					<div class="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-inner">
 						<NuxtLink 
 							to="/test-drive"
@@ -162,7 +162,7 @@ v-for="item in [
 						</NuxtLink>
 					</div>
 
-					<!-- Auth -->
+					
 					<div class="pl-2 sm:pl-4 border-l border-gray-100">
 						<template v-if="authStore.isLoggedIn">
 
@@ -175,7 +175,7 @@ v-for="item in [
 									<Icon name="ph:caret-down-fill" class="text-xs text-gray-400 group-hover:text-primary transition-colors" />
 								</button>
 								
-								<!-- Dropdown -->
+								
 								<div class="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-1100">
 									<div class="px-5 py-2 border-b border-gray-50 mb-2">
 										<p class="text-[9px] text-gray-400 uppercase font-black tracking-widest">Khách hàng</p>
@@ -205,7 +205,7 @@ v-for="item in [
 			</div>
 		</div>
 
-		<!-- MOBILE MENU -->
+		
 
 		<ClientOnly>
 			<Teleport to="body">
@@ -236,7 +236,7 @@ v-for="item in [
 						</button>
 					</div>
 					<div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
-						<!-- Auth Buttons for Mobile -->
+						
 						<div v-if="!authStore.isLoggedIn" class="grid grid-cols-2 gap-3 mb-8">
 							<NuxtLink to="/login" class="flex items-center justify-center gap-2 py-3 rounded-xl bg-gray-900 text-white font-bold text-xs uppercase tracking-widest" @click="closeMobileNav">
 								Đăng nhập
@@ -289,12 +289,12 @@ const route = useRoute();
 const isRouteActive = (targetPath) => {
 	if (targetPath === '/') return route.path === '/';
 	
-	// Exact match for paths with query strings (like category filters)
+	
 	if (targetPath.includes('?')) {
 		return route.fullPath === targetPath;
 	}
 	
-	// Path-only match for base routes (prevents /products matching /products?category_ids=1)
+	
 	return route.path === targetPath && Object.keys(route.query).length === 0;
 };
 
@@ -310,10 +310,10 @@ const handleContactSubmit = async (data) => {
 const categoryStore = useCategoryStore();
 const dynamicMotorcycleCategories = computed(() => {
 	const allCats = Array.isArray(categoryStore.categories) ? categoryStore.categories : [];
-	// Filter for children of Motorcycle (ID 8)
+	
 	const subCats = allCats.filter(c => c.parentId === 8 || c.id === 8);
 	
-	// Ensure "Tất cả xe" is first if it's the parent
+	
 	return subCats.map(c => ({
 		...c,
 		name: c.id === 8 ? 'Tất cả xe' : c.name,
@@ -366,7 +366,7 @@ if (import.meta.client) {
 	onMounted(async () => { 
 		window.addEventListener("scroll", handleScroll, { passive: true }); 
 		handleScroll(); 
-		// Fetch all categories from API for the mega menu
+		
 		const data = await categoryStore.getProductCategories();
 		categoryStore.categories = data;
 	});
@@ -377,7 +377,7 @@ if (import.meta.client) {
 <style scoped>
 @reference "../../assets/main.css";
 
-/* REFINED NAVIGATION */
+
 .nav-link-refined {
 	@apply relative flex items-center text-[12px] font-black text-gray-900 transition-all duration-300 cursor-pointer uppercase tracking-widest px-1 whitespace-nowrap;
 }

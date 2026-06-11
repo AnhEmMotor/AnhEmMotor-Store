@@ -30,11 +30,11 @@ const openBooking = (service) => {
 
 <template>
 	<div class="bg-white min-h-screen text-gray-900 overflow-x-hidden">
-		<!-- [1] HERO -->
+		
 		<ServiceHero />
 
 
-		<!-- [2] FILTER BAR -->
+		
 		<ServiceFilterBar 
 			:active-category="activeCategory" 
 			@filter="handleFilter" 
@@ -43,7 +43,7 @@ const openBooking = (service) => {
 
 
 
-		<!-- [3] SERVICES GRID -->
+		
 		<ServiceList 
 			:services="maintenanceStore.services" 
 			:active-category="activeCategory"
@@ -52,7 +52,7 @@ const openBooking = (service) => {
 		/>
 
 
-		<!-- [4] QUY TRÌNH PHỤC VỤ -->
+		
 		<ServiceProcess />
 
 
@@ -65,5 +65,5 @@ const openBooking = (service) => {
 
 
 <style scoped>
-/* Simplified layout */
+
 </style>

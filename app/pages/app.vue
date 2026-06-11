@@ -15,19 +15,19 @@ useSeoMeta({
 
 const appStore = useAppStore();
 
-// Lấy dữ liệu bất đồng bộ chuẩn Nuxt 3
+
 await useAsyncData("app-content", async () => {
 	await appStore.fetchAppContent();
 	return true;
 });
 
-// Trạng thái Accordion FAQ
+
 const activeFaq = ref(null);
 const toggleFaq = (index) => {
 	activeFaq.value = activeFaq.value === index ? null : index;
 };
 
-// Logic hiệu ứng cuộn mượt mà chuẩn AnhEmMotor
+
 if (import.meta.client) {
 	onMounted(() => {
 		const observerOptions = {
@@ -50,14 +50,14 @@ if (import.meta.client) {
 
 <template>
 	<div v-if="appStore.appContent" class="min-h-screen bg-slate-950 text-white pt-24 pb-16 overflow-hidden font-sans">
-		<!-- HERO SECTION -->
+		
 		<section class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 z-10">
-			<!-- Background Glows -->
+			
 			<div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[120px] pointer-events-none" />
 			<div class="absolute top-10 right-10 w-[300px] h-[300px] bg-red-950/5 rounded-full blur-[100px] pointer-events-none" />
 
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-				<!-- Left Text & CTAs -->
+				
 				<div class="lg:col-span-7 space-y-8 text-center lg:text-left">
 					<div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-red-500/10 border border-red-500/20 rounded-full text-red-500 text-xs font-extrabold uppercase tracking-widest animate-reveal-down">
 						<Icon name="ph:sparkle-fill" class="animate-pulse" /> {{ appStore.appContent.subtitle }}
@@ -73,7 +73,7 @@ if (import.meta.client) {
 						{{ appStore.appContent.description }}
 					</p>
 
-					<!-- Download Buttons -->
+					
 					<div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4 animate-reveal-up opacity-0 [animation-delay:600ms] fill-mode-forwards">
 						<a :href="appStore.appContent.downloadLinks.appStore" target="_blank" class="flex items-center gap-3 px-6 py-3 bg-white hover:bg-gray-100 text-gray-900 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-white/5 hover:shadow-[0_8px_25px_rgba(255,255,255,0.08)] font-black text-left w-full sm:w-auto">
 							<Icon name="ph:apple-logo-fill" class="text-3xl text-gray-900" />
@@ -92,7 +92,7 @@ if (import.meta.client) {
 						</a>
 					</div>
 
-					<!-- RATINGS SECTION - Ngay dưới 2 nút Download (Cân đối nhất) -->
+					
 					<div class="flex items-center justify-center lg:justify-start gap-3 pt-2 animate-reveal-up opacity-0 [animation-delay:800ms] fill-mode-forwards">
 						<div class="flex items-center gap-0.5 text-red-500">
 							<Icon name="ph:star-fill" class="text-lg" />
@@ -107,25 +107,25 @@ if (import.meta.client) {
 					</div>
 				</div>
 
-				<!-- Right Phone Mockup -->
+				
 				<div class="lg:col-span-5 flex justify-center relative animate-reveal-right opacity-0 [animation-delay:400ms] fill-mode-forwards">
-					<!-- Glow behind phone -->
+					
 					<div class="absolute inset-0 bg-red-600/10 rounded-full blur-3xl pointer-events-none scale-75" />
 
-					<!-- Phone Container -->
+					
 					<div class="relative w-[290px] h-[580px] bg-slate-900 rounded-[3rem] border-4 border-slate-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] p-2">
-						<!-- Dynamic Screen Shine -->
+						
 						<div class="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/5 to-transparent rounded-[2.5rem] pointer-events-none z-20" />
 
-						<!-- Notch -->
+						
 						<div class="absolute top-4 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-950 rounded-full z-30 flex items-center justify-center gap-1.5">
 							<div class="w-2 h-2 rounded-full bg-slate-900 border border-white/10" />
 							<div class="w-12 h-1 bg-slate-800 rounded-full" />
 						</div>
 
-						<!-- App Internal UI Mockup -->
+						
 						<div class="w-full h-full bg-slate-950 rounded-[2.5rem] overflow-hidden flex flex-col p-4 pt-10 gap-3 text-left relative z-10 border border-white/5">
-							<!-- Header -->
+							
 							<div class="flex justify-between items-center">
 								<div>
 									<div class="text-[9px] text-gray-500 font-bold">Xin chào,</div>
@@ -136,14 +136,14 @@ if (import.meta.client) {
 								</div>
 							</div>
 
-							<!-- Promotion Card -->
+							
 							<div class="bg-gradient-to-br from-red-600 to-red-850 p-4 rounded-2xl text-white shadow-lg shadow-red-600/40 border border-red-500/20">
 								<span class="text-[8px] bg-white/20 px-2 py-0.5 rounded-full font-bold uppercase">Ưu đãi hôm nay</span>
 								<h3 class="text-sm font-black mt-1 leading-tight">Thay dầu xe máy<br>Giảm ngay 20%</h3>
 								<p class="text-[9px] text-white/80 mt-1 font-bold">Độc quyền đặt lịch trên App</p>
 							</div>
 
-							<!-- Booking CTA -->
+							
 							<div class="bg-white/5 border border-white/10 hover:border-red-600/35 hover:shadow-[0_8px_20px_rgba(230,0,35,0.15)] hover:bg-white/[0.08] transition-all duration-300 rounded-2xl p-4 flex items-center justify-between cursor-pointer group/mock">
 								<div class="flex items-center gap-3">
 									<div class="w-8 h-8 rounded-xl bg-red-600 flex items-center justify-center text-white shadow-[0_4px_10px_rgba(230,0,35,0.3)] group-hover/mock:scale-105 transition-all">
@@ -157,7 +157,7 @@ if (import.meta.client) {
 								<Icon name="ph:caret-right-bold" class="text-gray-400 text-xs group-hover/mock:translate-x-1 transition-transform" />
 							</div>
 
-							<!-- Grid -->
+							
 							<div class="grid grid-cols-2 gap-2.5">
 								<div class="bg-white/5 border border-white/10 hover:border-red-600/35 hover:shadow-[0_8px_20px_rgba(230,0,35,0.15)] hover:bg-white/[0.08] transition-all duration-300 rounded-2xl p-3 flex flex-col justify-between h-22 cursor-pointer group/mock2">
 									<Icon name="ph:wrench-fill" class="text-red-500 text-lg group-hover/mock2:scale-110 transition-transform" />
@@ -175,7 +175,7 @@ if (import.meta.client) {
 								</div>
 							</div>
 
-							<!-- Rating Badge - Tự động giãn dài xuống dưới để lấp đầy khoảng trống -->
+							
 							<div class="flex-1 bg-white/5 border border-white/10 hover:border-red-600/30 hover:shadow-[0_8px_20px_rgba(230,0,35,0.1)] hover:bg-white/[0.08] transition-all duration-300 rounded-2xl p-4 flex flex-col justify-center items-center gap-2">
 								<div class="w-9 h-9 rounded-full bg-red-600/10 flex items-center justify-center text-red-500 shrink-0 shadow-[0_0_12px_rgba(230,0,35,0.3)]">
 									<Icon name="ph:star-fill" class="text-lg" />
@@ -187,7 +187,7 @@ if (import.meta.client) {
 								</div>
 							</div>
 
-							<!-- Emergency SOS Button -->
+							
 							<div class="mt-auto bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 shadow-[0_0_12px_rgba(230,0,35,0.25)] hover:shadow-[0_0_20px_rgba(230,0,35,0.45)] hover:scale-[1.02] rounded-xl py-2 px-3 flex items-center justify-center gap-2 text-center text-red-500 font-bold text-[10px] tracking-wider uppercase cursor-pointer transition-all duration-300">
 								<Icon name="ph:first-aid-kit-fill" class="text-sm animate-pulse" /> Cứu Hộ Khẩn Cấp 24/7
 							</div>
@@ -197,7 +197,7 @@ if (import.meta.client) {
 			</div>
 		</section>
 
-		<!-- STATS SECTION -->
+		
 		<section class="bg-slate-900/50 border-y border-white/5 py-10 relative z-10 reveal">
 			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -209,7 +209,7 @@ if (import.meta.client) {
 			</div>
 		</section>
 
-		<!-- FEATURES SECTION -->
+		
 		<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10 reveal">
 			<div class="text-center max-w-3xl mx-auto mb-16">
 				<h2 class="text-3xl sm:text-4xl font-[1000] tracking-tight uppercase italic">
@@ -233,7 +233,7 @@ if (import.meta.client) {
 			</div>
 		</section>
 
-		<!-- FAQ SECTION -->
+		
 		<section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10 border-t border-white/5 reveal">
 			<div class="text-center mb-12">
 				<h2 class="text-2xl sm:text-3xl font-[1000] tracking-tight uppercase italic">

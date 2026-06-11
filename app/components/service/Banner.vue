@@ -1,13 +1,13 @@
 <template>
 	<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 		<div class="relative overflow-hidden rounded-[3rem] bg-gray-900 shadow-2xl">
-			<!-- Background Image -->
+			
 			<img src="/promo-banner.png" alt="Promotion" class="absolute inset-0 w-full h-full object-cover opacity-60" >
 			
-			<!-- Gradient Overlay -->
+			
 			<div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"/>
 
-			<!-- Content -->
+			
 			<div class="relative z-10 p-10 lg:p-16 flex flex-col lg:flex-row justify-between items-center gap-10">
 				<div class="space-y-6 max-w-2xl text-center lg:text-left">
 					<div class="inline-flex items-center gap-3 px-4 py-1.5 bg-red-600 text-white rounded-full">
@@ -36,7 +36,7 @@
 					</div>
 				</div>
 
-				<!-- Stats/Visual -->
+				
 				<div class="hidden lg:flex flex-col gap-6">
 					<div class="p-8 bg-white/5 backdrop-blur-md border border-white/10 rounded-[2.5rem] text-center w-64">
 						<p class="text-4xl font-black text-white mb-1">98%</p>

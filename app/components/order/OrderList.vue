@@ -48,7 +48,7 @@ defineEmits(['edit', 'cancel', 'continue-payment']);
 			/>
 		</div>
 
-		<!-- Pagination -->
+		
 		<div v-if="pagination.totalPages > 1" class="flex justify-center pt-8">
 			<UiBasePagination
 				:current-page="pagination.currentPage"
