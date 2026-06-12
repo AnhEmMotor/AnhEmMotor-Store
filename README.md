@@ -1,6 +1,6 @@
 # AnhEmMotor Store Project
 
-[English](#english) | [Tiếng Việt](#tieng-viet) | [Rules (Quy chuẩn)](./RULES.md)
+[English](#english) | [Tiếng Việt](#tieng-viet) | [Rules (Quy chuẩn)](./RULES.md) | [Setup VPS](./SETUP_VPS.md)
 
 ---
 

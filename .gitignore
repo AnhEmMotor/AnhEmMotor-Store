@@ -25,5 +25,4 @@ logs
 !.env.template
 
 *.txt
-*.md
 claude-genkit-plugin/
