@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
-import ProductBookingModal from "~/components/product/BookingModal.vue";
+import ProductBookingModal from "~/components/Product/BookingModal.vue";
 definePageMeta({
     path: '/product/:slug'
 });
