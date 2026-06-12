@@ -97,13 +97,23 @@ function handlePlaceOrder() {
 									item.quantity
 								}}</span>
 								<button
-									class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black"
+									class="w-6 h-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] hover:bg-red-50 hover:text-red-500 transition-all font-black disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-inherit"
 									aria-label="Tăng số lượng sản phẩm"
+									:disabled="
+										item.effectiveMax != null &&
+											item.quantity >= item.effectiveMax
+									"
 									@click="updateQuantity(item.id, item.quantity + 1)"
 								>
 									+
 								</button>
 							</div>
+							<p
+								v-if="item.effectiveMax != null"
+								class="mt-1 text-[10px] font-semibold text-gray-400"
+							>
+								Tối đa {{ item.effectiveMax }} sản phẩm
+							</p>
 						</div>
 					</div>
 				</template>

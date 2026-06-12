@@ -87,10 +87,16 @@
 								<NumberStepper
 									:model-value="item.quantity"
 									:min="0"
-									:max="999"
+									:max="item.effectiveMax ?? 999"
 									@increment="$emit('updateQuantity', { index, change: 1 })"
 									@decrement="$emit('updateQuantity', { index, change: -1 })"
 								/>
+								<span
+									v-if="item.effectiveMax != null"
+									class="text-[10px] font-semibold text-gray-500"
+								>
+									Tối đa {{ item.effectiveMax }} sản phẩm
+								</span>
 							</div>
 						</div>
 						<button

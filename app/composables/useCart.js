@@ -88,12 +88,12 @@ export function useCart() {
     const detail = detailMap.value.get(variantId);
     const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
     return (
-      item.effectiveMax ??
       color?.effectiveMax ??
       color?.maxPurchaseQuantity ??
       detail?.effectiveMax ??
       detail?.productLimit ??
       detail?.product_limit ??
+      item.effectiveMax ??
       null
     );
   };
