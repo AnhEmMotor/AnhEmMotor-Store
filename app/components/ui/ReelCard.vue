@@ -11,45 +11,45 @@ defineEmits(["play"]);
 
 <template>
 	<div
-		class="group relative aspect-[9/16] rounded-[32px] overflow-hidden bg-slate-100 cursor-pointer shadow-xl hover:-translate-y-2 transition-all duration-500"
+		class="group relative aspect-[9/16] rounded-24 overflow-hidden bg-slate-100 cursor-pointer shadow-soft hover:shadow-elevated hover:-translate-y-2 transition-all duration-500"
 		@click="$emit('play', reel.videoUrl)"
 	>
 		<img
 			:src="reel.thumbnail"
 			:alt="reel.title"
-			class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+			class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
 		>
 
 		<div
-			class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+			class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"
 		/>
 
 		<div
-			class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+			class="absolute inset-0 flex items-center justify-center"
 		>
 			<div
-				class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30 scale-75 group-hover:scale-100 transition-transform duration-500"
+				class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-xl shadow-primary/40 scale-75 group-hover:scale-100 transition-all duration-500 opacity-0 group-hover:opacity-100"
 			>
-				<Icon name="fa6-solid:play" class="text-white text-2xl ml-1" />
+				<Icon name="ph:play-fill" class="text-3xl ml-1" />
 			</div>
 		</div>
 
-		<div class="absolute bottom-0 left-0 w-full p-6 space-y-2">
-			<div class="flex items-center gap-3">
+		<div class="absolute bottom-0 left-0 w-full p-3 sm:p-6 space-y-2 sm:space-y-3">
+			<div class="flex items-center gap-2 sm:gap-3">
 				<span
-					class="px-2 py-1 bg-red-600 text-white text-[9px] font-black rounded-lg"
+					class="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-primary text-white text-[8px] sm:text-[10px] font-bold rounded-lg"
 				>
 					{{ reel.duration }}
 				</span>
 				<span
-					class="text-white/70 text-[10px] font-bold flex items-center gap-1"
+					class="text-white/80 text-[8px] sm:text-[10px] font-bold flex items-center gap-1.5"
 				>
-					<Icon name="fa6-solid:eye" class="text-[8px]" />
-					{{ reel.views }} lượt xem
+					<Icon name="ph:eye-bold" />
+					{{ reel.views }}
 				</span>
 			</div>
 			<h3
-				class="text-white font-bold text-sm line-clamp-2 leading-snug group-hover:text-red-400 transition-colors"
+				class="text-white font-bold text-xs sm:text-base line-clamp-2 leading-tight group-hover:text-primary transition-colors"
 			>
 				{{ reel.title }}
 			</h3>

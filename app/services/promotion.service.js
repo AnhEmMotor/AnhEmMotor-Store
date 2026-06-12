@@ -1,16 +1,31 @@
-import { promotionData } from "@/constants/promotion";
 
 export const promotionService = {
-	getAllPromotions: async () => {
-		return promotionData;
+	async getAllPromotions() {
+		try {
+			return await promotionRepository.getAllPromotions();
+		} catch {
+
+			return [];
+		}
 	},
 
-	getPromotionBySlug: async (slug) => {
-		const promotion = promotionData.find((p) => p.slug === slug);
-		return promotion || null;
+	async getPromotionBySlug(slug) {
+		try {
+			return await promotionRepository.getPromotionBySlug(slug);
+		} catch {
+
+			return null;
+		}
 	},
 
-	getHotPromotions: async () => {
-		return promotionData.filter((p) => p.isHot);
+	async getHotPromotions() {
+		try {
+			return await promotionRepository.getHotPromotions();
+		} catch {
+
+			return [];
+		}
 	},
 };
+
+export default promotionService;

@@ -14,7 +14,7 @@
 
 		<div
 			:class="[
-				'fixed inset-y-0 right-0 w-screen md:w-96 bg-white transform flex flex-col overflow-hidden shadow-2xl',
+				'fixed inset-y-0 right-0 w-full md:w-96 bg-white transform flex flex-col overflow-hidden shadow-2xl',
 				isOpen ? 'translate-x-0' : 'translate-x-full',
 				isOpen || shouldRender ? 'z-[200]' : '-z-10',
 			]"

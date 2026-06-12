@@ -1,13 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import userServiceFactory from "../services/user.service";
-import { userMapper } from "../mappers/user.mapper";
 import { useAuthStore } from "./auth.store";
-import { useAxios } from "../composables/useAxios";
+import { userService } from "@/services/user.service";
+import { userMapper } from "@/mappers/user.mapper";
 
 export const useUserStore = defineStore("user", () => {
-	const axios = useAxios();
-	const userService = userServiceFactory(axios);
+	const service = userService;
+
 	const authStore = useAuthStore();
 	const isLoading = ref(false);
 	const isUploadingAvatar = ref(false);
@@ -15,7 +14,10 @@ export const useUserStore = defineStore("user", () => {
 	const formData = ref({
 		fullName: "",
 		phoneNumber: "",
+		email: "",
 		gender: "",
+		dob: "",
+		address: "",
 	});
 
 	const passwordData = ref({
@@ -28,7 +30,10 @@ export const useUserStore = defineStore("user", () => {
 		if (user) {
 			formData.value.fullName = user.fullName || "";
 			formData.value.phoneNumber = user.phoneNumber || "";
+			formData.value.email = user.email || "";
 			formData.value.gender = user.gender || "";
+			formData.value.dob = user.dob ? user.dob.split("T")[0] : "";
+			formData.value.address = user.address || "";
 		}
 	}
 
@@ -37,7 +42,7 @@ export const useUserStore = defineStore("user", () => {
 		isLoading.value = true;
 		try {
 			const payload = userMapper.toUpdateProfilePayload(formData.value);
-			await userService.updateProfile(payload);
+			await service.updateProfile(payload);
 			await authStore.fetchUser();
 			return { success: true };
 		} catch (error) {
@@ -59,7 +64,7 @@ export const useUserStore = defineStore("user", () => {
 		try {
 			const uploadData = new FormData();
 			uploadData.append("file", file);
-			await userService.updateAvatar(uploadData);
+			await service.updateAvatar(uploadData);
 			await authStore.fetchUser();
 			return { success: true };
 		} catch (error) {
@@ -110,7 +115,7 @@ export const useUserStore = defineStore("user", () => {
 		isLoading.value = true;
 		try {
 			const payload = userMapper.toChangePasswordPayload(passwordData.value);
-			await userService.changePassword(payload);
+			await service.changePassword(payload);
 			passwordData.value = {
 				currentPassword: "",
 				newPassword: "",
@@ -141,3 +146,4 @@ export const useUserStore = defineStore("user", () => {
 		changePassword,
 	};
 });
+

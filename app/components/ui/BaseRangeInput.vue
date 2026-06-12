@@ -41,17 +41,19 @@ const inputId = useId();
 			<label :for="inputId" class="text-gray-500 uppercase">{{ label }}</label>
 			<span class="text-red-600 text-xl">{{ displayValue }}</span>
 		</div>
-		<input
-			:id="inputId"
-			:value="modelValue"
-			type="range"
-			:min="min"
-			:max="max"
-			:step="step"
-			class="w-full accent-red-600 h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer"
-			@input="$emit('update:modelValue', Number($event.target.value))"
-		>
-		<p v-if="subLabel" class="text-[10px] text-gray-400 font-medium">
+		<div class="relative flex items-center h-6">
+			<input
+				:id="inputId"
+				:value="modelValue"
+				type="range"
+				:min="min"
+				:max="max"
+				:step="step"
+				class="w-full h-1 bg-gray-100 rounded-full appearance-none cursor-pointer accent-[#e60023]"
+				@input="$emit('update:modelValue', Number($event.target.value))"
+			>
+		</div>
+		<p v-if="subLabel" class="text-[10px] text-gray-400 font-medium italic">
 			{{ subLabel }}
 		</p>
 	</div>

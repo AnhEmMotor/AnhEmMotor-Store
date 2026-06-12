@@ -1,75 +1,69 @@
 <script setup>
-import { useMaintenanceStore } from "@/stores/maintenance.store";
+import { ref } from 'vue';
+const router = useRouter();
 
 useSeoMeta({
-	title: "Dịch vụ | AnhEm Motor",
-	description:
-		"Các dịch vụ bảo dưỡng, sửa chữa xe máy chuyên nghiệp tại AnhEm Motor.",
+	title: "Dịch vụ Xe Máy Chuyên Nghiệp | AnhEm Motor",
+	description: "Bảo dưỡng, sửa chữa, thay lốp xe máy chính hãng tại AnhEm Motor. Quy trình chuyên nghiệp, giá cả minh bạch, bảo hành dài hạn.",
 });
 
 const maintenanceStore = useMaintenanceStore();
+const activeCategory = ref('all');
 
-await useAsyncData("maintenance-services", () =>
-	maintenanceStore.fetchServices(),
-);
 
-onMounted(() => {
-	const observer = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add("visible");
-				}
-			});
-		},
-		{ threshold: 0.1 },
-	);
-
-	if (import.meta.client) {
-		document.querySelectorAll(".fade-in").forEach((el) => {
-			observer.observe(el);
-		});
-	}
+await useAsyncData("maintenance-services-v2", async () => {
+	await maintenanceStore.fetchServices();
+	return maintenanceStore.services;
 });
+
+const handleFilter = (category) => {
+	activeCategory.value = category;
+};
+
+const openBooking = (service) => {
+	router.push({
+		path: '/service-booking',
+		query: { id: service?.id }
+	});
+};
 </script>
 
 <template>
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 bg-white min-h-screen">
+	<div class="bg-white min-h-screen text-gray-900 overflow-x-hidden">
+		
 		<ServiceHero />
-		<ServiceList :services="maintenanceStore.services" />
+
+
+		
+		<ServiceFilterBar 
+			:active-category="activeCategory" 
+			@filter="handleFilter" 
+		/>
+
+
+
+
+		
+		<ServiceList 
+			:services="maintenanceStore.services" 
+			:active-category="activeCategory"
+			@book="openBooking"
+			@reset-filter="activeCategory = 'all'"
+		/>
+
+
+		
+		<ServiceProcess />
+
+
+
+
 		<CommonScrollToTop />
 	</div>
 </template>
 
+
+
 <style scoped>
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
 
-.animate-fadeInUp {
-	animation: fadeInUp 1s;
-}
-
-.animation-delay-200 {
-	animation-delay: 0.2s;
-	animation-fill-mode: both;
-}
-
-:deep(.fade-in) {
-	opacity: 0;
-	transform: translateY(30px);
-	transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:deep(.fade-in.visible) {
-	opacity: 1;
-	transform: translateY(0);
-}
 </style>

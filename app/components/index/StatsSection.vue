@@ -1,49 +1,33 @@
 <template>
-	<section class="py-10 bg-white">
+	<section class="py-10 md:py-20 bg-white border-b border-slate-50">
 		<div class="container mx-auto px-6">
 			<div
-				class="max-w-4xl mx-auto flex flex-wrap justify-between items-center gap-8 border-b border-gray-100 pb-10"
+				class="max-w-5xl mx-auto grid grid-cols-3 gap-2 sm:gap-6 md:gap-12"
 			>
-				<div class="flex-1 text-center group">
-					<div
-						class="text-4xl md:text-5xl font-black text-red-600 mb-1 transition-transform group-hover:scale-110"
-					>
-						50+
+				<div class="text-center flex flex-col items-center">
+					<div class="text-[28px] sm:text-[42px] md:text-[56px] font-extrabold text-primary leading-none mb-2 md:mb-4">
+						500+
 					</div>
-					<div
-						class="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-[0.2em]"
-					>
-						Mẫu Xe Hệ Thống
+					<div class="text-slate-500 font-bold uppercase tracking-widest text-[8px] sm:text-[10px] md:text-xs">
+						Khách hàng
 					</div>
 				</div>
 
-				<div class="hidden md:block w-px h-10 bg-gray-100" />
-
-				<div class="flex-1 text-center group">
-					<div
-						class="text-4xl md:text-5xl font-black text-red-600 mb-1 transition-transform group-hover:scale-110"
-					>
-						1K+
+				<div class="text-center flex flex-col items-center border-x border-slate-100 px-2 sm:px-6">
+					<div class="text-[28px] sm:text-[42px] md:text-[56px] font-extrabold text-primary leading-none mb-2 md:mb-4">
+						100+
 					</div>
-					<div
-						class="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-[0.2em]"
-					>
-						Khách Hàng Tin Dùng
+					<div class="text-slate-500 font-bold uppercase tracking-widest text-[8px] sm:text-[10px] md:text-xs">
+						Mẫu xe
 					</div>
 				</div>
 
-				<div class="hidden md:block w-px h-10 bg-gray-100" />
-
-				<div class="flex-1 text-center group">
-					<div
-						class="text-4xl md:text-5xl font-black text-red-600 mb-1 transition-transform group-hover:scale-110"
-					>
+				<div class="text-center flex flex-col items-center">
+					<div class="text-[28px] sm:text-[42px] md:text-[56px] font-extrabold text-primary leading-none mb-2 md:mb-4">
 						5+
 					</div>
-					<div
-						class="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-[0.2em]"
-					>
-						Năm Kinh Nghiệm
+					<div class="text-slate-500 font-bold uppercase tracking-widest text-[8px] sm:text-[10px] md:text-xs">
+						Kinh nghiệm
 					</div>
 				</div>
 			</div>

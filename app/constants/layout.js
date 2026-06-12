@@ -1,19 +1,19 @@
 export const FLOATING_BUTTONS = [
 	{
 		label: "Hotline",
-		icon: "fa6-solid:phone",
+		icon: "ph:phone-fill",
 		color: "bg-red-600 shadow-red-600/30",
 		action: "tel:0123456789",
 	},
 	{
 		label: "Zalo",
-		icon: "fa6-solid:z",
+		icon: "ph:chat-circle-dots-fill",
 		color: "bg-blue-500 shadow-blue-500/30",
 		action: "https://zalo.me/0123456789",
 	},
 	{
 		label: "Messenger",
-		icon: "fa6-solid:comment",
+		icon: "ph:messenger-logo-fill",
 		color:
 			"bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-500 shadow-pink-500/30",
 		action: "https://m.me/anhemmotor",

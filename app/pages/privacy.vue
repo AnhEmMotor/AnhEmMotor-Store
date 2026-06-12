@@ -82,10 +82,8 @@ const currentYear = new Date().getFullYear();
 				</ul>
 			</section>
 
-			<section class="mb-10">
-				<h2 class="text-xl font-semibold text-slate-800 mb-4">
-					4. Quyền của người dùng và Yêu cầu xóa dữ liệu
-				</h2>
+			<section id="data-deletion" class="mb-10">
+				<h2 class="text-xl font-semibold text-slate-800 mb-4">4. Quyền của bạn</h2>
 				<p class="text-slate-600 leading-relaxed mb-4">
 					Bạn có quyền truy cập, chỉnh sửa hoặc yêu cầu xóa dữ liệu cá nhân của
 					mình bất kỳ lúc nào.

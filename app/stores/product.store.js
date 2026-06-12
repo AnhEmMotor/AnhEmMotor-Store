@@ -1,12 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useAxios } from "@/composables/useAxios";
 import productService from "@/services/product.service";
 import productMapper from "@/mappers/product.mapper";
 
 export const useProductStore = defineStore("product", () => {
-	const axios = useAxios();
-	const service = productService(axios);
+	const service = productService;
+
 
 	const options = ref([]);
 	const isLoadingOptions = ref(false);

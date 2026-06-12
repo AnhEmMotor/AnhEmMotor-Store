@@ -1,12 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import categoryServiceFactory from "../services/category.service";
+import { categoryService } from "../services/category.service";
 import { categoryMapper } from "../mappers/category.mapper";
-import { useAxios } from "../composables/useAxios";
 
 export const useCategoryStore = defineStore("category", () => {
-	const axios = useAxios();
-	const categoryService = categoryServiceFactory(axios);
+	const service = categoryService;
+
 	const categories = ref([]);
 	const isLoading = ref(false);
 	const error = ref(null);
@@ -15,7 +14,7 @@ export const useCategoryStore = defineStore("category", () => {
 		isLoading.value = true;
 		error.value = null;
 		try {
-			const data = await categoryService.getStaticCategories();
+			const data = await service.getStaticCategories();
 			categories.value = categoryMapper.toUIList(data);
 		} catch (err) {
 			error.value = err.message || "Failed to load static categories";
@@ -25,7 +24,7 @@ export const useCategoryStore = defineStore("category", () => {
 	};
 
 	const getProductCategories = async (params = {}) => {
-		return await categoryService.getApiCategories(params);
+		return await service.getApiCategories(params);
 	};
 
 	return {
@@ -36,3 +35,4 @@ export const useCategoryStore = defineStore("category", () => {
 		getProductCategories,
 	};
 });
+

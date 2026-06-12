@@ -1,30 +1,35 @@
 <script setup>
+
+import BenefitCard from "../ui/BenefitCard.vue";
+import LoanCalculator from "./LoanCalculator.vue";
 import { BENEFITS } from "@/constants/benefit.constant";
-import BenefitCard from "@/components/ui/BenefitCard.vue";
-import LoanCalculator from "@/components/index/LoanCalculator.vue";
 </script>
 
 <template>
-	<section class="py-20 container mx-auto px-4">
+	<section class="py-12 md:py-24 container mx-auto px-6">
 		<div
-			class="relative bg-red-50 rounded-[40px] overflow-hidden p-8 md:p-16 flex flex-col lg:flex-row gap-16 items-center shadow-xl border border-red-100/50"
+			class="relative bg-white rounded-24 overflow-hidden p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row gap-12 lg:gap-20 items-stretch border border-slate-100 shadow-soft"
 		>
-			<LoanCalculator />
+			<div class="w-full lg:w-[42%] shrink-0">
+				<LoanCalculator />
+			</div>
 
 			<div
-				class="w-full lg:w-1/2 text-slate-900 space-y-10 text-center lg:text-left relative z-10"
+				class="w-full lg:flex-1 text-slate-900 flex flex-col justify-center space-y-10 lg:pl-10 relative z-10"
 			>
-				<div class="space-y-4">
-					<h2 class="text-4xl md:text-6xl font-black leading-tight uppercase">
-						Ưu Đãi <span class="text-red-700 italic">Đặc Quyền</span>
+				<div class="space-y-6 text-left">
+                    <div class="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-widest">
+                        Chương trình đặc biệt
+                    </div>
+					<h2 class="text-4xl md:text-5xl lg:text-[42px] font-bold leading-tight tracking-tight">
+						Trả góp <span class="text-primary">0% lãi suất</span> <br class="hidden lg:block"> Nhận xe ngay chỉ với CCCD
 					</h2>
-					<p class="text-slate-600 text-lg">
-						Chỉ có tại <b>AnhEm Motor</b>, hỗ trợ thủ tục trả góp siêu tốc trong
-						15 phút. Nhận xe ngay chỉ với CCCD.
+					<p class="text-slate-500 text-lg font-medium leading-relaxed max-w-xl">
+						Hỗ trợ thủ tục trả góp siêu tốc trong 15 phút. Duyệt hồ sơ nhanh chóng, cam kết không phát sinh chi phí ẩn.
 					</p>
 				</div>
 
-				<div class="grid grid-cols-2 gap-6">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
 					<BenefitCard
 						v-for="benefit in BENEFITS"
 						:key="benefit.title"
@@ -32,11 +37,13 @@ import LoanCalculator from "@/components/index/LoanCalculator.vue";
 					/>
 				</div>
 
-				<button
-					class="w-full lg:w-auto px-12 py-5 bg-slate-950 text-white rounded-2xl font-black uppercase text-sm tracking-widest hover:bg-red-700 transition-all shadow-xl shadow-red-900/20"
-				>
-					Tư Vấn Ngay
-				</button>
+				<div class="pt-4">
+					<button
+						class="px-10 py-5 bg-slate-900 text-white rounded-xl font-bold transition-all hover:bg-primary shadow-xl shadow-black/5 hover:-translate-y-1"
+					>
+						Liên hệ tư vấn trả góp
+					</button>
+				</div>
 			</div>
 		</div>
 	</section>

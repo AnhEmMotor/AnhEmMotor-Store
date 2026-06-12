@@ -1,43 +1,37 @@
-import { ORDER_ENDPOINTS } from "@/constants/endpoints/order.endpoint";
 
-const orderService = (axios) => ({
-	async createOrder(payload) {
-		const response = await axios.post(ORDER_ENDPOINTS.CREATE, payload);
-		return response.data;
-	},
-
-	async getMyPurchases(params) {
-		const response = await axios.get(ORDER_ENDPOINTS.MY_PURCHASES, { params });
-		return response.data;
+export const orderService = {
+	async createOrder(orderData) {
+		
+			return await orderRepository.createOrder(orderData);
+		
 	},
 
 	async getOrderDetail(id) {
-		const response = await axios.get(ORDER_ENDPOINTS.DETAIL(id));
-		return response.data;
+		try {
+			return await orderRepository.getOrderDetail(id);
+		} catch {
+
+			return null;
+		}
 	},
 
-	async getStatusMap() {
-		const response = await axios.get(ORDER_ENDPOINTS.STATUS_MAP);
-		return response.data;
+	async getMyOrders() {
+		try {
+			return await orderRepository.getMyOrders();
+		} catch {
+
+			return [];
+		}
 	},
 
-	async getCancellableStatuses() {
-		const response = await axios.get(ORDER_ENDPOINTS.CANCELLABLE_STATUSES);
-		return response.data;
-	},
+	async getPaymentLink(orderId) {
+		try {
+			return await orderRepository.getPaymentLink(orderId);
+		} catch {
 
-	async cancelOrder(orderId) {
-		const response = await axios.patch(ORDER_ENDPOINTS.CANCEL(orderId));
-		return response.data;
+			return null;
+		}
 	},
-
-	async updateOrder(orderId, payload) {
-		const response = await axios.patch(
-			ORDER_ENDPOINTS.UPDATE(orderId),
-			payload,
-		);
-		return response.data;
-	},
-});
+};
 
 export default orderService;

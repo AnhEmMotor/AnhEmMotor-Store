@@ -108,7 +108,7 @@ const handleUpdateOrder = async () => {
 		toast.success("Cập nhật thông tin đơn hàng thành công!");
 		isEditing.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch (error) {
+	} catch {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi cập nhật đơn hàng.";
@@ -149,7 +149,7 @@ const confirmCancel = async () => {
 		toast.success("Hủy đơn hàng thành công!");
 		isCancelModalOpen.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch (error) {
+	} catch {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi hủy đơn hàng.";
@@ -168,6 +168,26 @@ const canEdit = (statusId) => {
 		orderStore.lockedStatuses.deliveryInfo?.includes(statusId);
 	const notesLocked = orderStore.lockedStatuses.notes?.includes(statusId);
 	return !deliveryLocked || !notesLocked;
+};
+
+const isOnlineUnpaid = (order) => {
+	const method = String(order?.paymentMethod || "").toLowerCase();
+	const statusId = order?.statusId || order?.status || "";
+	return ["vnpay", "payos"].includes(method) &&
+		["pending", "waiting_deposit"].includes(statusId);
+};
+
+const handleContinuePayment = async (order) => {
+	try {
+		const url = await orderStore.getPaymentLink(order.id);
+		if (!url) {
+			toast.warning("Đơn hàng này chưa có link thanh toán.");
+			return;
+		}
+		window.open(url, "_blank", "noopener,noreferrer");
+	} catch {
+		toast.error("Không thể lấy link thanh toán.");
+	}
 };
 </script>
 
@@ -203,8 +223,10 @@ const canEdit = (statusId) => {
 					:get-status-name="orderStore.getStatusName"
 					:is-cancellable="isCancellable"
 					:can-edit="canEdit"
+					:can-continue-payment="isOnlineUnpaid"
 					@edit="openEditModal"
 					@cancel="handleCancelOrder"
+					@continue-payment="handleContinuePayment"
 				/>
 			</template>
 		</div>

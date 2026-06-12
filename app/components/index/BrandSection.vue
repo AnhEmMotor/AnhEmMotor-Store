@@ -1,47 +1,52 @@
 <template>
-	<div class="brands-section">
-		<div class="container">
-			<h2>Thương Hiệu Uy Tín</h2>
-			<div
-				class="brands-carousel-container"
-				@mouseenter="stopAutoSlide"
-				@mouseleave="startAutoSlide"
-			>
+	<div class="brands-section overflow-hidden relative">
+		
+		<div class="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"/>
+		<div class="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"/>
+
+		<div class="container mx-auto px-6">
+			<div class="section-header">
+				<span class="subtitle">Đối tác & Dòng xe</span>
+				<h2 class="title text-4xl md:text-5xl lg:text-[42px] font-bold">Thương hiệu đồng hành</h2>
+				<p class="description">AnhEm Motor tự hào là đối tác phân phối các dòng xe máy chính hãng từ những thương hiệu hàng đầu.</p>
+			</div>
+		</div>
+
+		
+		<div class="marquee-wrapper">
+			<div class="marquee-content group">
+				
 				<div
-					ref="carouselRef"
-					class="brands-carousel"
-					:style="carouselStyle"
-					@transitionend="handleTransitionEnd"
+					v-for="(brand, index) in homeStore.brands"
+					:key="`brand-${index}`"
+					class="brand-card"
 				>
-					<div
-						v-for="(brand, index) in carouselBrands"
-						:key="index"
-						class="brand-slide"
-					>
-						<div class="brand-card">
-							<div class="brand-icon">
-								<img
-									:src="brand.img"
-									:alt="brand.alt"
-									class="brand-logo"
-									width="48"
-									height="48"
-									loading="lazy"
-								>
-							</div>
-							<p>{{ brand.text }}</p>
-						</div>
+					<div class="brand-inner">
+						<img
+							:src="brand.img"
+							:alt="brand.alt"
+							class="brand-logo"
+							loading="lazy"
+						>
+						<div class="brand-name">{{ brand.name }}</div>
 					</div>
 				</div>
 
-				<div class="carousel-dots">
-					<span
-						v-for="(_, index) in homeStore.brands"
-						:key="index"
-						class="dot"
-						:class="{ active: activeDotIndex === index }"
-						@click="goToSlide(index)"
-					/>
+				
+				<div
+					v-for="(brand, index) in homeStore.brands"
+					:key="`brand-clone-${index}`"
+					class="brand-card"
+				>
+					<div class="brand-inner">
+						<img
+							:src="brand.img"
+							:alt="brand.alt"
+							class="brand-logo"
+							loading="lazy"
+						>
+						<div class="brand-name">{{ brand.name }}</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -49,153 +54,72 @@
 </template>
 
 <script setup lang="js">
-import { ref, onMounted, onBeforeUnmount, computed } from "vue";
-import { useHomeStore } from "@/stores/home.store";
-
 const homeStore = useHomeStore();
-const carouselRef = ref(null);
-const currentSlide = ref(0);
-const useTransition = ref(true);
-let autoSlideInterval = null;
-let resizeObserver = null;
-const slideWidth = ref(0);
-
-const AUTOPLAY_DELAY = 3000;
-
-const carouselBrands = computed(() => {
-	const brands = homeStore.brands;
-	return [...brands, ...brands];
-});
-
-const carouselStyle = computed(() => ({
-	transform: `translateX(-${currentSlide.value * slideWidth.value}px)`,
-	transition: useTransition.value ? "transform 0.5s ease-in-out" : "none",
-}));
-
-const activeDotIndex = computed(() => {
-	if (homeStore.brands.length === 0) return 0;
-	return currentSlide.value % homeStore.brands.length;
-});
-
-const nextSlide = () => {
-	currentSlide.value++;
-};
-
-const goToSlide = (slideIndex) => {
-	useTransition.value = true;
-	currentSlide.value = slideIndex;
-};
-
-const handleTransitionEnd = () => {
-	const brandsCount = homeStore.brands.length;
-	if (brandsCount > 0 && currentSlide.value >= brandsCount) {
-		useTransition.value = false;
-		currentSlide.value = currentSlide.value % brandsCount;
-
-		setTimeout(() => {
-			useTransition.value = true;
-		}, 20);
-	}
-};
-
-const updateSlideWidth = () => {
-	if (carouselRef.value && carouselRef.value.children.length > 0) {
-		slideWidth.value = carouselRef.value.children[0].offsetWidth;
-	}
-};
-
-const startAutoSlide = () => {
-	if (autoSlideInterval) clearInterval(autoSlideInterval);
-	autoSlideInterval = setInterval(nextSlide, AUTOPLAY_DELAY);
-};
-
-const stopAutoSlide = () => {
-	clearInterval(autoSlideInterval);
-	autoSlideInterval = null;
-};
-
-onMounted(() => {
-	startAutoSlide();
-	updateSlideWidth();
-	resizeObserver = new ResizeObserver(updateSlideWidth);
-	if (carouselRef.value) {
-		resizeObserver.observe(carouselRef.value);
-	}
-});
-
-onBeforeUnmount(() => {
-	stopAutoSlide();
-	if (resizeObserver && carouselRef.value) {
-		resizeObserver.unobserve(carouselRef.value);
-	}
-});
 </script>
 
 <style lang="css" scoped>
 @reference '../../assets/main.css';
 
 .brands-section {
-	@apply w-full bg-gradient-to-br from-gray-50 to-gray-100 py-10 sm:py-16 md:py-20;
+	@apply w-full bg-slate-50 py-12 md:py-24 border-y border-slate-100;
 }
 
-.container {
-	@apply container mx-auto px-4 sm:px-6 md:px-8;
+.section-header {
+	@apply mb-16 text-left max-w-3xl container mx-auto px-6;
 }
 
-.brands-section h2 {
-	@apply relative mb-8 sm:mb-12 text-center text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800;
+.subtitle {
+	@apply block text-red-600 font-bold uppercase tracking-widest text-xs mb-3;
 }
 
-.brands-section h2::after {
-	content: "";
-	@apply absolute -bottom-3 left-1/2 h-1 w-24 -translate-x-1/2 rounded-full bg-gradient-to-r from-red-500 to-orange-400;
+.title {
+	@apply text-slate-950 mb-6 tracking-tight;
 }
 
-.brands-carousel-container {
-	@apply relative mx-auto overflow-hidden;
+.description {
+	@apply text-slate-500 text-base md:text-lg font-medium max-w-2xl leading-relaxed;
 }
 
-.brands-carousel {
-	@apply flex;
+.marquee-wrapper {
+	@apply w-full overflow-hidden flex mt-4;
 }
 
-.brand-slide {
-	@apply w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 flex-shrink-0 px-4;
+.marquee-content {
+	@apply flex gap-6 md:gap-10 items-center py-4;
+	animation: marquee 35s linear infinite;
+	width: max-content;
+}
+
+.marquee-content:hover {
+	animation-play-state: paused;
+}
+
+@keyframes marquee {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(calc(-50% - 1.25rem)); } 
 }
 
 .brand-card {
-	@apply relative flex h-48 sm:h-56 md:h-64 flex-col justify-center overflow-hidden rounded-2xl bg-white p-8 text-center shadow-lg transition-all duration-300 ease-in-out;
+	@apply shrink-0;
 }
 
-.brand-card:hover {
-	@apply shadow-lg;
-}
-
-.brand-icon {
-	@apply mb-4 flex justify-center;
+.brand-inner {
+	@apply flex flex-col items-center justify-center rounded-2xl bg-white p-6 md:p-10 h-36 md:h-48 w-48 md:w-64 text-center shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 border border-slate-100 hover:shadow-[0_20px_40px_-15px_rgba(230,0,35,0.1)] hover:border-red-600/20 hover:-translate-y-2;
 }
 
 .brand-logo {
-	@apply h-12 sm:h-16 md:h-20 w-auto aspect-square object-contain;
+	@apply h-8 md:h-12 w-auto object-contain transition-all duration-500 filter grayscale opacity-40;
 }
 
-.brand-card p {
-	@apply text-base leading-relaxed text-gray-600;
+.brand-inner:hover .brand-logo {
+	@apply grayscale-0 opacity-100 scale-110;
 }
 
-.carousel-dots {
-	@apply mt-10 mb-1 flex justify-center gap-3;
+.brand-name {
+	@apply mt-4 text-[10px] md:text-xs font-black text-slate-300 transition-colors uppercase tracking-widest;
 }
 
-.dot {
-	@apply h-3 w-3 cursor-pointer rounded-full bg-red-500/30 transition-all duration-300 ease-in-out;
-}
-
-.dot.active {
-	@apply scale-125 bg-red-500;
-}
-
-.dot:hover {
-	@apply bg-red-500;
+.brand-inner:hover .brand-name {
+	@apply text-red-600;
 }
 </style>

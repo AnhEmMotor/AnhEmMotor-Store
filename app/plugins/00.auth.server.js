@@ -15,7 +15,12 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 	} else {
 		const cookies = parseCookies(event);
 		if (cookies.refreshToken) {
-			await authStore.initAuth();
+			try {
+				await authStore.initAuth();
+			} catch {
+
+				authStore.$patch({ status: "unauthenticated" });
+			}
 		} else {
 			authStore.$patch({ status: "unauthenticated" });
 		}

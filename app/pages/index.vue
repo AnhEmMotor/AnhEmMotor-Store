@@ -1,16 +1,20 @@
 <script setup>
-import { useHomeStore } from "@/stores/home.store";
-
 const homeStore = useHomeStore();
-await homeStore.fetchHomeData();
+
+const newsStore = useNewsStore();
+
+await Promise.all([
+	homeStore.fetchHomeData(),
+	newsStore.fetchFeaturedNews(),
+]);
 
 useSeoMeta({
 	title: "Trang chủ",
-	ogImage: "/assets/image/index/index-banner-bg.webp",
+	ogImage: "/assets/image/index/index-banner-bg.png",
 	twitterTitle: "Trang chủ",
 	twitterDescription:
 		"AnhEm Motor - Chuyên cung cấp xe máy, phụ tùng, phụ kiện chính hãng.",
-	twitterImage: "/assets/image/index/index-banner-bg.webp",
+	twitterImage: "/assets/image/index/index-banner-bg.png",
 });
 
 useHead({
@@ -24,6 +28,7 @@ useHead({
 });
 </script>
 
+
 <template>
 	<div class="home-page">
 		<IndexHeroSection />
@@ -31,19 +36,21 @@ useHead({
 		<IndexStatsSection />
 		<IndexProductCategories />
 		<IndexFeaturedProducts />
+        <IndexPersonalizedRecommendations />
+		<IndexBrandSection />
 		<IndexReelsShowcase />
 		<IndexSalesEnablers />
 		<IndexTrustBuilding />
 		<IndexNewsSEO />
 		<IndexLeadFooter />
-		<IndexCompareBar />
+		<ProductCompareBar />
 	</div>
 </template>
 
-<style scoped>
-@reference "../assets/main.css";
 
+<style scoped>
 .home-page {
-	@apply bg-white text-slate-900;
+	background-color: white;
+	color: #0f172a;
 }
 </style>

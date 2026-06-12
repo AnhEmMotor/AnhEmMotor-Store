@@ -19,7 +19,7 @@ const emit = defineEmits(["view-detail"]);
 	<div class="w-full">
 		<div
 			v-if="isLoading && products.length === 0"
-			class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8"
+			class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
 		>
 			<div
 				v-for="i in 6"
@@ -60,7 +60,7 @@ const emit = defineEmits(["view-detail"]);
 
 		<div
 			v-else
-			class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8"
+			class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
 		>
 			<ProductCard
 				v-for="product in products"

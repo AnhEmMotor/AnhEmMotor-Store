@@ -1,5 +1,10 @@
 <script setup>
-import { useAboutStore } from "@/stores/about.store";
+definePageMeta({
+	transition: {
+		name: "page",
+		mode: "out-in",
+	},
+});
 
 useSeoMeta({
 	title: "Về chúng tôi | AnhEm Motor",
@@ -16,18 +21,47 @@ await useAsyncData("about-content", async () => {
 	]);
 	return true;
 });
+
+
+if (import.meta.client) {
+	onMounted(() => {
+		const observerOptions = {
+			threshold: 0.1,
+			rootMargin: "0px 0px -50px 0px"
+		};
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('active');
+				}
+			});
+		}, observerOptions);
+
+		document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+	});
+}
 </script>
 
 <template>
-	<div v-if="aboutStore.aboutContent" class="about-page">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-			<AboutMissionSection :data="aboutStore.aboutContent.mission" />
-			<AboutServicesSection :data="aboutStore.aboutContent.services" />
-			<AboutCommitmentSection :data="aboutStore.aboutContent.commitment" />
-			<AboutWhyChooseUsSection :data="aboutStore.aboutContent.whyChooseUs" />
-			<AboutContactSection :data="aboutStore.aboutContent.contact" />
-		</div>
-		<AboutVideoSection :data="aboutStore.aboutContent.video" />
-		<AboutMapSection :locations="aboutStore.locations" />
+	<div v-if="aboutStore.aboutContent" class="about-page bg-white overflow-hidden">
+		<AboutHeroSection :data="aboutStore.aboutContent" class="reveal" />
+		
+		<AboutMissionSection :data="aboutStore.aboutContent.mission" class="reveal reveal-delay-1" />
+		
+		<AboutServicesSection :data="aboutStore.aboutContent.services" class="reveal" />
+		
+		<AboutGallerySection class="reveal" />
+		
+		<AboutCommitmentSection :data="aboutStore.aboutContent.commitment" class="reveal" />
+
+		<AboutWhyChooseUsSection :data="aboutStore.aboutContent.whyChooseUs" class="reveal" />
+		
+		<AboutContactSection :data="aboutStore.aboutContent.contact" class="reveal" />
+
+		<AboutVideoSection :data="aboutStore.aboutContent.video" class="reveal" />
+
+		<AboutMapSection :locations="aboutStore.locations" class="reveal" />
 	</div>
 </template>
+

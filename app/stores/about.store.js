@@ -13,9 +13,9 @@ export const useAboutStore = defineStore("about", {
 			this.isLoading = true;
 			try {
 				const data = await aboutService.getAboutContent();
-				this.aboutContent = data;
-			} catch {
-			} finally {
+				
+				this.aboutContent = JSON.parse(JSON.stringify(data));
+			} catch {} finally {
 				this.isLoading = false;
 			}
 		},
@@ -23,7 +23,8 @@ export const useAboutStore = defineStore("about", {
 		async fetchLocations() {
 			try {
 				const data = await aboutService.getLocations();
-				this.locations = data;
+				
+				this.locations = JSON.parse(JSON.stringify(data));
 			} catch {}
 		},
 	},

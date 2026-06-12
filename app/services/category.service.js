@@ -1,15 +1,20 @@
 import { STATIC_CATEGORIES } from "../constants/categories";
-import { PRODUCT_ENDPOINTS } from "../constants/endpoints/product.endpoint";
+import { categoryRepository } from "../core/infrastructure/repositories/category.repository";
 
-export default (axiosInstance) => ({
+
+export const categoryService = {
 	async getStaticCategories() {
-		return Promise.resolve(STATIC_CATEGORIES);
+		return STATIC_CATEGORIES;
 	},
 
 	async getApiCategories(params = {}) {
-		const { data } = await axiosInstance.get(PRODUCT_ENDPOINTS.CATEGORIES, {
-			params,
-		});
-		return data;
+		try {
+			return await categoryRepository.getCategories(params);
+		} catch {
+
+			return [];
+		}
 	},
-});
+};
+
+export default categoryService;

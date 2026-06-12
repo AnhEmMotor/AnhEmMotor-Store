@@ -13,53 +13,46 @@ defineProps({
 
 <template>
 	<div
-		class="bg-white p-8 rounded-[40px] border border-slate-100 hover:border-red-600/20 transition-all shadow-sm hover:shadow-xl relative md:ml-12 group"
+		class="bg-white p-8 md:p-10 rounded-24 border border-slate-100 hover:border-primary/20 transition-all duration-500 shadow-soft hover:shadow-elevated relative group"
 	>
-		<div
-			class="absolute -left-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white border-4 border-slate-50 z-10 hidden md:flex items-center justify-center group-hover:border-red-600 transition-colors"
-		>
-			<div
-				class="w-2 h-2 rounded-full bg-slate-200 group-hover:bg-red-600 transition-colors"
-			/>
-		</div>
-
-		<div class="flex justify-between items-start mb-6">
-			<div class="flex items-center gap-4">
+		<div class="flex flex-col sm:flex-row justify-between items-start gap-6 mb-8">
+			<div class="flex items-center gap-5">
 				<div
-					:class="[
-						'w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-3xl overflow-hidden shadow-xl border-4 border-white',
-						index === 0 ? 'bg-red-600' : 'bg-slate-900',
-					]"
+					class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-24 overflow-hidden shadow-soft border-4 border-white bg-slate-50 shrink-0"
 				>
 					<img
 						v-if="testimonial.image"
 						:src="testimonial.image"
 						:alt="testimonial.name"
-						class="w-full h-full object-cover"
+						class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
 					>
-					<span v-else class="text-white font-black text-2xl uppercase">
+					<span v-else class="text-slate-400 font-bold text-2xl uppercase">
 						{{ testimonial.name[0] }}
 					</span>
 				</div>
-				<div class="space-y-1">
-					<h4 class="font-black text-slate-900 leading-none">
+				<div class="space-y-1.5">
+					<h4 class="font-bold text-lg text-slate-900 leading-none">
 						{{ testimonial.name }}
 					</h4>
 					<p
-						class="text-[10px] text-red-600 font-black uppercase tracking-widest"
+						class="text-xs text-primary font-bold uppercase tracking-widest"
 					>
 						{{ testimonial.car }}
 					</p>
 				</div>
 			</div>
 			<div
-				class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"
+				class="text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-slate-50 px-3 py-1.5 rounded-full"
 			>
 				{{ testimonial.date }}
 			</div>
 		</div>
-		<p class="text-[15px] text-slate-500 leading-relaxed font-medium italic">
+		<p class="text-base text-slate-500 leading-relaxed font-medium italic">
 			"{{ testimonial.comment }}"
 		</p>
+
+        <div class="absolute -top-4 -left-4 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+            <Icon name="ph:quotes-fill" class="text-xl" />
+        </div>
 	</div>
 </template>

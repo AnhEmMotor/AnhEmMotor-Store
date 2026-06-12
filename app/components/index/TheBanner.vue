@@ -109,7 +109,7 @@ onUnmounted(() => {
 			<link
 				rel="preload"
 				as="image"
-				href="/assets/image/index/index-banner-bg.webp"
+				href="/assets/image/index/index-banner-bg.png"
 				fetchpriority="high"
 			>
 		</Head>
@@ -125,7 +125,7 @@ onUnmounted(() => {
 	margin-left: calc(50% - 50vw);
 	background:
 		linear-gradient(135deg, rgba(231, 76, 60, 0), rgba(192, 57, 43, 0.1)),
-		url("/assets/image/index/index-banner-bg.webp") center/cover;
+		url("/assets/image/index/index-banner-bg.png") center/cover;
 }
 
 .hero-overlay {

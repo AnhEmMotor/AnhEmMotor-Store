@@ -1,339 +1,171 @@
-<script setup>
-import { reactive } from "vue";
-
-defineProps({
-	isSubmitting: {
-		type: Boolean,
-		default: false,
-	},
-	statusMessage: {
-		type: String,
-		default: "",
-	},
-	statusType: {
-		type: String,
-		default: "",
-	},
-});
-
-const emit = defineEmits(["submit"]);
-
-const formData = reactive({
-	full_name: "",
-	phone_number: "",
-	email: "",
-	request_type: "",
-	car_type: "",
-	budget: "",
-	detailed_message: "",
-});
-
-const errors = reactive({
-	full_name: "",
-	phone_number: "",
-	email: "",
-	request_type: "",
-});
-
-const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-const isValidPhone = (phone) => /^0[3-9]\d{8,9}$/.test(phone);
-
-const validateForm = () => {
-	Object.keys(errors).forEach((key) => (errors[key] = ""));
-	let isValid = true;
-
-	if (!formData.full_name.trim()) {
-		errors.full_name = "Vui lòng nhập họ và tên.";
-		isValid = false;
-	}
-
-	if (!formData.phone_number.trim()) {
-		errors.phone_number = "Vui lòng nhập số điện thoại.";
-		isValid = false;
-	} else if (!isValidPhone(formData.phone_number)) {
-		errors.phone_number = "Số điện thoại không hợp lệ.";
-		isValid = false;
-	}
-
-	if (formData.email && !isValidEmail(formData.email)) {
-		errors.email = "Email không hợp lệ.";
-		isValid = false;
-	}
-
-	if (!formData.request_type) {
-		errors.request_type = "Vui lòng chọn loại yêu cầu.";
-		isValid = false;
-	}
-
-	return isValid;
-};
-
-const resetForm = () => {
-	Object.keys(formData).forEach((key) => (formData[key] = ""));
-};
-
-const handleOnSubmit = () => {
-	if (validateForm()) {
-		emit("submit", { ...formData, resetForm });
-	}
-};
-</script>
-
 <template>
-	<div class="form-section">
-		<h3>Gửi Yêu Cầu Tư Vấn</h3>
-		<p class="subtitle">Điền thông tin để nhận tư vấn miễn phí</p>
+	<div class="contact-form p-6 sm:p-10">
+		<div class="mb-10">
+			<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-4">
+				<Icon name="ph:envelope-simple-open-fill" class="text-primary text-sm" />
+				<span class="text-[10px] font-bold uppercase tracking-wider text-primary">Liên hệ trực tuyến</span>
+			</div>
+			<h3 class="text-2xl sm:text-3xl font-black mb-3 text-gray-900">Gửi yêu cầu hỗ trợ</h3>
+			<p class="text-gray-500 text-sm font-medium leading-relaxed max-w-md">
+				Vui lòng để lại thông tin, đội ngũ chăm sóc khách hàng của chúng tôi sẽ liên hệ với bạn trong vòng 24h làm việc.
+			</p>
+		</div>
 
-		<form novalidate @submit.prevent="handleOnSubmit">
-			<div class="form-row">
-				<div class="form-group" :class="{ invalid: errors.full_name }">
-					<label for="full_name" class="required">Họ và tên</label>
+		<form class="space-y-6" @submit.prevent="handleSubmit">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				
+				<div class="space-y-2">
+					<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Họ và tên</label>
+					<div class="relative group">
+						<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+							<Icon name="ph:user-bold" class="text-gray-400 group-focus-within:text-primary transition-colors" />
+						</div>
+						<input
+							v-model="form.fullName"
+							type="text"
+							required
+							placeholder="Nguyễn Văn A"
+							class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
+						>
+					</div>
+				</div>
+
+				
+				<div class="space-y-2">
+					<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Số điện thoại</label>
+					<div class="relative group">
+						<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+							<Icon name="ph:phone-bold" class="text-gray-400 group-focus-within:text-primary transition-colors" />
+						</div>
+						<input
+							v-model="form.phone"
+							type="tel"
+							required
+							placeholder="09xxx"
+							class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
+						>
+					</div>
+				</div>
+			</div>
+
+			
+			<div class="space-y-2">
+				<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Email</label>
+				<div class="relative group">
+					<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+						<Icon name="ph:envelope-bold" class="text-gray-400 group-focus-within:text-primary transition-colors" />
+					</div>
 					<input
-						id="full_name"
-						v-model="formData.full_name"
-						type="text"
+						v-model="form.email"
+						type="email"
 						required
+						placeholder="example@gmail.com"
+						class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
 					>
-					<div v-if="errors.full_name" class="error-message">
-						{{ errors.full_name }}
-					</div>
 				</div>
-				<div class="form-group" :class="{ invalid: errors.phone_number }">
-					<label for="phone_number" class="required">Số điện thoại</label>
-					<input
-						id="phone_number"
-						v-model="formData.phone_number"
-						type="tel"
-						required
+			</div>
+
+			
+			<div class="space-y-2">
+				<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Chủ đề cần hỗ trợ</label>
+				<div class="relative group">
+					<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+						<Icon name="ph:info-bold" class="text-gray-400 group-focus-within:text-primary transition-colors" />
+					</div>
+					<select
+						v-model="form.subject"
+						class="w-full pl-11 pr-10 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm appearance-none cursor-pointer"
 					>
-					<div v-if="errors.phone_number" class="error-message">
-						{{ errors.phone_number }}
+						<option value="Tư vấn mua xe">Tư vấn mua xe</option>
+						<option value="Dịch vụ bảo dưỡng">Dịch vụ bảo dưỡng</option>
+						<option value="Phụ tùng phụ kiện">Phụ tùng phụ kiện</option>
+						<option value="Phản ánh dịch vụ">Phản ánh dịch vụ</option>
+						<option value="Khác">Khác</option>
+					</select>
+					<div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+						<Icon name="ph:caret-down-bold" class="text-gray-400 text-xs" />
 					</div>
 				</div>
 			</div>
 
-			<div class="form-row">
-				<div class="form-group" :class="{ invalid: errors.email }">
-					<label for="email">Email</label>
-					<input id="email" v-model="formData.email" type="email" >
-					<div v-if="errors.email" class="error-message">
-						{{ errors.email }}
-					</div>
-				</div>
-				<div class="form-group" :class="{ invalid: errors.request_type }">
-					<label for="request_type" class="required">Loại yêu cầu</label>
-					<select id="request_type" v-model="formData.request_type" required>
-						<option value="">-- Chọn loại yêu cầu --</option>
-						<option value="mua-xe">Mua xe máy</option>
-						<option value="ban-xe">Bán xe máy</option>
-						<option value="bao-hanh">Bảo hành/Sửa chữa</option>
-						<option value="tu-van">Tư vấn chung</option>
-						<option value="khac">Khác</option>
-					</select>
-					<div v-if="errors.request_type" class="error-message">
-						{{ errors.request_type }}
-					</div>
-				</div>
-			</div>
-
-			<div class="form-row">
-				<div class="form-group">
-					<label for="car_type">Loại xe quan tâm</label>
-					<select id="car_type" v-model="formData.car_type">
-						<option value="">-- Chọn loại xe --</option>
-						<option value="xe-so">Xe số (Honda Wave, Yamaha Sirius...)</option>
-						<option value="xe-ga">Xe ga (Honda SH, Yamaha Janus...)</option>
-						<option value="xe-con-tay">Xe côn tay (Exciter, Winner...)</option>
-						<option value="xe-phan-khoi-lon">
-							Xe phân khối lớn (CBR, R15...)
-						</option>
-						<option value="xe-dien">Xe điện</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="budget">Ngân sách dự kiến</label>
-					<select id="budget" v-model="formData.budget">
-						<option value="">-- Chọn mức giá --</option>
-						<option value="duoi-20tr">Dưới 20 triệu</option>
-						<option value="20-40tr">20 - 40 triệu</option>
-						<option value="40-60tr">40 - 60 triệu</option>
-						<option value="60-100tr">60 - 100 triệu</option>
-						<option value="tren-100tr">Trên 100 triệu</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label for="detailed_message">Tin nhắn chi tiết</label>
+			
+			<div class="space-y-2">
+				<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Nội dung chi tiết</label>
 				<textarea
-					id="detailed_message"
-					v-model="formData.detailed_message"
+					v-model="form.message"
 					rows="4"
-					placeholder="Mô tả chi tiết yêu cầu của bạn..."
+					required
+					placeholder="Hãy cho chúng tôi biết bạn cần hỗ trợ điều gì..."
+					class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm resize-none"
 				/>
 			</div>
 
-			<button type="submit" class="submit-btn" :disabled="isSubmitting">
-				<span v-if="isSubmitting" class="loading-spinner" />
-				<span>{{ isSubmitting ? "ĐANG GỬI..." : "GỬI YÊU CẦU TƯ VẤN" }}</span>
-			</button>
+			
+			<Transition name="fade">
+				<div
+v-if="statusMessage" 
+					:class="['p-4 rounded-2xl text-xs font-bold flex items-center gap-3', 
+					statusType === 'success' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100']">
+					<Icon :name="statusType === 'success' ? 'ph:check-circle-fill' : 'ph:warning-circle-fill'" class="text-lg" />
+					{{ statusMessage }}
+				</div>
+			</Transition>
 
-			<div v-if="statusMessage" class="form-status" :class="statusType">
-				{{ statusMessage }}
-			</div>
+			
+			<button
+				type="submit"
+				:disabled="isSubmitting"
+				class="w-full py-4.5 bg-primary text-white rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-xl shadow-primary/20 hover:bg-primary-dark hover:-translate-y-0.5 transition-all transform active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
+			>
+				<Icon v-if="isSubmitting" name="ph:spinner-bold" class="animate-spin text-lg" />
+				<Icon v-else name="ph:paper-plane-tilt-bold" class="text-lg group-hover:rotate-12 transition-transform" />
+				{{ isSubmitting ? 'Đang xử lý...' : 'Gửi yêu cầu ngay' }}
+			</button>
 		</form>
 	</div>
 </template>
 
+<script setup>
+import { ref } from 'vue';
+
+const props = defineProps({
+	isSubmitting: { type: Boolean, default: false },
+	statusMessage: { type: String, default: '' },
+	statusType: { type: String, default: '' }
+});
+
+const emit = defineEmits(['submit']);
+
+const form = ref({
+	fullName: '',
+	email: '',
+	phone: '',
+	subject: 'Tư vấn mua xe',
+	message: ''
+});
+
+const handleSubmit = () => {
+	emit('submit', { ...form.value });
+	if (props.statusType === 'success') {
+		form.value = {
+			fullName: '',
+			email: '',
+			phone: '',
+			subject: 'Tư vấn mua xe',
+			message: ''
+		};
+	}
+};
+</script>
+
 <style scoped>
-.form-section {
-	padding: 40px;
+.contact-form {
+	max-width: 100%;
 }
-
-.form-section h3 {
-	font-size: 1.8em;
-	color: #e25858;
-	margin-bottom: 10px;
-	text-align: center;
-	font-weight: 700;
+.fade-enter-active, .fade-leave-active {
+	transition: opacity 0.3s ease;
 }
-
-.subtitle {
-	text-align: center;
-	color: red;
-	margin-bottom: 30px;
-}
-
-.form-group {
-	margin-bottom: 20px;
-}
-
-.form-row {
-	display: flex;
-	gap: 15px;
-}
-
-.form-row .form-group {
-	flex: 1;
-}
-
-label {
-	display: block;
-	margin-bottom: 8px;
-	font-weight: 600;
-	color: #374151;
-	font-size: 0.95em;
-}
-
-.required::after {
-	content: " *";
-	color: #e25858;
-}
-
-input,
-select,
-textarea {
-	width: 100%;
-	padding: 12px 15px;
-	border: 2px solid #e5e7eb;
-	border-radius: 10px;
-	font-size: 1em;
-	transition: all 0.3s ease;
-	background: #f9fafb;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-	outline: none;
-	border-color: #e25858;
-	background: #fff;
-	box-shadow: 0 0 0 3px rgba(226, 88, 88, 0.1);
-}
-
-.invalid input,
-.invalid select {
-	border-color: #e25858;
-	background: #fef2f2;
-}
-
-.error-message {
-	color: #e25858;
-	font-size: 0.85em;
-	margin-top: 5px;
-}
-
-.submit-btn {
-	width: 100%;
-	background: linear-gradient(135deg, #e25858 0%, #ff4757 100%);
-	color: #fff;
-	border: none;
-	padding: 15px;
-	border-radius: 10px;
-	font-size: 1.1em;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s ease;
-	margin-top: 20px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.submit-btn:hover:not(:disabled) {
-	transform: translateY(-2px);
-	box-shadow: 0 10px 20px rgba(226, 88, 88, 0.3);
-}
-
-.submit-btn:disabled {
-	opacity: 0.7;
-	cursor: not-allowed;
-}
-
-.loading-spinner {
-	width: 20px;
-	height: 20px;
-	border: 3px solid rgba(255, 255, 255, 0.3);
-	border-top: 3px solid #fff;
-	border-radius: 50%;
-	animation: spin 1s linear infinite;
-	margin-right: 10px;
-	display: inline-block;
-}
-
-@keyframes spin {
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-.form-status {
-	margin-top: 20px;
-	padding: 15px;
-	border-radius: 10px;
-	text-align: center;
-	font-weight: 600;
-}
-
-.form-status.success {
-	background: #dcfce7;
-	color: #166534;
-	border: 1px solid #bbf7d0;
-}
-
-.form-status.error {
-	background: #fef2f2;
-	color: #b24040;
-	border: 1px solid #ffbebe;
-}
-
-@media (max-width: 768px) {
-	.form-section {
-		padding: 30px 20px;
-	}
-	.form-row {
-		flex-direction: column;
-		gap: 0;
-	}
+.fade-enter-from, .fade-leave-to {
+	opacity: 0;
 }
 </style>

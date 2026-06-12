@@ -13,4 +13,9 @@ import { useLayoutStore } from "@/stores/layout.store";
 const isDevelopment = import.meta.dev;
 const layoutStore = useLayoutStore();
 await layoutStore.fetchLayoutData();
+
+onMounted(() => {
+	window.scrollTo(0, 0);
+});
+
 </script>

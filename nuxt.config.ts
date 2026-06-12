@@ -1,9 +1,15 @@
+import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
 
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
 export default defineNuxtConfig({
+	ssr: true,
 	compatibilityDate: "2025-07-15",
+	
 	devtools: { enabled: true },
+	srcDir: "app",
 
 	build: {
 		transpile: ["@tanstack/vue-query"],
@@ -22,6 +28,7 @@ export default defineNuxtConfig({
 			scan: true,
 		},
 		serverBundle: "auto",
+		collections: ["ph", "lucide", "fa6-solid", "fa6-regular"],
 	},
 
 	sitemap: {
@@ -29,6 +36,9 @@ export default defineNuxtConfig({
 		cacheMaxAgeSeconds: 0, 
 	},
 
+	ogImage: {
+		zeroRuntime: true,
+	},
 	ogImage: {
 		zeroRuntime: true,
 	},
@@ -49,8 +59,10 @@ export default defineNuxtConfig({
 			noExternal: ["@tanstack/vue-query"],
 		},
 		plugins: [
+			
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(tailwindcss as any)(),
+			
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(svgLoader as any)(),
 			{
@@ -90,6 +102,9 @@ export default defineNuxtConfig({
 	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],
 
 	nitro: {
+		externals: {
+			trace: false,
+		},
 		rollupConfig: {
 			onwarn(warning, warn) {
 				const silentCodes = ["CIRCULAR_DEPENDENCY"];
@@ -109,10 +124,9 @@ export default defineNuxtConfig({
 			},
 		},
 		routeRules: {
-			"/**": {
-				headers: {
-					"Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-				},
+			"/contact": { redirect: "/support" },
+			"/api/v1/**": {
+				proxy: "http://localhost:7001/api/v1/**",
 			},
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
@@ -138,8 +152,16 @@ export default defineNuxtConfig({
 				},
 				{
 					rel: "preconnect",
+					href: "https://fonts.googleapis.com",
+				},
+				{
+					rel: "preconnect",
 					href: "https://fonts.gstatic.com",
 					crossorigin: "anonymous",
+				},
+				{
+					rel: "stylesheet",
+					href: "https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap",
 				},
 			],
 			script: [],
@@ -162,5 +184,30 @@ export default defineNuxtConfig({
 			apiUrlForBrowserClient:
 				process.env.NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT,
 		},
+	},
+
+	alias: {
+		"@/stores": "./app/core/application/stores",
+		"@/services": "./app/core/application/services",
+		"@/mappers": "./app/core/application/mappers",
+		"@/constants": "./app/core/domain/constants",
+		"@/utils": "./app/core/domain/utils",
+		"~/stores": "./app/core/application/stores",
+		"~/services": "./app/core/application/services",
+		"~/mappers": "./app/core/application/mappers",
+		"~/constants": "./app/core/domain/constants",
+		"~/utils": "./app/core/domain/utils",
+	},
+
+	imports: {
+		dirs: [
+			"core/domain/constants/**",
+			"core/domain/utils/**",
+			"core/application/services/**",
+			"core/application/stores/**",
+			"core/application/mappers/**",
+			"core/infrastructure/repositories/**",
+			"core/domain/models/**",
+		],
 	},
 });

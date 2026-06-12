@@ -1,51 +1,55 @@
-<script setup>
-defineProps({
-	services: {
-		type: Array,
-		required: true,
-	},
-});
-</script>
-
 <template>
-	<section id="services" class="py-10 sm:py-16 md:py-20 bg-white">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-			<h2
-				class="section-title fade-in text-center text-3xl sm:text-4xl mb-4 sm:mb-8 relative"
-			>
-				Dịch Vụ Của Chúng Tôi
-				<span
-					class="absolute bottom-[-12px] sm:bottom-[-16px] left-1/2 -translate-x-1/2 w-20 h-1 bg-red-600 rounded-sm"
-					aria-hidden="true"
-				/>
-			</h2>
-			<div
-				class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-8 mt-10 sm:mt-16"
-			>
-				<ServiceCard
-					v-for="(service, index) in services"
-					:key="index"
+	<div id="services-grid" class="bg-white pt-8 pb-12">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			
+			<div class="mb-10 text-center space-y-4">
+				<h2 class="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter">
+					Chi Tiết Các <span class="text-red-600">Gói Dịch Vụ</span>
+				</h2>
+				<p class="text-gray-400 text-xs font-black uppercase tracking-[0.4em]">Tiêu chuẩn kỹ thuật 5 sao</p>
+			</div>
+
+			
+			<div class="space-y-0">
+				<ServiceRow 
+					v-for="(service, idx) in filteredServices" 
+					:key="service.id" 
 					:service="service"
+					:is-reversed="idx % 2 !== 0"
+					@book="$emit('book', $event)"
 				/>
 			</div>
+
+			
+			<div v-if="filteredServices.length === 0" class="text-center py-32 bg-gray-50 rounded-[4rem] border border-gray-100">
+				<div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
+					<Icon name="fa6-solid:magnifying-glass" class="text-4xl text-gray-200" />
+				</div>
+				<p class="text-gray-400 font-black uppercase tracking-[0.3em] text-sm">Không tìm thấy dịch vụ trong danh mục này</p>
+				<button class="mt-8 text-red-600 font-black uppercase tracking-widest text-xs hover:underline" @click="$emit('reset-filter')">Xem tất cả dịch vụ</button>
+			</div>
 		</div>
-	</section>
+	</div>
 </template>
 
-<style scoped>
-.section-title {
-	font-weight: 700;
-	color: #1f2937;
-}
+<script setup>
+import { computed } from 'vue';
 
-.fade-in {
-	opacity: 0;
-	transform: translateY(30px);
-	transition: all 0.6s;
-}
+const props = defineProps({
+	services: {
+		type: Array,
+		required: true
+	},
+	activeCategory: {
+		type: String,
+		default: 'all'
+	}
+});
 
-.fade-in.visible {
-	opacity: 1;
-	transform: translateY(0);
-}
-</style>
+defineEmits(['book', 'reset-filter']);
+
+const filteredServices = computed(() => {
+	if (props.activeCategory === 'all') return props.services;
+	return props.services.filter(s => s.category === props.activeCategory);
+});
+</script>

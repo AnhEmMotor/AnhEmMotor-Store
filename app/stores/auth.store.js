@@ -15,7 +15,6 @@ export const useAuthStore = defineStore("auth", () => {
 	const expiresAt = ref(null);
 	const ssrEvent = ref(null);
 	const status = ref("idle");
-	const queryClient = useQueryClient();
 
 	let abortController = null;
 	const sseStatus = ref("disconnected");
@@ -303,6 +302,7 @@ export const useAuthStore = defineStore("auth", () => {
 		cleanState();
 
 		if (import.meta.client) {
+			const queryClient = useQueryClient();
 			queryClient.cancelQueries();
 			queryClient.removeQueries();
 			queryClient.clear();
@@ -443,13 +443,16 @@ export const useAuthStore = defineStore("auth", () => {
 	}
 
 	async function logout(shouldRedirect = true) {
-		status.value = "pending";
+		if (status.value === "logging_out") return;
+		status.value = "logging_out";
+
 		closeSSE();
 		const axios = useAxios();
 		try {
 			await axios.post("/api/v1/auth/logout");
 		} finally {
 			if (import.meta.client) {
+				const queryClient = useQueryClient();
 				queryClient.cancelQueries();
 				queryClient.removeQueries();
 				queryClient.clear();
@@ -473,7 +476,10 @@ export const useAuthStore = defineStore("auth", () => {
 		try {
 			const { error, newCookieString } = await refreshToken();
 			if (error) {
-				throw new Error("Failed to initialize auth");
+				accessToken.value = null;
+				user.value = null;
+				status.value = "unauthenticated";
+				return;
 			}
 
 			if (import.meta.server) {

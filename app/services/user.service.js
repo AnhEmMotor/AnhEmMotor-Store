@@ -1,25 +1,19 @@
-import { USER_ENDPOINTS } from "../constants/endpoints/user.endpoint";
 
-export default (axiosInstance) => ({
-	async updateProfile(payload) {
-		const { data } = await axiosInstance.put(USER_ENDPOINTS.ME, payload);
-		return data;
+
+
+export const userService = {
+	async getProfile() {
+		try {
+			return await userRepository.getProfile();
+		} catch {
+
+			return null;
+		}
 	},
 
-	async updateAvatar(formData) {
-		const { data } = await axiosInstance.post(USER_ENDPOINTS.AVATAR, formData, {
-			headers: {
-				"Content-Type": "multipart/form-data",
-			},
-		});
-		return data;
+	async updateProfile(profileData) {
+		return await userRepository.updateProfile(profileData);
 	},
+};
 
-	async changePassword(payload) {
-		const { data } = await axiosInstance.post(
-			USER_ENDPOINTS.CHANGE_PASSWORD,
-			payload,
-		);
-		return data;
-	},
-});
+export default userService;

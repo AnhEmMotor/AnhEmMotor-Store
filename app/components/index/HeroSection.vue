@@ -1,9 +1,11 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useLayoutStore } from "../../stores/layout.store";
+import { useHomeStore } from "../../stores/home.store";
 
 const layoutStore = useLayoutStore();
+const homeStore = useHomeStore();
 const { heroBikeModels: bikeModels } = storeToRefs(layoutStore);
 
 const currentBikeModel = ref("");
@@ -11,7 +13,103 @@ let modelIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
 
+// Banner sliding logic
+const currentBannerIndex = ref(0);
+const slideDirection = ref("next");
+let bannerTimer = null;
+
+const fallbackBanners = [
+	{
+		id: "fb1",
+		desktopImageUrl: "/assets/image/index/banner1.png",
+		mobileImageUrl: "/assets/image/index/banner1.png",
+		title: "Showroom Sang Trọng",
+		description: "Trải nghiệm không gian trưng bày xe phân khối lớn hiện đại và đẳng cấp nhất khu vực.",
+		ctaLink: "/products",
+		ctaLabel: "Khám phá ngay"
+	},
+	{
+		id: "fb2",
+		desktopImageUrl: "/assets/image/index/banner2.png",
+		mobileImageUrl: "/assets/image/index/banner2.png",
+		title: "Dịch Vụ Chuyên Nghiệp",
+		description: "Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, chăm sóc xế yêu của bạn tốt nhất.",
+		ctaLink: "/support",
+		ctaLabel: "Đặt lịch ngay"
+	},
+	{
+		id: "fb3",
+		desktopImageUrl: "/assets/image/index/banner3.png",
+		mobileImageUrl: "/assets/image/index/banner3.png",
+		title: "Phụ Tùng Chính Hãng",
+		description: "Cung cấp đầy đủ các loại phụ tùng, đồ chơi xe máy chính hãng từ các thương hiệu hàng đầu thế giới.",
+		ctaLink: "/products",
+		ctaLabel: "Mua ngay"
+	},
+	{
+		id: "fb4",
+		desktopImageUrl: "/assets/image/index/banner4.png",
+		mobileImageUrl: "/assets/image/index/banner4.png",
+		title: "Ưu Đãi Ngập Tràn",
+		description: "Hỗ trợ trả góp 0%, duyệt hồ sơ nhanh chóng và nhiều quà tặng hấp dẫn khi mua xe mới.",
+		ctaLink: "/promotion",
+		ctaLabel: "Xem ưu đãi"
+	},
+	{
+		id: "fb5",
+		desktopImageUrl: "/assets/image/index/banner5.png",
+		mobileImageUrl: "/assets/image/index/banner5.png",
+		title: "AnhEm Motor",
+		description: "Hệ thống cửa hàng xe máy uy tín, phục vụ tận tâm 24/7.",
+		ctaLink: "/about",
+		ctaLabel: "Tìm hiểu thêm"
+	},
+];
+
+const banners = computed(() => {
+	const storeBanners = homeStore.banners || [];
+	return storeBanners.length > 0 ? storeBanners : fallbackBanners;
+});
+
+const activeBanner = computed(() => {
+	return banners.value.length > 0
+		? banners.value[currentBannerIndex.value]
+		: null;
+});
+
+const nextBanner = () => {
+	if (banners.value.length <= 1) return;
+	slideDirection.value = "next";
+	currentBannerIndex.value = (currentBannerIndex.value + 1) % banners.value.length;
+	resetTimer();
+};
+
+const prevBanner = () => {
+	if (banners.value.length <= 1) return;
+	slideDirection.value = "prev";
+	currentBannerIndex.value = (currentBannerIndex.value - 1 + banners.value.length) % banners.value.length;
+	resetTimer();
+};
+
+const setBanner = (index) => {
+	slideDirection.value = index > currentBannerIndex.value ? "next" : "prev";
+	currentBannerIndex.value = index;
+	resetTimer();
+};
+
+const startTimer = () => {
+	bannerTimer = setInterval(nextBanner, 5000);
+};
+
+const resetTimer = () => {
+	if (bannerTimer) {
+		clearInterval(bannerTimer);
+		startTimer();
+	}
+};
+
 const typeEffect = () => {
+	if (!bikeModels.value || bikeModels.value.length === 0) return;
 	const currentFullText = bikeModels.value[modelIndex];
 
 	if (isDeleting) {
@@ -38,66 +136,150 @@ const typeEffect = () => {
 
 onMounted(() => {
 	typeEffect();
+	startTimer();
+});
+
+onUnmounted(() => {
+	if (bannerTimer) clearInterval(bannerTimer);
 });
 </script>
 
 <template>
-	<section class="relative h-[70vh] flex items-center overflow-hidden">
-		<div
-			class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105 active:scale-100"
-			style="
-				background-image: url(&quot;/assets/image/index/index-banner-bg.webp&quot;);
-			"
-		>
+	<section class="relative min-h-[520px] md:min-h-[620px] flex items-center overflow-hidden">
+		
+		<TransitionGroup :name="slideDirection === 'next' ? 'slide-next' : 'slide-prev'">
 			<div
-				class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"
-			/>
+				v-for="(banner, index) in banners"
+				v-show="index === currentBannerIndex"
+				:key="banner.id || index"
+				class="absolute inset-0 transition-transform duration-[10000ms] scale-110 active:scale-100 animate-ken-burns"
+			>
+				<picture>
+					<source media="(max-width: 767px)" :srcset="banner.mobileImageUrl || '/assets/image/index/index-banner-bg.png'">
+					<img :src="banner.desktopImageUrl || '/assets/image/index/index-banner-bg.png'" alt="Banner" class="w-full h-full object-cover">
+				</picture>
+				<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+			</div>
+		</TransitionGroup>
+
+		
+		<div
+			v-if="banners.length === 0"
+			class="absolute inset-0"
+		>
+			<picture>
+				<source media="(max-width: 767px)" srcset="/assets/image/index/index-banner-bg.png">
+				<img src="/assets/image/index/index-banner-bg.png" alt="Banner" class="w-full h-full object-cover">
+			</picture>
+			<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 		</div>
 
-		<div class="relative container mx-auto px-6 z-10 pb-24">
-			<div class="max-w-4xl text-white space-y-6">
-				<h1
-					class="text-3xl md:text-5xl lg:text-7xl font-black leading-[1.1] drop-shadow-2xl uppercase italic tracking-tighter"
-				>
-					Lướt <span class="text-red-600">Xe Sang</span>,<br >
-					Nhận Báo <span class="text-red-600">Giá&nbsp;Tốt.</span>
-				</h1>
+		<div class="relative container mx-auto px-6 md:px-12 lg:px-20 z-10">
+			<div class="max-w-4xl text-white space-y-8">
+				<Transition name="slide-up" mode="out-in">
+					<div :key="currentBannerIndex" class="space-y-4">
+						<h2 class="text-primary font-bold tracking-widest uppercase text-sm md:text-base">ANHEM MOTOR</h2>
+						<h1
+							class="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight drop-shadow-xl"
+						>
+							<template v-if="activeBanner?.title">
+								{{ activeBanner.title }}
+							</template>
+							<template v-else>
+								Hệ thống xe máy & <br >
+								<span class="text-white/90">Dịch vụ bảo dưỡng chuyên nghiệp</span>
+							</template>
+						</h1>
+					</div>
+				</Transition>
 
-				<p
-					class="text-lg md:text-xl text-white/80 max-w-2xl drop-shadow-md font-medium leading-relaxed"
-				>
-					Tìm ngay các dòng xe
-					<span
-						class="text-red-500 font-bold border-r-2 border-red-500 pr-1 animate-typing inline-block"
+				<Transition name="slide-up" mode="out-in">
+					<div
+						:key="currentBannerIndex"
+						class="text-lg md:text-xl text-white/80 max-w-2xl drop-shadow-md font-medium leading-relaxed space-y-3"
 					>
-						{{ currentBikeModel }}
-					</span>
-					<br >
-					Hệ thống phân phối xe máy chính hãng uy tín nhất khu vực.<br >
-					Cam kết giá lăn bánh tốt nhất, thủ tục trả góp 15 phút.
-				</p>
+						<template v-if="activeBanner?.description">
+							{{ activeBanner.description }}
+						</template>
+						<template v-else>
+							<div class="flex flex-col gap-2">
+								<div class="flex items-center gap-3">
+									<Icon name="ph:check-circle-fill" class="text-primary text-xl" />
+									<span>Cam kết xe chính hãng, giá tốt nhất khu vực</span>
+								</div>
+								<div class="flex items-center gap-3">
+									<Icon name="ph:check-circle-fill" class="text-primary text-xl" />
+									<span>Hỗ trợ trả góp 0% lãi suất, duyệt hồ sơ 15 phút</span>
+								</div>
+								<div class="flex items-center gap-3">
+									<Icon name="ph:check-circle-fill" class="text-primary text-xl" />
+									<span>Dịch vụ bảo dưỡng, cứu hộ 24/7 tận nơi</span>
+								</div>
+							</div>
+						</template>
+					</div>
+				</Transition>
 
-				<div class="flex flex-wrap gap-4 pt-4">
+				<div class="flex flex-wrap gap-4 pt-6">
 					<NuxtLink
-						to="/products"
-						class="px-10 py-5 bg-red-600 hover:bg-black text-white rounded-2xl font-black uppercase tracking-widest transition-all shadow-2xl shadow-red-600/40 hover:-translate-y-1 flex items-center gap-3 group"
+						:to="activeBanner?.ctaLink || '/products'"
+						class="h-14 px-8 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 hover:-translate-y-1 flex items-center gap-3 group"
 					>
-						Xem danh sách sản phẩm
+						{{ activeBanner?.ctaLabel || "Khám phá ngay" }}
 						<Icon
-							name="fa6-solid:chevron-right"
-							class="text-xs transition-transform group-hover:translate-x-1"
+							name="ph:arrow-right-bold"
+							class="text-lg transition-transform group-hover:translate-x-1"
 						/>
 					</NuxtLink>
-					<button
-						class="px-10 py-5 bg-transparent hover:bg-white/10 text-white border-2 border-white/50 rounded-2xl font-black uppercase tracking-widest backdrop-blur-md transition-all hover:border-white hover:-translate-y-1"
+					<NuxtLink
+						to="/support"
+						class="h-14 px-8 bg-white/10 hover:bg-white text-white hover:text-slate-900 border border-white/20 rounded-xl font-bold backdrop-blur-md transition-all hover:-translate-y-1 flex items-center gap-3"
 					>
-						Đăng Ký Lái Thử
-					</button>
+						<Icon name="ph:calendar-check-bold" class="text-xl" />
+						Đặt lịch bảo dưỡng
+					</NuxtLink>
 				</div>
 			</div>
 		</div>
+
+		
+		<div v-if="banners.length > 1" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
+			<button
+				v-for="(_, index) in banners"
+				:key="index"
+				class="group relative h-2 transition-all duration-300"
+				:class="index === currentBannerIndex ? 'w-12' : 'w-2 hover:w-4'"
+				@click="setBanner(index)"
+			>
+				<div
+					class="absolute inset-0 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors"
+					:class="{ 'bg-white': index === currentBannerIndex }"
+				/>
+				<div
+					v-if="index === currentBannerIndex"
+					class="absolute inset-0 rounded-full bg-primary origin-left animate-progress"
+				/>
+			</button>
+		</div>
+
+		
+		<div v-if="banners.length > 1" class="hidden md:flex absolute inset-y-0 left-4 right-4 items-center justify-between pointer-events-none z-20">
+			<button
+				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
+				@click="prevBanner"
+			>
+				<Icon name="ph:caret-left-bold" class="text-xl transition-transform group-hover:-translate-x-0.5" />
+			</button>
+			<button
+				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
+				@click="nextBanner"
+			>
+				<Icon name="ph:caret-right-bold" class="text-xl transition-transform group-hover:translate-x-0.5" />
+			</button>
+		</div>
 	</section>
 </template>
+
 
 <style scoped>
 @keyframes blink {
@@ -112,6 +294,89 @@ onMounted(() => {
 .animate-typing {
 	animation: blink 0.8s infinite;
 }
+
+@keyframes ken-burns {
+	0% {
+		transform: scale(1) translate(0, 0);
+	}
+	50% {
+		transform: scale(1.1) translate(-1%, -1%);
+	}
+	100% {
+		transform: scale(1) translate(0, 0);
+	}
+}
+
+.animate-ken-burns {
+	animation: ken-burns 20s ease-in-out infinite;
+}
+
+@keyframes progress {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+
+.animate-progress {
+	animation: progress 5s linear forwards;
+}
+
+
+.slide-next-enter-active,
+.slide-next-leave-active,
+.slide-prev-enter-active,
+.slide-prev-leave-active {
+	transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+.slide-next-enter-from {
+	transform: translateX(100%) scale(1.1);
+	opacity: 0;
+}
+.slide-next-leave-to {
+	transform: translateX(-100%) scale(1);
+	opacity: 0;
+}
+
+
+.slide-prev-enter-from {
+	transform: translateX(-100%) scale(1.1);
+	opacity: 0;
+}
+.slide-prev-leave-to {
+	transform: translateX(100%) scale(1);
+	opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 1s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+	transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide-up-enter-from {
+	opacity: 0;
+	transform: translateY(30px);
+}
+
+.slide-up-leave-to {
+	opacity: 0;
+	transform: translateY(-30px);
+}
+
 @keyframes fade-in {
 	from {
 		opacity: 0;

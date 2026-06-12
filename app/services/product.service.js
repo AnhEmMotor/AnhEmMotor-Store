@@ -1,25 +1,36 @@
-import { PRODUCT_ENDPOINTS } from "@/constants/endpoints/product.endpoint";
 
-const productService = (axios) => ({
+export const productService = {
 	async getProducts(params) {
-		const response = await axios.get(PRODUCT_ENDPOINTS.LIST, { params });
-		return response.data;
+		try {
+			const data = await productRepository.getProducts(params);
+			return {
+				items: (data.items || []).map(item => new Product(item)),
+				totalCount: data.totalCount,
+				totalPages: data.totalPages,
+			};
+		} catch {
+
+			return { items: [], totalCount: 0 };
+		}
 	},
 
 	async getProductDetail(slug) {
-		const response = await axios.get(`${PRODUCT_ENDPOINTS.DETAIL}/${slug}`);
-		return response.data;
+		try {
+			const data = await productRepository.getProductDetail(slug);
+			return data ? new Product(data) : null;
+		} catch {
+
+			return null;
+		}
 	},
 
 	async getOptions() {
-		const response = await axios.get(PRODUCT_ENDPOINTS.OPTIONS);
-		return response.data;
+		return await productRepository.getOptions();
 	},
 
 	async getAttributeLabels() {
-		const response = await axios.get(PRODUCT_ENDPOINTS.ATTRIBUTE_LABELS);
-		return response.data;
+		return await productRepository.getAttributeLabels();
 	},
-});
+};
 
 export default productService;

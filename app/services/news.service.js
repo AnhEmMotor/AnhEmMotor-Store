@@ -1,39 +1,157 @@
-import { newsData } from "@/constants/news";
-
 export const newsService = {
-	getFeaturedNews: async () => {
-		return newsData.filter((news) => news.featured);
+	async getNewsCategories() {
+		try {
+			const data = await newsRepository.getNewsCategories();
+			return (data.items || data || []).map((item) => ({
+				id: item.id,
+				name: item.name,
+				slug: item.slug,
+				icon: item.icon || "ph:newspaper-fill", 
+			}));
+		} catch {
+			return [];
+		}
 	},
 
-	getAllNews: async (params = {}) => {
-		const { page = 1, pageSize = 10 } = params;
-		const start = (page - 1) * pageSize;
-		const end = start + pageSize;
-
-		const data = newsData.slice(start, end);
-		const totalCount = newsData.length;
-		const totalPages = Math.ceil(totalCount / pageSize);
-
-		return {
-			data,
-			pagination: {
-				totalCount,
-				totalPages,
-				pageNumber: page,
-				pageSize,
-			},
-		};
+	async getFeaturedNews() {
+		try {
+			const data = await newsRepository.getNews({
+				pageSize: 3,
+				isFeatured: true,
+				sorts: "-createdAt",
+			});
+			return (data.items || []).map((item) => ({
+				id: item.id,
+				title: item.title,
+				slug: item.slug,
+				image:
+					item.coverImageUrl ||
+					item.image ||
+					item.thumbnail ||
+					"/assets/image/placeholder-news.webp",
+				content: item.content,
+				category:
+					item.categoryName ||
+					item.category?.name ||
+					item.category ||
+					"Tin tức",
+				createdAt: item.publishedDate || item.createdAt || new Date(),
+				date: item.publishedDate
+					? new Date(item.publishedDate).toLocaleDateString("vi-VN")
+					: item.date ||
+						(item.createdAt
+							? new Date(item.createdAt).toLocaleDateString("vi-VN")
+							: "Mới nhất"),
+				isHot: !!item.isHot,
+				featured: !!item.featured,
+			}));
+		} catch {
+			return [];
+		}
 	},
 
-	getNewsBySlug: async (slug) => {
-		const news = newsData.find((n) => n.slug === slug);
-		if (!news) return null;
+	async getLatestNews() {
+		try {
+			const data = await newsRepository.getLatestNews();
+			return (data || []).map((item) => ({
+				id: item.id,
+				title: item.title,
+				slug: item.slug,
+				image:
+					item.coverImageUrl ||
+					item.image ||
+					item.thumbnail ||
+					"/assets/image/placeholder-news.webp",
+				content: item.content,
+				category:
+					item.categoryName ||
+					item.category?.name ||
+					item.category ||
+					"Tin tức",
+				createdAt: item.publishedDate || item.createdAt || new Date(),
+				date: item.publishedDate
+					? new Date(item.publishedDate).toLocaleDateString("vi-VN")
+					: item.date ||
+						(item.createdAt
+							? new Date(item.createdAt).toLocaleDateString("vi-VN")
+							: "Mới nhất"),
+				isHot: !!item.isHot,
+				featured: !!item.featured,
+			}));
+		} catch {
+			return [];
+		}
+	},
 
-		const related = newsData.filter((n) => n.id !== news.id).slice(0, 4);
+	async getAllNews(params = {}) {
+		try {
+			const data = await newsRepository.getNews({
+				page: params.page || 1,
+				pageSize: params.pageSize || 10,
+				sorts: "-createdAt",
+				...params,
+			});
+			const ret = {
+				data: (data.items || []).map((item) => ({
+					id: item.id,
+					title: item.title,
+					slug: item.slug,
+					image:
+						item.coverImageUrl ||
+						item.image ||
+						item.thumbnail ||
+						"/assets/image/placeholder-news.webp",
+					content: item.content || "",
+					excerpt:
+						item.excerpt || item.shortDescription || item.description || "",
+					category:
+						item.categoryName ||
+						item.category?.name ||
+						item.category ||
+						"Tin tức",
+					createdAt: item.publishedDate || item.createdAt || new Date(),
+					date: item.publishedDate
+						? new Date(item.publishedDate).toLocaleDateString("vi-VN")
+						: item.date ||
+							(item.createdAt
+								? new Date(item.createdAt).toLocaleDateString("vi-VN")
+								: "Mới nhất"),
+					isHot: !!item.isHot,
+					featured: !!item.featured,
+				})),
+				pagination: {
+					totalCount: data.totalCount,
+					totalPages: data.totalPages,
+					pageNumber: data.pageNumber,
+					pageSize: data.pageSize,
+				},
+			};
+			return ret;
+		} catch {
+			return { data: [], pagination: {} };
+		}
+	},
 
-		return {
-			...news,
-			related,
-		};
+	async getNewsBySlug(slug) {
+		try {
+			const item = await newsRepository.getNewsDetail(slug);
+			if (!item) return null;
+			return {
+				id: item.id,
+				title: item.title,
+				image: item.coverImageUrl,
+				content: item.content,
+				category: item.categoryName,
+				publishedDate: new Date(item.publishedDate).toLocaleDateString("vi-VN"),
+				linkedProducts: (item.linkedProducts || []).map((p) => ({
+					urlSlug: p.urlSlug,
+					variantName: p.variantName,
+					colorName: p.colorName,
+					imageUrl: p.imageUrl,
+				})),
+			};
+		} catch {
+			return null;
+		}
 	},
 };

@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import { promotionService } from "@/services/promotion.service";
+import homeService from "@/services/home.service";
 
 export const usePromotionStore = defineStore("promotion", {
 	state: () => ({
 		promotions: [],
 		currentPromotion: null,
+		banners: [],
 		isLoading: false,
 	}),
 
@@ -30,6 +32,15 @@ export const usePromotionStore = defineStore("promotion", {
 				return null;
 			} finally {
 				this.isLoading = false;
+			}
+		},
+
+		async fetchBanners() {
+			try {
+				const data = await homeService.getBanners("Promotion");
+				this.banners = data;
+			} catch {
+				this.banners = [];
 			}
 		},
 	},
