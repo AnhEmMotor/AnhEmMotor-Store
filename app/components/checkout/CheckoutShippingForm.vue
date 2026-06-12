@@ -92,7 +92,7 @@ const orderStore = useOrderStore();
 			<textarea
 				v-model="orderStore.shippingInfo.notes"
 				rows="2"
-				placeholder="Lưu ý cho người giao hàng..."
+				placeholder="Lưu ý bổ sung..."
 				class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
 			/>
 		</div>

@@ -32,6 +32,11 @@ export default defineNuxtConfig({
 	},
 
 	sitemap: {
+		sources: ["/api/dynamic-sitemap"],
+		cacheMaxAgeSeconds: 0, 
+	},
+
+	ogImage: {
 		zeroRuntime: true,
 	},
 	ogImage: {
@@ -126,6 +131,9 @@ export default defineNuxtConfig({
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
 			},
+			"/sitemap.xml": { cache: { maxAge: 86400 } },
+			"/sitemap_index.xml": { cache: { maxAge: 86400 } },
+			"/sitemap-*.xml": { cache: { maxAge: 86400 } },
 		},
 		compressPublicAssets: true,
 	},

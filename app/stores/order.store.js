@@ -1,21 +1,22 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import { useQueryClient } from "@tanstack/vue-query";
+import { ref, computed } from "vue";
+import { useQueryClient, useQuery } from "@tanstack/vue-query";
+import { useAxios } from "@/composables/useAxios";
 import orderService from "@/services/order.service";
 import orderMapper from "@/mappers/order.mapper";
 import { useAuthStore } from "@/stores/auth.store";
 
 export const useOrderStore = defineStore("order", () => {
-	const service = orderService;
+	const axios = useAxios();
+	const service = orderService(axios);
 	const queryClient = useQueryClient();
 
 	const currentOrder = ref(null);
 	const lastCreatedOrderId = ref(null);
+	const isRedirecting = ref(false);
 	const isLoading = ref(false);
 	const error = ref(null);
-
-	const selectedPaymentMethod = ref("cod");
-	const paymentUrl = ref(null);
+	const fieldErrors = ref({});
 
 	const statusMap = ref({
 		pending: "Chờ xác nhận",
@@ -35,6 +36,29 @@ export const useOrderStore = defineStore("order", () => {
 		notes: ["completed", "cancelled"],
 	});
 	const cancellableStatuses = ref(["pending", "waiting_deposit"]);
+
+	const { data: storeSettings } = useQuery({
+		queryKey: ["store-settings"],
+		queryFn: async () => {
+			const settingSvc = (await import("@/services/setting.service")).default(
+				axios,
+			);
+			return settingSvc.getStoreSettings();
+		},
+	});
+
+	const settings = computed(() => ({
+		Order_value_exceeds: Number(
+			storeSettings.value?.Order_value_exceeds ||
+				storeSettings.value?.order_value_exceeds ||
+				100000000,
+		),
+		Deposit_ratio: Number(
+			storeSettings.value?.Deposit_ratio ||
+				storeSettings.value?.deposit_ratio ||
+				50,
+		),
+	}));
 
 	const initStatuses = async () => {
 		try {
@@ -68,6 +92,7 @@ export const useOrderStore = defineStore("order", () => {
 		phone: "",
 		address: "",
 		notes: "",
+		paymentMethod: "COD",
 	});
 
 	const errors = ref({
@@ -107,6 +132,7 @@ export const useOrderStore = defineStore("order", () => {
 	const createOrder = async (cartItems) => {
 		isLoading.value = true;
 		error.value = null;
+		fieldErrors.value = {};
 		try {
 			const authStore = useAuthStore();
 			const userId = authStore.user?.id || authStore.user?.sub;
@@ -114,7 +140,6 @@ export const useOrderStore = defineStore("order", () => {
 				shippingInfo.value,
 				cartItems,
 				userId,
-				selectedPaymentMethod.value,
 			);
 			const res = await service.createOrder(payload);
 			lastCreatedOrderId.value = res.id || res.Id;
@@ -123,11 +148,43 @@ export const useOrderStore = defineStore("order", () => {
 			queryClient.invalidateQueries({ queryKey: ["my-orders"] });
 			_refreshMyOrders();
 
+			isRedirecting.value = true;
 			return currentOrder.value;
 		} catch (e) {
 			const data = e.response?.data;
-			if (data?.type === "Validation" && data?.errors) {
-				error.value = data.errors.map((err) => err.message).join(" ");
+			if (data?.errors) {
+				const fieldMapping = {
+					CustomerName: "fullName",
+					CustomerPhone: "phone",
+					CustomerAddress: "address",
+				};
+				const unmappedErrors = [];
+
+				data.errors.forEach((err) => {
+					let mapped = false;
+
+					if (err.field && fieldMapping[err.field]) {
+						errors.value[fieldMapping[err.field]] = err.message;
+						mapped = true;
+					}
+
+					if (err.field && err.field.startsWith("products[")) {
+						const index = parseInt(err.field.match(/\d+/)[0]);
+						const item = cartItems[index];
+						if (item) {
+							fieldErrors.value[item.id] = err.message;
+							mapped = true;
+						}
+					}
+
+					if (!mapped) {
+						unmappedErrors.push(err.message);
+					}
+				});
+
+				if (unmappedErrors.length > 0) {
+					error.value = unmappedErrors.join(" ");
+				}
 			} else {
 				error.value = data?.message || "Đã có lỗi xảy ra";
 			}
@@ -172,24 +229,6 @@ export const useOrderStore = defineStore("order", () => {
 		_refreshMyOrders();
 	};
 
-	const setPaymentUrl = (url) => {
-		paymentUrl.value = url;
-	};
-
-	const getPaymentLink = async (orderId) => {
-		const res = await service.getPaymentLink(orderId);
-		const url = res?.url || "";
-		if (url) {
-			paymentUrl.value = url;
-		}
-		return url;
-	};
-
-	const clearPayment = () => {
-		paymentUrl.value = null;
-		selectedPaymentMethod.value = "cod";
-	};
-
 	const getStatusName = (statusId) => {
 		return statusMap.value[statusId] || statusId || "Đang xử lý";
 	};
@@ -197,22 +236,25 @@ export const useOrderStore = defineStore("order", () => {
 	const clearOrder = () => {
 		currentOrder.value = null;
 		lastCreatedOrderId.value = null;
+		isRedirecting.value = false;
+		error.value = null;
+		fieldErrors.value = {};
 		errors.value = { fullName: "", phone: "", address: "" };
-		clearPayment();
 	};
 
 	return {
 		currentOrder,
 		lastCreatedOrderId,
+		isRedirecting,
 		statusMap,
 		lockedStatuses,
 		cancellableStatuses,
 		isLoading,
 		error,
-		selectedPaymentMethod,
-		paymentUrl,
+		fieldErrors,
 		shippingInfo,
 		errors,
+		settings,
 		initStatuses,
 		initShippingInfo,
 		validateShippingInfo,
@@ -221,9 +263,6 @@ export const useOrderStore = defineStore("order", () => {
 		fetchOrderDetail,
 		cancelOrder,
 		updateOrderInfo,
-		getPaymentLink,
-		setPaymentUrl,
-		clearPayment,
 		getStatusName,
 		clearOrder,
 	};

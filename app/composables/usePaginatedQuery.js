@@ -189,7 +189,6 @@ export function usePaginatedQuery(config) {
 			}
 
 			const currentPage = pageParam.value;
-			const prefetchOptions = { staleTime: 5000 };
 			const fetchKey = [
 				...queryKey,
 				{ ...queryParams.value, page: currentPage },
@@ -199,7 +198,6 @@ export function usePaginatedQuery(config) {
 				await queryClient.prefetchQuery({
 					queryKey: fetchKey,
 					queryFn: () => queryFn({ ...queryParams.value, page: currentPage }),
-					...prefetchOptions,
 				});
 
 				const fetchedData = queryClient.getQueryData(fetchKey);
@@ -227,7 +225,6 @@ export function usePaginatedQuery(config) {
 							],
 							queryFn: () =>
 								queryFn({ ...queryParams.value, page: currentPage + 1 }),
-							...prefetchOptions,
 						}),
 					);
 				}
@@ -241,7 +238,6 @@ export function usePaginatedQuery(config) {
 							],
 							queryFn: () =>
 								queryFn({ ...queryParams.value, page: currentPage - 1 }),
-							...prefetchOptions,
 						}),
 					);
 				}
@@ -288,7 +284,6 @@ export function usePaginatedQuery(config) {
 			}
 			return undefined;
 		},
-		staleTime: 5000,
 		...options,
 		enabled: enabled,
 	});
@@ -340,7 +335,6 @@ export function usePaginatedQuery(config) {
 
 		const currentPage = pageParam.value;
 		const total = totalPages.value;
-		const prefetchOptions = { staleTime: 5000 };
 
 		if (currentPage > 1) {
 			queryClient.prefetchQuery({
@@ -349,7 +343,6 @@ export function usePaginatedQuery(config) {
 					{ ...queryParams.value, page: currentPage - 1 },
 				],
 				queryFn: () => queryFn({ ...queryParams.value, page: currentPage - 1 }),
-				...prefetchOptions,
 			});
 		}
 
@@ -360,7 +353,6 @@ export function usePaginatedQuery(config) {
 					{ ...queryParams.value, page: currentPage + 1 },
 				],
 				queryFn: () => queryFn({ ...queryParams.value, page: currentPage + 1 }),
-				...prefetchOptions,
 			});
 		}
 	});
