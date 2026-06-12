@@ -50,13 +50,31 @@ const handleCheckout = async () => {
         navigateTo(`/order-success?id=${order.id}`);
       } else {
         instance.$toast.info("Dang chuyen den trang thanh toan...");
-        const url = await orderStore.getPaymentLink(order.id);
-        if (url) {
+        try {
+          const url = await orderStore.getPaymentLink(order.id);
+          if (!url) {
+            throw new Error("Không nhận được link thanh toán.");
+          }
           clearCart();
           window.location.href = url;
-        } else {
+        } catch (paymentError) {
           clearCart();
-          navigateTo(`/order-success?id=${order.id}`);
+          const message =
+            paymentError.response?.data?.errors?.[0]?.message ||
+            paymentError.response?.data?.message ||
+            paymentError.message ||
+            "Không thể mở cổng thanh toán.";
+          instance.$toast.warning(
+            `Đơn hàng đã được tạo nhưng chưa thể thanh toán: ${message}`,
+          );
+          navigateTo({
+            path: "/payment-unavailable",
+            query: {
+              id: order.id,
+              method: paymentMethod,
+              reason: "unavailable",
+            },
+          });
         }
       }
     }

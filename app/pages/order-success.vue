@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useOrderStore } from "~/stores/order.store";
 import { formatCurrency } from "~/utils/currency";
@@ -7,8 +7,6 @@ import { formatCurrency } from "~/utils/currency";
 const route = useRoute();
 const orderStore = useOrderStore();
 const orderId = computed(() => route.query.id);
-const isPaying = ref(false);
-const paymentError = ref("");
 
 if (import.meta.server) {
   throw createError({
@@ -35,50 +33,25 @@ const isOnlinePayment = computed(
     order.value.paymentMethod.toLowerCase() !== "cod",
 );
 
-const canRequestPaymentLink = computed(
-  () =>
-    isOnlinePayment.value &&
-    ["pending", "waiting_deposit"].includes(order.value?.statusId || order.value?.status),
-);
-
-onMounted(async () => {
+onMounted(() => {
   if (!order.value) return;
-  if (
-    canRequestPaymentLink.value &&
-    !order.value.paymentUrl &&
-    !orderStore.paymentUrl
-  ) {
-    try {
-      const url = await orderStore.getPaymentLink(order.value.id);
-      if (url) {
-        orderStore.setPaymentUrl(url);
-      }
-    } catch {
-      paymentError.value =
-        "Không thể tạo link thanh toán. Vui lòng thử lại sau.";
-    }
+  const status = order.value.statusId || order.value.status;
+  if (isOnlinePayment.value && ["pending", "waiting_deposit"].includes(status)) {
+    navigateTo({
+      path: "/payment-unavailable",
+      query: {
+        id: order.value.id,
+        method: order.value.paymentMethod,
+        reason: "unpaid",
+      },
+      replace: true,
+    });
   }
 });
 
-async function handlePayNow() {
-  if (!order.value) return;
-  isPaying.value = true;
-  paymentError.value = "";
-  try {
-    const url = await orderStore.getPaymentLink(order.value.id);
-    if (url) {
-      orderStore.setPaymentUrl(url);
-      window.open(url, "_blank");
-    } else {
-      paymentError.value = "Không nhận được link thanh toán. Vui lòng thử lại.";
-    }
-  } catch {
-    paymentError.value =
-      "Không thể tạo link thanh toán. Vui lòng thử lại sau.";
-  } finally {
-    isPaying.value = false;
-  }
-}
+const successTitle = computed(() =>
+  isOnlinePayment.value ? "Thanh toán thành công!" : "Đặt hàng thành công!",
+);
 
 useSeoMeta({
   title: "Đặt hàng thành công",
@@ -115,7 +88,7 @@ useSeoMeta({
               <h1
                 class="text-3xl md:text-4xl font-black text-gray-900 uppercase"
               >
-                Đặt hàng thành công!
+                {{ successTitle }}
               </h1>
               <p class="text-gray-500 font-medium max-w-md mx-auto">
                 Chúc mừng! Đơn hàng
@@ -181,15 +154,6 @@ useSeoMeta({
                       <p class="text-sm font-bold text-gray-900">
                         {{ order.paymentMethod || "COD" }}
                       </p>
-                      <p
-                        v-if="
-                          isOnlinePayment &&
-                          (order.paymentUrl || orderStore.paymentUrl)
-                        "
-                        class="text-xs text-green-600 font-medium mt-1"
-                      >
-                        Đang chờ thanh toán
-                      </p>
                     </div>
                     <div class="space-y-1">
                       <p
@@ -205,62 +169,6 @@ useSeoMeta({
                 </div>
               </div>
             </div>
-          </div>
-
-          <div
-            v-if="canRequestPaymentLink"
-            class="bg-blue-50 rounded-2xl border border-blue-100 p-6 text-left space-y-4"
-          >
-            <h3
-              class="text-sm font-black text-blue-800 uppercase tracking-wider"
-            >
-              <Icon name="fa6-solid:link" class="mr-1" />
-              Thanh toán trực tuyến
-            </h3>
-            <p class="text-sm text-blue-700 font-medium">
-              Vui lòng hoàn tất thanh toán để đơn hàng được xử lý. Link thanh toán
-              có hiệu lực trong thời gian quy định.
-            </p>
-            <p
-              v-if="paymentError"
-              class="text-sm text-red-600 font-medium"
-            >
-              {{ paymentError }}
-            </p>
-            <div
-              v-if="order.paymentUrl || orderStore.paymentUrl"
-              class="space-y-3"
-            >
-              <p class="text-xs text-blue-600 break-all">
-                Link: {{ order.paymentUrl || orderStore.paymentUrl }}
-              </p>
-              <button
-                class="px-6 py-3 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all uppercase text-xs tracking-widest"
-                @click="
-                  window.open(
-                    order.paymentUrl || orderStore.paymentUrl,
-                    '_blank',
-                  )
-                "
-              >
-                <Icon name="fa6-solid:external-link-alt" class="mr-1" />
-                Mở trang thanh toán
-              </button>
-            </div>
-            <button
-              v-else
-              class="px-6 py-3 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all uppercase text-xs tracking-widest disabled:opacity-50"
-              :disabled="isPaying"
-              @click="handlePayNow"
-            >
-              <Icon
-                v-if="isPaying"
-                name="fa6-solid:spinner"
-                class="animate-spin mr-1"
-              />
-              <Icon v-else name="fa6-solid:link" class="mr-1" />
-              {{ isPaying ? "Đang tạo link..." : "Lấy link thanh toán" }}
-            </button>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-4 pt-4">

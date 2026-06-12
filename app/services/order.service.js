@@ -20,13 +20,29 @@ export const orderService = {
 		}
 	},
 
-	async getMyOrders() {
+	async getMyPurchases(params) {
 		try {
-			return await orderRepository.getMyOrders();
+			return await orderRepository.getMyPurchases(params);
 		} catch (error) {
 			console.error("Service: Failed to fetch my orders:", error);
-			return [];
+			throw error;
 		}
+	},
+
+	async getStatusMap() {
+		return await orderRepository.getStatusMap();
+	},
+
+	async getCancellableStatuses() {
+		return await orderRepository.getCancellableStatuses();
+	},
+
+	async cancelOrder(orderId) {
+		return await orderRepository.cancelOrder(orderId);
+	},
+
+	async updateOrder(orderId, payload) {
+		return await orderRepository.updateOrder(orderId, payload);
 	},
 
 	async getPaymentLink(orderId) {
@@ -34,7 +50,7 @@ export const orderService = {
 			return await orderRepository.getPaymentLink(orderId);
 		} catch (error) {
 			console.error(`Service: Failed to get payment link for order ${orderId}:`, error);
-			return null;
+			throw error;
 		}
 	},
 };
