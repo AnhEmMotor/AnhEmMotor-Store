@@ -13,40 +13,55 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "close"]);
 
 const productStore = useProductStore();
-const categoryStore = useCategoryStore();
-const axios = useAxios();
+const MAX_PRICE = 60000000;
 
 const {
-	data: brandsData,
-	isLoading: isLoadingBrands,
+	data: filterFacetsData,
+	isLoading: isLoadingFilterFacets,
+	isError: isFilterFacetsError,
 } = useQuery({
-	queryKey: ["product-brands"],
+	queryKey: ["product-filter-facets"],
 	queryFn: async () => {
-		const { data } = await axios.get(PRODUCT_ENDPOINTS.BRANDS);
-		return data;
+		const response = await productStore.getProducts({
+			page: 1,
+			pageSize: 500,
+		});
+		const brandsById = new Map();
+		const categoriesById = new Map();
+
+		for (const product of response.items || []) {
+			if (product.brandId && product.brand) {
+				const brand = brandsById.get(product.brandId);
+				brandsById.set(product.brandId, {
+					id: product.brandId,
+					name: product.brand,
+					count: (brand?.count || 0) + 1,
+				});
+			}
+
+			if (product.categoryId && product.category) {
+				const category = categoriesById.get(product.categoryId);
+				categoriesById.set(product.categoryId, {
+					id: product.categoryId,
+					name: product.category,
+					count: (category?.count || 0) + 1,
+				});
+			}
+		}
+
+		const byProductCount = (a, b) =>
+			b.count - a.count || a.name.localeCompare(b.name, "vi");
+
+		return {
+			brands: [...brandsById.values()].sort(byProductCount).slice(0, 5),
+			categories: [...categoriesById.values()].sort(byProductCount).slice(0, 5),
+		};
 	},
 	staleTime: 1000 * 60 * 60,
 });
 
-const brands = computed(() => {
-	if (brandsData.value?.items) return brandsData.value.items;
-	if (Array.isArray(brandsData.value)) return brandsData.value;
-	return [];
-});
-
-const {
-    data: categoriesData,
-    isLoading: isLoadingCategories,
-} = useQuery({
-    queryKey: ["product-categories-filter"],
-    queryFn: async () => {
-        const response = await categoryStore.getProductCategories({ pageSize: 50 });
-        return response.items;
-    },
-    staleTime: 1000 * 60 * 60,
-});
-
-const categories = computed(() => categoriesData.value || []);
+const brands = computed(() => filterFacetsData.value?.brands || []);
+const categories = computed(() => filterFacetsData.value?.categories || []);
 
 
 const {
@@ -74,6 +89,13 @@ const selectedOptions = computed({
 	},
 });
 
+const search = computed({
+	get: () => props.modelValue.search || "",
+	set: (val) => {
+		emit("update:modelValue", { ...props.modelValue, search: val });
+	},
+});
+
 const selectedBrands = computed({
 	get: () => props.modelValue.brand_ids || [],
 	set: (val) => {
@@ -97,7 +119,7 @@ const minPrice = computed({
 });
 
 const maxPrice = computed({
-	get: () => props.modelValue.maxPrice ?? 30000000,
+	get: () => props.modelValue.maxPrice ?? MAX_PRICE,
 	set: (val) => {
 		emit("update:modelValue", { ...props.modelValue, maxPrice: val });
 	},
@@ -203,6 +225,26 @@ const formatVND = (val) => {
 		</div>
 
 		<div class="flex-1 overflow-y-auto p-6 space-y-10 custom-scrollbar">
+			<!-- Search -->
+			<div class="space-y-3">
+				<span class="text-sm font-black text-gray-900 uppercase tracking-widest">
+					Tìm kiếm
+				</span>
+				<div class="relative">
+					<Icon
+						name="fa6-solid:magnifying-glass"
+						class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+					/>
+					<input
+						v-model="search"
+						type="search"
+						aria-label="Tìm kiếm sản phẩm"
+						placeholder="Tên xe, phiên bản, màu sắc..."
+						class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm font-medium text-gray-900 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+					>
+				</div>
+			</div>
+
 			<!-- Brands -->
 			<div class="space-y-4">
 				<div class="flex items-center gap-2">
@@ -212,9 +254,15 @@ const formatVND = (val) => {
 					>
 				</div>
 				<ClientOnly>
-					<div v-if="isLoadingBrands" class="py-4 flex justify-center">
+					<div v-if="isLoadingFilterFacets" class="py-4 flex justify-center">
 						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
 					</div>
+					<p
+						v-else-if="isFilterFacetsError"
+						class="rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600"
+					>
+						Không thể tải danh sách thương hiệu.
+					</p>
 					<div v-else-if="brands.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
 						<button
 							v-for="brand in brands"
@@ -242,7 +290,7 @@ const formatVND = (val) => {
 					>
 				</div>
 				<ClientOnly>
-					<div v-if="isLoadingCategories" class="py-4 flex justify-center">
+					<div v-if="isLoadingFilterFacets" class="py-4 flex justify-center">
 						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
 					</div>
 					<div v-else-if="categories.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
@@ -277,9 +325,9 @@ const formatVND = (val) => {
 						<!-- Active Track Highlight -->
 						<div 
 							class="absolute h-full bg-primary rounded-full shadow-[0_0_10px_rgba(227,24,55,0.3)] will-change-[left,right]"
-							:style="{ 
-								left: `${(minPrice / 30000000) * 100}%`, 
-								right: `${100 - (maxPrice || 30000000) / 30000000 * 100}%` 
+							:style="{
+								left: `${(minPrice / MAX_PRICE) * 100}%`,
+								right: `${100 - (maxPrice || MAX_PRICE) / MAX_PRICE * 100}%`
 							}"
 						/>
 						
@@ -288,10 +336,10 @@ const formatVND = (val) => {
 							v-model.number="minPrice"
 							type="range"
 							min="0"
-							max="30000000"
+							:max="MAX_PRICE"
 							step="500000"
 							class="absolute w-full h-full appearance-none bg-transparent pointer-events-none z-10"
-							@input="minPrice = Math.min(minPrice, (maxPrice || 30000000) - 500000)"
+							@input="minPrice = Math.min(minPrice, (maxPrice || MAX_PRICE) - 500000)"
 						>
 						
 						<!-- Max Slider -->
@@ -299,7 +347,7 @@ const formatVND = (val) => {
 							v-model.number="maxPrice"
 							type="range"
 							min="0"
-							max="30000000"
+							:max="MAX_PRICE"
 							step="500000"
 							class="absolute w-full h-full appearance-none bg-transparent pointer-events-none z-20"
 							@input="maxPrice = Math.max(maxPrice || 0, minPrice + 500000)"
@@ -314,24 +362,8 @@ const formatVND = (val) => {
 						</div>
 						<div class="text-right space-y-1">
 							<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Đến</span>
-							<p class="text-xs font-black text-gray-900">{{ formatVND(maxPrice || 30000000) }}</p>
+							<p class="text-xs font-black text-gray-900">{{ formatVND(maxPrice || MAX_PRICE) }}</p>
 						</div>
-					</div>
-
-					<!-- Quick Presets -->
-					<div class="flex flex-wrap gap-2 pt-2">
-						<button 
-							v-for="range in [
-								{l:'Dưới 10tr', min:0, max:10000000}, 
-								{l:'10-20tr', min:10000000, max:20000000}, 
-								{l:'20-30tr', min:20000000, max:30000000}
-							]" 
-							:key="range.l"
-							class="px-3 py-2 bg-white text-[9px] font-black text-gray-500 uppercase rounded-xl border border-gray-100 hover:border-primary hover:text-primary transition-all shadow-sm"
-							@click="minPrice = range.min; maxPrice = range.max"
-						>
-							{{ range.l }}
-						</button>
 					</div>
 				</div>
 			</div>

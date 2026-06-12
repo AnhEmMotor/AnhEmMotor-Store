@@ -94,6 +94,7 @@ const {
 	},
 	itemsPerPage: 12,
 	filters: filters,
+	debouncedFields: ["search"],
 	dataKey: (res) => res.items,
 });
 
@@ -189,6 +190,7 @@ const formatVND = (value) => {
 
 					<div
 						v-if="
+							filters.search ||
 							filters.optionValueIds.length > 0 ||
 							filters.category_ids.length > 0 ||
 							filters.brand_ids.length > 0 ||
@@ -201,6 +203,20 @@ const formatVND = (value) => {
 							class="text-xs font-bold text-gray-400 uppercase tracking-widest w-full mb-1"
 							>Đang lọc theo:</span
 						>
+
+						<!-- Search Chip -->
+						<button
+							v-if="filters.search"
+							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
+							@click="filters.search = ''"
+						>
+							<Icon name="fa6-solid:magnifying-glass" class="text-xs" />
+							<span>Tìm kiếm: {{ filters.search }}</span>
+							<Icon
+								name="fa6-solid:xmark"
+								class="ml-1 opacity-50 group-hover:opacity-100"
+							/>
+						</button>
 
 						<!-- Price Chip -->
 						<button
@@ -223,9 +239,12 @@ const formatVND = (value) => {
 							class="px-4 py-2 bg-primary/5 text-primary rounded-full text-xs font-bold border border-primary/10 hover:bg-primary/10 transition-colors flex items-center gap-2"
 							aria-label="Xóa tất cả bộ lọc đang chọn"
 							@click="
+								filters.search = '';
 								filters.optionValueIds = [];
 								filters.category_ids = [];
 								filters.brand_ids = [];
+								filters.minPrice = null;
+								filters.maxPrice = null;
 							"
 						>
 							Xóa tất cả

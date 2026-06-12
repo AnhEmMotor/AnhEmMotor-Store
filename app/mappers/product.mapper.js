@@ -41,7 +41,12 @@ const productMapper = {
 			image: getImageUrl(
 				raw.thumbnailUrl || variants[0]?.image || variants[0]?.cover_image_url,
 			),
-			category: raw.categoryName || raw.category?.name || "",
+			categoryId: raw.categoryId ?? raw.category_id ?? null,
+			category:
+				raw.categoryName ||
+				(typeof raw.category === "string" ? raw.category : raw.category?.name) ||
+				"",
+			brandId: raw.brandId ?? raw.brand_id ?? null,
 			brand: raw.brand || "",
 			type: raw.type || "",
 			rating: raw.rating || 5,
