@@ -20,11 +20,6 @@
 				>
 				<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"/>
 				
-				<!-- Icon Overlay (Floating) -->
-				<div class="absolute top-8 left-8 w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-2xl border border-gray-50 transform group-hover:-translate-y-2 group-hover:rotate-6 transition-all duration-500">
-					<Icon v-if="!isEmoji(service.icon)" :name="service.icon || 'fa6-solid:wrench'" class="text-3xl text-primary" />
-					<span v-else class="text-3xl">{{ service.icon }}</span>
-				</div>
 			</div>
 			<!-- Decorative Background Blobs -->
 			<div 
@@ -129,11 +124,6 @@ const formatPrice = (price) => {
 	return 'Từ ' + new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 };
 
-const isEmoji = (str) => {
-	if (!str) return false;
-	const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
-	return regexExp.test(str);
-};
 </script>
 
 <style scoped>
