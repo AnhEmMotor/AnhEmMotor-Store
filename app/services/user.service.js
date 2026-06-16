@@ -1,26 +1,45 @@
-
-
 /**
  * Application Layer - User Service
  */
-export const userService = {
+import { IUserRepository } from "@/core/domain/repositories/user.repository.interface";
+
+/**
+ * Factory function to create user service with dependency injection
+ * @param {IUserRepository} repository
+ * @returns {IUserRepository}
+ */
+export const createUserService = (repository) => ({
 	async getProfile() {
 		try {
-			return await userRepository.getProfile();
+			return await repository.getUserProfile();
 		} catch (error) {
-			console.error("Service: Failed to fetch user profile:", error);
 			return null;
 		}
 	},
 
 	async updateProfile(profileData) {
 		try {
-			return await userRepository.updateProfile(profileData);
+			return await repository.updateProfile(profileData);
 		} catch (error) {
-			console.error("Service: Failed to update user profile:", error);
 			throw error;
 		}
 	},
-};
 
-export default userService;
+	async changePassword(passwordData) {
+		try {
+			return await repository.changePassword(passwordData);
+		} catch (error) {
+			throw error;
+		}
+	},
+
+	async updateAvatar(avatarData) {
+		try {
+			return await repository.updateAvatar(avatarData);
+		} catch (error) {
+			throw error;
+		}
+	},
+});
+
+export default createUserService;

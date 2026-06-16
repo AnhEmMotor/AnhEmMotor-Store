@@ -1,7 +1,10 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import homeService from "@/services/home.service";
+import { homeRepository } from "@/core/infrastructure/repositories/home.repository";
+import { createHomeService } from "@/services/home.service";
 import homeMapper from "@/mappers/home.mapper";
+
+const homeService = createHomeService(homeRepository);
 
 export const useHomeStore = defineStore("home", () => {
 	const brands = ref([]);
@@ -61,7 +64,6 @@ export const useHomeStore = defineStore("home", () => {
 			featuredProducts.value = homeMapper.mapProducts(rawProducts);
 			banners.value = homeMapper.mapBanners(rawBanners);
 		} catch (error) {
-			console.error("Home data fetch error:", error);
 		} finally {
 			isLoading.value = false;
 		}

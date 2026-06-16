@@ -92,7 +92,6 @@ const handleSubmit = async () => {
         isSuccess.value = true;
     } catch (error) {
         alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng kiểm tra lại thông tin.");
-        console.error(error);
     } finally {
         isSubmitting.value = false;
     }

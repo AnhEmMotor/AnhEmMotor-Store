@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import layoutService from "../services/layout.service";
-import layoutMapper from "../mappers/layout.mapper";
-import { FLOATING_BUTTONS, HERO_BIKE_MODELS } from "../constants/layout";
+import { layoutRepository } from "@/core/infrastructure/repositories/layout.repository";
+import { createLayoutService } from "@/services/layout.service";
+import layoutMapper from "@/mappers/layout.mapper";
+import { FLOATING_BUTTONS, HERO_BIKE_MODELS } from "@/constants/layout";
+
+const layoutService = createLayoutService(layoutRepository);
 
 export const useLayoutStore = defineStore("layout", () => {
 	const navItems = ref([]);

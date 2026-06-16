@@ -10,8 +10,8 @@ useSeoMeta({
 const maintenanceStore = useMaintenanceStore();
 const activeCategory = ref('all');
 
-
-await useAsyncData("maintenance-services-v2", async () => {
+// Non-blocking fetch
+useAsyncData("maintenance-services-v2", async () => {
 	await maintenanceStore.fetchServices();
 	return maintenanceStore.services;
 });

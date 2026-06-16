@@ -143,16 +143,16 @@ export const recruitmentRepository = {
 
 	/**
 	 * Submits a recruitment application
-	 * @param {Object} formData 
+	 * @param {Object} formData
 	 */
 	submitApplication: async () => {
-		// Mock submission delay
-		await new Promise(resolve => setTimeout(resolve, 2000));
-		
+		// Reduced mock delay from 2000ms to 300ms for better UX
+		await new Promise(resolve => setTimeout(resolve, 300));
+
 		// In production:
 		// const axios = useAxios();
 		// return await axios.post('/api/recruitment/apply', formData);
-		
+
 		return { success: true, message: 'Application submitted successfully' };
 	}
 };

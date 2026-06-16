@@ -38,7 +38,7 @@ useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });
 	<div class="fb-page-container min-h-screen relative overflow-hidden flex flex-col bg-[#FDFDFD]">
 		<!-- Premium Background Image -->
 		<div class="fb-bg-image">
-			<img src="/premium_motorcycle_showroom_visit_1778827603878.png" alt="AnhEm Motor Showroom" class="fb-bg-img" >
+			<NuxtImg src="/premium_motorcycle_showroom_visit_1778827603878.png" alt="AnhEm Motor Showroom" class="fb-bg-img" />
 			<div class="fb-bg-overlay"/>
 			
 			<!-- Decorative Premium Elements -->

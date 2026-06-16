@@ -1,38 +1,43 @@
 /**
  * Application Layer - Product Service
  */
-export const productService = {
+import { IProductRepository } from "@/core/domain/repositories/product.repository.interface";
+
+/**
+ * Factory function to create product service with dependency injection
+ * @param {IProductRepository} repository
+ * @returns {IProductRepository}
+ */
+export const createProductService = (repository) => ({
 	async getProducts(params) {
 		try {
-			const data = await productRepository.getProducts(params);
+			const data = await repository.getProducts(params);
 			return {
 				items: data.items || [],
 				totalCount: data.totalCount,
 				totalPages: data.totalPages,
 			};
 		} catch (error) {
-			console.error("Service: Failed to fetch products:", error);
 			return { items: [], totalCount: 0 };
 		}
 	},
 
 	async getProductDetail(slug) {
 		try {
-			const data = await productRepository.getProductDetail(slug);
+			const data = await repository.getProductDetail(slug);
 			return data || null;
 		} catch (error) {
-			console.error(`Service: Failed to fetch product detail for ${slug}:`, error);
 			return null;
 		}
 	},
 
 	async getOptions() {
-		return await productRepository.getOptions();
+		return await repository.getOptions();
 	},
 
 	async getAttributeLabels() {
-		return await productRepository.getAttributeLabels();
+		return await repository.getAttributeLabels();
 	},
-};
+});
 
-export default productService;
+export default createProductService;

@@ -15,8 +15,8 @@ useSeoMeta({
 
 const appStore = useAppStore();
 
-// Lấy dữ liệu bất đồng bộ chuẩn Nuxt 3
-await useAsyncData("app-content", async () => {
+// Non-blocking fetch
+useAsyncData("app-content", async () => {
 	await appStore.fetchAppContent();
 	return true;
 });

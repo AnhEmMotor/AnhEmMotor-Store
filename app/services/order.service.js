@@ -1,58 +1,61 @@
 /**
  * Application Layer - Order Service
  */
-export const orderService = {
+import { IOrderRepository } from "@/core/domain/repositories/order.repository.interface";
+
+/**
+ * Factory function to create order service with dependency injection
+ * @param {IOrderRepository} repository
+ * @returns {IOrderRepository}
+ */
+export const createOrderService = (repository) => ({
 	async createOrder(orderData) {
 		try {
-			return await orderRepository.createOrder(orderData);
+			return await repository.createOrder(orderData);
 		} catch (error) {
-			console.error("Service: Failed to create order:", error);
 			throw error;
 		}
 	},
 
 	async getOrderDetail(id) {
 		try {
-			return await orderRepository.getOrderDetail(id);
+			return await repository.getOrderDetail(id);
 		} catch (error) {
-			console.error(`Service: Failed to fetch order detail for ${id}:`, error);
 			return null;
 		}
 	},
 
 	async getMyPurchases(params) {
 		try {
-			return await orderRepository.getMyPurchases(params);
+			return await repository.getMyPurchases(params);
 		} catch (error) {
-			console.error("Service: Failed to fetch my orders:", error);
 			throw error;
 		}
 	},
 
 	async getStatusMap() {
-		return await orderRepository.getStatusMap();
+		return await repository.getStatusMap();
 	},
 
 	async getCancellableStatuses() {
-		return await orderRepository.getCancellableStatuses();
+		return await repository.getCancellableStatuses();
 	},
 
 	async cancelOrder(orderId) {
-		return await orderRepository.cancelOrder(orderId);
+		return await repository.cancelOrder(orderId);
 	},
 
 	async updateOrder(orderId, payload) {
-		return await orderRepository.updateOrder(orderId, payload);
+		return await repository.updateOrder(orderId, payload);
 	},
 
 	async getPaymentLink(orderId) {
 		try {
-			return await orderRepository.getPaymentLink(orderId);
+			return await repository.getPaymentLink(orderId);
 		} catch (error) {
-			console.error(`Service: Failed to get payment link for order ${orderId}:`, error);
 			throw error;
 		}
 	},
-};
+});
 
-export default orderService;
+export default createOrderService;

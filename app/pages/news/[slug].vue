@@ -1,15 +1,39 @@
 <script setup>
 const route = useRoute();
 const newsStore = useNewsStore();
+const productStore = useProductStore();
 
-const { data: news } = await useAsyncData(
+const { data: news, pending: isLoading } = useAsyncData(
 	`news-detail-${route.params.slug}`,
 	async () => {
-		return await newsStore.fetchNewsBySlug(route.params.slug);
+		const newsData = await newsStore.fetchNewsBySlug(route.params.slug);
+		// Add view count placeholder (will come from backend)
+		if (newsData) {
+			newsData.views = 1250; // Placeholder
+			newsData.readingTime = "5 phút đọc";
+		}
+		return newsData;
 	},
 	{
 		watch: [() => route.params.slug],
 	},
+);
+
+// Fetch related products
+const { data: relatedProducts } = useAsyncData(
+	`related-products-${route.params.slug}`,
+	async () => {
+		try {
+			const products = await productStore.getProducts({
+				limit: 4,
+				isFeatured: true,
+			});
+			return products.items.slice(0, 4);
+		} catch (error) {
+			console.error('Failed to fetch related products:', error);
+			return [];
+		}
+	}
 );
 
 watchEffect(() => {
@@ -36,6 +60,18 @@ const shareOnFacebook = () => {
 	}
 };
 
+const shareOnZalo = () => {
+	if (import.meta.client) {
+		window.open('https://zalo.me/0123456789', '_blank');
+	}
+};
+
+const shareOnMessenger = () => {
+	if (import.meta.client) {
+		window.open('https://m.me/anhemmotor', '_blank');
+	}
+};
+
 const copyLink = () => {
 	if (import.meta.client) {
 		navigator.clipboard.writeText(window.location.href);
@@ -47,12 +83,29 @@ const copyLink = () => {
 <template>
 	<div class="bg-white min-h-screen pb-24 font-['Manrope']">
 		<div v-if="news">
-			<!-- [1] IMMERSIVE HERO LANDING SECTION -->
+			<!-- [1] BREADCRUMB NAVIGATION -->
+			<div class="bg-gray-50 border-b border-gray-100">
+				<div class="container mx-auto px-6 py-3">
+					<nav class="flex items-center space-x-2 text-sm">
+						<NuxtLink to="/" class="text-gray-500 hover:text-red-600 transition-colors font-medium">
+							Trang chủ
+						</NuxtLink>
+						<Icon name="ph:caret-right" class="text-gray-400 text-xs" />
+						<NuxtLink to="/news" class="text-gray-500 hover:text-red-600 transition-colors font-medium">
+							Tin tức
+						</NuxtLink>
+						<Icon name="ph:caret-right" class="text-gray-400 text-xs" />
+						<span class="text-gray-950 font-black uppercase tracking-wider text-xs">{{ news.category }}</span>
+					</nav>
+				</div>
+			</div>
+
+			<!-- [2] IMMERSIVE HERO LANDING SECTION -->
 			<section class="relative min-h-[500px] md:min-h-[600px] flex items-end overflow-hidden bg-gray-950 text-white">
 				<!-- High-quality Immersive Backdrop -->
 				<div class="absolute inset-0 z-0">
-					<img 
-						:src="news.image" 
+					<img
+						:src="news.image"
 						class="w-full h-full object-cover opacity-35 scale-105 blur-[2px]"
 						:alt="news.title"
 					>
@@ -78,35 +131,46 @@ const copyLink = () => {
 							<h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1]">
 								{{ news.title }}
 							</h1>
-							
+
 							<!-- Subtitle Excerpt / Quote -->
 							<p v-if="news.excerpt || news.shortDescription" class="text-lg md:text-xl text-gray-300 font-medium max-w-3xl leading-relaxed italic border-l-4 border-red-600 pl-8">
 								"{{ news.excerpt || news.shortDescription }}"
 							</p>
 						</div>
-
-						<!-- Metadata & Sharing Row -->
-						<div class="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-6 animate-slide-up delay-200">
-							<div class="flex items-center gap-6 text-gray-400 text-xs">
-								<div class="flex items-center gap-2">
-									<Icon name="ph:calendar-blank-fill" class="text-red-500 text-base" />
-									<span class="font-black uppercase tracking-wider">{{ news.date || 'Gần đây' }}</span>
-								</div>
-								<div class="w-[1px] h-4 bg-white/15"/>
-								<div class="flex items-center gap-2">
-									<Icon name="ph:clock-fill" class="text-red-500 text-base" />
-									<span class="font-black uppercase tracking-wider">5 phút đọc</span>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</section>
 
-			<!-- [2] MAIN CONTENT & SIDEBAR GRID -->
+			<!-- [3] ARTICLE INFO SECTION -->
+			<div class="bg-gray-50 border-b border-gray-100">
+				<div class="container mx-auto px-6 py-6">
+					<div class="flex flex-wrap items-center justify-between gap-4">
+						<div class="flex flex-wrap items-center gap-6">
+							<div class="flex items-center gap-2">
+								<Icon name="ph:user-fill" class="text-red-600 text-lg" />
+								<span class="text-sm font-black uppercase tracking-wider text-gray-950">AnhEm Motor</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<Icon name="ph:calendar-blank-fill" class="text-red-600 text-lg" />
+								<span class="text-sm font-black uppercase tracking-wider text-gray-950">{{ news.date || 'Gần đây' }}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<Icon name="ph:clock-fill" class="text-red-600 text-lg" />
+								<span class="text-sm font-black uppercase tracking-wider text-gray-950">{{ news.readingTime }}</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<Icon name="ph:eye-fill" class="text-red-600 text-lg" />
+								<span class="text-sm font-black uppercase tracking-wider text-gray-950">{{ Number(news.views).toLocaleString('vi-VN') }} lượt xem</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- [4] MAIN CONTENT & SIDEBAR GRID -->
 			<main class="container mx-auto px-6 mt-16 md:mt-24">
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-20">
-					
+
 					<!-- LEFT COLUMN: ARTICLE BODY -->
 					<article class="lg:col-span-8 space-y-16">
 						<!-- Main Image container in body -->
@@ -121,6 +185,78 @@ const copyLink = () => {
 						<!-- Custom Rich Text Renderer (Tailwind CSS Typography matching) -->
 						<div class="prose prose-lg max-w-none prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-headings:text-gray-950 prose-p:text-gray-600 prose-p:leading-relaxed font-sans">
 							<NewsBlockRenderer :content="news.content" />
+						</div>
+
+						<!-- [7] CTA SECTION BEFORE RELATED CONTENT -->
+						<div class="relative p-8 md:p-12 bg-gradient-to-br from-gray-950 to-gray-900 rounded-[2.5rem] overflow-hidden text-white shadow-2xl my-12">
+							<!-- Decorative Elements -->
+							<div class="absolute -top-16 -right-16 w-64 h-64 bg-red-600/10 rounded-full blur-3xl"/>
+							<div class="absolute -bottom-16 -left-16 w-64 h-64 bg-white/5 rounded-full blur-3xl"/>
+
+							<div class="relative z-10">
+								<div class="text-center max-w-2xl mx-auto space-y-6">
+									<h3 class="text-2xl md:text-3xl font-black uppercase tracking-tighter leading-tight">
+										Bạn quan tâm {{ news.title }}?
+									</h3>
+									<p class="text-sm md:text-base font-medium leading-relaxed opacity-90">
+										Nhận ngay báo giá mới nhất và ưu đãi trả góp lãi suất thấp dành riêng cho bạn.
+									</p>
+									<div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+										<a
+											href="tel:0909123456"
+											class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-lg active:scale-95"
+										>
+											<Icon name="ph:phone-fill" class="text-lg" />
+											Nhận báo giá
+										</a>
+										<NuxtLink
+											to="/test-ride"
+											class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-gray-950 hover:bg-gray-100 rounded-xl font-black text-sm uppercase tracking-widest transition-all"
+										>
+											<Icon name="ph:arrow-right-fill" class="text-lg" />
+											Đăng ký lái thử
+										</NuxtLink>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- [4] RELATED PRODUCTS SECTION -->
+						<div v-if="relatedProducts && relatedProducts.length > 0" class="space-y-8 my-12">
+							<div class="border-b border-gray-100 pb-4">
+								<h2 class="text-2xl md:text-3xl font-black text-gray-950 uppercase tracking-tighter flex items-center gap-3">
+									<span class="w-2 h-8 bg-red-600 rounded-full"/>
+									Xe liên quan
+								</h2>
+							</div>
+							<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+								<ProductCard
+									v-for="product in relatedProducts"
+									:key="product.id"
+									:product="product"
+								/>
+							</div>
+						</div>
+
+						<!-- [5] RELATED ARTICLES SECTION -->
+						<div class="space-y-8 my-12">
+							<div class="border-b border-gray-100 pb-4">
+								<h2 class="text-2xl md:text-3xl font-black text-gray-950 uppercase tracking-tighter flex items-center gap-3">
+									<span class="w-2 h-8 bg-red-600 rounded-full"/>
+									Bài viết liên quan
+								</h2>
+							</div>
+							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+								<NewsCardHorizontal
+									v-for="related in news.related.slice(0, 3)"
+									:key="related.id"
+									:news="related"
+								/>
+							</div>
+							<div v-if="news.related.length === 0" class="text-center py-12 text-gray-400">
+								<Icon name="ph:newspaper-clip" class="text-6xl mb-4 opacity-50" />
+								<p class="font-black uppercase tracking-wider">Chưa có bài viết liên quan</p>
+							</div>
 						</div>
 
 						<!-- Article Footer & Social Share Pill Block -->
@@ -139,12 +275,28 @@ const copyLink = () => {
 									Facebook
 								</button>
 								<button
-									class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-gray-950 hover:bg-red-600 text-white rounded-xl font-black text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95"
+									class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95"
+									aria-label="Chia sẻ bài viết này qua Zalo"
+									@click="shareOnZalo"
+								>
+									<Icon name="ph:chat-circle-dots-fill" class="text-lg" />
+									Zalo
+								</button>
+								<button
+									class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-green-500 hover:bg-green-600 text-white rounded-xl font-black text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95"
+									aria-label="Chia sẻ bài viết này qua Messenger"
+									@click="shareOnMessenger"
+								>
+									<Icon name="ph:messenger-logo-fill" class="text-lg" />
+									Messenger
+								</button>
+								<button
+									class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-gray-950 hover:bg-gray-800 text-white rounded-xl font-black text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md active:scale-95"
 									aria-label="Sao chép liên kết bài viết này"
 									@click="copyLink"
 								>
 									<Icon name="ph:link-bold" class="text-lg" />
-									Sao chép liên kết
+									Sao chép link
 								</button>
 							</div>
 						</div>
@@ -170,8 +322,8 @@ const copyLink = () => {
 				Không Tìm Thấy Tin Tức
 			</h2>
 			<p class="text-gray-400 text-sm font-medium mb-8">Bài viết bạn yêu cầu không tồn tại hoặc đã bị xóa khỏi hệ thống.</p>
-			<NuxtLink 
-				to="/news" 
+			<NuxtLink
+				to="/news"
 				class="inline-flex items-center gap-3 px-8 py-4 bg-gray-950 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 transition-colors shadow-xl"
 			>
 				<Icon name="ph:arrow-left-bold" />

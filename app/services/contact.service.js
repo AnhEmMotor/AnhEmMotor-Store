@@ -1,12 +1,14 @@
-export const contactService = {
-	submitContact: async (formData) => {
-		const res = await fetch("https://backend-xolq.onrender.com/api/contacts", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(formData),
-		});
+import { IContactRepository } from "@/core/domain/repositories/contact.repository.interface";
 
-		const data = await res.json();
-		return data;
+/**
+ * Factory function to create contact service with dependency injection
+ * @param {IContactRepository} repository
+ * @returns {IContactRepository}
+ */
+export const createContactService = (repository) => ({
+	submitContact: async (formData) => {
+		return await repository.submitContact(formData);
 	},
-};
+});
+
+export default createContactService;

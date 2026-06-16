@@ -7,7 +7,8 @@ useSeoMeta({
 const promotionStore = usePromotionStore();
 const activeTab = ref('all');
 
-await useAsyncData("promotions", () => promotionStore.fetchAllPromotions());
+// Non-blocking fetch
+useAsyncData("promotions", () => promotionStore.fetchAllPromotions());
 
 const filteredPromotions = computed(() => {
 	// Simple mock filtering for demo purposes

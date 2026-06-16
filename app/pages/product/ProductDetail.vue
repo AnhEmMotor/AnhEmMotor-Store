@@ -16,7 +16,7 @@ const {
     data: detail,
     pending: isLoading,
     error,
-} = await useAsyncData(
+} = useAsyncData(
     "product-detail-" + slug.value,
     () => productStore.fetchFullProductDetail(slug.value),
     {
@@ -261,7 +261,7 @@ const bookTestDrive = () => {
                                     <span class="px-4 py-1.5 bg-gradient-premium text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg animate-glow">Exclusive Deal</span>
                                     <span v-if="detail.product.brand" class="px-4 py-1.5 bg-white/80 backdrop-blur-md text-gray-900 text-[9px] font-black uppercase tracking-[0.2em] rounded-full shadow-md border border-gray-100">{{ detail.product.brand }}</span>
                                 </div>
-                                <img :src="mainImage" :alt="detail.product.name" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="eager">
+                                <NuxtImg :src="mainImage" :alt="detail.product.name" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="eager"/>
                             </div>
                             <!-- Reflection -->
                             <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-20 reflection opacity-30 z-0"/>
@@ -274,7 +274,7 @@ v-for="(photo, index) in allPhotos" :key="index"
                                 :class="mainImage === photo ? 'border-primary ring-4 ring-primary/5 scale-105 shadow-xl' : 'border-transparent hover:border-gray-200 shadow-sm opacity-50 hover:opacity-100'"
                                 @click="mainImage = photo"
                             >
-                                <img :src="photo" class="w-full h-full object-cover" loading="lazy">
+                                <NuxtImg :src="photo" class="w-full h-full object-cover" loading="lazy"/>
                             </button>
                         </div>
 
@@ -424,7 +424,7 @@ v-for="(photo, index) in allPhotos" :key="index"
                     <div v-for="(hl, idx) in highlights" :key="idx" class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-center reveal-up px-4 lg:px-12">
                         <div :class="['lg:col-span-7 relative group', idx % 2 !== 0 ? 'lg:order-2' : '']">
                             <div class="relative rounded-[2.5rem] overflow-hidden shadow-xl border border-gray-100 transition-transform duration-700 group-hover:scale-[1.01]">
-                                <img :src="hl.image" :alt="hl.title" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy">
+                                <NuxtImg :src="hl.image" :alt="hl.title" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy"/>
                             </div>
                         </div>
                         <div :class="['lg:col-span-5 space-y-6', idx % 2 !== 0 ? 'lg:text-right' : '']">

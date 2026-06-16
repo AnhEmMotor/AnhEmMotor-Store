@@ -12,7 +12,13 @@ useSeoMeta({
 const newsStore = useNewsStore();
 const activeTab = ref('all');
 
-await useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
+// Non-blocking fetch for featured news
+useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
+
+// Create service instance for paginated queries
+import { newsRepository } from "~/core/infrastructure/repositories/news.repository";
+import { createNewsService } from "~/services/news.service";
+const newsService = createNewsService(newsRepository);
 
 const {
 	data: allNews,
@@ -24,6 +30,7 @@ const {
 	queryFn: (params) => newsService.getAllNews(params),
 	itemsPerPage: 6,
 	useLocalPagination: true,
+	staleTime: 5 * 60 * 1000, // Cache for 5 minutes
 });
 
 const featuredNews = computed(() => {

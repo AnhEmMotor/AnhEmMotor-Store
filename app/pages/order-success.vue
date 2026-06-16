@@ -16,7 +16,7 @@ if (import.meta.server) {
   });
 }
 
-const { data: order, pending: isLoading } = await useAsyncData(
+const { data: order, pending: isLoading } = useAsyncData(
   `order-success-${orderId.value}`,
   async () => {
     if (!orderId.value) return null;

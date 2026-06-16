@@ -22,13 +22,14 @@ export default defineNuxtConfig({
 		"@nuxt/eslint-config",
 		"@nuxt/eslint",
 		"@nuxt/icon",
+		"@nuxt/image",
 	],
 	icon: {
 		clientBundle: {
 			scan: true,
 		},
 		serverBundle: "auto",
-        collections: ['ph', 'lucide', 'fa6-solid', 'fa6-regular']
+        collections: ['ph', 'lucide', 'fa6-solid', 'fa6-regular', 'fa6-brands']
 	},
 
 	sitemap: {
@@ -119,13 +120,43 @@ export default defineNuxtConfig({
 		routeRules: {
 			"/contact": { redirect: "/support" },
 			"/api/v1/**": {
-				proxy: "http://localhost:7001/api/v1/**",
+				proxy: "http://localhost:5000/api/v1/**",
 			},
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
 			},
 		},
 		compressPublicAssets: true,
+	},
+
+	// Image optimization
+	image: {
+		// Use Nitro's image provider for optimal performance
+		provider: "nitro",
+		// Quality for WebP/AVIF
+		quality: 80,
+		// Generate responsive sizes
+		screens: {
+			xs: 320,
+			sm: 640,
+			md: 768,
+			lg: 1024,
+			xl: 1280,
+			"2xl": 1536,
+		},
+		// Presets for common use cases
+		presets: {
+			hero: {
+				quality: 85,
+				format: "webp",
+				sizes: "100vw",
+			},
+			card: {
+				quality: 75,
+				format: "webp",
+				sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+			},
+		},
 	},
 
 	css: ["~/assets/main.css"],

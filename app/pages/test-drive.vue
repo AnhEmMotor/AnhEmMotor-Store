@@ -3,11 +3,11 @@
 		<!-- [1] HERO SECTION - Compacted -->
 		<section class="relative h-[45vh] min-h-[400px] flex items-center overflow-hidden">
 			<div class="absolute inset-0 z-0">
-				<img 
-					src="/assets/image/anhem_motor_test_drive_banner_1778898900918.png" 
-					alt="Showroom AnhEm Motor" 
+				<NuxtImg
+					src="/assets/image/anhem_motor_test_drive_banner_1778898900918.png"
+					alt="Showroom AnhEm Motor"
 					class="w-full h-full object-cover brightness-50 scale-105"
-				>
+				/>
 				<div class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/40 to-transparent"/>
 			</div>
 
@@ -42,7 +42,7 @@
 						>
 							<div v-if="selectedVehicle" class="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
 								<div class="relative">
-									<img :src="selectedVehicle.image || '/assets/image/placeholder-product.webp'" :alt="selectedVehicle.name" class="w-full max-h-48 object-contain drop-shadow-lg transition-all duration-700 group-hover:scale-105">
+									<NuxtImg :src="selectedVehicle.image || '/assets/image/placeholder-product.webp'" :alt="selectedVehicle.name" class="w-full max-h-48 object-contain drop-shadow-lg transition-all duration-700 group-hover:scale-105" />
 								</div>
 								<div class="space-y-2 pt-2">
 									<div class="flex items-end justify-between">
@@ -401,7 +401,6 @@ onMounted(async () => {
 			form.productVariantId = parseInt(route.query.variantId);
 		}
 	} catch {
-		console.warn("[TestDrive] API failed, using Mock Data for UI testing.");
 		// Fallback data in case of connection error
 		variants.value = [
 			{
@@ -469,7 +468,6 @@ const handleSubmit = async () => {
 		isSuccess.value = true;
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	} catch (error) {
-		console.error("[TestDrive] Booking error:", error);
 		alert(error.message || "Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại sau.");
 	} finally {
 		isSubmitting.value = false;

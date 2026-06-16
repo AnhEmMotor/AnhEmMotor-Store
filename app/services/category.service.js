@@ -1,22 +1,21 @@
 import { STATIC_CATEGORIES } from "../constants/categories";
-import { categoryRepository } from "../core/infrastructure/repositories/category.repository";
+import { ICategoryRepository } from "@/core/domain/repositories/category.repository.interface";
 
 /**
  * Application Layer - Category Service
  */
-export const categoryService = {
+export const createCategoryService = (repository) => ({
 	async getStaticCategories() {
 		return STATIC_CATEGORIES;
 	},
 
 	async getApiCategories(params = {}) {
 		try {
-			return await categoryRepository.getCategories(params);
+			return await repository.getCategories(params);
 		} catch (error) {
-			console.error("Service: Failed to fetch API categories:", error);
 			return [];
 		}
 	},
-};
+});
 
-export default categoryService;
+export default createCategoryService;

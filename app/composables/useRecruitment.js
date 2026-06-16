@@ -1,4 +1,7 @@
-import { recruitmentService } from "../core/application/services/recruitment.service";
+import { recruitmentRepository } from "~/core/infrastructure/repositories/recruitment.repository"
+import { createRecruitmentService } from "~/services/recruitment.service"
+
+const recruitmentService = createRecruitmentService(recruitmentRepository)
 
 /**
  * Application Layer - Recruitment Composable

@@ -1,17 +1,21 @@
-
-
 /**
  * Application Layer - Maintenance Service
  */
-export const maintenanceService = {
+import { IMaintenanceRepository } from "@/core/domain/repositories/maintenance.repository.interface";
+
+/**
+ * Factory function to create maintenance service with dependency injection
+ * @param {IMaintenanceRepository} repository
+ * @returns {IMaintenanceRepository}
+ */
+export const createMaintenanceService = (repository) => ({
 	async getMaintenanceServices() {
 		try {
-			return await maintenanceRepository.getMaintenanceServices();
+			return await repository.getMaintenanceServices();
 		} catch (error) {
-			console.error("Service: Failed to fetch maintenance services:", error);
 			return [];
 		}
 	},
-};
+});
 
-export default maintenanceService;
+export default createMaintenanceService;

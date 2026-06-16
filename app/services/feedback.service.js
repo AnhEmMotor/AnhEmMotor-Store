@@ -1,13 +1,17 @@
-import { FeedbackSubmission, FeedbackSubmissionResult } from "../../domain/models/feedback.model";
-import { feedbackRepository } from "../../infrastructure/repositories/feedback.repository";
+import { FeedbackSubmission, FeedbackSubmissionResult } from "@/core/domain/models/feedback.model";
+import { IFeedbackRepository } from "@/core/domain/repositories/feedback.repository.interface";
 
-export const feedbackService = {
+/**
+ * Factory function to create feedback service with dependency injection
+ * @param {IFeedbackRepository} repository
+ * @returns {IFeedbackRepository}
+ */
+export const createFeedbackService = (repository) => ({
 	async submitFeedback(formData) {
 		const submission = new FeedbackSubmission(formData);
-		const result = await feedbackRepository.submitFeedback(submission.toContactPayload());
-
+		const result = await repository.submitFeedback(submission.toContactPayload());
 		return new FeedbackSubmissionResult(result);
 	},
-};
+});
 
-export default feedbackService;
+export default createFeedbackService;

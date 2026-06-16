@@ -1,6 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { technologyService } from '~/core/application/services/technology.service'
+import { technologyRepository } from '~/core/infrastructure/repositories/technology.repository'
+import { createTechnologyService } from '~/services/technology.service'
+
+const technologyService = createTechnologyService(technologyRepository)
 
 definePageMeta({
   layout: 'default'
@@ -37,7 +40,6 @@ const fetchData = async () => {
     interactionCards.value = cards
     managementFeatures.value = management
   } catch (error) {
-    console.error('Error fetching technology data:', error)
   } finally {
     isLoading.value = false
   }

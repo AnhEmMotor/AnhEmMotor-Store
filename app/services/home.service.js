@@ -4,41 +4,45 @@
  * Application Layer - Home Service
  * Orchestrates business logic for the Home page
  */
-const homeService = {
+import { IHomeRepository } from "@/core/domain/repositories/home.repository.interface";
+
+/**
+ * Factory function to create home service with dependency injection
+ * @param {IHomeRepository} repository
+ * @returns {IHomeRepository}
+ */
+export const createHomeService = (repository) => ({
 	async getBrands() {
 		try {
-			return await homeRepository.getBrands();
+			return await repository.getBrands();
 		} catch (error) {
-			console.error("Service: Failed to fetch brands:", error);
 			return [];
 		}
 	},
 
 	async getHeroStats() {
-		return await homeRepository.getHeroStats();
+		return await repository.getHeroStats();
 	},
 
 	async getSearchPhrases() {
-		return await homeRepository.getSearchPhrases();
+		return await repository.getSearchPhrases();
 	},
 
 	async getFeaturedProducts() {
 		try {
-			return await homeRepository.getFeaturedProducts();
+			return await repository.getFeaturedProducts();
 		} catch (error) {
-			console.error("Service: Failed to fetch featured products:", error);
 			return [];
 		}
 	},
 
 	async getBanners() {
 		try {
-			return await homeRepository.getBanners();
+			return await repository.getBanners();
 		} catch (error) {
-			console.error("Service: Failed to fetch banners:", error);
 			return [];
 		}
 	},
-};
+});
 
-export default homeService;
+export default createHomeService;

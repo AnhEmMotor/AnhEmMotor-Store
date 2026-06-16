@@ -14,7 +14,8 @@ useSeoMeta({
 
 const aboutStore = useAboutStore();
 
-await useAsyncData("about-content", async () => {
+// Non-blocking fetch
+useAsyncData("about-content", async () => {
 	await Promise.all([
 		aboutStore.fetchAboutContent(),
 		aboutStore.fetchLocations(),

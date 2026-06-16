@@ -75,7 +75,7 @@ const relatedPromotions = computed(() => {
 						<div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
 							<div v-for="bike in promotion.targetBikes" :key="bike.name" class="bg-white rounded-[2.5rem] border border-gray-100 overflow-hidden group shadow-soft hover:shadow-elevated transition-all duration-500">
 								<div class="aspect-video relative overflow-hidden">
-									<img :src="bike.image" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" :alt="bike.name">
+									<NuxtImg :src="bike.image" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" :alt="bike.name"/>
 									<div class="absolute top-4 right-4 px-4 py-1.5 bg-red-600 text-white text-[9px] font-black uppercase tracking-widest rounded-full">Khuyên dùng</div>
 								</div>
 								<div class="p-8 flex items-center justify-between">
@@ -135,7 +135,7 @@ const relatedPromotions = computed(() => {
 						</div>
 						<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 							<div v-for="(img, idx) in promotion.gallery" :key="idx" class="aspect-square rounded-[2rem] overflow-hidden group">
-								<img :src="img" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Gallery image">
+								<NuxtImg :src="img" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Gallery image"/>
 							</div>
 						</div>
 					</section>

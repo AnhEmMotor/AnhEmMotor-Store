@@ -18,7 +18,6 @@ const fetchComparisonData = async () => {
 		const results = await Promise.all(promises);
 		detailedProducts.value = results.filter(Boolean);
 	} catch (error) {
-		console.error("Failed to fetch comparison data", error);
 	} finally {
 		isLoading.value = false;
 	}
@@ -162,7 +161,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 										<Icon name="fa6-solid:xmark" />
 									</button>
 									<div class="aspect-square mb-4 rounded-2xl overflow-hidden bg-gray-50 p-2">
-										<img :src="item.currentVariant.colors[0]?.image" :alt="item.product.name" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700">
+										<NuxtImg :src="item.currentVariant.colors[0]?.image" :alt="item.product.name" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"/>
 									</div>
 									<div class="space-y-1">
 										<p class="text-[9px] lg:text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ item.product.brand }}</p>

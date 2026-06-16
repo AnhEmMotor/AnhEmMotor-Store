@@ -1,5 +1,6 @@
 /**
- * Entity for About Page content
+ * Domain Model: AboutContent
+ * Value Object representing about page content
  */
 export class AboutContent {
 	constructor(data = {}) {
@@ -36,15 +37,5 @@ export class AboutContent {
 			subtitle: data.video?.subtitle || "",
 			url: data.video?.url || "",
 		};
-	}
-}
-
-/**
- * Entity for Store Location
- */
-export class StoreLocation {
-	constructor(data = {}) {
-		this.title = data.title || "";
-		this.address = data.address || "";
 	}
 }

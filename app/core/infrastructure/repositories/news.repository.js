@@ -5,9 +5,9 @@ import { newsData } from "../../../constants/news";
  */
 export const newsRepository = {
 	async getNews(params = {}) {
-		// Mock delay
-		await new Promise(resolve => setTimeout(resolve, 500));
-		
+		// Mock delay removed for performance - data is already in memory
+		// await new Promise(resolve => setTimeout(resolve, 500));
+
 		let items = [...newsData];
 
 		// Lọc tin tức nổi bật nếu được yêu cầu

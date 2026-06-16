@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
-import { promotionService } from "@/services/promotion.service";
+import { promotionRepository } from "@/core/infrastructure/repositories/promotion.repository";
+import { createPromotionService } from "@/services/promotion.service";
+
+const promotionService = createPromotionService(promotionRepository);
 
 export const usePromotionStore = defineStore("promotion", {
 	state: () => ({

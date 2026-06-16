@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
-import { aboutService } from "@/services/about.service";
+import { aboutRepository } from "@/core/infrastructure/repositories/about.repository";
+import { createAboutService } from "@/services/about.service";
+
+const aboutService = createAboutService(aboutRepository);
 
 export const useAboutStore = defineStore("about", {
 	state: () => ({
@@ -16,7 +19,6 @@ export const useAboutStore = defineStore("about", {
 				// Convert to POJO for Pinia serialization
 				this.aboutContent = JSON.parse(JSON.stringify(data));
 			} catch (error) {
-				console.error("Failed to fetch about content:", error);
 			} finally {
 				this.isLoading = false;
 			}
@@ -28,7 +30,6 @@ export const useAboutStore = defineStore("about", {
 				// Convert to POJO for Pinia serialization
 				this.locations = JSON.parse(JSON.stringify(data));
 			} catch (error) {
-				console.error("Failed to fetch locations:", error);
 			}
 		},
 	},

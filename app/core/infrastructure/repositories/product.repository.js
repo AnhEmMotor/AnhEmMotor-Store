@@ -1,4 +1,4 @@
-import { PRODUCT_ENDPOINTS } from "../../../constants/endpoints/product.endpoint";
+import { PRODUCT_ENDPOINTS } from "@/core/infrastructure/endpoints/product.endpoint";
 
 /**
  * Infrastructure Layer - Product Repository

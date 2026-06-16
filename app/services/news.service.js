@@ -1,12 +1,17 @@
-
-
 /**
  * Application Layer - News Service
  */
-export const newsService = {
+import { INewsRepository } from "@/core/domain/repositories/news.repository.interface";
+
+/**
+ * Factory function to create news service with dependency injection
+ * @param {INewsRepository} repository
+ * @returns {INewsRepository}
+ */
+export const createNewsService = (repository) => ({
 	async getFeaturedNews() {
 		try {
-			const data = await newsRepository.getNews({
+			const data = await repository.getNews({
 				pageSize: 3,
 				isFeatured: true,
 				sorts: "-createdAt",
@@ -25,14 +30,13 @@ export const newsService = {
 				featured: !!item.featured
 			}));
 		} catch (error) {
-			console.error("Service: Failed to fetch featured news:", error);
 			return [];
 		}
 	},
 
 	async getAllNews(params = {}) {
 		try {
-			const data = await newsRepository.getNews({
+			const data = await repository.getNews({
 				page: params.page || 1,
 				pageSize: params.pageSize || 10,
 				sorts: "-createdAt",
@@ -60,14 +64,13 @@ export const newsService = {
 				},
 			};
 		} catch (error) {
-			console.error("Service: Failed to fetch news list:", error);
 			return { data: [], pagination: {} };
 		}
 	},
 
 	async getNewsBySlug(slug) {
 		try {
-			const item = await newsRepository.getNewsDetail(slug);
+			const item = await repository.getNewsDetail(slug);
 			if (!item) return null;
 			return {
 				id: item.id,
@@ -91,8 +94,9 @@ export const newsService = {
 				}))
 			};
 		} catch (error) {
-			console.error(`Service: Failed to fetch news detail for ${slug}:`, error);
 			return null;
 		}
 	},
-};
+});
+
+export default createNewsService;

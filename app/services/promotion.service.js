@@ -1,33 +1,37 @@
 /**
  * Application Layer - Promotion Service
  */
-export const promotionService = {
+import { IPromotionRepository } from "@/core/domain/repositories/promotion.repository.interface";
+
+/**
+ * Factory function to create promotion service with dependency injection
+ * @param {IPromotionRepository} repository
+ * @returns {IPromotionRepository}
+ */
+export const createPromotionService = (repository) => ({
 	async getAllPromotions() {
 		try {
-			return await promotionRepository.getAllPromotions();
+			return await repository.getAllPromotions();
 		} catch (error) {
-			console.error("Service: Failed to fetch promotions:", error);
 			return [];
 		}
 	},
 
 	async getPromotionBySlug(slug) {
 		try {
-			return await promotionRepository.getPromotionBySlug(slug);
+			return await repository.getPromotionBySlug(slug);
 		} catch (error) {
-			console.error(`Service: Failed to fetch promotion detail for ${slug}:`, error);
 			return null;
 		}
 	},
 
 	async getHotPromotions() {
 		try {
-			return await promotionRepository.getHotPromotions();
+			return await repository.getHotPromotions();
 		} catch (error) {
-			console.error("Service: Failed to fetch hot promotions:", error);
 			return [];
 		}
 	},
-};
+});
 
-export default promotionService;
+export default createPromotionService;

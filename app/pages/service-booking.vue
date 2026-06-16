@@ -10,7 +10,8 @@ const serviceId = route.query.id;
 const isSubmitting = ref(false);
 const isSuccess = ref(false);
 
-await useAsyncData("maintenance-services-booking", async () => {
+// Non-blocking fetch
+useAsyncData("maintenance-services-booking", async () => {
 	if (maintenanceStore.services.length === 0) {
 		await maintenanceStore.fetchServices();
 	}
@@ -81,7 +82,6 @@ const handleSubmit = async () => {
 		isSuccess.value = true;
 	} catch (error) {
 		alert("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng kiểm tra lại thông tin.");
-		console.error(error);
 	} finally {
 		isSubmitting.value = false;
 	}

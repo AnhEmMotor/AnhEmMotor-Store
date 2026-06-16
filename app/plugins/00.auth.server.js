@@ -18,7 +18,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 			try {
 				await authStore.initAuth();
 			} catch (e) {
-				console.error("SSR Auth Initialization failed:", e);
 				authStore.$patch({ status: "unauthenticated" });
 			}
 		} else {

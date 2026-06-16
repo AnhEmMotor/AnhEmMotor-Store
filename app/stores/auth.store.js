@@ -448,8 +448,15 @@ export const useAuthStore = defineStore("auth", () => {
 
 		closeSSE();
 		const axios = useAxios();
+
+		// Reset state ngay lập tức để UI phản ứng nhanh
+		accessToken.value = null;
+		user.value = null;
+		status.value = "unauthenticated";
+
 		try {
-			await axios.post("/api/v1/auth/logout");
+			// Gọi API logout nhưng không block UI nếu lỗi
+			await axios.post("/api/v1/auth/logout").catch(() => {});
 		} finally {
 			if (import.meta.client) {
 				const queryClient = useQueryClient();
@@ -458,14 +465,20 @@ export const useAuthStore = defineStore("auth", () => {
 				queryClient.clear();
 			}
 
-			accessToken.value = null;
-			user.value = null;
-			status.value = "unauthenticated";
+			// Đóng SSE một lần nữa để chắc chắn
+			closeSSE();
 
 			if (shouldRedirect && import.meta.client) {
-				await navigateTo("/");
+				// Sử dụng router.push thay vì navigateTo để đảm bảo navigation
+				const router = useRouter();
+				await router.push("/");
 			}
 		}
+
+		// Reset flag sau một chút
+		setTimeout(() => {
+			isLoggingOut = false;
+		}, 500);
 	}
 
 	async function initAuth() {
