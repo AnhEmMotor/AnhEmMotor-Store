@@ -131,8 +131,8 @@ export default defineNuxtConfig({
 
 	// Image optimization
 	image: {
-		// Use Nitro's image provider for optimal performance
-		provider: "nitro",
+		// Use IPX provider (works with Nitro)
+		provider: "ipx",
 		// Quality for WebP/AVIF
 		quality: 80,
 		// Generate responsive sizes
