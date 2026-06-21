@@ -56,7 +56,7 @@ export default defineNuxtConfig({
 			],
 		},
 		ssr: {
-			noExternal: ["@tanstack/vue-query"],
+			noExternal: ["@tanstack/vue-query", "vue"],
 		},
 		plugins: [
 			
