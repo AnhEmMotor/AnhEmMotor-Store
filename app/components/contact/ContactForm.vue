@@ -126,12 +126,18 @@ v-if="statusMessage"
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
 	isSubmitting: Boolean,
-	statusMessage: String,
-	statusType: String
+	statusMessage: {
+		type: String,
+		default: ''
+	},
+	statusType: {
+		type: String,
+		default: ''
+	}
 });
 
 const emit = defineEmits(['submit']);
@@ -145,17 +151,27 @@ const form = ref({
 });
 
 const handleSubmit = () => {
-	emit('submit', { ...form.value });
-	if (props.statusType === 'success') {
-		form.value = {
-			fullName: '',
-			email: '',
-			phone: '',
-			subject: 'Tư vấn mua xe',
-			message: ''
-		};
-	}
+	emit('submit', { ...form.value, resetForm });
 };
+
+const resetForm = () => {
+	form.value = {
+		fullName: '',
+		email: '',
+		phone: '',
+		subject: 'Tư vấn mua xe',
+		message: ''
+	};
+};
+
+watch(
+	() => props.statusType,
+	(statusType) => {
+		if (statusType === 'success') {
+			resetForm();
+		}
+	}
+);
 </script>
 
 <style scoped>

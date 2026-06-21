@@ -1,10 +1,11 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { computed, ref, reactive } from 'vue';
 
 // Explicit imports for stability
 const router = useRouter();
+const feedbackStore = useFeedbackStore();
 
-const isSubmitting = ref(false);
+const isSubmitting = computed(() => feedbackStore.isSubmitting);
 const isSuccess = ref(false);
 
 const categories = ['Chất lượng xe', 'Thái độ phục vụ', 'Bảo hành & Bảo dưỡng', 'Giá bán & Ưu đãi', 'Showroom', 'Website'];
@@ -21,14 +22,14 @@ const getRatingLabel = (i) => ['Tệ', 'Chưa tốt', 'Bình thường', 'Tốt'
 
 const handleSubmit = async () => {
 	if (!form.subject) return alert("Vui lòng chọn lĩnh vực.");
-	isSubmitting.value = true;
-	
-	// Simulated submission
-	setTimeout(() => {
-		isSubmitting.value = false;
+
+	const success = await feedbackStore.submitFeedback({ ...form });
+	if (success) {
 		isSuccess.value = true;
 		Object.assign(form, { fullName: '', phone: '', email: '', subject: '', message: '', rating: 5 });
-	}, 1500);
+	} else {
+		alert(feedbackStore.statusMessage || 'Không thể gửi góp ý lúc này. Vui lòng thử lại sau.');
+	}
 };
 
 useHead({ title: 'Đóng góp ý kiến | AnhEm Motor' });

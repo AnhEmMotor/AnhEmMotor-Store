@@ -46,7 +46,7 @@ v-for="i in 6" :key="i"
 
 			<!-- Application Process & Form -->
 			<div id="apply-form" class="reveal reveal-up">
-				<RecruitmentApplicationForm
+				<ApplicationForm
 					:pre-selected-position="selectedPosition"
 				/>
 			</div>

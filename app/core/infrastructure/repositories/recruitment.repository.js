@@ -145,14 +145,22 @@ export const recruitmentRepository = {
 	 * Submits a recruitment application
 	 * @param {Object} formData
 	 */
-	submitApplication: async () => {
-		// Reduced mock delay from 2000ms to 300ms for better UX
-		await new Promise(resolve => setTimeout(resolve, 300));
+	submitApplication: async (formData = {}) => {
+		const axios = useAxios();
+		const payload = {
+			fullName: (formData.fullName || formData.name || '').trim(),
+			email: (formData.email || '').trim(),
+			phoneNumber: (formData.phoneNumber || formData.phone || '').trim(),
+			appliedPosition: (formData.appliedPosition || formData.position || '').trim(),
+			cvFileUrl: (formData.cvFileUrl || formData.fileName || '').trim(),
+			coverLetter: (formData.coverLetter || formData.message || '').trim(),
+		};
+		const response = await axios.post('/api/v1/Contacts/job-application', { request: payload });
 
-		// In production:
-		// const axios = useAxios();
-		// return await axios.post('/api/recruitment/apply', formData);
-
-		return { success: true, message: 'Application submitted successfully' };
+		return {
+			success: true,
+			id: response.data,
+			message: 'Gửi hồ sơ ứng viên thành công.',
+		};
 	}
 };

@@ -166,7 +166,10 @@
 
 <script setup>
 const props = defineProps({
-	preSelectedPosition: String
+	preSelectedPosition: {
+		type: String,
+		default: ''
+	}
 });
 
 const form = ref({
@@ -177,7 +180,7 @@ const form = ref({
 	message: ''
 });
 
-const { submitApplication, isSubmitting } = useRecruitment();
+const { submitApplication, isLoading: isSubmitting } = useRecruitment();
 const fileName = ref('');
 const fileInput = ref(null);
 
@@ -225,7 +228,7 @@ const handleFileChange = (e) => {
 
 const submitForm = async () => {
 	try {
-		const response = await submitApplication(form.value);
+		const response = await submitApplication({ ...form.value, cvFileUrl: fileName.value });
 		if (response.success) {
 			alert('Cảm ơn bạn đã ứng tuyển! Chúng tôi sẽ liên hệ sớm nhất có thể.');
 			form.value = { name: '', phone: '', email: '', position: '', message: '' };
