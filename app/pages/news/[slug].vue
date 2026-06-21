@@ -15,7 +15,17 @@ const { data: latestNews, suspense: suspenseLatest } = useQuery({
 	queryFn: () => newsStore.fetchLatestNews(),
 });
 
-await Promise.all([suspense(), suspenseLatest()]);
+const { data: relatedNews, suspense: suspenseRelated } = useQuery({
+	queryKey: ["related-news", () => route.params.slug],
+	queryFn: () => newsStore.fetchRelatedNews(route.params.slug),
+});
+
+const filteredLatestNews = computed(() => {
+	if (!latestNews.value) return [];
+	return latestNews.value.filter((n) => n.slug !== route.params.slug);
+});
+
+await Promise.all([suspense(), suspenseLatest(), suspenseRelated()]);
 
 watchEffect(() => {
 	if (news.value) {
@@ -116,7 +126,12 @@ const copyLink = () => {
 			<main class="container mx-auto px-6 mt-4 md:mt-12">
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-20">
 					
-					<article class="lg:col-span-8 space-y-16">
+					<article
+						:class="[
+							(relatedNews && relatedNews.length > 0) || filteredLatestNews.length > 0 ? 'lg:col-span-8' : 'lg:col-span-10 lg:col-start-2',
+							'space-y-16'
+						]"
+					>
 						
 						<div
 							class="prose prose-lg max-w-none prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter prose-headings:text-gray-950 prose-p:text-gray-600 prose-p:leading-relaxed font-sans"
@@ -144,7 +159,7 @@ const copyLink = () => {
 										:src="product.imageUrl"
 										:alt="product.variantName"
 										class="w-20 h-20 object-cover rounded-xl bg-gray-50 group-hover:scale-105 transition-transform"
-									>
+									/>
 									<div>
 										<h4
 											class="font-black text-sm text-gray-950 group-hover:text-red-600 transition-colors line-clamp-2"
@@ -198,9 +213,10 @@ const copyLink = () => {
 					</article>
 
 					
-					<aside class="lg:col-span-4">
-						<div class="sticky top-28">
-							<NewsSidebar :related-news="latestNews || []" />
+					<aside v-if="(relatedNews && relatedNews.length > 0) || filteredLatestNews.length > 0" class="lg:col-span-4">
+						<div class="sticky top-28 space-y-12">
+							<NewsSidebar v-if="relatedNews && relatedNews.length > 0" title="Tin Liên Quan" :related-news="relatedNews" />
+							<NewsSidebar v-if="filteredLatestNews.length > 0" title="Tin Mới Nhất" :related-news="filteredLatestNews" />
 						</div>
 					</aside>
 				</div>
