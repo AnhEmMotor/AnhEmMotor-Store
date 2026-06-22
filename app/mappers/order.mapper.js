@@ -33,6 +33,10 @@ const orderMapper = {
       id: raw.id || raw.Id,
       orderCode: raw.orderCode || raw.id,
       totalAmount: raw.totalAmount || raw.total_amount || raw.total || raw.totalPrice || raw.amount || 0,
+      shippingFee: raw.shippingFee || raw.shipping_fee || 0,
+      depositRatio: raw.depositRatio || raw.deposit_ratio || null,
+      depositAmount: raw.depositAmount || raw.deposit_amount || null,
+      remainingAmount: raw.remainingAmount || raw.remaining_amount || null,
       status: raw.status || raw.status_id || raw.statusId || raw.orderStatus,
       statusId: raw.statusId || raw.status_id || raw.status || raw.orderStatus,
       paymentMethod: raw.paymentMethod || "COD",
@@ -89,11 +93,27 @@ const orderMapper = {
     return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
   },
 
-  calculateSummary(cartDetails) {
+  calculateSummary(cartDetails, depositSettings = {}) {
     const subtotal = cartDetails.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const shipping = subtotal > 10000000 ? 0 : 200000;
     const total = subtotal + shipping;
-    return { subtotal, shipping, total };
+    const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
+    const depositRatio = Number(depositSettings.depositRatio || 0);
+    const requiresDeposit =
+      orderValueExceeds > 0 && depositRatio > 0 && subtotal >= orderValueExceeds;
+    const depositAmount = requiresDeposit ? Math.round(total * depositRatio / 100) : 0;
+    const remainingAmount = requiresDeposit ? Math.max(total - depositAmount, 0) : 0;
+    const payableNow = requiresDeposit ? depositAmount : total;
+    return {
+      subtotal,
+      shipping,
+      total,
+      requiresDeposit,
+      depositRatio,
+      depositAmount,
+      remainingAmount,
+      payableNow,
+    };
   },
 };
 

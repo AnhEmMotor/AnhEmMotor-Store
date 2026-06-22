@@ -5,9 +5,10 @@ import orderMapper from "~/mappers/order.mapper";
 
 const { cartItems, cartDetails, removeItem, updateQuantity, isPending } =
 	useCart();
+const { depositSettings } = useStoreSettings();
 
 const orderSummary = computed(() =>
-	orderMapper.calculateSummary(cartDetails.value),
+	orderMapper.calculateSummary(cartDetails.value, depositSettings.value),
 );
 
 const formatPrice = (val) => orderMapper.formatPrice(val);
@@ -133,13 +134,49 @@ function handlePlaceOrder() {
 					}}</span>
 				</div>
 				<div
+					v-if="orderSummary.requiresDeposit"
+					class="rounded-2xl border border-amber-200 bg-amber-50 p-4 space-y-2"
+				>
+					<div class="flex items-center gap-2 text-amber-700">
+						<Icon name="fa6-solid:circle-info" class="text-sm" />
+						<span class="text-xs font-black uppercase tracking-widest">
+							Đơn hàng cần đặt cọc
+						</span>
+					</div>
+					<p class="text-xs font-medium text-amber-800 leading-relaxed">
+						Đơn hàng vượt ngưỡng áp dụng đặt cọc. Bạn chỉ cần thanh toán
+						{{ orderSummary.depositRatio }}% trước, phần còn lại thanh toán sau.
+					</p>
+					<div class="flex justify-between text-sm">
+						<span class="text-amber-700 font-bold">Tiền đặt cọc</span>
+						<span class="font-black text-amber-900">{{
+							formatPrice(orderSummary.depositAmount)
+						}}</span>
+					</div>
+					<div class="flex justify-between text-sm">
+						<span class="text-amber-700 font-bold">Còn lại</span>
+						<span class="font-black text-amber-900">{{
+							formatPrice(orderSummary.remainingAmount)
+						}}</span>
+					</div>
+				</div>
+
+				<div
 					class="flex justify-between pt-4 border-t border-gray-100"
 				>
-					<span class="text-lg font-black text-gray-900 uppercase">Tổng cộng</span>
+					<span class="text-lg font-black text-gray-900 uppercase">
+						{{ orderSummary.requiresDeposit ? "Thanh toán hôm nay" : "Tổng cộng" }}
+					</span>
 					<span class="text-xl font-black text-red-600">{{
-						formatPrice(orderSummary.total)
+						formatPrice(orderSummary.payableNow)
 					}}</span>
 				</div>
+				<p
+					v-if="orderSummary.requiresDeposit"
+					class="text-[11px] font-semibold text-gray-400 text-right"
+				>
+					Tổng giá trị đơn: {{ formatPrice(orderSummary.total) }}
+				</p>
 			</div>
 
 			<button

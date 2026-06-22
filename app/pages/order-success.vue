@@ -50,7 +50,13 @@ onMounted(() => {
 });
 
 const successTitle = computed(() =>
-  isOnlinePayment.value ? "Thanh toán thành công!" : "Đặt hàng thành công!",
+  order.value?.depositAmount && order.value?.remainingAmount
+    ? "Đặt cọc thành công!"
+    : isOnlinePayment.value ? "Thanh toán thành công!" : "Đặt hàng thành công!",
+);
+
+const hasDeposit = computed(
+  () => Number(order.value?.depositAmount || 0) > 0 && Number(order.value?.remainingAmount || 0) > 0,
 );
 
 useSeoMeta({
@@ -165,6 +171,34 @@ useSeoMeta({
                         {{ formatCurrency(order.totalAmount) }}
                       </p>
                     </div>
+                    <template v-if="hasDeposit">
+                      <div class="space-y-1">
+                        <p
+                          class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+                        >
+                          Đã thanh toán đặt cọc
+                        </p>
+                        <p class="text-lg font-black text-red-600">
+                          {{ formatCurrency(order.depositAmount) }}
+                          <span
+                            v-if="order.depositRatio"
+                            class="text-xs text-gray-400 font-bold"
+                          >
+                            ({{ order.depositRatio }}%)
+                          </span>
+                        </p>
+                      </div>
+                      <div class="space-y-1">
+                        <p
+                          class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+                        >
+                          Còn lại
+                        </p>
+                        <p class="text-sm font-bold text-gray-900">
+                          {{ formatCurrency(order.remainingAmount) }}
+                        </p>
+                      </div>
+                    </template>
                   </div>
                 </div>
               </div>

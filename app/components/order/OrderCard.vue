@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
 	order: {
 		type: Object,
 		required: true,
@@ -38,6 +38,15 @@ const calculateTotal = (items) => {
 		0,
 	);
 };
+
+const depositStatuses = new Set(["waiting_deposit", "deposit_paid"]);
+
+const hasDeposit = computed(
+	() =>
+		depositStatuses.has(props.order?.statusId) &&
+		Number(props.order?.depositAmount || 0) > 0 &&
+		Number(props.order?.remainingAmount || 0) > 0,
+);
 </script>
 
 <template>
@@ -202,6 +211,15 @@ const calculateTotal = (items) => {
 				<p class="text-2xl font-black text-red-500">
 					{{ formatPrice(order.totalAmount || calculateTotal(order.items)) }}
 				</p>
+				<div v-if="hasDeposit" class="mt-2 space-y-1">
+					<p class="text-xs font-bold text-amber-600">
+						Đặt cọc: {{ formatPrice(order.depositAmount) }}
+						<span v-if="order.depositRatio">({{ order.depositRatio }}%)</span>
+					</p>
+					<p class="text-xs font-semibold text-gray-500">
+						Còn lại: {{ formatPrice(order.remainingAmount) }}
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>

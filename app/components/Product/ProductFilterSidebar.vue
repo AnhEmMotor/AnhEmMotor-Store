@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 
 
@@ -14,6 +14,8 @@ const emit = defineEmits(["update:modelValue", "close"]);
 
 const productStore = useProductStore();
 const MAX_PRICE = 60000000;
+const BRAND_PAGE_SIZE = 8;
+const brandPage = ref(1);
 
 const {
 	data: filterFacetsData,
@@ -53,7 +55,7 @@ const {
 			b.count - a.count || a.name.localeCompare(b.name, "vi");
 
 		return {
-			brands: [...brandsById.values()].sort(byProductCount).slice(0, 5),
+			brands: [...brandsById.values()].sort(byProductCount),
 			categories: [...categoriesById.values()].sort(byProductCount).slice(0, 5),
 		};
 	},
@@ -62,6 +64,34 @@ const {
 
 const brands = computed(() => filterFacetsData.value?.brands || []);
 const categories = computed(() => filterFacetsData.value?.categories || []);
+
+const brandTotalPages = computed(() => Math.max(1, Math.ceil(brands.value.length / BRAND_PAGE_SIZE)));
+
+const paginatedBrands = computed(() => {
+	const start = (brandPage.value - 1) * BRAND_PAGE_SIZE;
+	return brands.value.slice(start, start + BRAND_PAGE_SIZE);
+});
+
+const canGoPreviousBrandPage = computed(() => brandPage.value > 1);
+const canGoNextBrandPage = computed(() => brandPage.value < brandTotalPages.value);
+
+const goToPreviousBrandPage = () => {
+	if (canGoPreviousBrandPage.value) {
+		brandPage.value -= 1;
+	}
+};
+
+const goToNextBrandPage = () => {
+	if (canGoNextBrandPage.value) {
+		brandPage.value += 1;
+	}
+};
+
+watch(brands, () => {
+	if (brandPage.value > brandTotalPages.value) {
+		brandPage.value = brandTotalPages.value;
+	}
+});
 
 
 const {
@@ -263,20 +293,49 @@ const formatVND = (val) => {
 					>
 						Không thể tải danh sách thương hiệu.
 					</p>
-					<div v-else-if="brands.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
-						<button
-							v-for="brand in brands"
-							:key="brand.id"
-							class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
-							:class="[
-								isBrandSelected(brand.id)
-									? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-									: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
-							]"
-							@click="toggleBrand(brand.id)"
+					<div v-else-if="brands.length > 0" class="space-y-3">
+						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+							<button
+								v-for="brand in paginatedBrands"
+								:key="brand.id"
+								class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
+								:class="[
+									isBrandSelected(brand.id)
+										? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+										: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+								]"
+								@click="toggleBrand(brand.id)"
+							>
+								{{ brand.name }}
+							</button>
+						</div>
+
+						<div
+							v-if="brandTotalPages > 1"
+							class="flex items-center justify-between rounded-xl bg-gray-50 px-2 py-1.5"
 						>
-							{{ brand.name }}
-						</button>
+							<button
+								type="button"
+								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+								:disabled="!canGoPreviousBrandPage"
+								aria-label="Trang thương hiệu trước"
+								@click="goToPreviousBrandPage"
+							>
+								<Icon name="fa6-solid:chevron-left" class="text-[10px]" />
+							</button>
+							<span class="text-[11px] font-black text-gray-500">
+								{{ brandPage }} / {{ brandTotalPages }}
+							</span>
+							<button
+								type="button"
+								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+								:disabled="!canGoNextBrandPage"
+								aria-label="Trang thương hiệu sau"
+								@click="goToNextBrandPage"
+							>
+								<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
+							</button>
+						</div>
 					</div>
 				</ClientOnly>
 			</div>

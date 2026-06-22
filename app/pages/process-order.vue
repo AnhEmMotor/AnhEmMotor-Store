@@ -58,7 +58,6 @@ const handleCheckout = async () => {
           clearCart();
           window.location.href = url;
         } catch (paymentError) {
-          clearCart();
           const message =
             paymentError.response?.data?.errors?.[0]?.message ||
             paymentError.response?.data?.message ||
@@ -67,7 +66,7 @@ const handleCheckout = async () => {
           instance.$toast.warning(
             `Đơn hàng đã được tạo nhưng chưa thể thanh toán: ${message}`,
           );
-          navigateTo({
+          await navigateTo({
             path: "/payment-unavailable",
             query: {
               id: order.id,
