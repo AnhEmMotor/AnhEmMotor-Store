@@ -48,6 +48,19 @@ export function useRecruitment() {
 		}
 	};
 
+	const uploadCv = async (formData) => {
+		isLoading.value = true;
+		try {
+			const response = await recruitmentService.uploadCv(formData);
+			return response;
+		} catch (e) {
+			error.value = e;
+			throw e;
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
 	return {
 		jobs,
 		faqs,
@@ -55,7 +68,8 @@ export function useRecruitment() {
 		error,
 		fetchJobs,
 		fetchFaqs,
-		submitApplication
+		submitApplication,
+		uploadCv
 	};
 }
 

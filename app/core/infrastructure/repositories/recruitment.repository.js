@@ -162,5 +162,22 @@ export const recruitmentRepository = {
 			id: response.data,
 			message: 'Gửi hồ sơ ứng viên thành công.',
 		};
+	},
+
+	/**
+	 * Uploads a CV file
+	 * @param {FormData} formData
+	 */
+	uploadCv: async (formData) => {
+		const axios = useAxios();
+		const response = await axios.post('/api/v1/Contacts/upload-cv', formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		});
+		return {
+			success: true,
+			path: response.data
+		};
 	}
 };

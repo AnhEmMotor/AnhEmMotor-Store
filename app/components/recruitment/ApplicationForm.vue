@@ -116,18 +116,48 @@
 								</div>
 
 								<div class="space-y-3">
-									<label class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2">Đính kèm CV (PDF, DOCX)</label>
+									<label class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2">Đính kèm CV (PDF, DOCX, HÌNH ẢNH)</label>
 									<div
 										class="relative w-full px-8 py-10 rounded-[2rem] bg-white/5 border-2 border-dashed border-white/10 hover:border-primary/50 hover:bg-white/[0.07] transition-all flex flex-col items-center justify-center cursor-pointer group/upload"
 										@click="triggerFileUpload"
 									>
-										<div class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4 group-hover/upload:scale-110 group-hover/upload:bg-primary transition-all duration-500">
-											<Icon name="fa6-solid:cloud-arrow-up" class="text-3xl text-white/20 group-hover/upload:text-white transition-colors" />
+										<!-- HÌNH ẢNH XEM TRƯỚC -->
+										<div v-if="imagePreview" class="relative mb-4">
+											<img :src="imagePreview" class="max-h-48 rounded-2xl object-contain border border-white/10 shadow-lg" >
 										</div>
-										<p class="text-sm font-black text-white/30 uppercase tracking-widest group-hover/upload:text-white transition-colors">
+										<!-- ICON FILE HOẶC UPLOAD -->
+										<div v-else class="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4 group-hover/upload:scale-110 group-hover/upload:bg-primary transition-all duration-500">
+											<Icon :name="fileIcon" class="text-3xl text-white/20 group-hover/upload:text-white transition-colors" />
+										</div>
+										<p class="text-sm font-black text-white/30 uppercase tracking-widest group-hover/upload:text-white transition-colors text-center px-4 break-all">
 											{{ fileName || 'Tải lên hồ sơ của bạn' }}
 										</p>
-										<input ref="fileInput" type="file" class="hidden" @change="handleFileChange" >
+										<div v-if="fileName" class="flex gap-4 mt-4 z-20">
+											<a
+												v-if="pdfUrl"
+												:href="pdfUrl"
+												target="_blank"
+												class="px-4 py-1.5 rounded-full bg-primary hover:bg-primary/80 text-white text-[10px] font-black uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5"
+												@click.stop
+											>
+												<Icon name="fa6-solid:eye" class="text-[10px]" />
+												Xem thử
+											</a>
+											<button
+												type="button"
+												class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-red-500 text-white text-[10px] font-black uppercase tracking-wider transition-colors"
+												@click.stop="clearFile"
+											>
+												Thay đổi / Xóa
+											</button>
+										</div>
+										<input
+											ref="fileInput"
+											type="file"
+											accept=".pdf,.docx,.doc,.png,.jpg,.jpeg"
+											class="hidden"
+											@change="handleFileChange"
+										>
 									</div>
 								</div>
 
@@ -180,9 +210,13 @@ const form = ref({
 	message: ''
 });
 
-const { submitApplication, isLoading: isSubmitting } = useRecruitment();
+const { submitApplication, uploadCv, isLoading: isSubmitting } = useRecruitment();
+const selectedFile = ref(null);
 const fileName = ref('');
 const fileInput = ref(null);
+const imagePreview = ref('');
+const fileIcon = ref('fa6-solid:cloud-arrow-up');
+const pdfUrl = ref('');
 
 const positions = [
 	'Nhân viên Tư vấn Bán hàng',
@@ -222,19 +256,73 @@ const triggerFileUpload = () => fileInput.value.click();
 const handleFileChange = (e) => {
 	const file = e.target.files[0];
 	if (file) {
+		selectedFile.value = file;
 		fileName.value = file.name;
+
+		// Dọn dẹp URL cũ nếu có
+		if (imagePreview.value) {
+			URL.revokeObjectURL(imagePreview.value);
+			imagePreview.value = '';
+		}
+		if (pdfUrl.value) {
+			URL.revokeObjectURL(pdfUrl.value);
+			pdfUrl.value = '';
+		}
+
+		// Kiểm tra loại file để đổi icon / tạo ảnh xem trước
+		if (file.type.startsWith('image/')) {
+			imagePreview.value = URL.createObjectURL(file);
+			fileIcon.value = '';
+		} else if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+			fileIcon.value = 'fa6-solid:file-pdf';
+			pdfUrl.value = URL.createObjectURL(file);
+		} else if (file.name.endsWith('.docx') || file.name.endsWith('.doc')) {
+			fileIcon.value = 'fa6-solid:file-word';
+		} else {
+			fileIcon.value = 'fa6-solid:file-lines';
+		}
+	}
+};
+
+const clearFile = () => {
+	selectedFile.value = null;
+	fileName.value = '';
+	fileIcon.value = 'fa6-solid:cloud-arrow-up';
+	if (imagePreview.value) {
+		URL.revokeObjectURL(imagePreview.value);
+		imagePreview.value = '';
+	}
+	if (pdfUrl.value) {
+		URL.revokeObjectURL(pdfUrl.value);
+		pdfUrl.value = '';
+	}
+	if (fileInput.value) {
+		fileInput.value.value = '';
 	}
 };
 
 const submitForm = async () => {
 	try {
-		const response = await submitApplication({ ...form.value, cvFileUrl: fileName.value });
+		let uploadedCvUrl = '';
+		if (selectedFile.value) {
+			const formData = new FormData();
+			formData.append('file', selectedFile.value);
+			const uploadResult = await uploadCv(formData);
+			if (uploadResult && uploadResult.success) {
+				uploadedCvUrl = uploadResult.path;
+			} else {
+				alert('Không thể tải lên tệp CV, vui lòng thử lại.');
+				return;
+			}
+		}
+
+		const response = await submitApplication({ ...form.value, cvFileUrl: uploadedCvUrl });
 		if (response.success) {
 			alert('Cảm ơn bạn đã ứng tuyển! Chúng tôi sẽ liên hệ sớm nhất có thể.');
 			form.value = { name: '', phone: '', email: '', position: '', message: '' };
-			fileName.value = '';
+			clearFile();
 		}
-	} catch {
+	} catch (e) {
 		alert('Có lỗi xảy ra, vui lòng thử lại sau.');
 	}
 };

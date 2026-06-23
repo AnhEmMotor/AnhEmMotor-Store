@@ -1,4 +1,8 @@
 <script setup>
+// Create service instance for paginated queries
+import { newsRepository } from "~/core/infrastructure/repositories/news.repository";
+import { createNewsService } from "~/services/news.service";
+
 definePageMeta({
 	key: route => route.path
 });
@@ -14,10 +18,6 @@ const activeTab = ref('all');
 
 // Non-blocking fetch for featured news
 useAsyncData("featured-news", () => newsStore.fetchFeaturedNews());
-
-// Create service instance for paginated queries
-import { newsRepository } from "~/core/infrastructure/repositories/news.repository";
-import { createNewsService } from "~/services/news.service";
 const newsService = createNewsService(newsRepository);
 
 const {

@@ -156,7 +156,7 @@ const newsCategories = [
 
 				<div class="space-y-2">
 					<h4 class="text-2xl font-black uppercase tracking-tighter leading-tight">
-						Cần tư vấn<br/>mua xe?
+						Cần tư vấn<br>mua xe?
 					</h4>
 					<p class="text-sm font-medium leading-relaxed opacity-90">
 						Đội ngũ chuyên gia của AnhEm luôn sẵn sàng hỗ trợ bạn chọn mẫu xe phù hợp nhất với nhu cầu và ngân sách.

@@ -19,6 +19,10 @@ export const createRecruitmentService = (repository) => ({
 
 	async submitApplication(formData) {
 		return await repository.submitApplication(formData);
+	},
+
+	async uploadCv(formData) {
+		return await repository.uploadCv(formData);
 	}
 });
 
