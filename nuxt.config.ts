@@ -1,13 +1,10 @@
-import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
-
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineNuxtConfig({
 	ssr: true,
 	compatibilityDate: "2025-07-15",
-	
+
 	devtools: { enabled: true },
 	srcDir: "app",
 
@@ -33,7 +30,7 @@ export default defineNuxtConfig({
 
 	sitemap: {
 		sources: ["/api/dynamic-sitemap"],
-		cacheMaxAgeSeconds: 0, 
+		cacheMaxAgeSeconds: 0,
 	},
 
 	ogImage: {
@@ -56,13 +53,12 @@ export default defineNuxtConfig({
 			],
 		},
 		ssr: {
-			noExternal: ["@tanstack/vue-query"],
+			noExternal: ["@tanstack/vue-query", "vue"],
 		},
 		plugins: [
-			
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(tailwindcss as any)(),
-			
+
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(svgLoader as any)(),
 			{

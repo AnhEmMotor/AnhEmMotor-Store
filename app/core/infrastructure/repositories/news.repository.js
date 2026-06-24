@@ -26,6 +26,12 @@ export const newsRepository = {
 		return response.data;
 	},
 
+	async getRelatedNews(slug) {
+		const axios = useAxios();
+		const response = await axios.get(`${NEWS_ENDPOINTS.PUBLIC_LIST}/${slug}/related`);
+		return response.data;
+	},
+
 	async getFeaturedNews() {
 		const axios = useAxios();
 		const response = await axios.get(NEWS_ENDPOINTS.PUBLIC_LIST, { params: { pageSize: 3, isFeatured: true, sorts: "-createdAt" } });

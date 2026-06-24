@@ -16,12 +16,23 @@ export const useNewsStore = defineStore("news", {
 			this.isLoading = true;
 			try {
 				const data = await newsService.getLatestNews();
-				this.latestNews = data;
-				return this.latestNews;
+				if (data) {
+					this.latestNews = data;
+				}
+				return data;
 			} catch {
 				return [];
 			} finally {
 				this.isLoading = false;
+			}
+		},
+
+		async fetchRelatedNews(slug) {
+			try {
+				const data = await newsService.getRelatedNews(slug);
+				return data || [];
+			} catch {
+				return [];
 			}
 		},
 

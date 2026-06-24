@@ -47,6 +47,7 @@
 		"@iconify-json/lucide": "^1.2.107",
 		"@iconify-json/ph": "^1.2.2",
 		"@nuxt/eslint-config": "^1.15.2",
+		"@tailwindcss/typography": "^0.5.20",
 		"cross-env": "^10.1.0"
 	}
 }

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles.css";
+@plugin "@tailwindcss/typography";
 
 @theme {
 	--color-primary: #e31837;

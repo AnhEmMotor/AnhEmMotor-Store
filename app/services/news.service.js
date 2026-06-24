@@ -83,6 +83,39 @@ export const newsService = {
 		}
 	},
 
+	async getRelatedNews(slug) {
+		try {
+			const data = await newsRepository.getRelatedNews(slug);
+			return (data || []).map((item) => ({
+				id: item.id,
+				title: item.title,
+				slug: item.slug,
+				image:
+					item.coverImageUrl ||
+					item.image ||
+					item.thumbnail ||
+					"/assets/image/placeholder-news.webp",
+				content: item.content,
+				category:
+					item.categoryName ||
+					item.category?.name ||
+					item.category ||
+					"Tin tức",
+				createdAt: item.publishedDate || item.createdAt || new Date(),
+				date: item.publishedDate
+					? new Date(item.publishedDate).toLocaleDateString("vi-VN")
+					: item.date ||
+						(item.createdAt
+							? new Date(item.createdAt).toLocaleDateString("vi-VN")
+							: "Mới nhất"),
+				isHot: !!item.isHot,
+				featured: !!item.featured,
+			}));
+		} catch {
+			return [];
+		}
+	},
+
 	async getAllNews(params = {}) {
 		try {
 			const data = await newsRepository.getNews({
