@@ -1,17 +1,17 @@
+import { defineNuxtConfig } from "nuxt/config";
 import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
 
 export default defineNuxtConfig({
 	ssr: true,
 	compatibilityDate: "2025-07-15",
-
-	devtools: { enabled: true },
+	devtools: {
+		enabled: process.env.NODE_ENV === "development",
+	},
 	srcDir: "app",
-
 	build: {
 		transpile: ["@tanstack/vue-query"],
 	},
-
 	modules: [
 		"@nuxtjs/seo",
 		"@nuxt/content",
@@ -27,19 +27,13 @@ export default defineNuxtConfig({
 		serverBundle: "auto",
 		collections: ["ph", "lucide", "fa6-solid", "fa6-regular"],
 	},
-
 	sitemap: {
 		sources: ["/api/dynamic-sitemap"],
 		cacheMaxAgeSeconds: 0,
 	},
-
 	ogImage: {
 		zeroRuntime: true,
 	},
-	ogImage: {
-		zeroRuntime: true,
-	},
-
 	vite: {
 		optimizeDeps: {
 			include: [
@@ -53,7 +47,7 @@ export default defineNuxtConfig({
 			],
 		},
 		ssr: {
-			noExternal: ["@tanstack/vue-query", "vue"],
+			noExternal: ["@tanstack/vue-query"],
 		},
 		plugins: [
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,14 +67,12 @@ export default defineNuxtConfig({
 							"virtual:#nitro-internal-virtual/storage",
 							"module-preload-polyfill",
 						];
-
 						if (
 							silentCodes.includes(warning.code || "") ||
 							silentMessages.some((msg) => warning.message?.includes(msg))
 						) {
 							return;
 						}
-
 						if (originalOnWarn) {
 							originalOnWarn(warning, warn);
 						} else {
@@ -94,13 +86,8 @@ export default defineNuxtConfig({
 			sourcemap: false,
 		},
 	},
-
 	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],
-
 	nitro: {
-		externals: {
-			trace: false,
-		},
 		rollupConfig: {
 			onwarn(warning, warn) {
 				const silentCodes = ["CIRCULAR_DEPENDENCY"];
@@ -109,7 +96,6 @@ export default defineNuxtConfig({
 					"virtual:#nitro-internal-virtual/storage",
 					"node_modules/nitropack",
 				];
-
 				if (
 					silentCodes.includes(warning.code || "") ||
 					silentMessages.some((msg) => warning.message?.includes(msg))
@@ -121,9 +107,6 @@ export default defineNuxtConfig({
 		},
 		routeRules: {
 			"/contact": { redirect: "/support" },
-			"/api/v1/**": {
-				proxy: "http://localhost:7001/api/v1/**",
-			},
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
 			},
@@ -133,9 +116,7 @@ export default defineNuxtConfig({
 		},
 		compressPublicAssets: true,
 	},
-
 	css: ["~/assets/main.css"],
-
 	app: {
 		head: {
 			charset: "utf-8",
@@ -163,7 +144,6 @@ export default defineNuxtConfig({
 			script: [],
 		},
 	},
-
 	site: {
 		url: "https://anhemmotor.online",
 		name: "Anh Em Motor",
@@ -173,7 +153,6 @@ export default defineNuxtConfig({
 		twitterCard: "summary_large_image",
 		canonical: "https://anhemmotor.online",
 	},
-
 	runtimeConfig: {
 		internalApiUrlForServer: process.env.NUXT_INTERNAL_API_URL_FOR_SERVER,
 		public: {
@@ -181,7 +160,6 @@ export default defineNuxtConfig({
 				process.env.NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT,
 		},
 	},
-
 	alias: {
 		"@/stores": "./app/core/application/stores",
 		"@/services": "./app/core/application/services",
@@ -194,7 +172,6 @@ export default defineNuxtConfig({
 		"~/constants": "./app/core/domain/constants",
 		"~/utils": "./app/core/domain/utils",
 	},
-
 	imports: {
 		dirs: [
 			"core/domain/constants/**",
