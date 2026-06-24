@@ -159,7 +159,7 @@ const copyLink = () => {
 										:src="product.imageUrl"
 										:alt="product.variantName"
 										class="w-20 h-20 object-cover rounded-xl bg-gray-50 group-hover:scale-105 transition-transform"
-									/>
+									>
 									<div>
 										<h4
 											class="font-black text-sm text-gray-950 group-hover:text-red-600 transition-colors line-clamp-2"
