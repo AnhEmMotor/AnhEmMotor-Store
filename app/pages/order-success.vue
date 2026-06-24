@@ -6,6 +6,7 @@ import { formatCurrency } from "~/utils/currency";
 
 const route = useRoute();
 const orderStore = useOrderStore();
+const { depositSettings } = useStoreSettings();
 const orderId = computed(() => route.query.id);
 
 if (import.meta.server) {
@@ -50,13 +51,31 @@ onMounted(() => {
 });
 
 const successTitle = computed(() =>
-  order.value?.depositAmount && order.value?.remainingAmount
-    ? "Đặt cọc thành công!"
-    : isOnlinePayment.value ? "Thanh toán thành công!" : "Đặt hàng thành công!",
+  isOnlinePayment.value ? "Thanh toán thành công!" : "Đặt hàng thành công!",
 );
 
-const hasDeposit = computed(
-  () => Number(order.value?.depositAmount || 0) > 0 && Number(order.value?.remainingAmount || 0) > 0,
+const totalAmount = computed(() => Number(order.value?.totalAmount || 0));
+const depositThreshold = computed(() => Number(depositSettings.value?.orderValueExceeds || 0));
+const depositRatio = computed(() =>
+  Number(order.value?.depositRatio || depositSettings.value?.depositRatio || 0),
+);
+
+const requiresDeposit = computed(
+  () =>
+    totalAmount.value > 0 &&
+    depositThreshold.value > 0 &&
+    depositRatio.value > 0 &&
+    totalAmount.value >= depositThreshold.value,
+);
+
+const payableNow = computed(() =>
+  requiresDeposit.value
+    ? Math.round((totalAmount.value * depositRatio.value) / 100)
+    : totalAmount.value,
+);
+
+const remainingAmount = computed(() =>
+  requiresDeposit.value ? Math.max(totalAmount.value - payableNow.value, 0) : 0,
 );
 
 useSeoMeta({
@@ -171,23 +190,23 @@ useSeoMeta({
                         {{ formatCurrency(order.totalAmount) }}
                       </p>
                     </div>
-                    <template v-if="hasDeposit">
-                      <div class="space-y-1">
-                        <p
-                          class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+                    <div class="space-y-1">
+                      <p
+                        class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
+                      >
+                        Số tiền cần thanh toán
+                      </p>
+                      <p class="text-lg font-black text-red-600">
+                        {{ formatCurrency(payableNow) }}
+                        <span
+                          v-if="requiresDeposit"
+                          class="text-xs text-gray-400 font-bold"
                         >
-                          Đã thanh toán đặt cọc
-                        </p>
-                        <p class="text-lg font-black text-red-600">
-                          {{ formatCurrency(order.depositAmount) }}
-                          <span
-                            v-if="order.depositRatio"
-                            class="text-xs text-gray-400 font-bold"
-                          >
-                            ({{ order.depositRatio }}%)
-                          </span>
-                        </p>
-                      </div>
+                          ({{ depositRatio }}%)
+                        </span>
+                      </p>
+                    </div>
+                    <template v-if="requiresDeposit">
                       <div class="space-y-1">
                         <p
                           class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
@@ -195,7 +214,7 @@ useSeoMeta({
                           Còn lại
                         </p>
                         <p class="text-sm font-bold text-gray-900">
-                          {{ formatCurrency(order.remainingAmount) }}
+                          {{ formatCurrency(remainingAmount) }}
                         </p>
                       </div>
                     </template>
