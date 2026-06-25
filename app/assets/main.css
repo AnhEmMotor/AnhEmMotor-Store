@@ -30,6 +30,34 @@
 	--section-padding: 88px;
 }
 
+@theme {
+	--color-primary: #e31837;
+	--color-primary-dark: #b9122a;
+	--color-surface: #ffffff;
+	--color-background: #f8f9fa;
+	--color-text: #1a1a1a;
+	--color-text-muted: #64748b;
+	
+	--radius-24: 24px;
+	--radius-18: 18px;
+	--radius-12: 12px;
+	
+	--shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.04);
+	--shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.08);
+
+	--font-size-h1: 56px;
+	--font-size-h2: 42px;
+	--font-size-h3: 28px;
+	--font-size-body: 16px;
+	--font-size-small: 14px;
+
+	--font-sans: 'Manrope', sans-serif;
+}
+
+:root {
+	--section-padding: 88px;
+}
+
 html,
 body {
 	margin: 0;

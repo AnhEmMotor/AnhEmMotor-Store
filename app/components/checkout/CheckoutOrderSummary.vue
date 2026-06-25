@@ -1,10 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import { toast } from "vue3-toastify";
 import { useCart } from "~/composables/useCart";
-import { useOrderStore } from "~/stores/order.store";
 import orderMapper from "~/mappers/order.mapper";
-import "vue3-toastify/dist/index.css";
 
 const {
 	cartItems,
@@ -21,7 +18,7 @@ const isChecking = ref(false);
 const isSubmitting = computed(() => orderStore.isLoading);
 
 const orderSummary = computed(() =>
-	orderMapper.calculateSummary(cartDetails.value),
+	orderMapper.calculateSummary(cartDetails.value, depositSettings.value),
 );
 
 const formatPrice = (val) => orderMapper.formatPrice(val);
@@ -214,6 +211,12 @@ async function handlePlaceOrder() {
 									{{ orderStore.fieldErrors[item.id] }}
 								</p>
 							</div>
+							<p
+								v-if="item.effectiveMax != null"
+								class="mt-1 text-[10px] font-semibold text-gray-400"
+							>
+								Tối đa {{ item.effectiveMax }} sản phẩm
+							</p>
 						</div>
 					</div>
 				</template>
@@ -229,17 +232,45 @@ async function handlePlaceOrder() {
 				<div class="flex justify-between text-sm">
 					<span class="text-gray-500 font-medium">Phí giao hàng</span>
 					<span class="font-bold text-gray-900">{{
-						orderSummary.shipping === 0
-							? "Miễn phí"
-							: formatPrice(orderSummary.shipping)
+						orderSummary.shipping === 0 ? "Miễn phí" : formatPrice(orderSummary.shipping)
 					}}</span>
 				</div>
-				<div class="flex justify-between pt-4 border-t border-gray-100">
-					<span class="text-lg font-black text-gray-900 uppercase"
-						>Tổng cộng</span
-					>
+				<div
+					v-if="orderSummary.requiresDeposit"
+					class="rounded-2xl border border-amber-200 bg-amber-50 p-4 space-y-2"
+				>
+					<div class="flex items-center gap-2 text-amber-700">
+						<Icon name="fa6-solid:circle-info" class="text-sm" />
+						<span class="text-xs font-black uppercase tracking-widest">
+							Đơn hàng cần đặt cọc
+						</span>
+					</div>
+					<p class="text-xs font-medium text-amber-800 leading-relaxed">
+						Đơn hàng vượt ngưỡng áp dụng đặt cọc. Bạn chỉ cần thanh toán
+						{{ orderSummary.depositRatio }}% trước, phần còn lại thanh toán sau.
+					</p>
+					<div class="flex justify-between text-sm">
+						<span class="text-amber-700 font-bold">Tiền đặt cọc</span>
+						<span class="font-black text-amber-900">{{
+							formatPrice(orderSummary.depositAmount)
+						}}</span>
+					</div>
+					<div class="flex justify-between text-sm">
+						<span class="text-amber-700 font-bold">Còn lại</span>
+						<span class="font-black text-amber-900">{{
+							formatPrice(orderSummary.remainingAmount)
+						}}</span>
+					</div>
+				</div>
+
+				<div
+					class="flex justify-between pt-4 border-t border-gray-100"
+				>
+					<span class="text-lg font-black text-gray-900 uppercase">
+						{{ orderSummary.requiresDeposit ? "Thanh toán hôm nay" : "Tổng cộng" }}
+					</span>
 					<span class="text-xl font-black text-red-600">{{
-						formatPrice(orderSummary.total)
+						formatPrice(orderSummary.payableNow)
 					}}</span>
 				</div>
 
@@ -270,17 +301,12 @@ async function handlePlaceOrder() {
 			</div>
 
 			<button
-				:disabled="isSubmitting || cartItems.length === 0"
 				class="w-full mt-8 py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-sm"
 				aria-label="Xác nhận và đặt hàng ngay"
 				@click="handlePlaceOrder"
 			>
-				<Icon
-					v-if="isSubmitting"
-					name="fa6-solid:spinner"
-					class="animate-spin"
-				/>
-				<span v-else>Xác nhận đặt hàng</span>
+				<Icon name="fa6-solid:lock" class="text-xs" />
+				<span>Xác nhận đặt hàng</span>
 			</button>
 		</div>
 	</div>

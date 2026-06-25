@@ -47,7 +47,6 @@ const props = defineProps({
 
 defineEmits(['close']);
 
-
 watch(() => props.isOpen, (val) => {
 	if (val) {
 		document.body.style.overflow = 'hidden';

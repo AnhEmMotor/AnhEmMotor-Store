@@ -229,7 +229,6 @@ const scrollToTop = () => {
 	opacity: 0;
 }
 
-
 .chat-slide-enter-active,
 .chat-slide-leave-active {
 	transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);

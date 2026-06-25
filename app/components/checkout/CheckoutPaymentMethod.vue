@@ -1,6 +1,15 @@
 <script setup>
 import { useOrderStore } from "~/stores/order.store";
 
+defineProps({
+	modelValue: {
+		type: String,
+		default: "cod",
+	},
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
 const orderStore = useOrderStore();
 
 const paymentMethods = [
@@ -30,6 +39,7 @@ const paymentMethods = [
 
 const selectMethod = (methodId) => {
 	orderStore.shippingInfo.paymentMethod = methodId;
+	emit("update:modelValue", methodId);
 };
 
 onMounted(() => {
@@ -46,8 +56,7 @@ onMounted(() => {
 		<h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
 			<span
 				class="w-8 h-8 bg-red-50 text-red-500 rounded-lg flex items-center justify-center text-sm"
-				>2</span
-			>
+			>2</span>
 			Phương thức thanh toán
 		</h3>
 
@@ -105,3 +114,4 @@ onMounted(() => {
 		</div>
 	</div>
 </template>
+

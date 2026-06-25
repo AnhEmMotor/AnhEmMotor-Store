@@ -6,7 +6,6 @@ import { SHOWROOMS, TESTIMONIALS, TRUST_SERVICES } from "@/constants/trust.const
 
 const isInfoOpen = ref(false);
 
-
 const feedbackPage = ref(1);
 const itemsPerPage = 6;
 const totalFeedbackPages = computed(() => Math.ceil(TESTIMONIALS.length / itemsPerPage));

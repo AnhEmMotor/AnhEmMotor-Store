@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";
@@ -10,82 +10,122 @@ import CheckoutPaymentMethod from "@/components/checkout/CheckoutPaymentMethod.v
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary.vue";
 
 useSeoMeta({
-	title: "Thanh Toán",
-	description: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",
-	ogTitle: "Thanh Toán",
-	ogDescription: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",
-	ogImage: "/assets/image/index/index-banner-bg.webp",
-	twitterTitle: "Thanh Toán",
-	twitterDescription: "Hoàn tất đơn hàng của bạn tại AnhEm Motor.",
-	twitterImage: "/assets/image/index/index-banner-bg.webp",
+  title: "Thanh Toan",
+  description: "Hoan tat don hang cua ban tai AnhEm Motor.",
+  ogTitle: "Thanh Toan",
+  ogDescription: "Hoan tat don hang cua ban tai AnhEm Motor.",
+  ogImage: "/assets/image/index/index-banner-bg.webp",
+  twitterTitle: "Thanh Toan",
+  twitterDescription: "Hoan tat don hang cua ban tai AnhEm Motor.",
+  twitterImage: "/assets/image/index/index-banner-bg.webp",
 });
 
 useHead({
-	link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+  link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
 
-const { cartItems } = useCart();
+const { cartItems, clearCart } = useCart();
 const authStore = useAuthStore();
 const orderStore = useOrderStore();
 
-const isSubmitting = computed(() => orderStore.isLoading || orderStore.isRedirecting);
-
 onMounted(() => {
-	orderStore.clearOrder();
-	orderStore.isRedirecting = false;
-	orderStore.initShippingInfo(authStore.user);
-	orderStore.initStatuses();
+  orderStore.clearOrder();
+  orderStore.initShippingInfo(authStore.user);
 });
 
-onUnmounted(() => {
-	orderStore.clearOrder();
-});
+const handleCheckout = async () => {
+  if (!orderStore.validateShippingInfo()) {
+    const instance = useNuxtApp();
+    instance.$toast.error("Vui long kiem tra lai thong tin nhan hang!");
+    return;
+  }
+  try {
+    const order = await orderStore.createOrder(cartItems.value);
+    if (order?.id) {
+      const instance = useNuxtApp();
+      const paymentMethod = orderStore.selectedPaymentMethod;
+      if (paymentMethod === "cod") {
+        clearCart();
+        instance.$toast.success("Dat hang thanh cong!");
+        navigateTo(`/order-success?id=${order.id}`);
+      } else {
+        instance.$toast.info("Dang chuyen den trang thanh toan...");
+        try {
+          const url = await orderStore.getPaymentLink(order.id);
+          if (!url) {
+            throw new Error("Không nhận được link thanh toán.");
+          }
+          clearCart();
+          window.location.href = url;
+        } catch (paymentError) {
+          const message =
+            paymentError.response?.data?.errors?.[0]?.message ||
+            paymentError.response?.data?.message ||
+            paymentError.message ||
+            "Không thể mở cổng thanh toán.";
+          instance.$toast.warning(
+            `Đơn hàng đã được tạo nhưng chưa thể thanh toán: ${message}`,
+          );
+          await navigateTo({
+            path: "/payment-unavailable",
+            query: {
+              id: order.id,
+              method: paymentMethod,
+              reason: "unavailable",
+            },
+          });
+        }
+      }
+    }
+  } catch {
+    const instance = useNuxtApp();
+    instance.$toast.error(orderStore.error || "Co loi xay ra khi dat hang.");
+  }
+};
 </script>
 
 <template>
-	<main class="min-h-screen bg-gray-50 py-12">
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-			<ClientOnly>
-				<CheckoutCartEmpty v-if="cartItems.length === 0 && !orderStore.isRedirecting" />
+  <main class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ClientOnly>
+        <CheckoutCartEmpty v-if="cartItems.length === 0" />
 
-				<div v-else class="flex flex-col lg:flex-row gap-8">
-					<div class="flex-1 space-y-6">
-						<div
-							class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-						>
-							<h1
-								class="text-2xl font-black text-gray-900 flex items-center gap-3"
-							>
-								<Icon name="fa6-solid:truck-fast" class="text-red-600" />
-								THÔNG TIN THANH TOÁN
-							</h1>
-						</div>
+        <div v-else class="flex flex-col lg:flex-row gap-8">
+          <div class="flex-1 space-y-6">
+            <div
+              class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+            >
+              <h1
+                class="text-2xl font-black text-gray-900 flex items-center gap-3"
+              >
+                <Icon name="fa6-solid:truck-fast" class="text-red-600" />
+                THONG TIN THANH TOAN
+              </h1>
+            </div>
 
-						<CheckoutShippingForm />
+            <CheckoutShippingForm />
 
-						<CheckoutPaymentMethod />
-					</div>
+            <CheckoutPaymentMethod v-model="orderStore.selectedPaymentMethod" />
+          </div>
 
-					<CheckoutOrderSummary />
-				</div>
+          <CheckoutOrderSummary @place-order="handleCheckout" />
+        </div>
 
-				<template #fallback>
-					<div class="flex flex-col lg:flex-row gap-8 animate-pulse">
-						<div class="flex-1 space-y-6">
-							<div class="h-20 bg-gray-200 rounded-2xl" />
-							<div class="h-64 bg-gray-200 rounded-3xl" />
-							<div class="h-48 bg-gray-200 rounded-3xl" />
-						</div>
-						<div class="lg:w-[400px]">
-							<div class="h-[500px] bg-gray-200 rounded-3xl" />
-						</div>
-					</div>
-				</template>
-
-				<CommonFullLoading :show="isSubmitting" text="Đang xử lý đơn hàng..." />
-			</ClientOnly>
-		</div>
-	</main>
+        <template #fallback>
+          <div class="flex flex-col lg:flex-row gap-8 animate-pulse">
+            <div class="flex-1 space-y-6">
+              <div class="h-20 bg-gray-200 rounded-2xl" />
+              <div class="h-64 bg-gray-200 rounded-3xl" />
+              <div class="h-48 bg-gray-200 rounded-3xl" />
+            </div>
+            <div class="lg:w-[400px]">
+              <div class="h-[500px] bg-gray-200 rounded-3xl" />
+            </div>
+          </div>
+        </template>
+      </ClientOnly>
+    </div>
+  </main>
 </template>
 
 <style scoped>

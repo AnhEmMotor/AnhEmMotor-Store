@@ -1,8 +1,7 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { useProductStore } from "@/stores/product.store";
-import { useCategoryStore } from "@/stores/category.store";
+
 
 const props = defineProps({
 	modelValue: {
@@ -14,40 +13,66 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "close"]);
 
 const productStore = useProductStore();
-const categoryStore = useCategoryStore();
+const MAX_PRICE = 60000000;
+const BRAND_PAGE_SIZE = 8;
+const brandPage = ref(1);
 
 const {
-	data: categoriesData,
-	isLoading: isLoadingCategories,
-	error: categoriesError,
+	data: filterFacetsData,
+	isLoading: isLoadingFilterFacets,
+	isError: isFilterFacetsError,
 } = useQuery({
 	queryKey: ["product-categories"],
 	queryFn: () => categoryStore.getProductCategories(),
 });
 
-const categories = computed(() => {
-	if (categoriesData.value?.items) return categoriesData.value.items;
-	if (Array.isArray(categoriesData.value)) return categoriesData.value;
-	return [];
+const brands = computed(() => filterFacetsData.value?.brands || []);
+const categories = computed(() => filterFacetsData.value?.categories || []);
+
+const brandTotalPages = computed(() => Math.max(1, Math.ceil(brands.value.length / BRAND_PAGE_SIZE)));
+
+const paginatedBrands = computed(() => {
+	const start = (brandPage.value - 1) * BRAND_PAGE_SIZE;
+	return brands.value.slice(start, start + BRAND_PAGE_SIZE);
 });
+
+const canGoPreviousBrandPage = computed(() => brandPage.value > 1);
+const canGoNextBrandPage = computed(() => brandPage.value < brandTotalPages.value);
+
+const goToPreviousBrandPage = () => {
+	if (canGoPreviousBrandPage.value) {
+		brandPage.value -= 1;
+	}
+};
+
+const goToNextBrandPage = () => {
+	if (canGoNextBrandPage.value) {
+		brandPage.value += 1;
+	}
+};
+
+watch(brands, () => {
+	if (brandPage.value > brandTotalPages.value) {
+		brandPage.value = brandTotalPages.value;
+	}
+});
+
 
 const {
 	data: optionsData,
 	isLoading: isLoadingOptions,
-	error: optionsError,
-	refetch: fetchOptionsManual,
 } = useQuery({
 	queryKey: ["product-options"],
 	queryFn: () => productStore.getOptions(),
 });
 
-const options = computed(() => optionsData.value || []);
-
-const searchQuery = computed({
-	get: () => props.modelValue.search || "",
-	set: (val) => {
-		emit("update:modelValue", { ...props.modelValue, search: val });
-	},
+const filteredOptions = computed(() => {
+	const requested = ["VehicleType"];
+	const allOptions = optionsData.value || [];
+	return allOptions
+		.filter((opt) => requested.includes(opt.name))
+		.map(opt => opt)
+		.sort((a, b) => requested.indexOf(a.name) - requested.indexOf(b.name));
 });
 
 const selectedOptions = computed({
@@ -57,35 +82,93 @@ const selectedOptions = computed({
 	},
 });
 
-const selectedCategories = computed({
-	get: () => props.modelValue.category_ids || [],
+const search = computed({
+	get: () => props.modelValue.search || "",
 	set: (val) => {
-		emit("update:modelValue", { ...props.modelValue, category_ids: val });
+		emit("update:modelValue", { ...props.modelValue, search: val });
 	},
 });
+
+const selectedBrands = computed({
+	get: () => props.modelValue.brand_ids || [],
+	set: (val) => {
+		emit("update:modelValue", { ...props.modelValue, brand_ids: val });
+	},
+});
+
+const selectedCategories = computed({
+    get: () => props.modelValue.category_ids || [],
+    set: (val) => {
+        emit("update:modelValue", { ...props.modelValue, category_ids: val });
+    },
+});
+
+
+const minPrice = computed({
+	get: () => props.modelValue.minPrice ?? 0,
+	set: (val) => {
+		emit("update:modelValue", { ...props.modelValue, minPrice: val });
+	},
+});
+
+const maxPrice = computed({
+	get: () => props.modelValue.maxPrice ?? MAX_PRICE,
+	set: (val) => {
+		emit("update:modelValue", { ...props.modelValue, maxPrice: val });
+	},
+});
+
+const isBrandSelected = (brandId) => selectedBrands.value.includes(brandId);
+
+const toggleBrand = (brandId) => {
+	const current = [...selectedBrands.value];
+	const index = current.indexOf(brandId);
+	if (index > -1) {
+		current.splice(index, 1);
+	} else {
+		current.push(brandId);
+	}
+	selectedBrands.value = current;
+};
 
 const isCategorySelected = (catId) => selectedCategories.value.includes(catId);
 
 const toggleCategory = (catId) => {
-	const current = [...selectedCategories.value];
-	const index = current.indexOf(catId);
-	if (index > -1) {
-		current.splice(index, 1);
-	} else {
-		current.push(catId);
-	}
-	selectedCategories.value = current;
+    const current = [...selectedCategories.value];
+    const index = current.indexOf(catId);
+    if (index > -1) {
+        current.splice(index, 1);
+    } else {
+        current.push(catId);
+    }
+    selectedCategories.value = current;
 };
 
-const isSelected = (valueId) => selectedOptions.value.includes(valueId);
 
-const toggleOption = (valueId) => {
+const isSelected = (val) => {
+	if (val.ids) {
+		return val.ids.some(id => selectedOptions.value.includes(id));
+	}
+	return selectedOptions.value.includes(val.id);
+};
+
+const toggleOption = (val) => {
 	const current = [...selectedOptions.value];
-	const index = current.indexOf(valueId);
-	if (index > -1) {
-		current.splice(index, 1);
+	const ids = val.ids || [val.id];
+	
+	const isAlreadySelected = isSelected(val);
+	
+	if (isAlreadySelected) {
+		// Remove all IDs in this group
+		ids.forEach(id => {
+			const index = current.indexOf(id);
+			if (index > -1) current.splice(index, 1);
+		});
 	} else {
-		current.push(valueId);
+		// Add all IDs in this group that aren't already there
+		ids.forEach(id => {
+			if (!current.includes(id)) current.push(id);
+		});
 	}
 	selectedOptions.value = current;
 };
@@ -95,22 +178,27 @@ const resetFilters = () => {
 		search: "",
 		optionValueIds: [],
 		category_ids: [],
+		brand_ids: [],
+		minPrice: null,
+		maxPrice: null,
 	});
 };
 
 const optionLabels = {
-	BrakeSystem: "Hệ thống phanh",
-	Color: "Màu sắc",
-	Condition: "Tình trạng",
-	Displacement: "Dung tích xi lanh",
-	ManufactureYear: "Năm sản xuất",
-	Material: "Chất liệu",
-	Size: "Kích thước",
-	Style: "Kiểu dáng",
-	VehicleType: "Loại xe",
+	Brand: "Thương Hiệu",
+	VehicleType: "Loại Xe",
 };
 
 const getOptionLabel = (name) => optionLabels[name] || name;
+
+const formatVND = (val) => {
+	if (!val) return "0đ";
+	return new Intl.NumberFormat("vi-VN", {
+		style: "currency",
+		currency: "VND",
+		maximumFractionDigits: 0,
+	}).format(val);
+};
 </script>
 
 <template>
@@ -129,110 +217,220 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 			</button>
 		</div>
 
-		<div class="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+		<div class="flex-1 overflow-y-auto p-6 space-y-10 custom-scrollbar">
+			<!-- Search -->
 			<div class="space-y-3">
-				<label class="text-sm font-bold text-gray-900 uppercase tracking-wider"
-					>Tìm kiếm</label
-				>
+				<span class="text-sm font-black text-gray-900 uppercase tracking-widest">
+					Tìm kiếm
+				</span>
 				<div class="relative">
-					<input
-						v-model="searchQuery"
-						type="text"
-						placeholder="Nhập tên sản phẩm..."
-						class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
-					>
 					<Icon
 						name="fa6-solid:magnifying-glass"
 						class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
 					/>
-				</div>
-			</div>
-
-			<div class="space-y-3">
-				<label class="text-sm font-bold text-gray-900 uppercase tracking-wider"
-					>Danh mục</label
-				>
-				<div v-if="isLoadingCategories" class="space-y-2">
-					<div
-						v-for="i in 3"
-						:key="i"
-						class="animate-pulse h-8 bg-gray-100 rounded-lg"
-					/>
-				</div>
-				<div v-else-if="categoriesError" class="text-sm text-red-500">
-					{{ categoriesError.message || categoriesError }}
-				</div>
-				<div v-else-if="categories.length > 0" class="grid grid-cols-2 gap-2">
-					<button
-						v-for="cat in categories"
-						:key="cat.id"
-						class="px-3 py-2 text-xs font-semibold rounded-lg border transition-all duration-300 text-center"
-						:class="[
-							isCategorySelected(cat.id)
-								? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
-								: 'bg-white border-gray-200 text-gray-600 hover:border-primary hover:text-primary',
-						]"
-						:aria-label="'Lọc theo danh mục ' + cat.name"
-						@click="toggleCategory(cat.id)"
+					<input
+						v-model="search"
+						type="search"
+						aria-label="Tìm kiếm sản phẩm"
+						placeholder="Tên xe, phiên bản, màu sắc..."
+						class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm font-medium text-gray-900 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
 					>
-						{{ cat.name }}
-					</button>
 				</div>
 			</div>
 
-			<div v-if="isLoadingOptions" class="space-y-4">
-				<div v-for="i in 3" :key="i" class="animate-pulse space-y-3">
-					<div class="h-4 bg-gray-200 rounded w-1/3" />
-					<div class="grid grid-cols-2 gap-2">
-						<div v-for="j in 4" :key="j" class="h-8 bg-gray-100 rounded" />
+			<!-- Brands -->
+			<div class="space-y-4">
+				<div class="flex items-center gap-2">
+					<div class="w-1 h-4 bg-primary rounded-full"/>
+					<label class="text-sm font-black text-gray-900 uppercase tracking-widest"
+						>Thương Hiệu</label
+					>
+				</div>
+				<ClientOnly>
+					<div v-if="isLoadingFilterFacets" class="py-4 flex justify-center">
+						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
 					</div>
-				</div>
-			</div>
+					<p
+						v-else-if="isFilterFacetsError"
+						class="rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600"
+					>
+						Không thể tải danh sách thương hiệu.
+					</p>
+					<div v-else-if="brands.length > 0" class="space-y-3">
+						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+							<button
+								v-for="brand in paginatedBrands"
+								:key="brand.id"
+								class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
+								:class="[
+									isBrandSelected(brand.id)
+										? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+										: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+								]"
+								@click="toggleBrand(brand.id)"
+							>
+								{{ brand.name }}
+							</button>
+						</div>
 
-			<div v-else-if="optionsError" class="text-center py-4">
-				<p class="text-red-500 text-sm mb-2">
-					{{ optionsError.message || optionsError }}
-				</p>
-				<button
-					class="text-primary font-bold text-xs uppercase"
-					aria-label="Thử lại tải dữ liệu bộ lọc"
-					@click="fetchOptionsManual"
-				>
-					Thử lại
-				</button>
-			</div>
-
-			<div v-else-if="options.length > 0" class="space-y-8">
-				<div v-for="option in options" :key="option.id" class="space-y-3">
-					<h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider">
-						{{ getOptionLabel(option.name) }}
-					</h3>
-					<div class="grid grid-cols-2 gap-2">
-						<button
-							v-for="val in option.values"
-							:key="val.id"
-							class="px-3 py-2 text-xs font-semibold rounded-lg border transition-all duration-300 text-center"
-							:class="[
-								isSelected(val.id)
-									? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
-									: 'bg-white border-gray-200 text-gray-600 hover:border-primary hover:text-primary',
-							]"
-							:aria-label="'Lọc theo ' + val.name"
-							@click="toggleOption(val.id)"
+						<div
+							v-if="brandTotalPages > 1"
+							class="flex items-center justify-between rounded-xl bg-gray-50 px-2 py-1.5"
 						>
-							{{ val.name }}
+							<button
+								type="button"
+								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+								:disabled="!canGoPreviousBrandPage"
+								aria-label="Trang thương hiệu trước"
+								@click="goToPreviousBrandPage"
+							>
+								<Icon name="fa6-solid:chevron-left" class="text-[10px]" />
+							</button>
+							<span class="text-[11px] font-black text-gray-500">
+								{{ brandPage }} / {{ brandTotalPages }}
+							</span>
+							<button
+								type="button"
+								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+								:disabled="!canGoNextBrandPage"
+								aria-label="Trang thương hiệu sau"
+								@click="goToNextBrandPage"
+							>
+								<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
+							</button>
+						</div>
+					</div>
+				</ClientOnly>
+			</div>
+
+			<!-- Categories -->
+			<div class="space-y-4">
+				<div class="flex items-center gap-2">
+					<div class="w-1 h-4 bg-primary rounded-full"/>
+					<label class="text-sm font-black text-gray-900 uppercase tracking-widest"
+						>Danh Mục</label
+					>
+				</div>
+				<ClientOnly>
+					<div v-if="isLoadingFilterFacets" class="py-4 flex justify-center">
+						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
+					</div>
+					<div v-else-if="categories.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+						<button
+							v-for="cat in categories"
+							:key="cat.id"
+							class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
+							:class="[
+								isCategorySelected(cat.id)
+									? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+									: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+							]"
+							@click="toggleCategory(cat.id)"
+						>
+							{{ cat.name }}
 						</button>
 					</div>
+				</ClientOnly>
+			</div>
+
+
+			<!-- Price Range -->
+			<div class="space-y-6">
+				<div class="flex items-center gap-2">
+					<div class="w-1 h-4 bg-primary rounded-full"/>
+					<label class="text-sm font-black text-gray-900 uppercase tracking-widest">Giá sản phẩm</label>
+				</div>
+				
+				<div class="space-y-8 px-2">
+					<!-- Range Slider Container -->
+					<div class="relative h-2 bg-gray-100 rounded-full">
+						<!-- Active Track Highlight -->
+						<div 
+							class="absolute h-full bg-primary rounded-full shadow-[0_0_10px_rgba(227,24,55,0.3)] will-change-[left,right]"
+							:style="{
+								left: `${(minPrice / MAX_PRICE) * 100}%`,
+								right: `${100 - (maxPrice || MAX_PRICE) / MAX_PRICE * 100}%`
+							}"
+						/>
+						
+						<!-- Min Slider -->
+						<input
+							v-model.number="minPrice"
+							type="range"
+							min="0"
+							:max="MAX_PRICE"
+							step="500000"
+							class="absolute w-full h-full appearance-none bg-transparent pointer-events-none z-10"
+							@input="minPrice = Math.min(minPrice, (maxPrice || MAX_PRICE) - 500000)"
+						>
+						
+						<!-- Max Slider -->
+						<input
+							v-model.number="maxPrice"
+							type="range"
+							min="0"
+							:max="MAX_PRICE"
+							step="500000"
+							class="absolute w-full h-full appearance-none bg-transparent pointer-events-none z-20"
+							@input="maxPrice = Math.max(maxPrice || 0, minPrice + 500000)"
+						>
+					</div>
+
+					<!-- Labels -->
+					<div class="flex items-center justify-between">
+						<div class="space-y-1">
+							<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Từ</span>
+							<p class="text-xs font-black text-gray-900">{{ formatVND(minPrice) }}</p>
+						</div>
+						<div class="text-right space-y-1">
+							<span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Đến</span>
+							<p class="text-xs font-black text-gray-900">{{ formatVND(maxPrice || MAX_PRICE) }}</p>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
 
+			<!-- Dynamic Options (Brand, Color, VehicleType) -->
+			<ClientOnly>
+				<div v-if="isLoadingOptions" class="py-8 flex justify-center">
+					<div class="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"/>
+				</div>
+
+				<div v-else class="space-y-10">
+					<div v-for="option in filteredOptions" :key="option.id" class="space-y-4">
+						<div class="flex items-center gap-2">
+							<div class="w-1 h-4 bg-primary rounded-full"/>
+							<h3 class="text-sm font-black text-gray-900 uppercase tracking-widest">
+								{{ getOptionLabel(option.name) }}
+							</h3>
+						</div>
+						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+							<template v-for="val in option.values" :key="val.id">
+								<!-- Default Button -->
+								<button
+									class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
+									:class="[
+										isSelected(val)
+											? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+											: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+									]"
+									@click="toggleOption(val)"
+								>
+									{{ val.name }}
+								</button>
+							</template>
+						</div>
+					</div>
+				</div>
+			</ClientOnly>
+		</div>
 		<div class="p-6 border-t border-gray-100 bg-gray-50/50">
 			<button
-				class="w-full py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]"
+				class="w-full py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
 				aria-label="Xóa tất cả các bộ lọc đang chọn"
 				@click="resetFilters"
 			>
+				<Icon name="fa6-solid:rotate-left" class="text-sm" />
 				Xóa tất cả bộ lọc
 			</button>
 		</div>
@@ -256,17 +454,70 @@ const getOptionLabel = (name) => optionLabels[name] || name;
 	border-color: #e31837;
 }
 
+.custom-scrollbar {
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+}
 .custom-scrollbar::-webkit-scrollbar {
-	width: 4px;
+	display: none; /* Chrome, Safari and Opera */
 }
-.custom-scrollbar::-webkit-scrollbar-track {
+
+/* Custom Multi-Range Slider Styling */
+input[type="range"] {
+	pointer-events: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	appearance: none;
+	width: 22px;
+	height: 22px;
+	background: #ffffff;
+	border: 3px solid #e31837;
+	border-radius: 50%;
+	cursor: pointer;
+	pointer-events: auto;
+	box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+	transition: transform 0.15s ease-out;
+	margin-top: -1px;
+	will-change: transform;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+	transform: scale(1.1);
+	background: #e31837;
+	border-color: #ffffff;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+	transform: scale(0.95);
+	box-shadow: 0 0 0 10px rgba(227, 24, 55, 0.1);
+}
+
+input[type="range"]::-moz-range-thumb {
+	width: 20px;
+	height: 20px;
+	background: #ffffff;
+	border: 2px solid #e31837;
+	border-radius: 50%;
+	cursor: pointer;
+	pointer-events: auto;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+	transform: scale(1.2);
+	background: #e31837;
+	border-color: #ffffff;
+}
+
+/* Remove default track styles to avoid overlapping tracks */
+input[type="range"]::-webkit-slider-runnable-track {
 	background: transparent;
+	border: none;
 }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-	background: #e5e7eb;
-	border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-	background: #d1d5db;
+input[type="range"]::-moz-range-track {
+	background: transparent;
+	border: none;
 }
 </style>
+

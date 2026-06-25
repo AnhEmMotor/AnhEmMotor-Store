@@ -1,31 +1,27 @@
-
 export const promotionService = {
-	async getAllPromotions() {
-		try {
-			return await promotionRepository.getAllPromotions();
-		} catch {
+  async getAllPromotions() {
+    try {
+      return await promotionRepository.getAllPromotions();
+    } catch {
+      return [];
+    }
+  },
 
-			return [];
-		}
-	},
+  async getPromotionBySlug(slug) {
+    try {
+      return await promotionRepository.getPromotionBySlug(slug);
+    } catch {
+      return null;
+    }
+  },
 
-	async getPromotionBySlug(slug) {
-		try {
-			return await promotionRepository.getPromotionBySlug(slug);
-		} catch {
-
-			return null;
-		}
-	},
-
-	async getHotPromotions() {
-		try {
-			return await promotionRepository.getHotPromotions();
-		} catch {
-
-			return [];
-		}
-	},
+  async getHotPromotions() {
+    try {
+      return await promotionRepository.getHotPromotions();
+    } catch {
+      return [];
+    }
+  },
 };
 
 export default promotionService;

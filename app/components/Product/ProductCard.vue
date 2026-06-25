@@ -31,12 +31,18 @@ watch(
   { immediate: true },
 );
 
-const selectedVariantColors = computed(() => selectedVariant.value?.colors ?? []);
+const selectedVariantColors = computed(
+  () => selectedVariant.value?.colors ?? [],
+);
 
 const selectedColor = computed(() => {
   const colors = selectedVariantColors.value;
   if (!colors.length || selectedColorKey.value === null) return null;
-  return colors.find((color, index) => colorKey(color, index) === selectedColorKey.value) ?? null;
+  return (
+    colors.find(
+      (color, index) => colorKey(color, index) === selectedColorKey.value,
+    ) ?? null
+  );
 });
 
 const currentPrice = computed(() => {
@@ -58,6 +64,7 @@ const currentImage = computed(() => {
     "/assets/image/placeholder-product.webp"
   );
 });
+
 
 const currentUrl = computed(() => {
   const slug =
@@ -91,7 +98,11 @@ const applyColor = (color, index) => {
 };
 
 const colorLabel = (color, index) =>
-  color?.name || color?.colorName || color?.colorCode || color?.code || `Màu ${index + 1}`;
+  color?.name ||
+  color?.colorName ||
+  color?.colorCode ||
+  color?.code ||
+  `Màu ${index + 1}`;
 
 const handleAddToCart = () => {
   const variant = selectedVariant.value;
@@ -164,25 +175,39 @@ const toggleCompare = (e) => {
     :to="currentUrl"
     class="group relative bg-white rounded-24 overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-500 border border-slate-100 flex flex-col h-full"
   >
-    <div class="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden bg-slate-50">
+    <div
+      class="relative aspect-[4/3] sm:aspect-[4/5] overflow-hidden bg-slate-50"
+    >
       <img
         :src="currentImage"
         :alt="product.name"
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
       >
 
-      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+      />
 
       <button
         class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10 backdrop-blur-md border"
-        :class="isCompared ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30' : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'"
+        :class="
+          isCompared
+            ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30'
+            : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'
+        "
         :title="isCompared ? 'Xóa khỏi danh sách so sánh' : 'Thêm vào so sánh'"
         @click="toggleCompare"
       >
-        <Icon :name="isCompared ? 'ph:check-bold' : 'ph:git-diff-bold'" class="text-lg" />
+        <Icon
+          :name="isCompared ? 'ph:check-bold' : 'ph:git-diff-bold'"
+          class="text-lg"
+        />
       </button>
 
-      <div v-if="product.brand" class="absolute bottom-4 left-4 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
+      <div
+        v-if="product.brand"
+        class="absolute bottom-4 left-4 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-[10px] font-bold text-white uppercase tracking-wider"
+      >
         {{ product.brand }}
       </div>
     </div>
@@ -204,7 +229,10 @@ const toggleCompare = (e) => {
         />
       </div>
 
-      <div v-if="selectedVariantColors.length > 0" class="flex flex-wrap gap-2 mb-4">
+      <div
+        v-if="selectedVariantColors.length > 0"
+        class="flex flex-wrap gap-2 mb-4"
+      >
         <ProductColorChip
           v-for="(color, index) in selectedVariantColors"
           :key="colorKey(color, index)"
@@ -216,10 +244,15 @@ const toggleCompare = (e) => {
 
       <div class="flex flex-col gap-1 mb-6">
         <span class="text-xs text-slate-400 font-medium">Giá từ</span>
-        <span class="text-primary font-bold text-xl sm:text-2xl tracking-tight">{{ currentPrice }}</span>
+        <span
+          class="text-primary font-bold text-xl sm:text-2xl tracking-tight"
+          >{{ currentPrice }}</span
+        >
       </div>
 
-      <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-2">
+      <div
+        class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-2"
+      >
         <button
           type="button"
           class="flex-1 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all duration-300 hover:bg-primary shadow-sm flex items-center justify-center gap-2"

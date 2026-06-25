@@ -324,14 +324,12 @@ onUnmounted(() => {
 	animation: progress 5s linear forwards;
 }
 
-
 .slide-next-enter-active,
 .slide-next-leave-active,
 .slide-prev-enter-active,
 .slide-prev-leave-active {
 	transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 
 .slide-next-enter-from {
 	transform: translateX(100%) scale(1.1);
@@ -341,7 +339,6 @@ onUnmounted(() => {
 	transform: translateX(-100%) scale(1);
 	opacity: 0;
 }
-
 
 .slide-prev-enter-from {
 	transform: translateX(-100%) scale(1.1);
