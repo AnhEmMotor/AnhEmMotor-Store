@@ -9,7 +9,7 @@ defineProps({
 
 <template>
 	<section class="py-16 bg-gray-900 text-white overflow-hidden relative">
-		<!-- Decorative circles with subtle pulse -->
+		
 		<div class="absolute -top-24 -left-24 w-64 h-64 bg-red-600/10 rounded-full blur-3xl animate-pulse-slow" />
 		<div class="absolute -bottom-24 -right-24 w-64 h-64 bg-red-600/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;" />
 
@@ -26,7 +26,7 @@ defineProps({
 			</div>
 
 
-			<!-- Why Choose Us List Items -->
+			
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-12">
 				<div 
 					v-for="(item, index) in data.items" 
@@ -42,7 +42,7 @@ defineProps({
 				</div>
 			</div>
 
-			<!-- Integrated CTA Banner -->
+			
 			<div class="max-w-5xl mx-auto bg-gradient-to-r from-red-600 to-red-700 rounded-[28px] p-8 md:p-12 text-center shadow-2xl relative overflow-hidden group hover:shadow-red-600/20 transition-shadow duration-500">
 				<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
 				<div class="relative z-10">

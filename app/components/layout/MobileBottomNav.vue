@@ -22,7 +22,7 @@
 				<span class="text-[9px] font-black uppercase tracking-widest">{{ item.name }}</span>
 			</NuxtLink>
 
-			<!-- Mobile Menu Toggle Button (Alternative to Header) -->
+			
 			<button 
 				class="flex flex-col items-center justify-center gap-1 group flex-1"
 				@click="$emit('open-menu')"

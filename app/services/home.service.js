@@ -1,44 +1,35 @@
-
-
-/**
- * Application Layer - Home Service
- * Orchestrates business logic for the Home page
- */
 const homeService = {
-	async getBrands() {
-		try {
-			return await homeRepository.getBrands();
-		} catch (error) {
-			console.error("Service: Failed to fetch brands:", error);
-			return [];
-		}
-	},
+  async getBrands() {
+    try {
+      return await homeRepository.getBrands();
+    } catch {
+      return [];
+    }
+  },
 
-	async getHeroStats() {
-		return await homeRepository.getHeroStats();
-	},
+  async getHeroStats() {
+    return await homeRepository.getHeroStats();
+  },
 
-	async getSearchPhrases() {
-		return await homeRepository.getSearchPhrases();
-	},
+  async getSearchPhrases() {
+    return await homeRepository.getSearchPhrases();
+  },
 
-	async getFeaturedProducts() {
-		try {
-			return await homeRepository.getFeaturedProducts();
-		} catch (error) {
-			console.error("Service: Failed to fetch featured products:", error);
-			return [];
-		}
-	},
+  async getFeaturedProducts() {
+    try {
+      return await homeRepository.getFeaturedProducts();
+    } catch {
+      return [];
+    }
+  },
 
-	async getBanners() {
-		try {
-			return await homeRepository.getBanners();
-		} catch (error) {
-			console.error("Service: Failed to fetch banners:", error);
-			return [];
-		}
-	},
+  async getBanners(placement) {
+    try {
+      return await homeRepository.getBanners(placement);
+    } catch {
+      return [];
+    }
+  },
 };
 
 export default homeService;

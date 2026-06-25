@@ -37,7 +37,10 @@ const isOnlinePayment = computed(
 onMounted(() => {
   if (!order.value) return;
   const status = order.value.statusId || order.value.status;
-  if (isOnlinePayment.value && ["pending", "waiting_deposit"].includes(status)) {
+  if (
+    isOnlinePayment.value &&
+    ["pending", "waiting_deposit"].includes(status)
+  ) {
     navigateTo({
       path: "/payment-unavailable",
       query: {
@@ -55,7 +58,9 @@ const successTitle = computed(() =>
 );
 
 const totalAmount = computed(() => Number(order.value?.totalAmount || 0));
-const depositThreshold = computed(() => Number(depositSettings.value?.orderValueExceeds || 0));
+const depositThreshold = computed(() =>
+  Number(depositSettings.value?.orderValueExceeds || 0),
+);
 const depositRatio = computed(() =>
   Number(order.value?.depositRatio || depositSettings.value?.depositRatio || 0),
 );
@@ -113,12 +118,60 @@ useSeoMeta({
               <h1
                 class="text-3xl md:text-4xl font-black text-gray-900 uppercase"
               >
-                {{ successTitle }}
+                Đặt hàng thành công!
               </h1>
-              <p class="text-gray-500 font-medium max-w-md mx-auto">
+              <div
+                v-if="order.statusId === 'waiting_deposit'"
+                class="space-y-2"
+              >
+                <p class="text-blue-600 font-bold max-w-md mx-auto">
+                  Đơn hàng
+                  <span class="text-red-600">#{{ order.orderCode }}</span> cần
+                  được đặt cọc để xác nhận.
+                </p>
+                <p class="text-gray-500 text-sm max-w-sm mx-auto">
+                  Vui lòng liên hệ hotline hoặc thanh toán ngay qua cổng online
+                  để thực hiện đặt cọc
+                  <span class="font-bold text-gray-900"
+                    >{{ order.depositRatio }}%</span
+                  >
+                  giá trị đơn.
+                </p>
+              </div>
+              <div
+                v-else-if="order.statusId === 'deposit_paid'"
+                class="space-y-2"
+              >
+                <p class="text-green-600 font-bold max-w-md mx-auto">
+                  Đã nhận tiền đặt cọc cho đơn hàng
+                  <span class="text-red-600">#{{ order.orderCode }}</span
+                  >!
+                </p>
+                <p class="text-gray-500 text-sm max-w-sm mx-auto">
+                  Cảm ơn bạn đã đặt cọc. Đơn hàng của bạn đang được nhân viên
+                  xác nhận và chuẩn bị.
+                </p>
+              </div>
+              <div
+                v-else-if="order.statusId === 'paid_processing'"
+                class="space-y-2"
+              >
+                <p class="text-green-600 font-bold max-w-md mx-auto">
+                  Thanh toán thành công đơn hàng
+                  <span class="text-red-600">#{{ order.orderCode }}</span
+                  >!
+                </p>
+                <p class="text-gray-500 text-sm max-w-sm mx-auto">
+                  Hệ thống đã ghi nhận thanh toán toàn bộ. Đơn hàng của bạn đang
+                  được xử lý nhanh nhất có thể.
+                </p>
+              </div>
+              <p v-else class="text-gray-500 font-medium max-w-md mx-auto">
                 Chúc mừng! Đơn hàng
-                <span class="text-red-600 font-black">#{{ order.orderCode }}</span>
-                của bạn đã được tiếp nhận.
+                <span class="text-red-600 font-black"
+                  >#{{ order.orderCode }}</span
+                >
+                của bạn đã được tiếp nhận và đang chờ xử lý.
               </p>
             </div>
 
@@ -239,9 +292,7 @@ useSeoMeta({
             </NuxtLink>
           </div>
 
-          <p
-            class="text-center text-gray-400 text-xs font-medium"
-          >
+          <p class="text-center text-gray-400 text-xs font-medium">
             Một email xác nhận đã được gửi đến bạn. Nếu có thắc mắc, vui lòng
             liên hệ hotline
             <a href="tel:0901234567" class="text-red-500 font-bold"
@@ -259,14 +310,10 @@ useSeoMeta({
           >
             <Icon name="fa6-solid:box-open" class="text-4xl text-gray-300" />
           </div>
-          <h2
-            class="text-2xl font-black text-gray-900 mb-2 uppercase"
-          >
+          <h2 class="text-2xl font-black text-gray-900 mb-2 uppercase">
             Không tìm thấy đơn hàng
           </h2>
-          <p
-            class="text-gray-500 font-medium mb-8 max-w-sm mx-auto"
-          >
+          <p class="text-gray-500 font-medium mb-8 max-w-sm mx-auto">
             Rất tiếc, chúng tôi không thể tìm thấy thông tin chi tiết cho đơn
             hàng #{{ orderId }}.
           </p>

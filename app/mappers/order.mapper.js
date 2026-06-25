@@ -32,7 +32,13 @@ const orderMapper = {
     return {
       id: raw.id || raw.Id,
       orderCode: raw.orderCode || raw.id,
-      totalAmount: raw.totalAmount || raw.total_amount || raw.total || raw.totalPrice || raw.amount || 0,
+      totalAmount:
+        raw.totalAmount ||
+        raw.total_amount ||
+        raw.total ||
+        raw.totalPrice ||
+        raw.amount ||
+        0,
       shippingFee: raw.shippingFee || raw.shipping_fee || 0,
       depositRatio: raw.depositRatio || raw.deposit_ratio || null,
       depositAmount: raw.depositAmount || raw.deposit_amount || null,
@@ -42,23 +48,30 @@ const orderMapper = {
       paymentMethod: raw.paymentMethod || "COD",
       paymentStatus: raw.paymentStatus || raw.payment_status || null,
       paymentUrl: raw.paymentUrl || null,
-      createdAt: raw.createdAt || raw.created_at || raw.creationTime || raw.orderDate || raw.date,
+      createdAt:
+        raw.createdAt ||
+        raw.created_at ||
+        raw.creationTime ||
+        raw.orderDate ||
+        raw.date,
       customer: {
         name: raw.customerName || raw.customer_name,
         phone: raw.customerPhone || raw.customer_phone,
         address: raw.customerAddress || raw.customer_address,
       },
-      items: (raw.outputInfos || raw.products || raw.items || []).map((item) => ({
-        id: item.id,
-        productVariantId: item.productVariantId,
-        productVariantColorId: item.productVariantColorId,
-        productVariantName: item.productVariantName || item.variantName,
-        colorName: item.colorName,
-        name: item.productName || item.name,
-        quantity: item.count || item.quantity,
-        price: item.price,
-        image: item.coverImageUrl || item.image,
-      })),
+      items: (raw.outputInfos || raw.products || raw.items || []).map(
+        (item) => ({
+          id: item.id,
+          productVariantId: item.productVariantId,
+          productVariantColorId: item.productVariantColorId,
+          productVariantName: item.productVariantName || item.variantName,
+          colorName: item.colorName,
+          name: item.productName || item.name,
+          quantity: item.count || item.quantity,
+          price: item.price,
+          image: item.coverImageUrl || item.image,
+        }),
+      ),
     };
   },
 
@@ -72,7 +85,8 @@ const orderMapper = {
     if (Array.isArray(raw)) {
       return raw.reduce((acc, item) => {
         const id = item.status_id || item.statusId || item.id || item.value;
-        const name = item.status_name || item.statusName || item.name || item.label;
+        const name =
+          item.status_name || item.statusName || item.name || item.label;
         if (id !== undefined) acc[id] = name;
         return acc;
       }, {});
@@ -90,19 +104,31 @@ const orderMapper = {
 
   formatPrice(value) {
     if (!value) return "0 ₫";
-    return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+    return value.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
   },
 
   calculateSummary(cartDetails, depositSettings = {}) {
-    const subtotal = cartDetails.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const subtotal = cartDetails.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0,
+    );
     const shipping = subtotal > 10000000 ? 0 : 200000;
     const total = subtotal + shipping;
     const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
     const depositRatio = Number(depositSettings.depositRatio || 0);
     const requiresDeposit =
-      orderValueExceeds > 0 && depositRatio > 0 && subtotal >= orderValueExceeds;
-    const depositAmount = requiresDeposit ? Math.round(total * depositRatio / 100) : 0;
-    const remainingAmount = requiresDeposit ? Math.max(total - depositAmount, 0) : 0;
+      orderValueExceeds > 0 &&
+      depositRatio > 0 &&
+      subtotal >= orderValueExceeds;
+    const depositAmount = requiresDeposit
+      ? Math.round((total * depositRatio) / 100)
+      : 0;
+    const remainingAmount = requiresDeposit
+      ? Math.max(total - depositAmount, 0)
+      : 0;
     const payableNow = requiresDeposit ? depositAmount : total;
     return {
       subtotal,

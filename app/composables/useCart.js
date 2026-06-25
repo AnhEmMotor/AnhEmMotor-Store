@@ -4,11 +4,16 @@ import { useQuery } from "@tanstack/vue-query";
 
 const CART_KEY = "cartItems";
 const cartItems = ref([]);
+const isChecking = ref(false);
 
 const keyPartsFor = (item) => {
   const rawVariantId = item.productVariantId ?? item.variantId ?? item.id;
   const variantId = Number(String(rawVariantId).split(":")[0]);
-  const rawColorId = item.productVariantColorId ?? item.colorId ?? String(rawVariantId).split(":")[1] ?? 0;
+  const rawColorId =
+    item.productVariantColorId ??
+    item.colorId ??
+    String(rawVariantId).split(":")[1] ??
+    0;
   const colorId = rawColorId && Number(rawColorId) > 0 ? Number(rawColorId) : 0;
   return { variantId, colorId };
 };
@@ -52,17 +57,19 @@ watch(
 export function useCart() {
   const axios = useAxios();
 
-  const variantIds = computed(() =>
-    [
-      ...new Set(
-        cartItems.value
-          .map((item) => keyPartsFor(item).variantId)
-          .filter((id) => Number.isFinite(id)),
-      ),
-    ],
-  );
+  const variantIds = computed(() => [
+    ...new Set(
+      cartItems.value
+        .map((item) => keyPartsFor(item).variantId)
+        .filter((id) => Number.isFinite(id)),
+    ),
+  ]);
 
-  const { data: batchDetails, isPending, refetch } = useQuery({
+  const {
+    data: batchDetails,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: ["cart-details-batch", variantIds],
     queryFn: async () => {
       const ids = variantIds.value;
@@ -111,7 +118,9 @@ export function useCart() {
     cartItems.value.map((item) => {
       const { variantId, colorId } = keyPartsFor(item);
       const detail = detailMap.value.get(variantId);
-      const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
+      const color = (detail?.colors || []).find(
+        (c) => Number(c.id) === colorId,
+      );
       const key = `${variantId}:${colorId}`;
       return {
         ...item,
@@ -137,10 +146,17 @@ export function useCart() {
   );
 
   function addItem(product, quantity = 1) {
-    const variantId = Number(product.productVariantId ?? product.variantId ?? product.id);
-    const colorId = Number(product.productVariantColorId ?? product.colorId ?? 0) || 0;
+    const variantId = Number(
+      product.productVariantId ?? product.variantId ?? product.id,
+    );
+    const colorId =
+      Number(product.productVariantColorId ?? product.colorId ?? 0) || 0;
     const key = `${variantId}:${colorId}`;
-    const probe = { ...product, productVariantId: variantId, productVariantColorId: colorId };
+    const probe = {
+      ...product,
+      productVariantId: variantId,
+      productVariantColorId: colorId,
+    };
     const effectiveMax = product.effectiveMax ?? resolveEffectiveMax(probe);
 
     if (effectiveMax != null && effectiveMax <= 0) {
@@ -191,7 +207,11 @@ export function useCart() {
               h("span", { class: "font-bold text-sm" }, "Da them vao gio"),
             ]),
             h("div", { class: "text-xs text-gray-600" }, [
-              h("span", { class: "font-bold" }, product.displayName || product.name),
+              h(
+                "span",
+                { class: "font-bold" },
+                product.displayName || product.name,
+              ),
             ]),
             h("div", { class: "text-xs text-gray-500" }, [
               `So luong hien tai: ${newQuantity}`,
@@ -224,7 +244,9 @@ export function useCart() {
       cartItems.value.splice(indexOrKey, 1);
       return;
     }
-    const index = cartItems.value.findIndex((item) => cartKeyFor(item) === String(indexOrKey));
+    const index = cartItems.value.findIndex(
+      (item) => cartKeyFor(item) === String(indexOrKey),
+    );
     if (index >= 0) cartItems.value.splice(index, 1);
   }
 
@@ -246,7 +268,9 @@ export function useCart() {
       if (clamped < newQty) warnMax(resolveEffectiveMax(item));
     } else {
       const qty = change;
-      const item = cartItems.value.find((i) => cartKeyFor(i) === String(idOrPayload));
+      const item = cartItems.value.find(
+        (i) => cartKeyFor(i) === String(idOrPayload),
+      );
       if (!item) return;
       if (qty <= 0) {
         const idx = cartItems.value.indexOf(item);

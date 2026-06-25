@@ -87,7 +87,8 @@
 								<NumberStepper
 									:model-value="item.quantity"
 									:min="0"
-									:max="item.effectiveMax ?? 999"
+									:max="999999999"
+									:disabled="isChecking"
 									@increment="$emit('updateQuantity', { index, change: 1 })"
 									@decrement="$emit('updateQuantity', { index, change: -1 })"
 								/>
@@ -100,7 +101,8 @@
 							</div>
 						</div>
 						<button
-							class="text-red-500 hover:bg-red-100 rounded p-2"
+							class="text-red-500 hover:bg-red-100 rounded p-2 disabled:opacity-30 disabled:cursor-not-allowed"
+							:disabled="isChecking"
 							aria-label="Xóa sản phẩm khỏi giỏ hàng"
 							@click="$emit('removeItem', index)"
 						>
@@ -151,7 +153,7 @@ import BaseButton from "../ui/BaseButton.vue";
 import NumberStepper from "../ui/NumberStepper.vue";
 import { formatCurrency } from "~/utils/currency";
 
-const { isOpen, cartItems, cartTotal } = defineProps({
+const { isOpen, cartItems, cartTotal, isChecking } = defineProps({
 	isOpen: Boolean,
 	cartItems: {
 		type: Array,
@@ -160,6 +162,10 @@ const { isOpen, cartItems, cartTotal } = defineProps({
 	cartTotal: {
 		type: Number,
 		default: 0,
+	},
+	isChecking: {
+		type: Boolean,
+		default: false,
 	},
 });
 const auth = useAuthStore();

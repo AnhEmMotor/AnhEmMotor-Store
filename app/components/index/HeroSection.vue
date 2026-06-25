@@ -21,38 +21,48 @@ let bannerTimer = null;
 const fallbackBanners = [
 	{
 		id: "fb1",
-		image: "/assets/image/index/banner1.png",
+		desktopImageUrl: "/assets/image/index/banner1.png",
+		mobileImageUrl: "/assets/image/index/banner1.png",
 		title: "Showroom Sang Trọng",
 		description: "Trải nghiệm không gian trưng bày xe phân khối lớn hiện đại và đẳng cấp nhất khu vực.",
-		link: "/products",
+		ctaLink: "/products",
+		ctaLabel: "Khám phá ngay"
 	},
 	{
 		id: "fb2",
-		image: "/assets/image/index/banner2.png",
+		desktopImageUrl: "/assets/image/index/banner2.png",
+		mobileImageUrl: "/assets/image/index/banner2.png",
 		title: "Dịch Vụ Chuyên Nghiệp",
 		description: "Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, chăm sóc xế yêu của bạn tốt nhất.",
-		link: "/support",
+		ctaLink: "/support",
+		ctaLabel: "Đặt lịch ngay"
 	},
 	{
 		id: "fb3",
-		image: "/assets/image/index/banner3.png",
+		desktopImageUrl: "/assets/image/index/banner3.png",
+		mobileImageUrl: "/assets/image/index/banner3.png",
 		title: "Phụ Tùng Chính Hãng",
 		description: "Cung cấp đầy đủ các loại phụ tùng, đồ chơi xe máy chính hãng từ các thương hiệu hàng đầu thế giới.",
-		link: "/products",
+		ctaLink: "/products",
+		ctaLabel: "Mua ngay"
 	},
 	{
 		id: "fb4",
-		image: "/assets/image/index/banner4.png",
+		desktopImageUrl: "/assets/image/index/banner4.png",
+		mobileImageUrl: "/assets/image/index/banner4.png",
 		title: "Ưu Đãi Ngập Tràn",
 		description: "Hỗ trợ trả góp 0%, duyệt hồ sơ nhanh chóng và nhiều quà tặng hấp dẫn khi mua xe mới.",
-		link: "/promotion",
+		ctaLink: "/promotion",
+		ctaLabel: "Xem ưu đãi"
 	},
 	{
 		id: "fb5",
-		image: "/assets/image/index/banner5.png",
+		desktopImageUrl: "/assets/image/index/banner5.png",
+		mobileImageUrl: "/assets/image/index/banner5.png",
 		title: "AnhEm Motor",
 		description: "Hệ thống cửa hàng xe máy uy tín, phục vụ tận tâm 24/7.",
-		link: "/about",
+		ctaLink: "/about",
+		ctaLabel: "Tìm hiểu thêm"
 	},
 ];
 
@@ -136,27 +146,31 @@ onUnmounted(() => {
 
 <template>
 	<section class="relative min-h-[520px] md:min-h-[620px] flex items-center overflow-hidden">
-		<!-- Background Layers with Transition -->
+		
 		<TransitionGroup :name="slideDirection === 'next' ? 'slide-next' : 'slide-prev'">
 			<div
 				v-for="(banner, index) in banners"
 				v-show="index === currentBannerIndex"
 				:key="banner.id || index"
-				class="absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] scale-110 active:scale-100 animate-ken-burns"
-				:style="{
-					backgroundImage: `url('${banner.image || '/assets/image/index/index-banner-bg.png'}')`,
-				}"
+				class="absolute inset-0 transition-transform duration-[10000ms] scale-110 active:scale-100 animate-ken-burns"
 			>
+				<picture>
+					<source media="(max-width: 767px)" :srcset="banner.mobileImageUrl || '/assets/image/index/index-banner-bg.png'">
+					<img :src="banner.desktopImageUrl || '/assets/image/index/index-banner-bg.png'" alt="Banner" class="w-full h-full object-cover">
+				</picture>
 				<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 			</div>
 		</TransitionGroup>
 
-		<!-- Default Background if no banners -->
+		
 		<div
 			v-if="banners.length === 0"
-			class="absolute inset-0 bg-cover bg-center"
-			style="background-image: url('/assets/image/index/index-banner-bg.png')"
+			class="absolute inset-0"
 		>
+			<picture>
+				<source media="(max-width: 767px)" srcset="/assets/image/index/index-banner-bg.png">
+				<img src="/assets/image/index/index-banner-bg.png" alt="Banner" class="w-full h-full object-cover">
+			</picture>
 			<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 		</div>
 
@@ -208,10 +222,10 @@ onUnmounted(() => {
 
 				<div class="flex flex-wrap gap-4 pt-6">
 					<NuxtLink
-						:to="activeBanner?.link || '/products'"
+						:to="activeBanner?.ctaLink || '/products'"
 						class="h-14 px-8 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 hover:-translate-y-1 flex items-center gap-3 group"
 					>
-						{{ activeBanner?.link ? "Khám phá ngay" : "Mua ngay" }}
+						{{ activeBanner?.ctaLabel || "Khám phá ngay" }}
 						<Icon
 							name="ph:arrow-right-bold"
 							class="text-lg transition-transform group-hover:translate-x-1"
@@ -228,7 +242,7 @@ onUnmounted(() => {
 			</div>
 		</div>
 
-		<!-- Navigation Dots -->
+		
 		<div v-if="banners.length > 1" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
 			<button
 				v-for="(_, index) in banners"
@@ -248,7 +262,7 @@ onUnmounted(() => {
 			</button>
 		</div>
 
-		<!-- Side Navigation Arrows -->
+		
 		<div v-if="banners.length > 1" class="hidden md:flex absolute inset-y-0 left-4 right-4 items-center justify-between pointer-events-none z-20">
 			<button
 				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
@@ -310,7 +324,6 @@ onUnmounted(() => {
 	animation: progress 5s linear forwards;
 }
 
-/* Transitions */
 .slide-next-enter-active,
 .slide-next-leave-active,
 .slide-prev-enter-active,
@@ -318,7 +331,6 @@ onUnmounted(() => {
 	transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Slide Next (Right to Left) */
 .slide-next-enter-from {
 	transform: translateX(100%) scale(1.1);
 	opacity: 0;
@@ -328,7 +340,6 @@ onUnmounted(() => {
 	opacity: 0;
 }
 
-/* Slide Prev (Left to Right) */
 .slide-prev-enter-from {
 	transform: translateX(-100%) scale(1.1);
 	opacity: 0;

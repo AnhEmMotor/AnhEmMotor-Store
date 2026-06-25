@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";
@@ -105,9 +105,7 @@ const handleCheckout = async () => {
 
             <CheckoutShippingForm />
 
-            <CheckoutPaymentMethod
-              v-model="orderStore.selectedPaymentMethod"
-            />
+            <CheckoutPaymentMethod v-model="orderStore.selectedPaymentMethod" />
           </div>
 
           <CheckoutOrderSummary @place-order="handleCheckout" />

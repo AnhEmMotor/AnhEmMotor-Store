@@ -13,7 +13,7 @@
 
 		<form class="space-y-6" @submit.prevent="handleSubmit">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<!-- Full Name -->
+				
 				<div class="space-y-2">
 					<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Họ và tên</label>
 					<div class="relative group">
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 
-				<!-- Phone Number -->
+				
 				<div class="space-y-2">
 					<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Số điện thoại</label>
 					<div class="relative group">
@@ -48,7 +48,7 @@
 				</div>
 			</div>
 
-			<!-- Email -->
+			
 			<div class="space-y-2">
 				<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Email</label>
 				<div class="relative group">
@@ -65,7 +65,7 @@
 				</div>
 			</div>
 
-			<!-- Subject -->
+			
 			<div class="space-y-2">
 				<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Chủ đề cần hỗ trợ</label>
 				<div class="relative group">
@@ -88,7 +88,7 @@
 				</div>
 			</div>
 
-			<!-- Message -->
+			
 			<div class="space-y-2">
 				<label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1">Nội dung chi tiết</label>
 				<textarea
@@ -100,7 +100,7 @@
 				/>
 			</div>
 
-			<!-- Status Message -->
+			
 			<Transition name="fade">
 				<div
 v-if="statusMessage" 
@@ -111,7 +111,7 @@ v-if="statusMessage"
 				</div>
 			</Transition>
 
-			<!-- Submit Button -->
+			
 			<button
 				type="submit"
 				:disabled="isSubmitting"
@@ -129,9 +129,9 @@ v-if="statusMessage"
 import { ref } from 'vue';
 
 const props = defineProps({
-	isSubmitting: Boolean,
-	statusMessage: String,
-	statusType: String
+	isSubmitting: { type: Boolean, default: false },
+	statusMessage: { type: String, default: '' },
+	statusType: { type: String, default: '' }
 });
 
 const emit = defineEmits(['submit']);
