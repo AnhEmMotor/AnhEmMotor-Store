@@ -70,7 +70,7 @@ useHead({ title: "Đóng góp ý kiến | AnhEm Motor" });
         src="/premium_motorcycle_showroom_visit_1778827603878.png"
         alt="AnhEm Motor Showroom"
         class="fb-bg-img"
-      />
+      >
       <div class="fb-bg-overlay" />
 
       <div class="fb-glow fb-glow-1" />
@@ -163,7 +163,7 @@ useHead({ title: "Đóng góp ý kiến | AnhEm Motor" });
                     required
                     placeholder="Nguyễn Văn A"
                     class="fb-input"
-                  />
+                  >
                 </div>
               </div>
               <div class="fb-field">
@@ -176,7 +176,7 @@ useHead({ title: "Đóng góp ý kiến | AnhEm Motor" });
                     required
                     placeholder="09xxxxxx"
                     class="fb-input"
-                  />
+                  >
                 </div>
               </div>
             </div>

@@ -17,7 +17,7 @@ const newsStore = useNewsStore();
         <h2
           class="text-4xl md:text-5xl lg:text-[42px] font-bold tracking-tight text-slate-900 leading-tight"
         >
-          Kinh nghiệm & <br />
+          Kinh nghiệm & <br >
           <span class="text-primary">Kiến thức xe máy</span>
         </h2>
         <p class="text-slate-500 text-lg font-medium">

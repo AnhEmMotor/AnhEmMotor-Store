@@ -5,7 +5,7 @@
         src="/images/support/hero-bg.png"
         alt="AnhEm Motor Support Team"
         class="w-full h-full object-cover opacity-70"
-      />
+      >
 
       <div
         class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-white"
@@ -29,7 +29,7 @@
           <h1
             class="text-3xl md:text-5xl font-extrabold text-white uppercase tracking-tight leading-tight drop-shadow-2xl"
           >
-            Anh Em Motor có thể <br />
+            Anh Em Motor có thể <br >
             giúp gì được cho bạn?
           </h1>
         </div>
@@ -48,7 +48,7 @@
               type="text"
               placeholder="Nhập vấn đề bạn đang gặp phải..."
               class="w-full py-4 px-5 text-[13px] font-bold text-gray-900 outline-none placeholder:text-gray-400"
-            />
+            >
             <button
               class="mr-1.5 px-6 py-3 bg-gray-900 text-white rounded-lg text-[10px] font-extrabold uppercase tracking-widest hover:bg-red-600 transition-colors shadow-lg"
             >

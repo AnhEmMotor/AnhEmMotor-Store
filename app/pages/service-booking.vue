@@ -168,7 +168,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
                           required
                           placeholder="Ví dụ: Nguyễn Văn A"
                           class="booking-input uppercase"
-                        />
+                        >
                       </div>
                       <div class="space-y-1.5">
                         <label
@@ -181,7 +181,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
                           required
                           placeholder="09xx xxx xxx"
                           class="booking-input"
-                        />
+                        >
                       </div>
                       <div class="space-y-1.5">
                         <label
@@ -193,7 +193,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
                           type="email"
                           placeholder="khachhang@gmail.com"
                           class="booking-input"
-                        />
+                        >
                       </div>
                     </div>
                   </section>
@@ -227,7 +227,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
                         required
                         placeholder="Nhập tên xe (VD: SH 150i, Exciter...)"
                         class="booking-input uppercase"
-                      />
+                      >
 
                       <div class="flex flex-wrap gap-2 mt-1.5">
                         <button
@@ -369,7 +369,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
                           required
                           :min="minDate"
                           class="booking-input"
-                        />
+                        >
                       </div>
                       <div class="space-y-1.5">
                         <label
@@ -423,7 +423,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
                           type="checkbox"
                           required
                           class="peer appearance-none w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg border-2 border-gray-200 checked:bg-red-600 checked:border-red-600 transition-all cursor-pointer"
-                        />
+                        >
                         <Icon
                           name="ph:check-bold"
                           class="absolute text-[12px] text-white opacity-0 peer-checked:opacity-100 transition-all pointer-events-none"
@@ -579,7 +579,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
                             form.date
                               ? new Date(form.date).toLocaleDateString("vi-VN")
                               : "17/5/2026"
-                          }}<br />
+                          }}<br >
                           <span
                             class="text-[9px] text-red-600 font-bold tracking-widest"
                             >{{ form.hour || "10:00 AM" }}</span

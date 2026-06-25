@@ -121,7 +121,7 @@ watch(promotionPage, () => {
                   :src="featuredPromotion.image"
                   class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
                   :alt="featuredPromotion.title"
-                />
+                >
                 <div
                   class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 via-transparent to-transparent"
                 />
@@ -308,7 +308,7 @@ watch(promotionPage, () => {
         <h2
           class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-tight"
         >
-          Bạn đã chọn được <br /><span class="text-red-600 italic">xế yêu</span
+          Bạn đã chọn được <br ><span class="text-red-600 italic">xế yêu</span
           >?
         </h2>
         <p

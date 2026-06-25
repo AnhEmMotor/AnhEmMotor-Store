@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";

@@ -30,7 +30,7 @@ onMounted(() => {
         :src="promotion.image"
         class="w-full h-full object-cover opacity-40 scale-105"
         :alt="promotion.title"
-      />
+      >
       <div
         class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/60 to-transparent"
       />
@@ -115,7 +115,7 @@ onMounted(() => {
                 >Phút</span
               >
             </div>
-          </h1>
+          </div>
 
           <button
             class="h-20 px-12 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all shadow-[0_25px_50px_-15px_rgba(230,0,35,0.5)] hover:scale-105 active:scale-95 group"

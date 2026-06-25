@@ -155,7 +155,7 @@ const close = () => {
             <h2
               class="text-3xl font-black uppercase leading-[1.1] tracking-tighter mb-4"
             >
-              {{ type === "TestDrive" ? "Đăng Ký" : "Đặt Lịch" }}<br /><span
+              {{ type === "TestDrive" ? "Đăng Ký" : "Đặt Lịch" }}<br ><span
                 class="text-red-600"
                 >{{ type === "TestDrive" ? "Lái Thử" : "Dịch Vụ" }}</span
               >
@@ -227,7 +227,7 @@ const close = () => {
                     required
                     placeholder="Nguyễn Văn A"
                     class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-black focus:ring-2 focus:ring-red-600/20 transition-all uppercase tracking-wider"
-                  />
+                  >
                 </div>
                 <div class="space-y-2">
                   <label
@@ -240,7 +240,7 @@ const close = () => {
                     required
                     placeholder="09xx xxx xxx"
                     class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-black focus:ring-2 focus:ring-red-600/20 transition-all"
-                  />
+                  >
                 </div>
                 <div class="space-y-2">
                   <label
@@ -252,7 +252,7 @@ const close = () => {
                     type="email"
                     placeholder="khachhang@gmail.com"
                     class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-black focus:ring-2 focus:ring-red-600/20 transition-all"
-                  />
+                  >
                 </div>
               </div>
 
@@ -277,7 +277,7 @@ const close = () => {
                     required
                     placeholder="Ví dụ: Honda SH 150i, Yamaha Exciter 155..."
                     class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-black focus:ring-2 focus:ring-red-600/20 transition-all uppercase tracking-wider"
-                  />
+                  >
                 </div>
                 <div class="space-y-2">
                   <label
@@ -324,7 +324,7 @@ const close = () => {
                     required
                     :min="minDate"
                     class="w-full px-4 py-4 bg-gray-50 border-none rounded-2xl text-[10px] font-black focus:ring-2 focus:ring-red-600/20 transition-all"
-                  />
+                  >
                 </div>
                 <div class="space-y-2">
                   <label
@@ -365,7 +365,7 @@ const close = () => {
                       type="checkbox"
                       required
                       class="peer appearance-none w-5 h-5 rounded-md border-2 border-red-600/30 checked:bg-red-600 checked:border-red-600 transition-all cursor-pointer"
-                    />
+                    >
                     <Icon
                       name="fa6-solid:check"
                       class="absolute text-[8px] text-white opacity-0 peer-checked:opacity-100 transition-all pointer-events-none"

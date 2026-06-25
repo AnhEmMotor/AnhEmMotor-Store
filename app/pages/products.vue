@@ -216,7 +216,6 @@ const formatVND = (value) => {
               >Đang lọc theo:</span
             >
 
-            <<<<<<< HEAD
             <!-- Search Chip -->
             <button
               v-if="filters.search"

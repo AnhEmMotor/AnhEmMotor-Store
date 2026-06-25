@@ -107,7 +107,7 @@
               src="/assets/image/logo.webp"
               alt="Logo"
               class="w-full h-full object-cover rounded-full"
-            />
+            >
           </div>
 
           <!-- Text Branding (Always visible on mobile now) -->
@@ -285,7 +285,7 @@
                   placeholder="Tìm mẫu xe, phụ tùng..."
                   class="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl pl-11 pr-4 text-xs font-bold focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 transition-all outline-none"
                   autofocus
-                />
+                >
               </form>
             </div>
           </div>
@@ -323,7 +323,7 @@
                       :src="authStore.user.avatarUrl"
                       alt="Avatar"
                       class="w-full h-full object-cover"
-                    />
+                    >
                     <Icon
                       v-else
                       name="ph:user-fill"
@@ -363,7 +363,7 @@
                   >
                     <Icon name="ph:shopping-bag-fill" class="text-base" /> Đơn
                     hàng của tôi
-                  </span>
+                  </NuxtLink>
                   <div class="h-[1px] bg-gray-50 my-2" />
                   <button
                     class="w-full flex items-center gap-3 px-4 sm:px-5 py-2 sm:py-2.5 text-[12px] font-black text-red-500 hover:bg-red-50 transition-colors"
@@ -407,14 +407,8 @@
 <script setup>
 import { ref, onBeforeUnmount, computed, onMounted, watch } from "vue";
 import CartPanel from "../cart/CartPanel.vue";
-import QuickActionModal from "../common/QuickActionModal.vue";
-import TestRideForm from "../service/TestRideForm.vue";
-import ContactForm from "../contact/ContactForm.vue";
-
-
 
 const authStore = useAuthStore();
-const contactStore = useContactStore();
 
 const isScrolled = ref(false);
 
@@ -422,8 +416,6 @@ const mobileNavActive = ref(false);
 const isSearchOpen = ref(false);
 const searchTerm = ref("");
 const isCartOpen = ref(false);
-const isTestRideModalOpen = ref(false);
-const isQuoteModalOpen = ref(false);
 
 const route = useRoute();
 
@@ -456,14 +448,6 @@ const isRouteActive = (targetPath) => {
 };
 
 
-
-
-const handleContactSubmit = async (data) => {
-	const { resetForm, ...formData } = data;
-	const success = await contactStore.submitContact(formData);
-	if (success && resetForm) { setTimeout(() => { isQuoteModalOpen.value = false; resetForm(); }, 2000); }
-};
-
 const categoryStore = useCategoryStore();
 const dynamicMotorcycleCategories = computed(() => {
 	const allCats = Array.isArray(categoryStore.categories) ? categoryStore.categories : [];
@@ -492,23 +476,7 @@ const getCategoryDesc = (cat) => {
 	if (cat.name.toLowerCase().includes('số')) return 'Bền bỉ & Thoải mái';
 	if (cat.name.toLowerCase().includes('côn')) return 'Mạnh mẽ & Tốc độ';
 	return 'Chính hãng AnhEm';
-};
-
-const navItemsMobile = [
-		{ name: 'TRANG CHỦ', path: '/' },
-		{ name: 'XE MÁY', path: '/products?category_ids=8' },
-		{ name: 'BẢNG GIÁ', path: '/products' },
-		{ name: 'KHUYẾN MÃI', path: '/promotion' },
-		{ name: 'DỊCH VỤ', path: '/service' },
-		{ name: 'PHỤ TÙNG & PHỤ KIỆN', path: '/products?category_ids=12,13' },
-		{ name: 'SO SÁNH XE', path: '/compare' },
-		{ name: 'CÔNG NGHỆ', path: '/technology' },
-		{ name: 'TIN TỨC', path: '/news' },
-		{ name: 'TUYỂN DỤNG', path: '/recruitment' },
-];
-
-const openMobileNav = () => { mobileNavActive.value = true; document.body.style.overflow = "hidden"; };
-const closeMobileNav = () => { mobileNavActive.value = false; document.body.style.overflow = ""; };
+};const openMobileNav = () => { mobileNavActive.value = true; document.body.style.overflow = "hidden"; };
 
 const { cartDetails, cartTotal, removeItem, updateQuantity } = useCart();
 const toggleCart = () => { isCartOpen.value = !isCartOpen.value; };

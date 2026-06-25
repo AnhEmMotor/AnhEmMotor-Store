@@ -27,7 +27,7 @@
               src="/service-process.png"
               alt="Customer Service"
               class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000"
-            />
+            >
             <div
               class="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
             />
@@ -59,7 +59,7 @@
                 class="text-primary italic underline decoration-primary/10 underline-offset-8"
                 >TẬN TÂM</span
               >
-              <br />
+              <br >
               VÌ AN TOÀN CỦA BẠN
             </h2>
 

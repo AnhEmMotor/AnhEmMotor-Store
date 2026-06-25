@@ -227,8 +227,8 @@ const productMapper = {
           ...h,
           image: h.image ? getImageUrl(h.image) : null,
         }));
-      } catch (e) {
-        console.error("Failed to parse highlights", e);
+      } catch {
+        // Ignore parse error
       }
     }
 

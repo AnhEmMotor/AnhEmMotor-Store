@@ -13,7 +13,7 @@
               src="/images/technology/connectivity_hub_v2.png"
               alt="Multi-device Connection"
               class="w-full transform group-hover:scale-110 transition-transform duration-1000"
-            />
+            >
             <div
               class="absolute inset-0 bg-gradient-to-tr from-red-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"
             />
@@ -43,7 +43,7 @@
             <h2
               class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 tracking-tight uppercase"
             >
-              KẾT NỐI <br />
+              KẾT NỐI <br >
               <span class="text-red-600 relative inline-block"
                 >ĐA NỀN TẢNG<span
                   class="absolute bottom-0 left-0 w-full h-1 bg-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"

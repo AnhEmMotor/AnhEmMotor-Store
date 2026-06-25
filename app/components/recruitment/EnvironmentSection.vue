@@ -24,7 +24,7 @@
             <h2
               class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] italic uppercase tracking-tighter"
             >
-              Làm việc tại <br />
+              Làm việc tại <br >
               <span
                 class="text-primary underline decoration-black/5 underline-offset-8"
                 >Môi trường Chuyên nghiệp</span
@@ -74,7 +74,7 @@
                   src="/img/recruitment/technical.png"
                   alt="Training"
                   class="w-full h-72 object-cover transition-transform duration-1000 group-hover:scale-110"
-                />
+                >
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 />
@@ -114,7 +114,7 @@
                   src="/img/recruitment/hero.png"
                   alt="Showroom Team"
                   class="w-full h-80 object-cover transition-transform duration-1000 group-hover:scale-110"
-                />
+                >
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 />

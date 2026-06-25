@@ -5,7 +5,7 @@
         src="/promo-banner.png"
         alt="Promotion"
         class="absolute inset-0 w-full h-full object-cover opacity-60"
-      />
+      >
 
       <div
         class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"
@@ -22,7 +22,7 @@
             <span class="text-[10px] font-black">Ưu đãi độc quyền</span>
           </div>
           <h2 class="text-4xl lg:text-6xl font-black text-white leading-none">
-            Giảm Ngay <span class="text-red-600">20%</span> <br />
+            Giảm Ngay <span class="text-red-600">20%</span> <br >
             Dịch Vụ Lần Đầu
           </h2>
           <p

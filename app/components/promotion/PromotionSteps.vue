@@ -32,7 +32,7 @@ const steps = [
         src="https://images.unsplash.com/photo-1558981403-c5f97dbbe480?q=80&w=1200"
         class="w-full h-full object-cover"
         alt="Background"
-      />
+      >
     </div>
 
     <div class="container mx-auto px-4 relative z-10">
@@ -70,7 +70,7 @@ const steps = [
                   :src="step.icon"
                   class="w-10 h-10 md:w-20 md:h-20 object-contain"
                   :alt="step.title"
-                />
+                >
               </div>
 
               <div

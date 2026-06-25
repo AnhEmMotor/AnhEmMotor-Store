@@ -44,7 +44,7 @@
             src="/images/technology/engine_xray.png"
             alt="Engine Specs"
             class="w-full rounded-2xl shadow-[0_0_80px_rgba(220,38,38,0.15)] transition-all duration-1000 group-hover:scale-105"
-          />
+          >
 
           <div class="absolute top-[20%] left-[30%] group/hotspot">
             <div
@@ -53,7 +53,7 @@
             <div
               class="absolute top-8 left-0 bg-black/80 backdrop-blur-md p-3 rounded-lg border border-white/10 text-[10px] uppercase font-bold whitespace-nowrap opacity-0 group-hover/hotspot:opacity-100 transform translate-y-2 group-hover/hotspot:translate-y-0 transition-all shadow-2xl"
             >
-              <span class="text-red-500">Core Feature:</span> <br />
+              <span class="text-red-500">Core Feature:</span> <br >
               High-Pressure Injector
             </div>
           </div>
@@ -66,7 +66,7 @@
             <div
               class="absolute top-8 left-0 bg-black/80 backdrop-blur-md p-3 rounded-lg border border-white/10 text-[10px] uppercase font-bold whitespace-nowrap opacity-0 group-hover/hotspot:opacity-100 transform translate-y-2 group-hover/hotspot:translate-y-0 transition-all shadow-2xl"
             >
-              <span class="text-blue-500">Core Feature:</span> <br />
+              <span class="text-blue-500">Core Feature:</span> <br >
               Precision Piston
             </div>
           </div>

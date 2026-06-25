@@ -43,7 +43,7 @@ export const useOrderStore = defineStore("order", () => {
     queryKey: ["store-settings"],
     queryFn: async () => {
       const settingSvc = (await import("@/services/setting.service")).default(
-        axios,
+        useAxios(),
       );
       return settingSvc.getStoreSettings();
     },

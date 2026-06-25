@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/vue-query";
 
 const CART_KEY = "cartItems";
 const cartItems = ref([]);
-const isChecking = ref(false);
 
 const keyPartsFor = (item) => {
   const rawVariantId = item.productVariantId ?? item.variantId ?? item.id;

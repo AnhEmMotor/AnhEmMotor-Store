@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { newsService } from "@/services/news.service";
 import homeService from "@/services/home.service";
+import newsMapper from "@/mappers/news.mapper";
 
 export const useNewsStore = defineStore("news", {
   state: () => ({

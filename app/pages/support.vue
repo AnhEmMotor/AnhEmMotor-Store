@@ -68,7 +68,7 @@ onMounted(() => {
                 <h2
                   class="text-4xl lg:text-6xl font-extrabold text-gray-900 uppercase tracking-tighter leading-[1]"
                 >
-                  Trung tâm <br />
+                  Trung tâm <br >
                   <span class="text-red-600">Hỗ trợ tận tâm</span>
                 </h2>
 

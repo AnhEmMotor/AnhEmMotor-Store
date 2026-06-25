@@ -53,9 +53,7 @@ onMounted(() => {
   }
 });
 
-const successTitle = computed(() =>
-  isOnlinePayment.value ? "Thanh toán thành công!" : "Đặt hàng thành công!",
-);
+
 
 const totalAmount = computed(() => Number(order.value?.totalAmount || 0));
 const depositThreshold = computed(() =>

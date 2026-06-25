@@ -1,6 +1,15 @@
 <script setup>
 import { useOrderStore } from "~/stores/order.store";
 
+defineProps({
+	modelValue: {
+		type: String,
+		default: "cod",
+	},
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
 const orderStore = useOrderStore();
 
 const paymentMethods = [
@@ -30,6 +39,7 @@ const paymentMethods = [
 
 const selectMethod = (methodId) => {
 	orderStore.shippingInfo.paymentMethod = methodId;
+	emit("update:modelValue", methodId);
 };
 
 onMounted(() => {
@@ -105,13 +115,3 @@ onMounted(() => {
 	</div>
 </template>
 
-<script setup>
-defineProps({
-	modelValue: {
-		type: String,
-		default: "cod",
-	},
-});
-
-defineEmits(["update:modelValue"]);
-</script>

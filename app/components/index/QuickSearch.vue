@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from "vue";
 
 const searchFilters = reactive({
   keyword: "",
@@ -39,7 +38,7 @@ const handleSearch = () => {
             placeholder="Tên xe..."
             class="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-100 rounded-16 focus:border-primary/30 focus:bg-white outline-none transition-all font-semibold text-slate-800"
             @keyup.enter="handleSearch"
-          />
+          >
         </div>
 
         <div class="relative">

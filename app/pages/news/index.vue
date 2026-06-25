@@ -195,7 +195,7 @@ onMounted(() => {
         <h2
           class="text-3xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter leading-tight"
         >
-          Đừng bỏ lỡ <br /><span class="text-red-600 italic"
+          Đừng bỏ lỡ <br ><span class="text-red-600 italic"
             >mọi chuyển động</span
           >
         </h2>

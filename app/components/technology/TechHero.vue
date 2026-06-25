@@ -18,7 +18,7 @@
       <h1
         class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tighter uppercase animate-text-glow leading-tight"
       >
-        Hệ sinh thái <br />
+        Hệ sinh thái <br >
         <span
           class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-400"
           >Thông minh</span

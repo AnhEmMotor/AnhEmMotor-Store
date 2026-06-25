@@ -65,9 +65,6 @@ const currentImage = computed(() => {
   );
 });
 
-const isPlaceholderImage = computed(() =>
-  currentImage.value.includes("dummyimage.com"),
-);
 
 const currentUrl = computed(() => {
   const slug =
@@ -185,7 +182,7 @@ const toggleCompare = (e) => {
         :src="currentImage"
         :alt="product.name"
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
+      >
 
       <div
         class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"

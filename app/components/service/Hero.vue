@@ -7,7 +7,7 @@
         src="/service-hero-cinematic.png"
         alt="Cinematic Service"
         class="w-full h-full object-cover transform animate-premium-zoom"
-      />
+      >
 
       <div
         class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/70 to-transparent z-10"
@@ -48,7 +48,7 @@
           <h1
             class="text-4xl md:text-6xl lg:text-7xl font-[1000] text-white leading-[0.95] tracking-tight animate-reveal-left"
           >
-            DỊCH VỤ <br />
+            DỊCH VỤ <br >
             <span class="text-primary italic relative inline-block">
               CHUẨN 5 SAO
               <span

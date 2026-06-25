@@ -24,7 +24,7 @@
           :src="service.image || '/service-hero.png'"
           :alt="service.name"
           class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
-        />
+        >
         <div
           class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"
         />

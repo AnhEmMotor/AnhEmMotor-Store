@@ -126,7 +126,7 @@
           <h2
             class="text-4xl md:text-5xl font-black text-white mb-8 italic uppercase tracking-tighter leading-tight"
           >
-            SẴN SÀNG GIA NHẬP <br />
+            SẴN SÀNG GIA NHẬP <br >
             <span
               class="text-primary underline decoration-white/10 underline-offset-8"
               >ANHEM MOTOR?</span
