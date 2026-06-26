@@ -38,13 +38,14 @@ export default defineNuxtConfig({
 	vite: {
 		optimizeDeps: {
 			include: [
+				"@microsoft/fetch-event-source",
+				"@tanstack/vue-query",
+				"@tanstack/vue-query-devtools",
+				"@unhead/schema-org/vue",
 				"@vue/devtools-core",
 				"@vue/devtools-kit",
-				"@tanstack/vue-query",
-				"vue3-toastify",
-				"@microsoft/fetch-event-source",
-				"@tanstack/vue-query-devtools",
 				"axios",
+				"vue3-toastify",
 			],
 		},
 		ssr: {
@@ -93,7 +94,10 @@ export default defineNuxtConfig({
 			trace: false,
 		},
 		rollupConfig: {
-			onwarn(warning: { code?: string, message?: string }, warn: (warning: unknown) => void) {
+			onwarn(
+				warning: { code?: string; message?: string },
+				warn: (warning: unknown) => void,
+			) {
 				const silentCodes = ["CIRCULAR_DEPENDENCY"];
 				const silentMessages = [
 					"cache-driver.js",

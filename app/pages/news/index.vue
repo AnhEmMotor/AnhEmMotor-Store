@@ -82,6 +82,8 @@ const featuredNews = computed(() => {
 	);
 });
 
+const activeTab = ref("all");
+
 // Filter news based on tab selection
 const filteredNewsList = computed(() => {
 	if (!allNews.value) return [];
