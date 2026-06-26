@@ -6,7 +6,6 @@ import productMapper from "@/mappers/product.mapper";
 export const useProductStore = defineStore("product", () => {
 	const service = productService;
 
-
 	const options = ref([]);
 	const isLoadingOptions = ref(false);
 	const optionsError = ref(null);
