@@ -428,7 +428,7 @@ onMounted(() => {
 		<!-- [7] CALL TO ACTION - DARK MYSTERY -->
 		<section class="py-20 md:py-32 bg-gray-950 relative overflow-hidden">
 			<div
-				class="absolute inset-0 opacity-40 bg-[url('/final_cta_rider_adventure_1778828626734.png')] bg-cover bg-center scale-110"
+				class="absolute inset-0 opacity-40 bg-[url('/final_cta_rider_adventure_1778828626734.webp')] bg-cover bg-center scale-110"
 			/>
 			<div
 				class="absolute inset-0 bg-gradient-to-b from-gray-950 via-transparent to-gray-950"

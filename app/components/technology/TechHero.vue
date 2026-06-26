@@ -6,7 +6,7 @@
 			class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-[#0a0a0a] z-10"
 		/>
 		<div
-			class="absolute inset-0 opacity-70 bg-[url('/images/technology/hero_v3.png')] bg-cover bg-center animate-slow-zoom"
+			class="absolute inset-0 opacity-70 bg-[url('/images/technology/hero_v3.webp')] bg-cover bg-center animate-slow-zoom"
 		/>
 
 		<div class="relative z-20 text-center px-4 max-w-6xl mx-auto">

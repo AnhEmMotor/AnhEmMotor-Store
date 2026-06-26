@@ -67,7 +67,7 @@ useHead({ title: "Đóng góp ý kiến | AnhEm Motor" });
 	>
 		<div class="fb-bg-image">
 			<img
-				src="/premium_motorcycle_showroom_visit_1778827603878.png"
+				src="/premium_motorcycle_showroom_visit_1778827603878.webp"
 				alt="AnhEm Motor Showroom"
 				class="fb-bg-img"
 			>

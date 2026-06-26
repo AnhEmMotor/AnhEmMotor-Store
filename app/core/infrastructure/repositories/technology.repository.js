@@ -95,7 +95,7 @@ export const technologyRepository = {
 				title: "Cộng đồng Rider Connect",
 				description:
 					"Không gian kết nối những người đam mê xe, chia sẻ hành trình, kinh nghiệm bảo dưỡng và cùng nhau tổ chức những chuyến đi xa.",
-				image: "/images/technology/rider_community.png",
+				image: "/images/technology/rider_community.webp",
 				icon: "ph:users-three-fill",
 			},
 		];

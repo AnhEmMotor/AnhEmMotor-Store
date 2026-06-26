@@ -11,7 +11,7 @@ defineProps({
 	},
 	backgroundImage: {
 		type: String,
-		default: "/news_hero_banner.png",
+		default: "/news_hero_banner.webp",
 	},
 });
 
@@ -107,7 +107,7 @@ const scrollToNews = () => {
 						class="relative rounded-[3rem] overflow-hidden border border-white/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-1000 group-hover:border-red-600/20"
 					>
 						<img
-							src="/premium_motorcycle_showroom_visit_1778827603878.png"
+							src="/premium_motorcycle_showroom_visit_1778827603878.webp"
 							class="w-full aspect-[4/5] object-cover scale-105 group-hover:scale-110 transition-transform duration-1000"
 							alt="AnhEm Motor Showroom"
 						>

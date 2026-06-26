@@ -11,7 +11,7 @@ defineProps({
 	<section class="relative min-h-[620px] flex items-center overflow-hidden">
 		<div class="absolute inset-0 z-0">
 			<img
-				src="/images/about/hero-showroom.png"
+				src="/images/about/hero-showroom.webp"
 				alt="AnhEm Motor Showroom"
 				class="w-full h-full object-cover scale-110 animate-ken-burns"
 			>

@@ -2,7 +2,7 @@
 	<section class="relative pt-16 pb-20 overflow-hidden bg-gray-900">
 		<div class="absolute inset-0 z-0">
 			<img
-				src="/images/support/hero-bg.png"
+				src="/images/support/hero-bg.webp"
 				alt="AnhEm Motor Support Team"
 				class="w-full h-full object-cover opacity-70"
 			>

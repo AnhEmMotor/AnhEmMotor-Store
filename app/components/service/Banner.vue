@@ -2,7 +2,7 @@
 	<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 		<div class="relative overflow-hidden rounded-[3rem] bg-gray-900 shadow-2xl">
 			<img
-				src="/promo-banner.png"
+				src="/promo-banner.webp"
 				alt="Promotion"
 				class="absolute inset-0 w-full h-full object-cover opacity-60"
 			>

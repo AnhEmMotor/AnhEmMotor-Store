@@ -4,7 +4,7 @@
 	>
 		<div class="absolute inset-0 z-0">
 			<img
-				src="/img/recruitment/hero.png"
+				src="/img/recruitment/hero.webp"
 				alt="Gia nhập AnhEm Motor"
 				class="w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
 			>

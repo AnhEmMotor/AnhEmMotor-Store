@@ -89,7 +89,7 @@ const scrollToOffers = () => {
 						class="relative rounded-[3rem] overflow-hidden border border-white/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-1000 group-hover:border-red-600/20"
 					>
 						<img
-							src="/hero_honda_sh_2025_spotlight_1778828554894.png"
+							src="/hero_honda_sh_2025_spotlight_1778828554894.webp"
 							class="w-full aspect-[4/5] object-cover scale-105 group-hover:scale-110 transition-transform duration-1000"
 							alt="Honda SH 2025"
 						>

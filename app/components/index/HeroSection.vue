@@ -21,8 +21,8 @@ let bannerTimer = null;
 const fallbackBanners = [
 	{
 		id: "fb1",
-		desktopImageUrl: "/assets/image/index/banner1.png",
-		mobileImageUrl: "/assets/image/index/banner1.png",
+		desktopImageUrl: "/assets/image/index/banner1.webp",
+		mobileImageUrl: "/assets/image/index/banner1.webp",
 		title: "Showroom Sang Trọng",
 		description:
 			"Trải nghiệm không gian trưng bày xe phân khối lớn hiện đại và đẳng cấp nhất khu vực.",
@@ -31,8 +31,8 @@ const fallbackBanners = [
 	},
 	{
 		id: "fb2",
-		desktopImageUrl: "/assets/image/index/banner2.png",
-		mobileImageUrl: "/assets/image/index/banner2.png",
+		desktopImageUrl: "/assets/image/index/banner2.webp",
+		mobileImageUrl: "/assets/image/index/banner2.webp",
 		title: "Dịch Vụ Chuyên Nghiệp",
 		description:
 			"Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, chăm sóc xế yêu của bạn tốt nhất.",
@@ -41,8 +41,8 @@ const fallbackBanners = [
 	},
 	{
 		id: "fb3",
-		desktopImageUrl: "/assets/image/index/banner3.png",
-		mobileImageUrl: "/assets/image/index/banner3.png",
+		desktopImageUrl: "/assets/image/index/banner3.webp",
+		mobileImageUrl: "/assets/image/index/banner3.webp",
 		title: "Phụ Tùng Chính Hãng",
 		description:
 			"Cung cấp đầy đủ các loại phụ tùng, đồ chơi xe máy chính hãng từ các thương hiệu hàng đầu thế giới.",
@@ -51,8 +51,8 @@ const fallbackBanners = [
 	},
 	{
 		id: "fb4",
-		desktopImageUrl: "/assets/image/index/banner4.png",
-		mobileImageUrl: "/assets/image/index/banner4.png",
+		desktopImageUrl: "/assets/image/index/banner4.webp",
+		mobileImageUrl: "/assets/image/index/banner4.webp",
 		title: "Ưu Đãi Ngập Tràn",
 		description:
 			"Hỗ trợ trả góp 0%, duyệt hồ sơ nhanh chóng và nhiều quà tặng hấp dẫn khi mua xe mới.",
@@ -61,8 +61,8 @@ const fallbackBanners = [
 	},
 	{
 		id: "fb5",
-		desktopImageUrl: "/assets/image/index/banner5.png",
-		mobileImageUrl: "/assets/image/index/banner5.png",
+		desktopImageUrl: "/assets/image/index/banner5.webp",
+		mobileImageUrl: "/assets/image/index/banner5.webp",
 		title: "AnhEm Motor",
 		description: "Hệ thống cửa hàng xe máy uy tín, phục vụ tận tâm 24/7.",
 		ctaLink: "/about",
@@ -168,13 +168,13 @@ onUnmounted(() => {
 					<source
 						media="(max-width: 767px)"
 						:srcset="
-							banner.mobileImageUrl || '/assets/image/index/index-banner-bg.png'
+							banner.mobileImageUrl || '/assets/image/index/index-banner-bg.webp'
 						"
 					>
 					<img
 						:src="
 							banner.desktopImageUrl ||
-							'/assets/image/index/index-banner-bg.png'
+							'/assets/image/index/index-banner-bg.webp'
 						"
 						alt="Banner"
 						class="w-full h-full object-cover"
@@ -190,10 +190,10 @@ onUnmounted(() => {
 			<picture>
 				<source
 					media="(max-width: 767px)"
-					srcset="/assets/image/index/index-banner-bg.png"
+					srcset="/assets/image/index/index-banner-bg.webp"
 				>
 				<img
-					src="/assets/image/index/index-banner-bg.png"
+					src="/assets/image/index/index-banner-bg.webp"
 					alt="Banner"
 					class="w-full h-full object-cover"
 				>

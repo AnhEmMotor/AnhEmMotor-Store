@@ -78,7 +78,7 @@
 
 					<div class="lg:w-1/2 relative min-h-[400px]">
 						<img
-							src="/premium_motorcycle_showroom_visit_1778827603878.png"
+							src="/premium_motorcycle_showroom_visit_1778827603878.webp"
 							class="w-full h-full object-cover"
 							alt="Showroom AnhEm Motor"
 						>

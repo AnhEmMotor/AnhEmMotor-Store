@@ -41,7 +41,7 @@
 						class="absolute inset-0 bg-red-600/5 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity"
 					/>
 					<img
-						src="/images/technology/engine_xray.png"
+						src="/images/technology/engine_xray.webp"
 						alt="Engine Specs"
 						class="w-full rounded-2xl shadow-[0_0_80px_rgba(220,38,38,0.15)] transition-all duration-1000 group-hover:scale-105"
 					>

@@ -51,7 +51,7 @@
 						class="relative overflow-hidden rounded-[2rem] border border-white/10 shadow-2xl group-hover:shadow-red-600/20 transition-all duration-700"
 					>
 						<img
-							src="/images/technology/safety_action.png"
+							src="/images/technology/safety_action.webp"
 							alt="Safety in Action"
 							class="w-full transform group-hover:scale-105 group-hover:-rotate-1 transition-all duration-1000"
 						>

@@ -8,14 +8,14 @@ export const promotionData = [
 		endDate: "2025-10-15",
 		status: "ongoing",
 		brand: "Honda",
-		image: "/featured_vario_160_promotion_marketing_1778828577524.png",
+		image: "/featured_vario_160_promotion_marketing_1778828577524.webp",
 		isHot: true,
 		shortDescription: "Tặng ngay voucher 2 triệu đồng và gói bảo dưỡng miễn phí 1 năm cho khách hàng mua xe tay ga.",
 		fullTitle: "Chương trình khuyến mãi lớn nhất năm: Chốt đơn Honda - Săn quà cực đã",
 		duration: "từ ngày 15/07/2025 đến hết ngày 15/10/2025",
 		remainingSlots: 45,
 		carouselImages: [
-			"/featured_vario_160_promotion_marketing_1778828577524.png"
+			"/featured_vario_160_promotion_marketing_1778828577524.webp"
 		],
 		content: `
       <p class="font-semibold italic">Chào hè rực rỡ, AnhEm Motor mang tới chương trình ưu đãi cực kỳ hấp dẫn cho các dòng xe máy mới nhất.</p>
@@ -39,13 +39,13 @@ export const promotionData = [
 			{ title: "Lưu ý voucher", content: "Voucher không có giá trị quy đổi thành tiền mặt và không cộng dồn các ưu đãi khác." }
 		],
 		gallery: [
-			"/premium_motorcycle_showroom_visit_1778827603878.png",
-			"/promotion_process_process_background_1778827621728.png",
-			"/final_cta_rider_adventure_1778828626734.png"
+			"/premium_motorcycle_showroom_visit_1778827603878.webp",
+			"/promotion_process_process_background_1778827621728.webp",
+			"/final_cta_rider_adventure_1778828626734.webp"
 		],
 		targetBikes: [
-			{ name: "Honda Vario 160", price: "51.500.000", image: "/featured_vario_160_promotion_marketing_1778828577524.png" },
-			{ name: "Honda Vision 2024", price: "31.200.000", image: "/hero_honda_sh_2025_spotlight_1778828554894.png" }
+			{ name: "Honda Vario 160", price: "51.500.000", image: "/featured_vario_160_promotion_marketing_1778828577524.webp" },
+			{ name: "Honda Vision 2024", price: "31.200.000", image: "/hero_honda_sh_2025_spotlight_1778828554894.webp" }
 		]
 	},
 	{
@@ -57,7 +57,7 @@ export const promotionData = [
 		endDate: "2025-09-15",
 		status: "ongoing",
 		brand: "Yamaha",
-		image: "/card_yamaha_exciter_lifestyle_1778828605125.png",
+		image: "/card_yamaha_exciter_lifestyle_1778828605125.webp",
 		isHot: true,
 		shortDescription: "Sở hữu ngay mẫu xe yêu thích với lãi suất 0%, thủ tục xét duyệt nhanh chóng trong 15 phút.",
 		fullTitle: "Ưu đãi tài chính đặc biệt: Trả góp 0% lãi suất cho mọi dòng xe",
@@ -80,9 +80,9 @@ export const promotionData = [
 			{ title: "Phạm vi áp dụng", content: "Áp dụng tại các showroom AnhEm Motor trong thời gian chương trình còn hiệu lực." }
 		],
 		gallery: [
-			"/card_yamaha_exciter_lifestyle_1778828605125.png",
-			"/premium_motorcycle_showroom_visit_1778827603878.png",
-			"/promotion_process_process_background_1778827621728.png"
+			"/card_yamaha_exciter_lifestyle_1778828605125.webp",
+			"/premium_motorcycle_showroom_visit_1778827603878.webp",
+			"/promotion_process_process_background_1778827621728.webp"
 		]
 	},
 	{
@@ -94,7 +94,7 @@ export const promotionData = [
 		endDate: "2025-08-30",
 		status: "ongoing",
 		brand: "Tất cả",
-		image: "/premium_motorcycle_showroom_visit_1778827603878.png",
+		image: "/premium_motorcycle_showroom_visit_1778827603878.webp",
 		isHot: false,
 		shortDescription: "Thu mua xe cũ giá cao, trợ giá thêm 1 triệu đồng khi nâng cấp lên dòng xe mới tại hệ thống.",
 		fullTitle: "Chiến dịch Thu cũ Đổi mới: Tối ưu giá trị chiếc xe của bạn",
@@ -117,9 +117,9 @@ export const promotionData = [
 			{ title: "Giá trị thu mua", content: "Giá cuối cùng phụ thuộc vào tình trạng thực tế sau khi kỹ thuật viên kiểm tra." }
 		],
 		gallery: [
-			"/premium_motorcycle_showroom_visit_1778827603878.png",
-			"/hero_honda_sh_2025_spotlight_1778828554894.png",
-			"/promotion_process_process_background_1778827621728.png"
+			"/premium_motorcycle_showroom_visit_1778827603878.webp",
+			"/hero_honda_sh_2025_spotlight_1778828554894.webp",
+			"/promotion_process_process_background_1778827621728.webp"
 		]
 	},
     {
@@ -131,7 +131,7 @@ export const promotionData = [
 		endDate: "2025-08-31",
 		status: "ongoing",
 		brand: "Dịch vụ",
-		image: "/promotion_process_process_background_1778827621728.png",
+		image: "/promotion_process_process_background_1778827621728.webp",
 		isHot: false,
 		shortDescription: "Tặng gói bảo dưỡng toàn diện trị giá 500.000 VNĐ cho khách hàng đặt lịch qua App.",
 		fullTitle: "Tuần lễ vàng dịch vụ: Chăm sóc xe yêu, nhận quà cực chill",
@@ -154,9 +154,9 @@ export const promotionData = [
 			{ title: "Hạng mục áp dụng", content: "Ưu đãi áp dụng cho công bảo dưỡng, chưa bao gồm phụ tùng thay thế phát sinh." }
 		],
 		gallery: [
-			"/promotion_process_process_background_1778827621728.png",
-			"/service-1.png",
-			"/service-2.png"
+			"/promotion_process_process_background_1778827621728.webp",
+			"/service-1.webp",
+			"/service-2.webp"
 		]
 	},
 	{
@@ -168,13 +168,13 @@ export const promotionData = [
 		endDate: "2025-09-30",
 		status: "ongoing",
 		brand: "Phụ kiện",
-		image: "/service-4.png",
+		image: "/service-4.webp",
 		isHot: false,
 		shortDescription: "Giảm đến 30% cho combo mũ bảo hiểm, găng tay, áo mưa và khóa chống trộm khi mua kèm xe.",
 		fullTitle: "Combo phụ kiện an toàn dành cho khách hàng mua xe mới",
 		duration: "Từ 22/08 - 30/09/2025",
 		remainingSlots: 64,
-		carouselImages: ["/service-4.png"],
+		carouselImages: ["/service-4.webp"],
 		content: `<p>Nâng cấp trải nghiệm lái xe với bộ phụ kiện thiết yếu được AnhEm Motor tuyển chọn cho nhu cầu di chuyển hằng ngày.</p>`,
 		benefits: [
 			{ title: "Giảm đến 30%", desc: "Áp dụng cho combo phụ kiện chọn sẵn", icon: "ph:tag-fill" },
@@ -191,9 +191,9 @@ export const promotionData = [
 			{ title: "Không cộng dồn", content: "Không áp dụng đồng thời với chương trình giảm giá phụ kiện khác." }
 		],
 		gallery: [
-			"/service-4.png",
-			"/service-5.png",
-			"/service-6.png"
+			"/service-4.webp",
+			"/service-5.webp",
+			"/service-6.webp"
 		]
 	},
 	{
@@ -205,13 +205,13 @@ export const promotionData = [
 		endDate: "2025-10-05",
 		status: "ongoing",
 		brand: "Honda",
-		image: "/hero_honda_sh_2025_spotlight_1778828554894.png",
+		image: "/hero_honda_sh_2025_spotlight_1778828554894.webp",
 		isHot: false,
 		shortDescription: "Khách hàng đặt cọc xe mới nhận ngay voucher phụ kiện 1.500.000 VNĐ và ưu tiên lịch giao xe.",
 		fullTitle: "Ưu đãi đặt cọc sớm dành cho các mẫu xe mới về showroom",
 		duration: "Từ 25/08 - 05/10/2025",
 		remainingSlots: 27,
-		carouselImages: ["/hero_honda_sh_2025_spotlight_1778828554894.png"],
+		carouselImages: ["/hero_honda_sh_2025_spotlight_1778828554894.webp"],
 		content: `<p>Chốt sớm mẫu xe yêu thích để giữ màu, giữ phiên bản và nhận thêm quà giao xe từ AnhEm Motor.</p>`,
 		benefits: [
 			{ title: "Voucher 1.5 triệu", desc: "Dùng cho phụ kiện chính hãng", icon: "ph:ticket-fill" },
@@ -228,12 +228,12 @@ export const promotionData = [
 			{ title: "Thời gian giao", content: "Lịch giao xe phụ thuộc vào tồn kho thực tế và tiến độ hoàn tất giấy tờ." }
 		],
 		gallery: [
-			"/hero_honda_sh_2025_spotlight_1778828554894.png",
-			"/premium_motorcycle_showroom_visit_1778827603878.png",
-			"/promotion_step_4_delivery_3d_premium_1778927900499.png"
+			"/hero_honda_sh_2025_spotlight_1778828554894.webp",
+			"/premium_motorcycle_showroom_visit_1778827603878.webp",
+			"/promotion_step_4_delivery_3d_premium_1778927900499.webp"
 		],
 		targetBikes: [
-			{ name: "Honda SH 2025", price: "73.900.000", image: "/hero_honda_sh_2025_spotlight_1778828554894.png" }
+			{ name: "Honda SH 2025", price: "73.900.000", image: "/hero_honda_sh_2025_spotlight_1778828554894.webp" }
 		]
 	},
 	{
@@ -245,13 +245,13 @@ export const promotionData = [
 		endDate: "2025-09-20",
 		status: "ongoing",
 		brand: "Dịch vụ",
-		image: "/service-hero-cinematic.png",
+		image: "/service-hero-cinematic.webp",
 		isHot: false,
 		shortDescription: "Miễn phí kiểm tra phanh, lốp, đèn, ắc quy và hệ thống điện cho khách hàng đặt lịch online.",
 		fullTitle: "Gói kiểm tra an toàn trước mùa mưa tại AnhEm Motor",
 		duration: "Từ 28/08 - 20/09/2025",
 		remainingSlots: 75,
-		carouselImages: ["/service-hero-cinematic.png"],
+		carouselImages: ["/service-hero-cinematic.webp"],
 		content: `<p>Đảm bảo xe vận hành ổn định trong điều kiện mưa nhiều với quy trình kiểm tra nhanh tại xưởng dịch vụ.</p>`,
 		benefits: [
 			{ title: "Kiểm tra miễn phí", desc: "Không tính phí công kiểm tra tổng quát", icon: "ph:magnifying-glass-fill" },
@@ -268,9 +268,9 @@ export const promotionData = [
 			{ title: "Phụ tùng phát sinh", content: "Chi phí phụ tùng thay thế được báo giá riêng và cần khách hàng xác nhận." }
 		],
 		gallery: [
-			"/service-hero-cinematic.png",
-			"/service-1.png",
-			"/service-process.png"
+			"/service-hero-cinematic.webp",
+			"/service-1.webp",
+			"/service-process.webp"
 		]
 	},
 	{
@@ -282,13 +282,13 @@ export const promotionData = [
 		endDate: "2025-10-31",
 		status: "upcoming",
 		brand: "Tài chính",
-		image: "/promotion_step_3_procedure_3d_premium_1778927862992.png",
+		image: "/promotion_step_3_procedure_3d_premium_1778927862992.webp",
 		isHot: false,
 		shortDescription: "Hỗ trợ xét duyệt hồ sơ online, trả trước linh hoạt từ 20% và nhận xe ngay sau khi hoàn tất.",
 		fullTitle: "Chương trình duyệt trả góp online dành cho khách hàng bận rộn",
 		duration: "Từ 01/09 - 31/10/2025",
 		remainingSlots: 50,
-		carouselImages: ["/promotion_step_3_procedure_3d_premium_1778927862992.png"],
+		carouselImages: ["/promotion_step_3_procedure_3d_premium_1778927862992.webp"],
 		content: `<p>Rút ngắn thời gian mua xe với quy trình nộp hồ sơ online và tư vấn tài chính từ xa.</p>`,
 		benefits: [
 			{ title: "Trả trước từ 20%", desc: "Linh hoạt theo hồ sơ tài chính", icon: "ph:wallet-fill" },
@@ -305,9 +305,9 @@ export const promotionData = [
 			{ title: "Thời gian nhận xe", content: "Nhận xe trong ngày khi hồ sơ hợp lệ và xe còn sẵn tại showroom." }
 		],
 		gallery: [
-			"/promotion_step_3_procedure_3d_premium_1778927862992.png",
-			"/promotion_step_2_consultation_3d_premium_1778927846616.png",
-			"/promotion_step_4_delivery_3d_premium_1778927900499.png"
+			"/promotion_step_3_procedure_3d_premium_1778927862992.webp",
+			"/promotion_step_2_consultation_3d_premium_1778927846616.webp",
+			"/promotion_step_4_delivery_3d_premium_1778927900499.webp"
 		]
 	},
 	{
@@ -319,13 +319,13 @@ export const promotionData = [
 		endDate: "2025-10-10",
 		status: "upcoming",
 		brand: "Thu cũ",
-		image: "/premium_motorcycle_showroom_visit_1778827603878.png",
+		image: "/premium_motorcycle_showroom_visit_1778827603878.webp",
 		isHot: false,
 		shortDescription: "Định giá nhanh xe tay ga cũ, hỗ trợ thêm đến 2 triệu đồng khi đổi sang mẫu xe mới.",
 		fullTitle: "Ưu đãi lên đời xe tay ga cho khách hàng thu cũ đổi mới",
 		duration: "Từ 05/09 - 10/10/2025",
 		remainingSlots: 36,
-		carouselImages: ["/premium_motorcycle_showroom_visit_1778827603878.png"],
+		carouselImages: ["/premium_motorcycle_showroom_visit_1778827603878.webp"],
 		content: `<p>Chương trình tập trung vào nhóm xe tay ga phổ biến, giúp khách hàng nâng cấp xe nhanh và minh bạch chi phí.</p>`,
 		benefits: [
 			{ title: "Trợ giá 2 triệu", desc: "Áp dụng khi đổi sang xe mới", icon: "ph:money-fill" },
@@ -342,9 +342,9 @@ export const promotionData = [
 			{ title: "Mức trợ giá", content: "Mức hỗ trợ cụ thể phụ thuộc vào mẫu xe mới khách hàng lựa chọn." }
 		],
 		gallery: [
-			"/premium_motorcycle_showroom_visit_1778827603878.png",
-			"/featured_vario_160_promotion_marketing_1778828577524.png",
-			"/hero_honda_sh_2025_spotlight_1778828554894.png"
+			"/premium_motorcycle_showroom_visit_1778827603878.webp",
+			"/featured_vario_160_promotion_marketing_1778828577524.webp",
+			"/hero_honda_sh_2025_spotlight_1778828554894.webp"
 		]
 	}
 ];

@@ -4,7 +4,7 @@ export const maintenanceRepository = {
 			{
 				id: 1,
 				icon: "🔧",
-				image: "/service-1.png",
+				image: "/service-1.webp",
 				name: "Bảo Dưỡng Toàn Diện",
 				category: "maintenance",
 				categoryLabel: "Bảo dưỡng định kỳ",
@@ -21,7 +21,7 @@ export const maintenanceRepository = {
 			{
 				id: 2,
 				icon: "🛞",
-				image: "/service-2.png",
+				image: "/service-2.webp",
 				name: "Thay Lốp Chuyên Nghiệp",
 				category: "tires",
 				categoryLabel: "Lốp & Mâm xe",
@@ -38,7 +38,7 @@ export const maintenanceRepository = {
 			{
 				id: 3,
 				icon: "🔋",
-				image: "/service-3.png",
+				image: "/service-3.webp",
 				name: "Sửa Chữa Hệ Thống Điện",
 				category: "electrical",
 				categoryLabel: "Hệ thống điện tử",
@@ -55,7 +55,7 @@ export const maintenanceRepository = {
 			{
 				id: 4,
 				icon: "⚙️",
-				image: "/service-4.png",
+				image: "/service-4.webp",
 				name: "Sửa Chữa Động Cơ",
 				category: "repair",
 				categoryLabel: "Sửa chữa chuyên sâu",
@@ -78,7 +78,7 @@ export const maintenanceRepository = {
 				description:
 					"Làm sạch sâu từng ngóc ngách, đánh bóng phục hồi màu sơn và phủ bảo vệ bề mặt chống bám bẩn.",
 				price: 100000,
-				image: "/service-5.png",
+				image: "/service-5.webp",
 				estimatedTime: "60",
 				features: [
 					"Rửa xe không chạm công nghệ mới",
@@ -89,7 +89,7 @@ export const maintenanceRepository = {
 			{
 				id: 6,
 				icon: "📋",
-				image: "/service-6.png",
+				image: "/service-6.webp",
 				name: "Tư Vấn Đăng Kiểm & Pháp Lý",
 				category: "other",
 				categoryLabel: "Dịch vụ hỗ trợ",

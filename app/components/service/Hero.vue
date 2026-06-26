@@ -4,7 +4,7 @@
 	>
 		<div class="absolute inset-0 z-0 overflow-hidden">
 			<img
-				src="/service-hero-cinematic.png"
+				src="/service-hero-cinematic.webp"
 				alt="Cinematic Service"
 				class="w-full h-full object-cover transform animate-premium-zoom"
 			>

@@ -1,7 +1,7 @@
 <template>
 	<div class="hidden lg:block relative bg-[#0a0a0a] overflow-hidden">
 		<img 
-			src="/assets/image/index/login-banner-branded.png" 
+			src="/assets/image/index/login-banner-branded.webp" 
 			alt="AnhEmMotor Showroom" 
 			class="absolute inset-0 w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
 		>

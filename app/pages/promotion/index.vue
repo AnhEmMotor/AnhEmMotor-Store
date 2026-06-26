@@ -73,7 +73,7 @@ watch(promotionPage, () => {
 		<CommonBannerCarousel
 			v-if="promotionStore.banners.length > 0"
 			:banners="promotionStore.banners"
-			default-bg="/assets/image/index/index-banner-bg.png"
+			default-bg="/assets/image/index/index-banner-bg.webp"
 		/>
 		<PromotionBanner v-else />
 
@@ -298,7 +298,7 @@ watch(promotionPage, () => {
 			class="py-16 md:py-24 bg-gray-950 relative overflow-hidden font-['Manrope']"
 		>
 			<div
-				class="absolute inset-0 opacity-30 bg-[url('/final_cta_rider_adventure_1778828626734.png')] bg-cover bg-center scale-110"
+				class="absolute inset-0 opacity-30 bg-[url('/final_cta_rider_adventure_1778828626734.webp')] bg-cover bg-center scale-110"
 			/>
 			<div
 				class="absolute inset-0 bg-gradient-to-b from-gray-950 via-transparent to-gray-950"

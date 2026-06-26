@@ -71,7 +71,7 @@
 								class="relative group overflow-hidden rounded-[2.5rem] shadow-2xl shadow-black/10"
 							>
 								<img
-									src="/img/recruitment/technical.png"
+									src="/img/recruitment/technical.webp"
 									alt="Training"
 									class="w-full h-72 object-cover transition-transform duration-1000 group-hover:scale-110"
 								>
@@ -111,7 +111,7 @@
 								class="relative group overflow-hidden rounded-[2.5rem] shadow-2xl shadow-black/10"
 							>
 								<img
-									src="/img/recruitment/hero.png"
+									src="/img/recruitment/hero.webp"
 									alt="Showroom Team"
 									class="w-full h-80 object-cover transition-transform duration-1000 group-hover:scale-110"
 								>

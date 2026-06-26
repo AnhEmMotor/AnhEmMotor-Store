@@ -10,7 +10,7 @@
 						class="relative overflow-hidden rounded-2xl lg:rounded-[2rem] border border-white/10 shadow-2xl z-10"
 					>
 						<img
-							src="/images/technology/connectivity_hub_v2.png"
+							src="/images/technology/connectivity_hub_v2.webp"
 							alt="Multi-device Connection"
 							class="w-full transform group-hover:scale-110 transition-transform duration-1000"
 						>

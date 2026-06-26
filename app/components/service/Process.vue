@@ -24,7 +24,7 @@
 						class="relative z-10 rounded-[2.5rem] overflow-hidden shadow-xl border-[8px] border-white group"
 					>
 						<img
-							src="/service-process.png"
+							src="/service-process.webp"
 							alt="Customer Service"
 							class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-1000"
 						>

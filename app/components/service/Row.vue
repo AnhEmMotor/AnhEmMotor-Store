@@ -21,7 +21,7 @@
 				class="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl group-hover:shadow-primary/20 transition-all duration-700 aspect-[4/3] border border-gray-100"
 			>
 				<img
-					:src="service.image || '/service-hero.png'"
+					:src="service.image || '/service-hero.webp'"
 					:alt="service.name"
 					class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
 				>

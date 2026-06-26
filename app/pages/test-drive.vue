@@ -5,7 +5,7 @@
 		>
 			<div class="absolute inset-0 z-0">
 				<img
-					src="/assets/image/anhem_motor_test_drive_banner_1778898900918.png"
+					src="/assets/image/anhem_motor_test_drive_banner_1778898900918.webp"
 					alt="Showroom AnhEm Motor"
 					class="w-full h-full object-cover brightness-50 scale-105"
 				>

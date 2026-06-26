@@ -20,7 +20,7 @@
 					class="relative group overflow-hidden rounded-[28px] shadow-2xl aspect-[4/5] bg-gray-100"
 				>
 					<img
-						src="/images/about/interior.png"
+						src="/images/about/interior.webp"
 						alt="Showroom Interior"
 						class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-95 sepia-[0.1]"
 					>
@@ -46,7 +46,7 @@
 					class="relative group overflow-hidden rounded-[28px] shadow-2xl aspect-[4/5] bg-gray-100"
 				>
 					<img
-						src="/images/about/team.png"
+						src="/images/about/team.webp"
 						alt="Our Team"
 						class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-95"
 					>
@@ -73,7 +73,7 @@
 					class="relative group overflow-hidden rounded-[28px] shadow-2xl aspect-[4/5] bg-gray-100"
 				>
 					<img
-						src="/images/about/maintenance.png"
+						src="/images/about/maintenance.webp"
 						alt="Maintenance Area"
 						class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-90 sepia-[0.1]"
 					>

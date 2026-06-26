@@ -3,22 +3,22 @@ const steps = [
 	{
 		title: "Chọn ưu đãi",
 		desc: "Duyệt danh sách và chọn chương trình khuyến mãi phù hợp với nhu cầu của bạn.",
-		icon: "/promotion_step_1_selection_3d_premium_1778927829571.png",
+		icon: "/promotion_step_1_selection_3d_premium_1778927829571.webp",
 	},
 	{
 		title: "Nhận tư vấn",
 		desc: "Để lại thông tin hoặc gọi Hotline để nhân viên xác nhận và tư vấn chi tiết về hồ sơ.",
-		icon: "/promotion_step_2_consultation_3d_premium_1778927846616.png",
+		icon: "/promotion_step_2_consultation_3d_premium_1778927846616.webp",
 	},
 	{
 		title: "Làm thủ tục",
 		desc: "Ghé Showroom gần nhất để ký hợp đồng và hoàn thiện các thủ tục nhận ưu đãi.",
-		icon: "/promotion_step_3_procedure_3d_premium_1778927862992.png",
+		icon: "/promotion_step_3_procedure_3d_premium_1778927862992.webp",
 	},
 	{
 		title: "Nhận xế yêu",
 		desc: "Sẵn sàng lên đường cùng chiếc xe mới và bộ quà tặng độc quyền từ AnhEm Motor.",
-		icon: "/promotion_step_4_delivery_3d_premium_1778927900499.png",
+		icon: "/promotion_step_4_delivery_3d_premium_1778927900499.webp",
 	},
 ];
 </script>
