@@ -22,8 +22,44 @@ const {
 	isLoading: isLoadingFilterFacets,
 	isError: isFilterFacetsError,
 } = useQuery({
-	queryKey: ["product-categories"],
-	queryFn: () => categoryStore.getProductCategories(),
+	queryKey: ["product-filter-facets"],
+	queryFn: async () => {
+		const response = await productStore.getProducts({
+			page: 1,
+			pageSize: 500,
+		});
+		const brandsById = new Map();
+		const categoriesById = new Map();
+
+		for (const product of response.items || []) {
+			if (product.brandId && product.brand) {
+				const brand = brandsById.get(product.brandId);
+				brandsById.set(product.brandId, {
+					id: product.brandId,
+					name: product.brand,
+					count: (brand?.count || 0) + 1,
+				});
+			}
+
+			if (product.categoryId && product.category) {
+				const category = categoriesById.get(product.categoryId);
+				categoriesById.set(product.categoryId, {
+					id: product.categoryId,
+					name: product.category,
+					count: (category?.count || 0) + 1,
+				});
+			}
+		}
+
+		const byProductCount = (a, b) =>
+			b.count - a.count || a.name.localeCompare(b.name, "vi");
+
+		return {
+			brands: [...brandsById.values()].sort(byProductCount),
+			categories: [...categoriesById.values()].sort(byProductCount).slice(0, 5),
+		};
+	},
+	staleTime: 1000 * 60 * 60,
 });
 
 const brands = computed(() => filterFacetsData.value?.brands || []);
@@ -64,6 +100,7 @@ const {
 } = useQuery({
 	queryKey: ["product-options"],
 	queryFn: () => productStore.getOptions(),
+	staleTime: 1000 * 60 * 60,
 });
 
 const filteredOptions = computed(() => {

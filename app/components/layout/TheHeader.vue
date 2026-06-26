@@ -395,7 +395,6 @@
         :is-open="isCartOpen"
         :cart-items="cartDetails"
         :cart-total="cartTotal"
-        :is-checking="isChecking"
         @close="toggleCart"
         @update-quantity="updateCartItemQuantity"
         @remove-item="removeCartItem"

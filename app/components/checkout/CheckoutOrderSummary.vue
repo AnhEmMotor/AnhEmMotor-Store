@@ -13,6 +13,7 @@ const {
 	validateProductLimit,
 } = useCart();
 const orderStore = useOrderStore();
+const { depositSettings } = useStoreSettings();
 const isChecking = ref(false);
 
 const isSubmitting = computed(() => orderStore.isLoading);

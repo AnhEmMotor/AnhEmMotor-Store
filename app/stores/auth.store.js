@@ -447,12 +447,25 @@ export const useAuthStore = defineStore("auth", () => {
 		status.value = "logging_out";
 
 		closeSSE();
-		const axios = useAxios();
+
+		let axiosClient = null;
+		let queryClient = null;
+
 		try {
-			await axios.post("/api/v1/auth/logout");
-		} finally {
+			axiosClient = useAxios();
 			if (import.meta.client) {
-				const queryClient = useQueryClient();
+				queryClient = useQueryClient();
+			}
+		} catch {}
+
+		try {
+			if (axiosClient) {
+				await axiosClient.post("/api/v1/auth/logout");
+			}
+		} catch {
+			// ignore error on logout API
+		} finally {
+			if (import.meta.client && queryClient) {
 				queryClient.cancelQueries();
 				queryClient.removeQueries();
 				queryClient.clear();
@@ -463,7 +476,11 @@ export const useAuthStore = defineStore("auth", () => {
 			status.value = "unauthenticated";
 
 			if (shouldRedirect && import.meta.client) {
-				await navigateTo("/");
+				if (router) {
+					router.push("/");
+				} else {
+					window.location.href = "/";
+				}
 			}
 		}
 	}
