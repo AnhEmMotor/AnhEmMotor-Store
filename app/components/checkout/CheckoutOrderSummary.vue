@@ -233,7 +233,9 @@ async function handlePlaceOrder() {
 				<div class="flex justify-between text-sm">
 					<span class="text-gray-500 font-medium">Phí giao hàng</span>
 					<span class="font-bold text-gray-900">{{
-						orderSummary.shipping === 0 ? "Miễn phí" : formatPrice(orderSummary.shipping)
+						orderSummary.shipping === 0
+							? "Miễn phí"
+							: formatPrice(orderSummary.shipping)
 					}}</span>
 				</div>
 				<div
@@ -264,11 +266,11 @@ async function handlePlaceOrder() {
 					</div>
 				</div>
 
-				<div
-					class="flex justify-between pt-4 border-t border-gray-100"
-				>
+				<div class="flex justify-between pt-4 border-t border-gray-100">
 					<span class="text-lg font-black text-gray-900 uppercase">
-						{{ orderSummary.requiresDeposit ? "Thanh toán hôm nay" : "Tổng cộng" }}
+						{{
+							orderSummary.requiresDeposit ? "Thanh toán hôm nay" : "Tổng cộng"
+						}}
 					</span>
 					<span class="text-xl font-black text-red-600">{{
 						formatPrice(orderSummary.payableNow)

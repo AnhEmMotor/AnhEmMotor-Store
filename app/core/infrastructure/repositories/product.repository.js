@@ -1,4 +1,4 @@
-import { PRODUCT_ENDPOINTS } from "../../../constants/endpoints/product.endpoint";
+import { PRODUCT_ENDPOINTS } from "../endpoints/product.endpoint";
 
 export const productRepository = {
 	async getProducts(params) {

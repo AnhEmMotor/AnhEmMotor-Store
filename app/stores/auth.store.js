@@ -471,9 +471,8 @@ export const useAuthStore = defineStore("auth", () => {
 				queryClient.clear();
 			}
 
-			accessToken.value = null;
-			user.value = null;
-			status.value = "unauthenticated";
+			// Đóng SSE một lần nữa để chắc chắn
+			closeSSE();
 
 			if (shouldRedirect && import.meta.client) {
 				if (router) {
@@ -483,6 +482,10 @@ export const useAuthStore = defineStore("auth", () => {
 				}
 			}
 		}
+
+		setTimeout(() => {
+			isLoggingOut = false;
+		}, 500);
 	}
 
 	async function initAuth() {

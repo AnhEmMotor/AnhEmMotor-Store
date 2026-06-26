@@ -2,38 +2,38 @@ import { useAuthStore } from "~/stores/auth.store";
 import { parseCookies } from "h3";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  if (!import.meta.server) return;
+	if (!import.meta.server) return;
 
-  const event = nuxtApp.ssrContext?.event ?? useRequestEvent();
-  if (!event) return;
+	const event = nuxtApp.ssrContext?.event ?? useRequestEvent();
+	if (!event) return;
 
-  const authStore = useAuthStore();
-  authStore.setSsrEvent(event);
+	const authStore = useAuthStore();
+	authStore.setSsrEvent(event);
 
-  if (event.context._authCalculated) {
-    authStore.setAuthResult(event.context._authCalculated);
-  } else {
-    const cookies = parseCookies(event);
-    if (cookies.refreshToken) {
-      try {
-        await authStore.initAuth();
-      } catch {
-        authStore.$patch({ status: "unauthenticated" });
-      }
-    } else {
-      authStore.$patch({ status: "unauthenticated" });
-    }
+	if (event.context._authCalculated) {
+		authStore.setAuthResult(event.context._authCalculated);
+	} else {
+		const cookies = parseCookies(event);
+		if (cookies.refreshToken) {
+			try {
+				await authStore.initAuth();
+			} catch {
+				authStore.$patch({ status: "unauthenticated" });
+			}
+		} else {
+			authStore.$patch({ status: "unauthenticated" });
+		}
 
-    event.context._authCalculated = {
-      accessToken: authStore.accessToken,
-      user: authStore.user,
-      status: authStore.status,
-    };
-  }
+		event.context._authCalculated = {
+			accessToken: authStore.accessToken,
+			user: authStore.user,
+			status: authStore.status,
+		};
+	}
 
-  nuxtApp.payload.auth = {
-    accessToken: authStore.accessToken,
-    user: authStore.user,
-    status: authStore.status,
-  };
+	nuxtApp.payload.auth = {
+		accessToken: authStore.accessToken,
+		user: authStore.user,
+		status: authStore.status,
+	};
 });

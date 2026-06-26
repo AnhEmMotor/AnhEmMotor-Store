@@ -29,7 +29,7 @@
         <div class="relative reveal reveal-right group">
           <div class="absolute -inset-10 bg-red-600/15 rounded-full blur-[80px] animate-pulse"/>
           <div class="relative bg-black/60 backdrop-blur-2xl p-3 sm:p-4 rounded-xl sm:rounded-[1.5rem] border border-red-600/20 shadow-[0_0_60px_rgba(220,38,38,0.22)] transform hover:perspective-1000 hover:rotate-y-12 transition-all duration-1000 group-hover:scale-105">
-            <img src="/images/technology/erp_dashboard.png" alt="Management Dashboard" class="rounded-xl w-full" >
+            <img src="/images/technology/erp_dashboard.webp" alt="Management Dashboard" class="rounded-xl w-full" >
             <div class="absolute inset-0 bg-gradient-to-tr from-red-600/20 via-transparent to-black/10 pointer-events-none"/>
           </div>
         </div>

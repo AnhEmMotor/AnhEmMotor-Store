@@ -10,11 +10,11 @@ await Promise.all([
 
 useSeoMeta({
 	title: "Trang chủ",
-	ogImage: "/assets/image/index/index-banner-bg.png",
+	ogImage: "/assets/image/index/index-banner-bg.webp",
 	twitterTitle: "Trang chủ",
 	twitterDescription:
 		"AnhEm Motor - Chuyên cung cấp xe máy, phụ tùng, phụ kiện chính hãng.",
-	twitterImage: "/assets/image/index/index-banner-bg.png",
+	twitterImage: "/assets/image/index/index-banner-bg.webp",
 });
 
 useHead({

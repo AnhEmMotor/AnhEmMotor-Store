@@ -99,7 +99,7 @@ const handleCheckout = async () => {
 								class="text-2xl font-black text-gray-900 flex items-center gap-3"
 							>
 								<Icon name="fa6-solid:truck-fast" class="text-red-600" />
-								THÔNG TIN THANH TOÁN
+								THONG TIN THANH TOAN
 							</h1>
 						</div>
 

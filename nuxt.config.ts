@@ -19,13 +19,14 @@ export default defineNuxtConfig({
 		"@nuxt/eslint-config",
 		"@nuxt/eslint",
 		"@nuxt/icon",
+		"@nuxt/image",
 	],
 	icon: {
 		clientBundle: {
 			scan: true,
 		},
 		serverBundle: "auto",
-		collections: ["ph", "lucide", "fa6-solid", "fa6-regular"],
+		collections: ["ph", "lucide", "fa6-solid", "fa6-regular", "fa6-brands"],
 	},
 	sitemap: {
 		sources: ["/api/dynamic-sitemap"],
@@ -37,53 +38,39 @@ export default defineNuxtConfig({
 	vite: {
 		optimizeDeps: {
 			include: [
+				"@microsoft/fetch-event-source",
+				"@tanstack/vue-query",
+				"@tanstack/vue-query-devtools",
+				"@unhead/schema-org/vue",
 				"@vue/devtools-core",
 				"@vue/devtools-kit",
-				"@tanstack/vue-query",
-				"vue3-toastify",
-				"@microsoft/fetch-event-source",
-				"@tanstack/vue-query-devtools",
 				"axios",
+				"vue3-toastify",
 			],
 		},
 		ssr: {
 			noExternal: ["@tanstack/vue-query"],
 		},
-		plugins: [
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(tailwindcss as any)(),
-
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(svgLoader as any)(),
-			{
-				apply: "build",
-				name: "vite-plugin-quiet-build",
-				configResolved(config) {
-					const originalOnWarn = config.build.rollupOptions.onwarn;
-					config.build.rollupOptions.onwarn = (warning, warn) => {
-						const silentCodes = ["SOURCEMAP_BROKEN", "UNUSED_EXTERNAL_IMPORT"];
-						const silentMessages = [
-							"cache-driver.js",
-							"virtual:#nitro-internal-virtual/storage",
-							"module-preload-polyfill",
-						];
-						if (
-							silentCodes.includes(warning.code || "") ||
-							silentMessages.some((msg) => warning.message?.includes(msg))
-						) {
-							return;
-						}
-						if (originalOnWarn) {
-							originalOnWarn(warning, warn);
-						} else {
-							warn(warning);
-						}
-					};
-				},
-			},
-		],
+		plugins: [...tailwindcss(), svgLoader()],
 		build: {
 			sourcemap: false,
+			rollupOptions: {
+				onwarn(warning, warn) {
+					const silentCodes = ["SOURCEMAP_BROKEN", "UNUSED_EXTERNAL_IMPORT"];
+					const silentMessages = [
+						"cache-driver.js",
+						"virtual:#nitro-internal-virtual/storage",
+						"module-preload-polyfill",
+					];
+					if (
+						silentCodes.includes(warning.code || "") ||
+						silentMessages.some((msg) => warning.message?.includes(msg))
+					) {
+						return;
+					}
+					warn(warning);
+				},
+			},
 		},
 	},
 	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],

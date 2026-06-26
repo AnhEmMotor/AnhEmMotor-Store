@@ -21,7 +21,8 @@ export const useFeedbackStore = defineStore("feedback", {
 				return result.success;
 			} catch {
 				this.statusType = "error";
-				this.statusMessage = "Không thể gửi góp ý lúc này. Vui lòng thử lại sau.";
+				this.statusMessage =
+					"Không thể gửi góp ý lúc này. Vui lòng thử lại sau.";
 				return false;
 			} finally {
 				this.isSubmitting = false;

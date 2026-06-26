@@ -35,4 +35,3 @@ export const useCategoryStore = defineStore("category", () => {
 		getProductCategories,
 	};
 });
-

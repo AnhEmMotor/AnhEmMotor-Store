@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 
-
 export const useContactStore = defineStore("contact", {
 	state: () => ({
 		isSubmitting: false,
@@ -12,7 +11,6 @@ export const useContactStore = defineStore("contact", {
 		async submitContact(formData) {
 			const service = contactService;
 
-			
 			this.isSubmitting = true;
 			this.statusMessage = "";
 
@@ -45,4 +43,3 @@ export const useContactStore = defineStore("contact", {
 		},
 	},
 });
-

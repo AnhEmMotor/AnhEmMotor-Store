@@ -1,21 +1,27 @@
 <template>
 	<div class="brands-section overflow-hidden relative">
-		
-		<div class="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"/>
-		<div class="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"/>
+		<div
+			class="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"
+		/>
+		<div
+			class="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none"
+		/>
 
 		<div class="container mx-auto px-6">
 			<div class="section-header">
 				<span class="subtitle">Đối tác & Dòng xe</span>
-				<h2 class="title text-4xl md:text-5xl lg:text-[42px] font-bold">Thương hiệu đồng hành</h2>
-				<p class="description">AnhEm Motor tự hào là đối tác phân phối các dòng xe máy chính hãng từ những thương hiệu hàng đầu.</p>
+				<h2 class="title text-4xl md:text-5xl lg:text-[42px] font-bold">
+					Thương hiệu đồng hành
+				</h2>
+				<p class="description">
+					AnhEm Motor tự hào là đối tác phân phối các dòng xe máy chính hãng từ
+					những thương hiệu hàng đầu.
+				</p>
 			</div>
 		</div>
 
-		
 		<div class="marquee-wrapper">
 			<div class="marquee-content group">
-				
 				<div
 					v-for="(brand, index) in homeStore.brands"
 					:key="`brand-${index}`"
@@ -32,7 +38,6 @@
 					</div>
 				</div>
 
-				
 				<div
 					v-for="(brand, index) in homeStore.brands"
 					:key="`brand-clone-${index}`"
@@ -95,8 +100,12 @@ const homeStore = useHomeStore();
 }
 
 @keyframes marquee {
-	0% { transform: translateX(0); }
-	100% { transform: translateX(calc(-50% - 1.25rem)); } 
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(calc(-50% - 1.25rem));
+	}
 }
 
 .brand-card {

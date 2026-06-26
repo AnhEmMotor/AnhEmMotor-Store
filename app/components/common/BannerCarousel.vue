@@ -8,7 +8,7 @@ const props = defineProps({
 	},
 	defaultBg: {
 		type: String,
-		default: "/assets/image/index/index-banner-bg.png",
+		default: "/assets/image/index/index-banner-bg.webp",
 	},
 });
 

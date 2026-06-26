@@ -4,7 +4,7 @@ import { usePromotionStore } from "@/stores/promotion.store";
 const route = useRoute();
 const promotionStore = usePromotionStore();
 
-const { data: promotion } = await useAsyncData(
+const { data: promotion, pending: _isLoading } = useAsyncData(
 	`promotion-detail-${route.params.slug}`,
 	() => promotionStore.fetchPromotionBySlug(route.params.slug),
 	{

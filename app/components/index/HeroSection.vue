@@ -21,48 +21,52 @@ let bannerTimer = null;
 const fallbackBanners = [
 	{
 		id: "fb1",
-		desktopImageUrl: "/assets/image/index/banner1.png",
-		mobileImageUrl: "/assets/image/index/banner1.png",
+		desktopImageUrl: "/assets/image/index/banner1.webp",
+		mobileImageUrl: "/assets/image/index/banner1.webp",
 		title: "Showroom Sang Trọng",
-		description: "Trải nghiệm không gian trưng bày xe phân khối lớn hiện đại và đẳng cấp nhất khu vực.",
+		description:
+			"Trải nghiệm không gian trưng bày xe phân khối lớn hiện đại và đẳng cấp nhất khu vực.",
 		ctaLink: "/products",
-		ctaLabel: "Khám phá ngay"
+		ctaLabel: "Khám phá ngay",
 	},
 	{
 		id: "fb2",
-		desktopImageUrl: "/assets/image/index/banner2.png",
-		mobileImageUrl: "/assets/image/index/banner2.png",
+		desktopImageUrl: "/assets/image/index/banner2.webp",
+		mobileImageUrl: "/assets/image/index/banner2.webp",
 		title: "Dịch Vụ Chuyên Nghiệp",
-		description: "Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, chăm sóc xế yêu của bạn tốt nhất.",
+		description:
+			"Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, chăm sóc xế yêu của bạn tốt nhất.",
 		ctaLink: "/support",
-		ctaLabel: "Đặt lịch ngay"
+		ctaLabel: "Đặt lịch ngay",
 	},
 	{
 		id: "fb3",
-		desktopImageUrl: "/assets/image/index/banner3.png",
-		mobileImageUrl: "/assets/image/index/banner3.png",
+		desktopImageUrl: "/assets/image/index/banner3.webp",
+		mobileImageUrl: "/assets/image/index/banner3.webp",
 		title: "Phụ Tùng Chính Hãng",
-		description: "Cung cấp đầy đủ các loại phụ tùng, đồ chơi xe máy chính hãng từ các thương hiệu hàng đầu thế giới.",
+		description:
+			"Cung cấp đầy đủ các loại phụ tùng, đồ chơi xe máy chính hãng từ các thương hiệu hàng đầu thế giới.",
 		ctaLink: "/products",
-		ctaLabel: "Mua ngay"
+		ctaLabel: "Mua ngay",
 	},
 	{
 		id: "fb4",
-		desktopImageUrl: "/assets/image/index/banner4.png",
-		mobileImageUrl: "/assets/image/index/banner4.png",
+		desktopImageUrl: "/assets/image/index/banner4.webp",
+		mobileImageUrl: "/assets/image/index/banner4.webp",
 		title: "Ưu Đãi Ngập Tràn",
-		description: "Hỗ trợ trả góp 0%, duyệt hồ sơ nhanh chóng và nhiều quà tặng hấp dẫn khi mua xe mới.",
+		description:
+			"Hỗ trợ trả góp 0%, duyệt hồ sơ nhanh chóng và nhiều quà tặng hấp dẫn khi mua xe mới.",
 		ctaLink: "/promotion",
-		ctaLabel: "Xem ưu đãi"
+		ctaLabel: "Xem ưu đãi",
 	},
 	{
 		id: "fb5",
-		desktopImageUrl: "/assets/image/index/banner5.png",
-		mobileImageUrl: "/assets/image/index/banner5.png",
+		desktopImageUrl: "/assets/image/index/banner5.webp",
+		mobileImageUrl: "/assets/image/index/banner5.webp",
 		title: "AnhEm Motor",
 		description: "Hệ thống cửa hàng xe máy uy tín, phục vụ tận tâm 24/7.",
 		ctaLink: "/about",
-		ctaLabel: "Tìm hiểu thêm"
+		ctaLabel: "Tìm hiểu thêm",
 	},
 ];
 
@@ -80,14 +84,17 @@ const activeBanner = computed(() => {
 const nextBanner = () => {
 	if (banners.value.length <= 1) return;
 	slideDirection.value = "next";
-	currentBannerIndex.value = (currentBannerIndex.value + 1) % banners.value.length;
+	currentBannerIndex.value =
+		(currentBannerIndex.value + 1) % banners.value.length;
 	resetTimer();
 };
 
 const prevBanner = () => {
 	if (banners.value.length <= 1) return;
 	slideDirection.value = "prev";
-	currentBannerIndex.value = (currentBannerIndex.value - 1 + banners.value.length) % banners.value.length;
+	currentBannerIndex.value =
+		(currentBannerIndex.value - 1 + banners.value.length) %
+		banners.value.length;
 	resetTimer();
 };
 
@@ -145,9 +152,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<section class="relative min-h-[520px] md:min-h-[620px] flex items-center overflow-hidden">
-		
-		<TransitionGroup :name="slideDirection === 'next' ? 'slide-next' : 'slide-prev'">
+	<section
+		class="relative min-h-[520px] md:min-h-[620px] flex items-center overflow-hidden"
+	>
+		<TransitionGroup
+			:name="slideDirection === 'next' ? 'slide-next' : 'slide-prev'"
+		>
 			<div
 				v-for="(banner, index) in banners"
 				v-show="index === currentBannerIndex"
@@ -155,30 +165,53 @@ onUnmounted(() => {
 				class="absolute inset-0 transition-transform duration-[10000ms] scale-110 active:scale-100 animate-ken-burns"
 			>
 				<picture>
-					<source media="(max-width: 767px)" :srcset="banner.mobileImageUrl || '/assets/image/index/index-banner-bg.png'">
-					<img :src="banner.desktopImageUrl || '/assets/image/index/index-banner-bg.png'" alt="Banner" class="w-full h-full object-cover">
+					<source
+						media="(max-width: 767px)"
+						:srcset="
+							banner.mobileImageUrl || '/assets/image/index/index-banner-bg.webp'
+						"
+					>
+					<img
+						:src="
+							banner.desktopImageUrl ||
+							'/assets/image/index/index-banner-bg.webp'
+						"
+						alt="Banner"
+						class="w-full h-full object-cover"
+					>
 				</picture>
-				<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+				<div
+					class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"
+				/>
 			</div>
 		</TransitionGroup>
 
-		
-		<div
-			v-if="banners.length === 0"
-			class="absolute inset-0"
-		>
+		<div v-if="banners.length === 0" class="absolute inset-0">
 			<picture>
-				<source media="(max-width: 767px)" srcset="/assets/image/index/index-banner-bg.png">
-				<img src="/assets/image/index/index-banner-bg.png" alt="Banner" class="w-full h-full object-cover">
+				<source
+					media="(max-width: 767px)"
+					srcset="/assets/image/index/index-banner-bg.webp"
+				>
+				<img
+					src="/assets/image/index/index-banner-bg.webp"
+					alt="Banner"
+					class="w-full h-full object-cover"
+				>
 			</picture>
-			<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+			<div
+				class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"
+			/>
 		</div>
 
 		<div class="relative container mx-auto px-6 md:px-12 lg:px-20 z-10">
 			<div class="max-w-4xl text-white space-y-8">
 				<Transition name="slide-up" mode="out-in">
 					<div :key="currentBannerIndex" class="space-y-4">
-						<h2 class="text-primary font-bold tracking-widest uppercase text-sm md:text-base">ANHEM MOTOR</h2>
+						<h2
+							class="text-primary font-bold tracking-widest uppercase text-sm md:text-base"
+						>
+							ANHEM MOTOR
+						</h2>
 						<h1
 							class="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-tight drop-shadow-xl"
 						>
@@ -187,7 +220,9 @@ onUnmounted(() => {
 							</template>
 							<template v-else>
 								Hệ thống xe máy & <br >
-								<span class="text-white/90">Dịch vụ bảo dưỡng chuyên nghiệp</span>
+								<span class="text-white/90"
+									>Dịch vụ bảo dưỡng chuyên nghiệp</span
+								>
 							</template>
 						</h1>
 					</div>
@@ -204,15 +239,24 @@ onUnmounted(() => {
 						<template v-else>
 							<div class="flex flex-col gap-2">
 								<div class="flex items-center gap-3">
-									<Icon name="ph:check-circle-fill" class="text-primary text-xl" />
+									<Icon
+										name="ph:check-circle-fill"
+										class="text-primary text-xl"
+									/>
 									<span>Cam kết xe chính hãng, giá tốt nhất khu vực</span>
 								</div>
 								<div class="flex items-center gap-3">
-									<Icon name="ph:check-circle-fill" class="text-primary text-xl" />
+									<Icon
+										name="ph:check-circle-fill"
+										class="text-primary text-xl"
+									/>
 									<span>Hỗ trợ trả góp 0% lãi suất, duyệt hồ sơ 15 phút</span>
 								</div>
 								<div class="flex items-center gap-3">
-									<Icon name="ph:check-circle-fill" class="text-primary text-xl" />
+									<Icon
+										name="ph:check-circle-fill"
+										class="text-primary text-xl"
+									/>
 									<span>Dịch vụ bảo dưỡng, cứu hộ 24/7 tận nơi</span>
 								</div>
 							</div>
@@ -242,8 +286,10 @@ onUnmounted(() => {
 			</div>
 		</div>
 
-		
-		<div v-if="banners.length > 1" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20">
+		<div
+			v-if="banners.length > 1"
+			class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20"
+		>
 			<button
 				v-for="(_, index) in banners"
 				:key="index"
@@ -262,24 +308,31 @@ onUnmounted(() => {
 			</button>
 		</div>
 
-		
-		<div v-if="banners.length > 1" class="hidden md:flex absolute inset-y-0 left-4 right-4 items-center justify-between pointer-events-none z-20">
+		<div
+			v-if="banners.length > 1"
+			class="hidden md:flex absolute inset-y-0 left-4 right-4 items-center justify-between pointer-events-none z-20"
+		>
 			<button
 				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
 				@click="prevBanner"
 			>
-				<Icon name="ph:caret-left-bold" class="text-xl transition-transform group-hover:-translate-x-0.5" />
+				<Icon
+					name="ph:caret-left-bold"
+					class="text-xl transition-transform group-hover:-translate-x-0.5"
+				/>
 			</button>
 			<button
 				class="w-12 h-12 flex items-center justify-center rounded-full bg-black/10 hover:bg-white text-white hover:text-black border border-white/10 backdrop-blur-md transition-all pointer-events-auto group"
 				@click="nextBanner"
 			>
-				<Icon name="ph:caret-right-bold" class="text-xl transition-transform group-hover:translate-x-0.5" />
+				<Icon
+					name="ph:caret-right-bold"
+					class="text-xl transition-transform group-hover:translate-x-0.5"
+				/>
 			</button>
 		</div>
 	</section>
 </template>
-
 
 <style scoped>
 @keyframes blink {
