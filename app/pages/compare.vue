@@ -205,7 +205,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 											:src="item.currentVariant.colors[0]?.image"
 											:alt="item.product.name"
 											class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
-										/>
+										>
 									</div>
 									<div class="space-y-1">
 										<p

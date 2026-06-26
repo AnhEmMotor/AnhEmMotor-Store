@@ -1,5 +1,4 @@
 <template>
-	<<<<<<< HEAD
 	<header
 		class="fixed top-0 w-full z-1000 bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
 		:class="[isScrolled ? 'shadow-lg' : '']"
@@ -108,7 +107,7 @@
 							src="/assets/image/logo.webp"
 							alt="Logo"
 							class="w-full h-full object-cover rounded-full"
-						/>
+						>
 					</div>
 
 					<!-- Text Branding (Always visible on mobile now) -->
@@ -286,7 +285,7 @@
 									placeholder="Tìm mẫu xe, phụ tùng..."
 									class="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl pl-11 pr-4 text-xs font-bold focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 transition-all outline-none"
 									autofocus
-								/>
+								>
 							</form>
 						</div>
 					</div>
@@ -324,7 +323,7 @@
 											:src="authStore.user.avatarUrl"
 											alt="Avatar"
 											class="w-full h-full object-cover"
-										/>
+										>
 										<Icon
 											v-else
 											name="ph:user-fill"
@@ -414,7 +413,7 @@
 									:src="authStore.user.avatarUrl"
 									alt="Avatar"
 									class="w-full h-full object-cover"
-								/>
+								>
 								<div
 									v-else
 									class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400"
@@ -544,7 +543,6 @@
 			</QuickActionModal>
 		</ClientOnly>
 	</header>
-	=======
 	<header
 		class="fixed top-0 w-full z-1000 bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
 		:class="[isScrolled ? 'shadow-lg' : '']"
@@ -653,7 +651,7 @@
 							src="/assets/image/logo.webp"
 							alt="Logo"
 							class="w-full h-full object-cover rounded-full"
-						/>
+						>
 					</div>
 
 					<!-- Text Branding (Always visible on mobile now) -->
@@ -831,7 +829,7 @@
 									placeholder="Tìm mẫu xe, phụ tùng..."
 									class="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl pl-11 pr-4 text-xs font-bold focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 transition-all outline-none"
 									autofocus
-								/>
+								>
 							</form>
 						</div>
 					</div>
@@ -869,7 +867,7 @@
 											:src="authStore.user.avatarUrl"
 											alt="Avatar"
 											class="w-full h-full object-cover"
-										/>
+										>
 										<Icon
 											v-else
 											name="ph:user-fill"
@@ -947,7 +945,6 @@
 			/>
 		</ClientOnly>
 	</header>
-	>>>>>>> main
 </template>
 
 <script setup>

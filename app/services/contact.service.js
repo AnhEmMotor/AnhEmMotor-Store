@@ -1,4 +1,3 @@
-import { IContactRepository } from "@/core/domain/repositories/contact.repository.interface";
 
 /**
  * Factory function to create contact service with dependency injection

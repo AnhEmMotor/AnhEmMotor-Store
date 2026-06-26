@@ -16,7 +16,7 @@ const scrollToOffers = () => {
 				src="https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?q=80&w=1920"
 				class="w-full h-full object-cover opacity-40 scale-105"
 				alt="AnhEm Motor Promotion"
-			/>
+			>
 			<div
 				class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/90 to-transparent"
 			/>
@@ -40,11 +40,11 @@ const scrollToOffers = () => {
 					<h1
 						class="text-3xl md:text-6xl lg:text-7xl font-black text-white mb-6 md:mb-8 leading-[1.1] tracking-tight uppercase"
 					>
-						TỔNG HỢP <br />
+						TỔNG HỢP <br >
 						<span
 							class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600"
 							>KHUYẾN MÃI</span
-						><br />
+						><br >
 						CỰC KHỦNG
 					</h1>
 
@@ -92,7 +92,7 @@ const scrollToOffers = () => {
 							src="/hero_honda_sh_2025_spotlight_1778828554894.png"
 							class="w-full aspect-[4/5] object-cover scale-105 group-hover:scale-110 transition-transform duration-1000"
 							alt="Honda SH 2025"
-						/>
+						>
 
 						<div
 							class="absolute top-10 right-10 w-24 h-24 bg-red-600 rounded-full flex flex-col items-center justify-center text-white shadow-2xl rotate-12 group-hover:rotate-0 transition-transform duration-700 border-4 border-white/20"

@@ -116,7 +116,7 @@ const handlePayment = async () => {
 							@error="
 								(e) => (e.target.src = '/assets/image/placeholder-product.webp')
 							"
-						/>
+						>
 					</div>
 					<div class="flex-1 min-w-0 flex flex-col justify-center">
 						<h4 class="font-bold text-gray-900 truncate">

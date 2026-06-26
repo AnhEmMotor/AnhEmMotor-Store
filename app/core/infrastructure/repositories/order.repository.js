@@ -1,4 +1,4 @@
-import { ORDER_ENDPOINTS } from "@/constants/endpoints/order.endpoint";
+import { ORDER_ENDPOINTS } from "../endpoints/order.endpoint";
 
 export const orderRepository = {
 	async createOrder(orderData) {

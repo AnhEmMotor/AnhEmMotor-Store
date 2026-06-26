@@ -17,7 +17,7 @@ defineProps({
 				:src="news.image"
 				:alt="news.title"
 				class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
-			/>
+			>
 
 			<div class="absolute top-4 left-4 flex flex-col gap-2">
 				<div class="flex items-center gap-2">

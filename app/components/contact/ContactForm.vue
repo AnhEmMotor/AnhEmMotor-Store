@@ -44,13 +44,11 @@
 							required
 							placeholder="Nguyễn Văn A"
 							class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
-						/>
+						>
 					</div>
 				</div>
 
-				<<<<<<< HEAD
 				<!-- Phone Number -->
-				======= >>>>>>> main
 				<div class="space-y-2">
 					<label
 						class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
@@ -71,14 +69,12 @@
 							required
 							placeholder="09xxx"
 							class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
-						/>
+						>
 					</div>
 				</div>
 			</div>
 
-			<<<<<<< HEAD
 			<!-- Email -->
-			======= >>>>>>> main
 			<div class="space-y-2">
 				<label
 					class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
@@ -99,13 +95,11 @@
 						required
 						placeholder="example@gmail.com"
 						class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all font-medium text-sm"
-					/>
+					>
 				</div>
 			</div>
 
-			<<<<<<< HEAD
 			<!-- Subject -->
-			======= >>>>>>> main
 			<div class="space-y-2">
 				<label
 					class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
@@ -138,9 +132,7 @@
 				</div>
 			</div>
 
-			<<<<<<< HEAD
 			<!-- Message -->
-			======= >>>>>>> main
 			<div class="space-y-2">
 				<label
 					class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
@@ -155,9 +147,7 @@
 				/>
 			</div>
 
-			<<<<<<< HEAD
 			<!-- Status Message -->
-			======= >>>>>>> main
 			<Transition name="fade">
 				<div
 					v-if="statusMessage"
@@ -180,9 +170,7 @@
 				</div>
 			</Transition>
 
-			<<<<<<< HEAD
 			<!-- Submit Button -->
-			======= >>>>>>> main
 			<button
 				type="submit"
 				:disabled="isSubmitting"

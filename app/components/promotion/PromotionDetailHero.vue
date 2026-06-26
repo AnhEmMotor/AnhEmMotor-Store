@@ -30,7 +30,7 @@ onMounted(() => {
 				:src="promotion.image"
 				class="w-full h-full object-cover opacity-40 scale-105"
 				:alt="promotion.title"
-			/>
+			>
 			<div
 				class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/60 to-transparent"
 			/>

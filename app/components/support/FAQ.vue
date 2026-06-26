@@ -25,7 +25,7 @@
 						type="text"
 						placeholder="Tìm kiếm câu hỏi của bạn..."
 						class="w-full pl-14 pr-8 py-5 bg-white border border-gray-100 rounded-xl text-sm font-bold shadow-sm focus:ring-4 focus:ring-red-600/5 focus:border-red-600 outline-none transition-all"
-					/>
+					>
 				</div>
 
 				<div class="flex flex-wrap justify-center gap-2">

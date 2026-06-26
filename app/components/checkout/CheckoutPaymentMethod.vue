@@ -81,7 +81,7 @@ onMounted(() => {
 						:src="method.iconImage"
 						:alt="method.name"
 						class="w-full h-full object-contain"
-					/>
+					>
 					<span v-else class="text-2xl">{{ method.icon }}</span>
 				</div>
 				<div class="flex-1">

@@ -34,7 +34,7 @@ const paginatedTestimonials = computed(() => {
 					<h2
 						class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight"
 					>
-						Vì sao khách hàng chọn <br />
+						Vì sao khách hàng chọn <br >
 						<span class="text-primary">AnhEm Motor</span>
 					</h2>
 					<p class="text-slate-500 font-medium text-lg leading-relaxed">

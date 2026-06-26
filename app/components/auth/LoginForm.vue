@@ -63,7 +63,7 @@ async function handleLogin() {
 				placeholder="example@email.com"
 				class="custom-input"
 				required
-			/>
+			>
 		</div>
 
 		<div class="space-y-2 animate-fade-in-up" style="animation-delay: 200ms">
@@ -85,7 +85,7 @@ async function handleLogin() {
 					placeholder="••••••••"
 					class="custom-input"
 					required
-				/>
+				>
 				<button
 					type="button"
 					class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
@@ -112,7 +112,7 @@ async function handleLogin() {
 				v-model="rememberMe"
 				type="checkbox"
 				class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
-			/>
+			>
 			<label for="remember" class="ml-2 text-sm font-bold text-gray-600"
 				>Ghi nhớ đăng nhập</label
 			>

@@ -8,7 +8,7 @@ export const ICategoryRepository = {
    * @param {Object} params - Query parameters
    * @returns {Promise<any>}
    */
-  getCategories: async (params) => {
+  getCategories: async () => {
     throw new Error('ICategoryRepository.getCategories not implemented');
   }
 };

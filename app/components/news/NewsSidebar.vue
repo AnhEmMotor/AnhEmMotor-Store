@@ -11,7 +11,7 @@ defineProps({
 });
 
 // News categories for the sidebar
-const newsCategories = [
+const _newsCategories = [
 	{ name: "ĐÁNH GIÁ XE", slug: "danh-gia-xe", count: 15 },
 	{ name: "TIN KHUYẾN MÃI", slug: "tin-khuyen-mai", count: 8 },
 	{ name: "KINH NGHIỆM LÁI XE", slug: "kinh-nghiem-lai-xe", count: 12 },
@@ -46,7 +46,7 @@ const newsCategories = [
 							:src="newsItem.image"
 							:alt="newsItem.title"
 							class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-						/>
+						>
 					</div>
 
 					<div class="flex flex-col justify-between py-1 flex-1">
@@ -109,7 +109,7 @@ const newsCategories = [
 
 				<div class="space-y-2">
 					<h4 class="text-xl font-black uppercase tracking-tighter">
-						Đăng ký nhận <br /><span class="text-red-500 italic"
+						Đăng ký nhận <br ><span class="text-red-500 italic"
 							>ưu đãi sớm</span
 						>
 					</h4>
@@ -125,7 +125,7 @@ const newsCategories = [
 							type="email"
 							placeholder="Email của bạn..."
 							class="w-full px-5 py-3.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-red-600 transition-all font-medium"
-						/>
+						>
 					</div>
 					<button
 						type="submit"

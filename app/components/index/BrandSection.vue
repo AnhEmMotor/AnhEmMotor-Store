@@ -33,7 +33,7 @@
 							:alt="brand.alt"
 							class="brand-logo"
 							loading="lazy"
-						/>
+						>
 						<div class="brand-name">{{ brand.name }}</div>
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 							:alt="brand.alt"
 							class="brand-logo"
 							loading="lazy"
-						/>
+						>
 						<div class="brand-name">{{ brand.name }}</div>
 					</div>
 				</div>

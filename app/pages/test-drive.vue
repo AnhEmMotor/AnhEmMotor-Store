@@ -8,7 +8,7 @@
 					src="/assets/image/anhem_motor_test_drive_banner_1778898900918.png"
 					alt="Showroom AnhEm Motor"
 					class="w-full h-full object-cover brightness-50 scale-105"
-				/>
+				>
 				<div
 					class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/40 to-transparent"
 				/>
@@ -28,7 +28,7 @@
 					<h1
 						class="text-[32px] md:text-[50px] lg:text-[58px] font-extrabold text-white uppercase italic leading-[1.1] tracking-tight reveal-up"
 					>
-						ĐẶT LỊCH<br /><span
+						ĐẶT LỊCH<br ><span
 							class="text-primary drop-shadow-[0_0_20px_rgba(227,24,55,0.5)]"
 							>TRẢI NGHIỆM</span
 						>
@@ -65,7 +65,7 @@
 										"
 										:alt="selectedVehicle.name"
 										class="w-full max-h-48 object-contain drop-shadow-lg transition-all duration-700 group-hover:scale-105"
-									/>
+									>
 								</div>
 								<div class="space-y-2 pt-2">
 									<div class="flex items-end justify-between">
@@ -198,21 +198,21 @@
 												required
 												placeholder="Họ và tên *"
 												class="premium-input"
-											/>
+											>
 											<input
 												v-model="form.phone"
 												type="tel"
 												required
 												placeholder="Số điện thoại *"
 												class="premium-input"
-											/>
+											>
 											<input
 												v-model="form.email"
 												type="email"
 												required
 												placeholder="Địa chỉ Email *"
 												class="premium-input"
-											/>
+											>
 											<div
 												class="flex items-center gap-6 px-4 bg-white border border-[#ECECEC] rounded-lg"
 											>
@@ -228,7 +228,7 @@
 															type="radio"
 															value="Nam"
 															class="w-4 h-4 accent-primary cursor-pointer"
-														/>
+														>
 														<span
 															class="text-[13px] font-bold text-gray-900 group-hover:text-primary transition-colors"
 															>Nam</span
@@ -242,7 +242,7 @@
 															type="radio"
 															value="Nữ"
 															class="w-4 h-4 accent-primary cursor-pointer"
-														/>
+														>
 														<span
 															class="text-[13px] font-bold text-gray-900 group-hover:text-primary transition-colors"
 															>Nữ</span
@@ -292,7 +292,7 @@
 													required
 													:min="minDate"
 													class="premium-input text-[12px]"
-												/>
+												>
 												<select
 													v-model="form.session"
 													class="premium-input text-[12px]"
@@ -325,7 +325,7 @@
 												type="checkbox"
 												required
 												class="mt-0.5"
-											/>
+											>
 											<span
 												class="text-[11px] font-medium text-gray-500 leading-tight"
 												>Tôi đồng ý với các điều khoản đăng ký lái thử.</span

@@ -8,7 +8,7 @@ export const IProductRepository = {
    * @param {Object} params - Query parameters
    * @returns {Promise<{items: any[], totalCount: number, totalPages: number}>}
    */
-  getProducts: async (params) => {
+  getProducts: async () => {
     throw new Error('IProductRepository.getProducts not implemented');
   },
 
@@ -17,7 +17,7 @@ export const IProductRepository = {
    * @param {string} slug
    * @returns {Promise<any>}
    */
-  getProductDetail: async (slug) => {
+  getProductDetail: async () => {
     throw new Error('IProductRepository.getProductDetail not implemented');
   },
 

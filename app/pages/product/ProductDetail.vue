@@ -381,7 +381,7 @@ const bookTestDrive = () => {
 									:alt="detail.product.name"
 									class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
 									loading="eager"
-								/>
+								>
 							</div>
 							<!-- Reflection -->
 							<div
@@ -408,7 +408,7 @@ const bookTestDrive = () => {
 									:src="photo"
 									class="w-full h-full object-cover"
 									loading="lazy"
-								/>
+								>
 							</button>
 						</div>
 
@@ -449,7 +449,7 @@ const bookTestDrive = () => {
 									<div
 										class="text-[8px] font-black text-gray-900 uppercase leading-tight tracking-widest"
 									>
-										{{ trust.t }}<br /><span class="text-gray-400">{{
+										{{ trust.t }}<br ><span class="text-gray-400">{{
 											trust.s
 										}}</span>
 									</div>
@@ -721,7 +721,7 @@ const bookTestDrive = () => {
 									:alt="hl.title"
 									class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
 									loading="lazy"
-								/>
+								>
 							</div>
 						</div>
 						<div
@@ -1043,7 +1043,7 @@ const bookTestDrive = () => {
 							<h2
 								class="text-5xl lg:text-7xl font-black text-white leading-[1.1] uppercase italic tracking-tight"
 							>
-								Đừng bỏ lỡ<br /><span class="text-primary drop-shadow-lg"
+								Đừng bỏ lỡ<br ><span class="text-primary drop-shadow-lg"
 									>Chiến mã</span
 								>
 							</h2>
@@ -1098,7 +1098,7 @@ const bookTestDrive = () => {
 								:src="mainImage"
 								:alt="detail.product.name"
 								class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
-							/>
+							>
 							<!-- Reflection Shadow -->
 							<div
 								class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[80%] h-12 bg-black/40 blur-2xl rounded-full"

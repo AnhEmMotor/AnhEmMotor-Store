@@ -16,4 +16,4 @@ const layoutService = {
 	},
 };
 
-export default createLayoutService;
+export default layoutService;

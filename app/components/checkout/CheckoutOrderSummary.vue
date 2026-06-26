@@ -154,7 +154,7 @@ async function handlePlaceOrder() {
 										(e) =>
 											(e.target.src = '/assets/image/placeholder-product.webp')
 									"
-								/>
+								>
 							</div>
 							<div class="flex-1 min-w-0">
 								<div class="flex justify-between items-start">

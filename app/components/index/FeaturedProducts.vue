@@ -42,7 +42,6 @@ const handleViewDetail = (product) => {
 </script>
 
 <template>
-	<<<<<<< HEAD
 	<section
 		id="featured-products"
 		class="py-12 md:py-24 bg-white relative overflow-hidden"
@@ -127,7 +126,6 @@ const handleViewDetail = (product) => {
 			</ClientOnly>
 		</div>
 	</section>
-	=======
 	<section
 		id="featured-products"
 		class="py-12 md:py-24 bg-white relative overflow-hidden"
@@ -212,7 +210,6 @@ const handleViewDetail = (product) => {
 			</ClientOnly>
 		</div>
 	</section>
-	>>>>>>> main
 </template>
 
 <style scoped>

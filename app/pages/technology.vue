@@ -99,7 +99,7 @@ onMounted(async () => {
 				<h2
 					class="text-4xl md:text-5xl font-black mb-8 uppercase italic tracking-tighter leading-tight"
 				>
-					GIA NHẬP CỘNG ĐỒNG <br />
+					GIA NHẬP CỘNG ĐỒNG <br >
 					<span
 						class="text-red-600 underline decoration-white/20 underline-offset-8"
 						>ANHEM MOTOR</span

@@ -15,7 +15,7 @@
 						<h2
 							class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight uppercase"
 						>
-							An toàn <br />
+							An toàn <br >
 							<span class="text-white">Tuyệt đối</span>
 						</h2>
 					</div>
@@ -54,7 +54,7 @@
 							src="/images/technology/safety_action.png"
 							alt="Safety in Action"
 							class="w-full transform group-hover:scale-105 group-hover:-rotate-1 transition-all duration-1000"
-						/>
+						>
 
 						<div
 							class="absolute top-0 left-0 w-full h-[2px] bg-red-600 shadow-[0_0_15px_rgba(220,38,38,1)] animate-scanner opacity-0 group-hover:opacity-100"

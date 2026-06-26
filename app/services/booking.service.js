@@ -1,7 +1,6 @@
 /**
  * Application Layer - Booking Service
  */
-import { IBookingRepository } from "@/core/domain/repositories/booking.repository.interface";
 
 /**
  * Factory function to create booking service with dependency injection
@@ -10,8 +9,7 @@ import { IBookingRepository } from "@/core/domain/repositories/booking.repositor
  */
 export const createBookingService = (repository) => ({
 	async createBooking(bookingData) {
-		try {
-			return await repository.createBooking({
+		return await repository.createBooking({
 				fullName: bookingData.fullName,
 				email: bookingData.email || "",
 				phoneNumber: bookingData.phoneNumber,
@@ -21,9 +19,6 @@ export const createBookingService = (repository) => ({
 				location: bookingData.location || "Cửa hàng",
 				bookingType: bookingData.bookingType || "TestDrive",
 			});
-		} catch (error) {
-			throw error;
-		}
 	},
 });
 

@@ -28,4 +28,4 @@ export const orderService = {
 	},
 };
 
-export default createOrderService;
+export default orderService;

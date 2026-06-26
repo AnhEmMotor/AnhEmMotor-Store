@@ -95,7 +95,6 @@ const formatPrice = (price) => {
 </script>
 
 <template>
-	<<<<<<< HEAD
 	<div class="space-y-5">
 		<!-- Header -->
 		<div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
@@ -253,7 +252,6 @@ const formatPrice = (price) => {
 			</button>
 		</div>
 	</div>
-	=======
 	<div class="space-y-5">
 		<div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
 			<div class="flex items-center justify-between mb-2">
@@ -406,5 +404,4 @@ const formatPrice = (price) => {
 			</button>
 		</div>
 	</div>
-	>>>>>>> main
 </template>

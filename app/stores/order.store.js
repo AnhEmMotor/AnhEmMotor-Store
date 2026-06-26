@@ -6,7 +6,6 @@ import orderService from "@/services/order.service";
 import orderMapper from "@/mappers/order.mapper";
 import { useAuthStore } from "@/stores/auth.store";
 
-const orderService = createOrderService(orderRepository);
 
 export const useOrderStore = defineStore("order", () => {
 	const service = orderService;

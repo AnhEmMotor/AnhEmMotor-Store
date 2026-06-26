@@ -35,13 +35,3 @@ export class AboutContent {
 		};
 	}
 }
-
-/**
- * Entity for Store Location
- */
-export class StoreLocation {
-	constructor(data = {}) {
-		this.title = data.title || "";
-		this.address = data.address || "";
-	}
-}

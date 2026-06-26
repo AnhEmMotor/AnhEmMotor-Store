@@ -120,7 +120,7 @@ const scrollToTop = () => {
 							type="text"
 							placeholder="Nhập nội dung cần hỗ trợ..."
 							class="w-full h-10 bg-gray-100/50 border border-transparent rounded-xl pl-4 pr-11 text-[11px] sm:text-xs font-bold focus:bg-white focus:border-primary/20 focus:ring-3 focus:ring-primary/5 transition-all outline-none"
-						/>
+						>
 						<button
 							class="floating-icon-button absolute right-2 w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
 						>

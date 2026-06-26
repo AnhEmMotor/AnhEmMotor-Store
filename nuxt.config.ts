@@ -93,7 +93,7 @@ export default defineNuxtConfig({
 			trace: false,
 		},
 		rollupConfig: {
-			onwarn(warning: any, warn: any) {
+			onwarn(warning: { code?: string, message?: string }, warn: (warning: unknown) => void) {
 				const silentCodes = ["CIRCULAR_DEPENDENCY"];
 				const silentMessages = [
 					"cache-driver.js",

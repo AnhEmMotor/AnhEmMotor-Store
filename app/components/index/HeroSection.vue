@@ -170,7 +170,7 @@ onUnmounted(() => {
 						:srcset="
 							banner.mobileImageUrl || '/assets/image/index/index-banner-bg.png'
 						"
-					/>
+					>
 					<img
 						:src="
 							banner.desktopImageUrl ||
@@ -178,7 +178,7 @@ onUnmounted(() => {
 						"
 						alt="Banner"
 						class="w-full h-full object-cover"
-					/>
+					>
 				</picture>
 				<div
 					class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"
@@ -191,12 +191,12 @@ onUnmounted(() => {
 				<source
 					media="(max-width: 767px)"
 					srcset="/assets/image/index/index-banner-bg.png"
-				/>
+				>
 				<img
 					src="/assets/image/index/index-banner-bg.png"
 					alt="Banner"
 					class="w-full h-full object-cover"
-				/>
+				>
 			</picture>
 			<div
 				class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"
@@ -219,7 +219,7 @@ onUnmounted(() => {
 								{{ activeBanner.title }}
 							</template>
 							<template v-else>
-								Hệ thống xe máy & <br />
+								Hệ thống xe máy & <br >
 								<span class="text-white/90"
 									>Dịch vụ bảo dưỡng chuyên nghiệp</span
 								>

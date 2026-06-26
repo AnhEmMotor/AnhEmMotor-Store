@@ -20,7 +20,7 @@
 						<h2
 							class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] italic uppercase tracking-tighter"
 						>
-							Quy trình <br />
+							Quy trình <br >
 							<span
 								class="text-primary underline decoration-black/5 underline-offset-8"
 								>Ứng tuyển</span
@@ -119,7 +119,7 @@
 											placeholder="Nguyễn Văn A"
 											class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
 											required
-										/>
+										>
 									</div>
 									<div class="space-y-3">
 										<label
@@ -132,7 +132,7 @@
 											placeholder="09xx xxx xxx"
 											class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
 											required
-										/>
+										>
 									</div>
 								</div>
 
@@ -147,7 +147,7 @@
 											type="email"
 											placeholder="email@example.com"
 											class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
-										/>
+										>
 									</div>
 									<div class="space-y-3 relative">
 										<label
@@ -210,7 +210,7 @@
 											type="file"
 											class="hidden"
 											@change="handleFileChange"
-										/>
+										>
 									</div>
 								</div>
 

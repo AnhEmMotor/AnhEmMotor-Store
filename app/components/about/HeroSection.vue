@@ -14,7 +14,7 @@ defineProps({
 				src="/images/about/hero-showroom.png"
 				alt="AnhEm Motor Showroom"
 				class="w-full h-full object-cover scale-110 animate-ken-burns"
-			/>
+			>
 			<div class="absolute inset-0 bg-black/60" />
 		</div>
 

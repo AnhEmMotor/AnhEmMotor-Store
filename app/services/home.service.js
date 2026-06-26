@@ -31,21 +31,6 @@ const homeService = {
 		}
 	},
 
-	async getFeaturedProducts() {
-		try {
-			return await repository.getFeaturedProducts();
-		} catch (error) {
-			return [];
-		}
-	},
-
-	async getBanners() {
-		try {
-			return await repository.getBanners();
-		} catch (error) {
-			return [];
-		}
-	},
 };
 
-export default createHomeService;
+export default homeService;

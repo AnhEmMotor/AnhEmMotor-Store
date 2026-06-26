@@ -1,37 +1,25 @@
-import { IUserRepository } from "@/core/domain/repositories/user.repository.interface";
 
-export const createUserService = (repository) => ({
+import { userRepository } from '@/core/infrastructure/repositories/user.repository';
+
+export const userService = {
+
 	async getProfile() {
 		try {
-			return await repository.getUserProfile();
-		} catch (error) {
-			return null;
-		}
+			return await userRepository.getUserProfile();
+		} catch { return null; }
 	},
 
 	async updateProfile(profileData) {
-		try {
-			return await repository.updateProfile(profileData);
-		} catch (error) {
-			throw error;
-		}
+		return await userRepository.updateProfile(profileData);
 	},
 
 	async changePassword(passwordData) {
-		try {
-			return await repository.changePassword(passwordData);
-		} catch (error) {
-			throw error;
-		}
+		return await userRepository.changePassword(passwordData);
 	},
 
 	async updateAvatar(avatarData) {
-		try {
-			return await repository.updateAvatar(avatarData);
-		} catch (error) {
-			throw error;
-		}
+		return await userRepository.updateAvatar(avatarData);
 	},
-});
+};
 
 export default userService;

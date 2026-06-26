@@ -101,7 +101,7 @@ const relatedPromotions = computed(() => {
 										:src="bike.image"
 										class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
 										:alt="bike.name"
-									/>
+									>
 									<div
 										class="absolute top-4 right-4 px-4 py-1.5 bg-red-600 text-white text-[9px] font-black uppercase tracking-widest rounded-full"
 									>
@@ -222,7 +222,7 @@ const relatedPromotions = computed(() => {
 									:src="img"
 									class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
 									alt="Gallery image"
-								/>
+								>
 							</div>
 						</div>
 					</section>

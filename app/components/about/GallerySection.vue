@@ -23,7 +23,7 @@
 						src="/images/about/interior.png"
 						alt="Showroom Interior"
 						class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-95 sepia-[0.1]"
-					/>
+					>
 					<div
 						class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8"
 					>
@@ -49,7 +49,7 @@
 						src="/images/about/team.png"
 						alt="Our Team"
 						class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-95"
-					/>
+					>
 					<div
 						class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8"
 					>
@@ -76,7 +76,7 @@
 						src="/images/about/maintenance.png"
 						alt="Maintenance Area"
 						class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-90 sepia-[0.1]"
-					/>
+					>
 					<div
 						class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8"
 					>

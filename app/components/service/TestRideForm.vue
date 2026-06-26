@@ -20,7 +20,7 @@
 						required
 						placeholder="Nguyễn Văn A"
 						class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-500/20 transition-all"
-					/>
+					>
 				</div>
 				<div class="space-y-2">
 					<label
@@ -33,7 +33,7 @@
 						required
 						placeholder="09xx..."
 						class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-500/20 transition-all"
-					/>
+					>
 				</div>
 				<div class="space-y-2">
 					<label
@@ -45,7 +45,7 @@
 						type="email"
 						placeholder="mail@..."
 						class="w-full px-5 py-4 bg-gray-50 border-none rounded-2xl text-xs font-bold focus:ring-2 focus:ring-red-500/20 transition-all"
-					/>
+					>
 				</div>
 			</div>
 
@@ -88,7 +88,7 @@
 						required
 						:min="minDate"
 						class="w-full px-4 py-4 bg-gray-50 border-none rounded-2xl text-[10px] font-black focus:ring-2 focus:ring-red-500/20 transition-all"
-					/>
+					>
 				</div>
 				<div class="space-y-2">
 					<label
@@ -141,7 +141,7 @@
 							type="checkbox"
 							required
 							class="peer appearance-none w-5 h-5 rounded border-2 border-red-300 checked:bg-red-600 checked:border-red-600 transition-all cursor-pointer"
-						/>
+						>
 						<Icon
 							name="fa6-solid:check"
 							class="absolute text-[8px] text-white opacity-0 peer-checked:opacity-100 transition-all pointer-events-none"

@@ -30,4 +30,4 @@ export const productService = {
 	},
 };
 
-export default createProductService;
+export default productService;

@@ -7,7 +7,7 @@
 				src="/img/recruitment/hero.png"
 				alt="Gia nhập AnhEm Motor"
 				class="w-full h-full object-cover opacity-60 scale-105 animate-slow-zoom"
-			/>
+			>
 			<div
 				class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent"
 			/>
@@ -49,7 +49,7 @@
 				<h1
 					class="text-4xl md:text-6xl font-black text-white leading-[0.9] mb-6 animate-fade-in-up delay-100 italic uppercase tracking-tighter"
 				>
-					Gia nhập <br />
+					Gia nhập <br >
 					<span
 						class="text-primary drop-shadow-[0_0_30px_rgba(227,24,55,0.3)] animate-text-shine bg-[linear-gradient(110deg,#e31837,45%,#ff4d6d,55%,#e31837)] bg-[length:200%_100%] bg-clip-text text-transparent"
 						>ANHEM MOTOR</span

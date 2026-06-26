@@ -8,7 +8,7 @@ export const IRecruitmentRepository = {
   getFaqs: async () => {
     throw new Error('IRecruitmentRepository.getFaqs not implemented');
   },
-  submitApplication: async (formData) => {
+  submitApplication: async () => {
     throw new Error('IRecruitmentRepository.submitApplication not implemented');
   }
 };

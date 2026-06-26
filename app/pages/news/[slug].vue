@@ -29,7 +29,7 @@ const filteredLatestNews = computed(() => {
 await Promise.all([suspense(), suspenseLatest(), suspenseRelated()]);
 
 // Fetch related products
-const { data: relatedProducts } = useAsyncData(
+const { data: _relatedProducts } = useAsyncData(
 	`related-products-${route.params.slug}`,
 	async () => {
 		try {
@@ -38,8 +38,8 @@ const { data: relatedProducts } = useAsyncData(
 				isFeatured: true,
 			});
 			return products.items.slice(0, 4);
-		} catch (error) {
-			console.error("Failed to fetch related products:", error);
+		} catch {
+			// Failed to fetch related products
 			return [];
 		}
 	},
@@ -94,7 +94,7 @@ const copyLink = () => {
 						:src="news.image"
 						class="w-full h-full object-cover"
 						:alt="news.title"
-					/>
+					>
 
 					<div class="absolute inset-0 bg-black/40" />
 				</div>
@@ -172,7 +172,7 @@ const copyLink = () => {
 										:src="product.imageUrl"
 										:alt="product.variantName"
 										class="w-20 h-20 object-cover rounded-xl bg-gray-50 group-hover:scale-105 transition-transform"
-									/>
+									>
 									<div>
 										<h4
 											class="font-black text-sm text-gray-950 group-hover:text-red-600 transition-colors line-clamp-2"

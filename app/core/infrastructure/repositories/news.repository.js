@@ -1,4 +1,4 @@
-import { NEWS_ENDPOINTS } from "../../../constants/endpoints/news.endpoint";
+import { NEWS_ENDPOINTS } from "../endpoints/news.endpoint";
 
 export const newsRepository = {
 	async getNewsCategories() {

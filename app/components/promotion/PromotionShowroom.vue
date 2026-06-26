@@ -21,7 +21,7 @@
 						<h2
 							class="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-tight"
 						>
-							Ghé thăm <span class="text-red-600">Showroom</span> <br />
+							Ghé thăm <span class="text-red-600">Showroom</span> <br >
 							Nhận thêm quà tặng
 						</h2>
 
@@ -81,7 +81,7 @@
 							src="/premium_motorcycle_showroom_visit_1778827603878.png"
 							class="w-full h-full object-cover"
 							alt="Showroom AnhEm Motor"
-						/>
+						>
 						<div
 							class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/40 to-transparent"
 						/>

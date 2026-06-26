@@ -14,6 +14,6 @@ export const recruitmentService = {
 	},
 
 	async uploadCv(formData) {
-		return await repository.uploadCv(formData);
+		return await recruitmentRepository.uploadCv(formData);
 	},
 };
