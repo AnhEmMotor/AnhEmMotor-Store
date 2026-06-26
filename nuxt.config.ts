@@ -51,53 +51,32 @@ export default defineNuxtConfig({
 		ssr: {
 			noExternal: ["@tanstack/vue-query"],
 		},
-		plugins: [
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(tailwindcss as any)(),
-
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			(svgLoader as any)(),
-			{
-				apply: "build",
-				name: "vite-plugin-quiet-build",
-				configResolved(config) {
-					const originalOnWarn = config.build.rollupOptions.onwarn;
-					config.build.rollupOptions.onwarn = (warning, warn) => {
-						const silentCodes = ["SOURCEMAP_BROKEN", "UNUSED_EXTERNAL_IMPORT"];
-						const silentMessages = [
-							"cache-driver.js",
-							"virtual:#nitro-internal-virtual/storage",
-							"module-preload-polyfill",
-						];
-						if (
-							silentCodes.includes(warning.code || "") ||
-							silentMessages.some((msg) => warning.message?.includes(msg))
-						) {
-							return;
-						}
-						if (originalOnWarn) {
-							originalOnWarn(warning, warn);
-						} else {
-							warn(warning);
-						}
-					};
-				},
-			},
-		],
+		plugins: [...tailwindcss(), svgLoader()],
 		build: {
 			sourcemap: false,
+			rollupOptions: {
+				onwarn(warning, warn) {
+					const silentCodes = ["SOURCEMAP_BROKEN", "UNUSED_EXTERNAL_IMPORT"];
+					const silentMessages = [
+						"cache-driver.js",
+						"virtual:#nitro-internal-virtual/storage",
+						"module-preload-polyfill",
+					];
+					if (
+						silentCodes.includes(warning.code || "") ||
+						silentMessages.some((msg) => warning.message?.includes(msg))
+					) {
+						return;
+					}
+					warn(warning);
+				},
+			},
 		},
 	},
 	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],
 	nitro: {
-		externals: {
-			trace: false,
-		},
 		rollupConfig: {
-			onwarn(
-				warning: { code?: string; message?: string },
-				warn: (warning: unknown) => void,
-			) {
+			onwarn(warning, warn) {
 				const silentCodes = ["CIRCULAR_DEPENDENCY"];
 				const silentMessages = [
 					"cache-driver.js",
