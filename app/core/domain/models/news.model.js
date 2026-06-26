@@ -1,6 +1,3 @@
-/**
- * Entity for News
- */
 export class News {
 	constructor(data = {}) {
 		this.id = data.id || null;
@@ -17,6 +14,6 @@ export class News {
 	}
 
 	get formattedDate() {
-		return new Date(this.createdAt).toLocaleDateString('vi-VN');
+		return new Date(this.createdAt).toLocaleDateString("vi-VN");
 	}
 }

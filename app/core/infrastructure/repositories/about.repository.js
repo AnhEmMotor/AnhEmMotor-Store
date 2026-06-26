@@ -1,28 +1,30 @@
-/**
- * Infrastructure Layer - About Repository
- * Handles data fetching from external sources (API, Mock, LocalStorage)
- */
 export const aboutRepository = {
-	/**
-	 * Fetches the main content for the about page
-	 */
 	getAboutContent: async () => {
-		// In a real app, this would be an API call:
-		// const response = await $fetch('/api/about');
-		// return response;
-		
 		return {
 			mission: {
 				title: "Sứ Mệnh Của Chúng Tôi",
-				description: "Tại AnhEm Moto, chúng tôi không chỉ đơn thuần là một cửa hàng xe máy – chúng tôi là người bạn đồng hành tin cậy trên mỗi chặng đường. Sứ mệnh của chúng tôi là mang đến cho khách hàng những phương tiện di chuyển an toàn, bền bỉ và phù hợp nhất với nhu cầu cá nhân, đồng thời xây dựng một cộng đồng người yêu xe mạnh mẽ và gắn kết.",
+				description:
+					"Tại AnhEm Moto, chúng tôi không chỉ đơn thuần là một cửa hàng xe máy – chúng tôi là người bạn đồng hành tin cậy trên mỗi chặng đường. Sứ mệnh của chúng tôi là mang đến cho khách hàng những phương tiện di chuyển an toàn, bền bỉ và phù hợp nhất với nhu cầu cá nhân, đồng thời xây dựng một cộng đồng người yêu xe mạnh mẽ và gắn kết.",
 			},
 			services: {
 				title: "Dịch Vụ Tại AnhEm Moto",
 				items: [
-					{ label: "Bán xe mới và xe đã qua sử dụng:", desc: "Đầy đủ giấy tờ, chất lượng kiểm định kỹ càng, giá cạnh tranh." },
-					{ label: "Dịch vụ bảo trì – sửa chữa:", desc: "Đội ngũ kỹ thuật viên chuyên nghiệp, phụ tùng chính hãng, quy trình minh bạch." },
-					{ label: "Thu mua – đổi xe:", desc: "Hỗ trợ định giá nhanh chóng, thủ tục đơn giản, hỗ trợ sang tên." },
-					{ label: "Tư vấn và hỗ trợ trả góp:", desc: "Hợp tác cùng nhiều đơn vị tài chính uy tín, thủ tục dễ dàng, lãi suất ưu đãi." },
+					{
+						label: "Bán xe mới và xe đã qua sử dụng:",
+						desc: "Đầy đủ giấy tờ, chất lượng kiểm định kỹ càng, giá cạnh tranh.",
+					},
+					{
+						label: "Dịch vụ bảo trì – sửa chữa:",
+						desc: "Đội ngũ kỹ thuật viên chuyên nghiệp, phụ tùng chính hãng, quy trình minh bạch.",
+					},
+					{
+						label: "Thu mua – đổi xe:",
+						desc: "Hỗ trợ định giá nhanh chóng, thủ tục đơn giản, hỗ trợ sang tên.",
+					},
+					{
+						label: "Tư vấn và hỗ trợ trả góp:",
+						desc: "Hợp tác cùng nhiều đơn vị tài chính uy tín, thủ tục dễ dàng, lãi suất ưu đãi.",
+					},
 				],
 			},
 			commitment: {
@@ -38,32 +40,45 @@ export const aboutRepository = {
 			whyChooseUs: {
 				title: "Tại Sao Chọn Chúng Tôi?",
 				items: [
-					{ text: "Hơn 10 năm kinh nghiệm trong lĩnh vực xe máy tại TP.HCM", isStrong: true },
-					{ text: "Hàng ngàn khách hàng hài lòng và quay lại mua xe lần 2, lần 3", isStrong: true },
-					{ text: "Không gian cửa hàng hiện đại, dễ tiếp cận, đội ngũ nhân viên thân thiện, hỗ trợ nhiệt tình", isStrong: false },
-					{ text: "Cập nhật liên tục các dòng xe mới nhất trên thị trường", isStrong: false },
+					{
+						text: "Hơn 10 năm kinh nghiệm trong lĩnh vực xe máy tại TP.HCM",
+						isStrong: true,
+					},
+					{
+						text: "Hàng ngàn khách hàng hài lòng và quay lại mua xe lần 2, lần 3",
+						isStrong: true,
+					},
+					{
+						text: "Không gian cửa hàng hiện đại, dễ tiếp cận, đội ngũ nhân viên thân thiện, hỗ trợ nhiệt tình",
+						isStrong: false,
+					},
+					{
+						text: "Cập nhật liên tục các dòng xe mới nhất trên thị trường",
+						isStrong: false,
+					},
 				],
 			},
 			contact: {
 				title: "Liên Hệ Với Chúng Tôi",
-				description: "Hãy ghé thăm cửa hàng AnhEm Moto để trải nghiệm thực tế và nhận tư vấn chi tiết về chiếc xe phù hợp nhất với bạn. Chúng tôi luôn sẵn sàng hỗ trợ!",
+				description:
+					"Hãy ghé thăm cửa hàng AnhEm Moto để trải nghiệm thực tế và nhận tư vấn chi tiết về chiếc xe phù hợp nhất với bạn. Chúng tôi luôn sẵn sàng hỗ trợ!",
 				hotline: "0901 234 567",
 				email: "info@anhemmotor.vn",
 			},
 			video: {
 				title: "Hành Trình AnhEm Motor",
 				subtitle: "Khám phá câu chuyện và tâm huyết đằng sau mỗi chiếc xe",
-				url: "https://www.youtube.com/embed/1a0uk9yl3GA", 
-			}
+				url: "https://www.youtube.com/embed/1a0uk9yl3GA",
+			},
 		};
 	},
 
-	/**
-	 * Fetches store locations
-	 */
 	getLocations: async () => {
 		return [
-			{ title: "Cơ Sở 2 - TP. Đồng Nai", address: "193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam" },
+			{
+				title: "Cơ Sở 2 - TP. Đồng Nai",
+				address: "193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam",
+			},
 		];
 	},
 };

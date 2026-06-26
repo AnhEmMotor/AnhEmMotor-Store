@@ -16,9 +16,8 @@ export const useAboutStore = defineStore("about", {
 			this.isLoading = true;
 			try {
 				const data = await aboutService.getAboutContent();
-				// Convert to POJO for Pinia serialization
 				this.aboutContent = JSON.parse(JSON.stringify(data));
-			} catch (error) {
+			} catch {
 			} finally {
 				this.isLoading = false;
 			}
@@ -27,10 +26,8 @@ export const useAboutStore = defineStore("about", {
 		async fetchLocations() {
 			try {
 				const data = await aboutService.getLocations();
-				// Convert to POJO for Pinia serialization
 				this.locations = JSON.parse(JSON.stringify(data));
-			} catch (error) {
-			}
+			} catch {}
 		},
 	},
 });

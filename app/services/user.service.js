@@ -1,13 +1,5 @@
-/**
- * Application Layer - User Service
- */
 import { IUserRepository } from "@/core/domain/repositories/user.repository.interface";
 
-/**
- * Factory function to create user service with dependency injection
- * @param {IUserRepository} repository
- * @returns {IUserRepository}
- */
 export const createUserService = (repository) => ({
 	async getProfile() {
 		try {
@@ -42,4 +34,4 @@ export const createUserService = (repository) => ({
 	},
 });
 
-export default createUserService;
+export default userService;

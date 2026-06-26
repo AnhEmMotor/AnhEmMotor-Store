@@ -1,20 +1,17 @@
-import { fileURLToPath } from "node:url";
+import { defineNuxtConfig } from "nuxt/config";
 import tailwindcss from "@tailwindcss/vite";
 import svgLoader from "vite-svg-loader";
-
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineNuxtConfig({
 	ssr: true,
 	compatibilityDate: "2025-07-15",
-	// Force reload to pick up new components and public assets
-	devtools: { enabled: true },
+	devtools: {
+		enabled: process.env.NODE_ENV === "development",
+	},
 	srcDir: "app",
-
 	build: {
 		transpile: ["@tanstack/vue-query"],
 	},
-
 	modules: [
 		"@nuxtjs/seo",
 		"@nuxt/content",
@@ -29,16 +26,15 @@ export default defineNuxtConfig({
 			scan: true,
 		},
 		serverBundle: "auto",
-        collections: ['ph', 'lucide', 'fa6-solid', 'fa6-regular', 'fa6-brands']
+		collections: ["ph", "lucide", "fa6-solid", "fa6-regular", "fa6-brands"],
 	},
-
 	sitemap: {
-		zeroRuntime: true,
+		sources: ["/api/dynamic-sitemap"],
+		cacheMaxAgeSeconds: 0,
 	},
 	ogImage: {
 		zeroRuntime: true,
 	},
-
 	vite: {
 		optimizeDeps: {
 			include: [
@@ -57,6 +53,7 @@ export default defineNuxtConfig({
 		plugins: [
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(tailwindcss as any)(),
+
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(svgLoader as any)(),
 			{
@@ -71,14 +68,12 @@ export default defineNuxtConfig({
 							"virtual:#nitro-internal-virtual/storage",
 							"module-preload-polyfill",
 						];
-
 						if (
 							silentCodes.includes(warning.code || "") ||
 							silentMessages.some((msg) => warning.message?.includes(msg))
 						) {
 							return;
 						}
-
 						if (originalOnWarn) {
 							originalOnWarn(warning, warn);
 						} else {
@@ -92,22 +87,19 @@ export default defineNuxtConfig({
 			sourcemap: false,
 		},
 	},
-
 	plugins: ["~/plugins/vue-query.js", "~/plugins/toast.js"],
-
 	nitro: {
 		externals: {
 			trace: false,
 		},
 		rollupConfig: {
-			onwarn(warning, warn) {
+			onwarn(warning: any, warn: any) {
 				const silentCodes = ["CIRCULAR_DEPENDENCY"];
 				const silentMessages = [
 					"cache-driver.js",
 					"virtual:#nitro-internal-virtual/storage",
 					"node_modules/nitropack",
 				];
-
 				if (
 					silentCodes.includes(warning.code || "") ||
 					silentMessages.some((msg) => warning.message?.includes(msg))
@@ -119,48 +111,16 @@ export default defineNuxtConfig({
 		},
 		routeRules: {
 			"/contact": { redirect: "/support" },
-			"/api/v1/**": {
-				proxy: "http://localhost:5000/api/v1/**",
-			},
 			"/assets/**": {
 				headers: { "Cache-Control": "public, max-age=31536000, immutable" },
 			},
+			"/sitemap.xml": { cache: { maxAge: 86400 } },
+			"/sitemap_index.xml": { cache: { maxAge: 86400 } },
+			"/sitemap-*.xml": { cache: { maxAge: 86400 } },
 		},
 		compressPublicAssets: true,
 	},
-
-	// Image optimization
-	image: {
-		// Use IPX provider (works with Nitro)
-		provider: "ipx",
-		// Quality for WebP/AVIF
-		quality: 80,
-		// Generate responsive sizes
-		screens: {
-			xs: 320,
-			sm: 640,
-			md: 768,
-			lg: 1024,
-			xl: 1280,
-			"2xl": 1536,
-		},
-		// Presets for common use cases
-		presets: {
-			hero: {
-				quality: 85,
-				format: "webp",
-				sizes: "100vw",
-			},
-			card: {
-				quality: 75,
-				format: "webp",
-				sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
-			},
-		},
-	},
-
 	css: ["~/assets/main.css"],
-
 	app: {
 		head: {
 			charset: "utf-8",
@@ -188,7 +148,6 @@ export default defineNuxtConfig({
 			script: [],
 		},
 	},
-
 	site: {
 		url: "https://anhemmotor.online",
 		name: "Anh Em Motor",
@@ -198,7 +157,6 @@ export default defineNuxtConfig({
 		twitterCard: "summary_large_image",
 		canonical: "https://anhemmotor.online",
 	},
-
 	runtimeConfig: {
 		internalApiUrlForServer: process.env.NUXT_INTERNAL_API_URL_FOR_SERVER,
 		public: {
@@ -206,7 +164,6 @@ export default defineNuxtConfig({
 				process.env.NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT,
 		},
 	},
-
 	alias: {
 		"@/stores": "./app/core/application/stores",
 		"@/services": "./app/core/application/services",
@@ -219,7 +176,6 @@ export default defineNuxtConfig({
 		"~/constants": "./app/core/domain/constants",
 		"~/utils": "./app/core/domain/utils",
 	},
-
 	imports: {
 		dirs: [
 			"core/domain/constants/**",
@@ -231,6 +187,4 @@ export default defineNuxtConfig({
 			"core/domain/models/**",
 		],
 	},
-
-
 });

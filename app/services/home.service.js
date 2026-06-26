@@ -1,31 +1,34 @@
-
-
-/**
- * Application Layer - Home Service
- * Orchestrates business logic for the Home page
- */
-import { IHomeRepository } from "@/core/domain/repositories/home.repository.interface";
-
-/**
- * Factory function to create home service with dependency injection
- * @param {IHomeRepository} repository
- * @returns {IHomeRepository}
- */
-export const createHomeService = (repository) => ({
+const homeService = {
 	async getBrands() {
 		try {
-			return await repository.getBrands();
-		} catch (error) {
+			return await homeRepository.getBrands();
+		} catch {
 			return [];
 		}
 	},
 
 	async getHeroStats() {
-		return await repository.getHeroStats();
+		return await homeRepository.getHeroStats();
 	},
 
 	async getSearchPhrases() {
-		return await repository.getSearchPhrases();
+		return await homeRepository.getSearchPhrases();
+	},
+
+	async getFeaturedProducts() {
+		try {
+			return await homeRepository.getFeaturedProducts();
+		} catch {
+			return [];
+		}
+	},
+
+	async getBanners(placement) {
+		try {
+			return await homeRepository.getBanners(placement);
+		} catch {
+			return [];
+		}
 	},
 
 	async getFeaturedProducts() {
@@ -43,6 +46,6 @@ export const createHomeService = (repository) => ({
 			return [];
 		}
 	},
-});
+};
 
 export default createHomeService;

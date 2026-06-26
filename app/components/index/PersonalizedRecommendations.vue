@@ -5,7 +5,7 @@ const productStore = useProductStore();
 
 const { data: products, isPending } = useQuery({
 	queryKey: ["personalized-recommendations"],
-	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: "8" }), // Simulating AI with random/featured for now
+	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: "1" }),
 	select: (res) => res.items,
 });
 
@@ -24,15 +24,20 @@ const handleViewDetail = (product) => {
 	<section class="py-24 bg-slate-50 relative overflow-hidden">
 		<div class="container mx-auto px-6 relative z-10">
 			<div class="flex flex-col gap-4 mb-16">
-                <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-widest w-fit">
-                    <Icon name="ph:sparkle-bold" />
-                    AI Personalization
-                </div>
-				<h2 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+				<div
+					class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-widest w-fit"
+				>
+					<Icon name="ph:sparkle-bold" />
+					AI Personalization
+				</div>
+				<h2
+					class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight"
+				>
 					Gợi ý <span class="text-primary">Dành Cho Bạn</span>
 				</h2>
 				<p class="text-slate-500 text-lg font-medium max-w-2xl">
-					Dựa trên sở thích và nhu cầu của bạn, chúng tôi đề xuất những mẫu xe phù hợp nhất.
+					Dựa trên sở thích và nhu cầu của bạn, chúng tôi đề xuất những mẫu xe
+					phù hợp nhất.
 				</p>
 			</div>
 

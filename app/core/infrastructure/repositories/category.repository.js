@@ -1,7 +1,7 @@
 export const categoryRepository = {
-	async getCategories(params) {
+	async getCategories() {
 		const axios = useAxios();
-		const response = await axios.get("/api/v1/ProductCategory", { params });
+		const response = await axios.get("/api/v1/ProductCategory");
 		return response.data;
-	}
+	},
 };

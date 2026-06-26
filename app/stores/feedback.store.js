@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
-import { feedbackRepository } from "@/core/infrastructure/repositories/feedback.repository";
-import { createFeedbackService } from "@/services/feedback.service";
-
-const feedbackService = createFeedbackService(feedbackRepository);
+import { feedbackService } from "../services/feedback.service";
 
 export const useFeedbackStore = defineStore("feedback", {
 	state: () => ({
@@ -24,7 +21,8 @@ export const useFeedbackStore = defineStore("feedback", {
 				return result.success;
 			} catch {
 				this.statusType = "error";
-				this.statusMessage = "Không thể gửi góp ý lúc này. Vui lòng thử lại sau.";
+				this.statusMessage =
+					"Không thể gửi góp ý lúc này. Vui lòng thử lại sau.";
 				return false;
 			} finally {
 				this.isSubmitting = false;

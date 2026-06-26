@@ -1,17 +1,14 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth.store";
 
-
 export const useAxios = () => {
 	const config = useRuntimeConfig();
 	const nuxtApp = useNuxtApp();
 
-	// Use nuxtApp context for request-scoped, non-serializable state
-	// This avoids serialization errors during SSR
 	if (!nuxtApp._axiosRefreshState) {
 		nuxtApp._axiosRefreshState = {
 			isRefreshing: false,
-			failedQueue: []
+			failedQueue: [],
 		};
 	}
 	const refreshState = nuxtApp._axiosRefreshState;
@@ -136,6 +133,19 @@ export const useAxios = () => {
 				} finally {
 					refreshState.isRefreshing = false;
 				}
+			}
+
+			if (
+				error.response?.data?.errors &&
+				Array.isArray(error.response.data.errors)
+			) {
+				error.message = error.response.data.errors
+					.map((e) => e.message)
+					.join("\n");
+			} else if (error.response?.data?.message) {
+				error.message = error.response.data.message;
+			} else if (error.response?.data?.title) {
+				error.message = error.response.data.title;
 			}
 
 			return Promise.reject(error);

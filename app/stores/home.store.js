@@ -55,7 +55,7 @@ export const useHomeStore = defineStore("home", () => {
 					homeService.getHeroStats(),
 					homeService.getSearchPhrases(),
 					homeService.getFeaturedProducts(),
-					homeService.getBanners(),
+					homeService.getBanners("Home"),
 				]);
 
 			brands.value = homeMapper.mapBrands(rawBrands);
@@ -63,7 +63,7 @@ export const useHomeStore = defineStore("home", () => {
 			searchPhrases.value = rawPhrases;
 			featuredProducts.value = homeMapper.mapProducts(rawProducts);
 			banners.value = homeMapper.mapBanners(rawBanners);
-		} catch (error) {
+		} catch {
 		} finally {
 			isLoading.value = false;
 		}
@@ -82,4 +82,3 @@ export const useHomeStore = defineStore("home", () => {
 		fetchHomeData,
 	};
 });
-

@@ -1,6 +1,3 @@
-/**
- * Domain Layer - App Entities
- */
 export class AppFeature {
 	constructor(data = {}) {
 		this.icon = data.icon || "ph:sparkle-fill";
@@ -31,10 +28,10 @@ export class AppContent {
 		this.description = data.description || "";
 		this.downloadLinks = {
 			appStore: data.downloadLinks?.appStore || "#",
-			googlePlay: data.downloadLinks?.googlePlay || "#"
+			googlePlay: data.downloadLinks?.googlePlay || "#",
 		};
-		this.stats = (data.stats || []).map(s => new AppStat(s));
-		this.features = (data.features || []).map(f => new AppFeature(f));
-		this.faqs = (data.faqs || []).map(faq => new AppFaq(faq));
+		this.stats = (data.stats || []).map((s) => new AppStat(s));
+		this.features = (data.features || []).map((f) => new AppFeature(f));
+		this.faqs = (data.faqs || []).map((faq) => new AppFaq(faq));
 	}
 }

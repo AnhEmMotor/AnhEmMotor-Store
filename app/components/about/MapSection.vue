@@ -17,17 +17,21 @@ const searchLocation = (address) => {
 	<section class="py-24 bg-gray-50">
 		<div class="max-w-7xl mx-auto px-6">
 			<div class="text-center mb-16">
-				<h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 uppercase tracking-tight">
+				<h2
+					class="text-3xl md:text-5xl font-black text-gray-900 mb-6 uppercase tracking-tight"
+				>
 					Ghé Thăm Cửa Hàng
 				</h2>
 				<p class="text-xl text-gray-500 max-w-2xl mx-auto">
-					Chào đón bạn đến với không gian trải nghiệm xe máy chuyên nghiệp và tận tâm.
+					Chào đón bạn đến với không gian trải nghiệm xe máy chuyên nghiệp và
+					tận tâm.
 				</p>
 			</div>
 
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-				<!-- Map Column (65% approx) -->
-				<div class="lg:col-span-8 rounded-[28px] overflow-hidden shadow-2xl h-[400px] md:h-[650px] border-[12px] border-white relative group">
+				<div
+					class="lg:col-span-8 rounded-[28px] overflow-hidden shadow-2xl h-[400px] md:h-[650px] border-[12px] border-white relative group"
+				>
 					<iframe
 						id="mapFrame"
 						class="w-full h-full border-none grayscale-[0.2] contrast-[1.1] group-hover:grayscale-0 transition-all duration-700"
@@ -38,20 +42,14 @@ const searchLocation = (address) => {
 					/>
 				</div>
 
-				<!-- Info Column (35% approx) -->
 				<div class="lg:col-span-4 space-y-6">
-					<AboutLocationInfo 
+					<AboutLocationInfo
 						address="193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam"
 						hotline="0901.234.567"
 						@search="searchLocation"
 					/>
-
-					
-
 				</div>
 			</div>
 		</div>
 	</section>
 </template>
-
-

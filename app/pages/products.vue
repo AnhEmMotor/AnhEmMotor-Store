@@ -17,30 +17,33 @@ function parseArrayQuery(val) {
 
 const pageMode = computed(() => {
 	const ids = parseArrayQuery(route.query.category_ids);
-	if (ids.includes(8) && ids.length === 1) return 'motorcycles';
-	if (ids.some(id => [12, 13].includes(id))) return 'accessories';
-	return 'all';
+	if (ids.includes(8) && ids.length === 1) return "motorcycles";
+	if (ids.some((id) => [12, 13].includes(id))) return "accessories";
+	return "all";
 });
 
 const pageConfig = computed(() => {
-	if (pageMode.value === 'motorcycles') {
+	if (pageMode.value === "motorcycles") {
 		return {
 			title: "Danh sách Xe máy",
-			description: "Khám phá các dòng xe máy Honda, Yamaha, Suzuki, Kawasaki mới nhất tại AnhEm Motor.",
-			heading: "Xe Máy"
+			description:
+				"Khám phá các dòng xe máy Honda, Yamaha, Suzuki, Kawasaki mới nhất tại AnhEm Motor.",
+			heading: "Xe Máy",
 		};
 	}
-	if (pageMode.value === 'accessories') {
+	if (pageMode.value === "accessories") {
 		return {
 			title: "Phụ tùng & Phụ kiện",
-			description: "Cung cấp phụ tùng chính hãng, đồ chơi xe máy và phụ kiện bảo hộ cao cấp.",
-			heading: "Phụ tùng & Phụ kiện"
+			description:
+				"Cung cấp phụ tùng chính hãng, đồ chơi xe máy và phụ kiện bảo hộ cao cấp.",
+			heading: "Phụ tùng & Phụ kiện",
 		};
 	}
 	return {
 		title: "Tất cả sản phẩm",
-		description: "Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
-		heading: "Sản phẩm"
+		description:
+			"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
+		heading: "Sản phẩm",
 	};
 });
 
@@ -87,8 +90,10 @@ const {
 			sieveParams.brandIds = filters.value.brand_ids.join(",");
 		}
 
-		if (filters.value.minPrice !== null) sieveParams.minPrice = Math.round(filters.value.minPrice);
-		if (filters.value.maxPrice !== null) sieveParams.maxPrice = Math.round(filters.value.maxPrice);
+		if (filters.value.minPrice !== null)
+			sieveParams.minPrice = Math.round(filters.value.minPrice);
+		if (filters.value.maxPrice !== null)
+			sieveParams.maxPrice = Math.round(filters.value.maxPrice);
 
 		return productStore.getProducts(sieveParams);
 	},
@@ -106,10 +111,14 @@ watch(
 		filters.value.optionValueIds = parseArrayQuery(newQuery.optionValueIds);
 		filters.value.category_ids = parseArrayQuery(newQuery.category_ids);
 		filters.value.brand_ids = parseArrayQuery(newQuery.brand_ids);
-		filters.value.minPrice = newQuery.minPrice ? Number(newQuery.minPrice) : null;
-		filters.value.maxPrice = newQuery.maxPrice ? Number(newQuery.maxPrice) : null;
+		filters.value.minPrice = newQuery.minPrice
+			? Number(newQuery.minPrice)
+			: null;
+		filters.value.maxPrice = newQuery.maxPrice
+			? Number(newQuery.maxPrice)
+			: null;
 	},
-	{ deep: true }
+	{ deep: true },
 );
 
 const toggleSidebar = () => {
@@ -170,10 +179,14 @@ const formatVND = (value) => {
 						class="flex flex-col sm:flex-row sm:items-center justify-between mb-10 gap-6"
 					>
 						<div>
-							<h1 class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 italic uppercase tracking-tighter">
+							<h1
+								class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 italic uppercase tracking-tighter"
+							>
 								{{ pageConfig.heading }}
 							</h1>
-							<p class="text-gray-400 font-medium text-sm">{{ pageConfig.description }}</p>
+							<p class="text-gray-400 font-medium text-sm">
+								{{ pageConfig.description }}
+							</p>
 						</div>
 
 						<div class="flex items-center gap-3">
@@ -222,12 +235,16 @@ const formatVND = (value) => {
 						<button
 							v-if="filters.minPrice !== null || filters.maxPrice !== null"
 							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
-							@click="filters.minPrice = null; filters.maxPrice = null"
+							@click="
+								filters.minPrice = null;
+								filters.maxPrice = null;
+							"
 						>
 							<Icon name="fa6-solid:money-bill-wave" class="text-xs" />
 							<span>
-								Giá: {{ filters.minPrice ? formatVND(filters.minPrice) : '0' }} - 
-								{{ filters.maxPrice ? formatVND(filters.maxPrice) : 'Tối đa' }}
+								Giá:
+								{{ filters.minPrice ? formatVND(filters.minPrice) : "0" }} -
+								{{ filters.maxPrice ? formatVND(filters.maxPrice) : "Tối đa" }}
 							</span>
 							<Icon
 								name="fa6-solid:xmark"
@@ -265,7 +282,6 @@ const formatVND = (value) => {
 							@update:current-page="pagination.goToPage"
 						/>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -298,4 +314,3 @@ const formatVND = (value) => {
 	transform: translateX(-100%);
 }
 </style>
-

@@ -4,31 +4,31 @@ import OrderCard from "./OrderCard.vue";
 defineProps({
 	orders: {
 		type: Array,
-		required: true
+		required: true,
 	},
 	pagination: {
 		type: Object,
-		required: true
+		required: true,
 	},
 	getStatusName: {
 		type: Function,
-		required: true
+		required: true,
 	},
 	isCancellable: {
 		type: Function,
-		required: true
+		required: true,
 	},
 	canEdit: {
 		type: Function,
-		required: true
+		required: true,
 	},
 	canContinuePayment: {
 		type: Function,
-		required: true
-	}
+		required: true,
+	},
 });
 
-defineEmits(['edit', 'cancel', 'continue-payment']);
+defineEmits(["edit", "cancel", "continue-payment"]);
 </script>
 
 <template>
@@ -48,7 +48,6 @@ defineEmits(['edit', 'cancel', 'continue-payment']);
 			/>
 		</div>
 
-		<!-- Pagination -->
 		<div v-if="pagination.totalPages > 1" class="flex justify-center pt-8">
 			<UiBasePagination
 				:current-page="pagination.currentPage"

@@ -1,8 +1,4 @@
 import { defineStore } from "pinia";
-import { contactRepository } from "@/core/infrastructure/repositories/contact.repository";
-import { createContactService } from "@/services/contact.service";
-
-const contactService = createContactService(contactRepository);
 
 export const useContactStore = defineStore("contact", {
 	state: () => ({
@@ -13,11 +9,13 @@ export const useContactStore = defineStore("contact", {
 
 	actions: {
 		async submitContact(formData) {
+			const service = contactService;
+
 			this.isSubmitting = true;
 			this.statusMessage = "";
 
 			try {
-				const data = await contactService.submitContact(formData);
+				const data = await service.submitContact(formData);
 
 				if (data.success) {
 					this.statusType = "success";
@@ -45,4 +43,3 @@ export const useContactStore = defineStore("contact", {
 		},
 	},
 });
-

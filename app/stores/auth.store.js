@@ -447,19 +447,25 @@ export const useAuthStore = defineStore("auth", () => {
 		status.value = "logging_out";
 
 		closeSSE();
-		const axios = useAxios();
 
-		// Reset state ngay lập tức để UI phản ứng nhanh
-		accessToken.value = null;
-		user.value = null;
-		status.value = "unauthenticated";
+		let axiosClient = null;
+		let queryClient = null;
 
 		try {
-			// Gọi API logout nhưng không block UI nếu lỗi
-			await axios.post("/api/v1/auth/logout").catch(() => {});
-		} finally {
+			axiosClient = useAxios();
 			if (import.meta.client) {
-				const queryClient = useQueryClient();
+				queryClient = useQueryClient();
+			}
+		} catch {}
+
+		try {
+			if (axiosClient) {
+				await axiosClient.post("/api/v1/auth/logout");
+			}
+		} catch {
+			// ignore error on logout API
+		} finally {
+			if (import.meta.client && queryClient) {
 				queryClient.cancelQueries();
 				queryClient.removeQueries();
 				queryClient.clear();
@@ -469,13 +475,14 @@ export const useAuthStore = defineStore("auth", () => {
 			closeSSE();
 
 			if (shouldRedirect && import.meta.client) {
-				// Sử dụng router.push thay vì navigateTo để đảm bảo navigation
-				const router = useRouter();
-				await router.push("/");
+				if (router) {
+					router.push("/");
+				} else {
+					window.location.href = "/";
+				}
 			}
 		}
 
-		// Reset flag sau một chút
 		setTimeout(() => {
 			isLoggingOut = false;
 		}, 500);

@@ -1,8 +1,8 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { toast } from "vue3-toastify";
-import { BIKE_MODELS } from "@/constants/bike.constant";
 
+import { BIKE_MODELS } from "../../constants/bike.constant";
 
 import BaseInput from "../ui/BaseInput.vue";
 import LeadFeatureItem from "../ui/LeadFeatureItem.vue";
@@ -54,12 +54,14 @@ const handleSubmit = () => {
 					<h2
 						class="text-3xl md:text-5xl lg:text-[42px] font-bold leading-tight tracking-tight"
 					>
-						Bạn chưa biết chọn <span class="text-primary">dòng xe phù hợp?</span>
+						Bạn chưa biết chọn
+						<span class="text-primary">dòng xe phù hợp?</span>
 					</h2>
 					<p
 						class="text-slate-400 text-lg font-medium max-w-2xl mx-auto leading-relaxed"
 					>
-						Ghé cửa hàng để được tư vấn & trải nghiệm thực tế, hoặc để lại thông tin để nhận báo giá lăn bánh tốt nhất sau 5 phút.
+						Ghé cửa hàng để được tư vấn & trải nghiệm thực tế, hoặc để lại thông
+						tin để nhận báo giá lăn bánh tốt nhất sau 5 phút.
 					</p>
 				</div>
 
@@ -74,7 +76,7 @@ const handleSubmit = () => {
 							type="tel"
 							placeholder="VD: 0912 345 678"
 							required
-                            class="bg-white/5 border-white/10 text-white"
+							class="bg-white/5 border-white/10 text-white"
 						/>
 					</div>
 
@@ -85,20 +87,20 @@ const handleSubmit = () => {
 							placeholder="VD: Honda SH 160i"
 							required
 							list="models"
-                            class="bg-white/5 border-white/10 text-white"
+							class="bg-white/5 border-white/10 text-white"
 						/>
 						<datalist id="models">
 							<option v-for="m in BIKE_MODELS" :key="m" :value="m" />
 						</datalist>
 					</div>
 
-					<button 
-                        type="submit" 
-                        class="px-10 py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 flex items-center gap-2 whitespace-nowrap"
-                        :disabled="isSubmitting"
-                    >
-						{{ isSubmitting ? 'Đang gửi...' : 'Gửi thông tin' }}
-                        <Icon v-if="!isSubmitting" name="ph:paper-plane-right-bold" />
+					<button
+						type="submit"
+						class="px-10 py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 flex items-center gap-2 whitespace-nowrap"
+						:disabled="isSubmitting"
+					>
+						{{ isSubmitting ? "Đang gửi..." : "Gửi thông tin" }}
+						<Icon v-if="!isSubmitting" name="ph:paper-plane-right-bold" />
 					</button>
 				</form>
 

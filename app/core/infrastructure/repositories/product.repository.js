@@ -1,8 +1,5 @@
-import { PRODUCT_ENDPOINTS } from "@/core/infrastructure/endpoints/product.endpoint";
+import { PRODUCT_ENDPOINTS } from "../../../constants/endpoints/product.endpoint";
 
-/**
- * Infrastructure Layer - Product Repository
- */
 export const productRepository = {
 	async getProducts(params) {
 		const axios = useAxios();

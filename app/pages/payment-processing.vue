@@ -41,7 +41,9 @@ onMounted(async () => {
 
 	try {
 		const order = await orderStore.fetchOrderDetail(effectiveOrderId);
-		await router.replace(order ? `/order-success?id=${effectiveOrderId}` : "/orders");
+		await router.replace(
+			order ? `/order-success?id=${effectiveOrderId}` : "/orders",
+		);
 	} catch {
 		await router.replace({
 			path: "/payment-unavailable",
@@ -65,9 +67,7 @@ onMounted(async () => {
 				<h1 class="text-2xl font-black text-gray-900 uppercase">
 					Đang xử lý thanh toán
 				</h1>
-				<p class="text-gray-500 font-medium">
-					Vui lòng chờ trong giây lát...
-				</p>
+				<p class="text-gray-500 font-medium">Vui lòng chờ trong giây lát...</p>
 			</div>
 		</div>
 	</main>

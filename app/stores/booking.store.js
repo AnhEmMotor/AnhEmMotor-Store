@@ -1,17 +1,16 @@
-import { defineStore } from "pinia";
-import { bookingRepository } from "@/core/infrastructure/repositories/booking.repository";
-import { createBookingService } from "@/services/booking.service";
+export const bookingService = {
+	async createBooking(bookingData) {
+		return await bookingRepository.createBooking({
+			fullName: bookingData.fullName,
+			email: bookingData.email || "",
+			phoneNumber: bookingData.phoneNumber,
+			productVariantId: bookingData.productVariantId,
+			preferredDate: bookingData.preferredDate,
+			note: bookingData.note || "",
+			location: bookingData.location || "Cửa hàng",
+			bookingType: bookingData.bookingType || "TestDrive",
+		});
+	},
+};
 
-const bookingService = createBookingService(bookingRepository);
-
-export const useBookingStore = defineStore("booking", () => {
-	const service = bookingService;
-
-	const createBooking = async (bookingData) => {
-		return await service.createBooking(bookingData);
-	};
-
-	return {
-		createBooking,
-	};
-});
+export default bookingService;

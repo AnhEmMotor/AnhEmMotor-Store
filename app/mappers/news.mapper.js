@@ -1,4 +1,4 @@
-
+import { getImageUrl } from "~/utils/image";
 
 const newsMapper = {
 	mapNewsList(rawItems) {
@@ -7,7 +7,8 @@ const newsMapper = {
 	},
 
 	mapNewsItem(raw) {
-		const date = raw.createdAt || raw.publishedAt || raw.date;
+		const date =
+			raw.createdAt || raw.publishedAt || raw.date || raw.publishedDate;
 		let formattedDate = "";
 		if (date) {
 			try {
@@ -15,15 +16,18 @@ const newsMapper = {
 				if (!isNaN(d.getTime())) {
 					formattedDate = d.toLocaleDateString("vi-VN");
 				}
-			} catch {
-				// Ignore
-			}
+			} catch {}
 		}
 		if (!formattedDate && raw.date) {
 			formattedDate = raw.date;
 		}
 
-		const summary = raw.summary || raw.excerpt || raw.shortDescription || raw.description || "";
+		const summary =
+			raw.summary ||
+			raw.excerpt ||
+			raw.shortDescription ||
+			raw.description ||
+			"";
 
 		return {
 			id: raw.id,
@@ -32,23 +36,29 @@ const newsMapper = {
 			summary: summary,
 			excerpt: summary, // Used by some components
 			content: raw.content,
-			image: getImageUrl(raw.image || raw.coverImageUrl || raw.cover_image_url || raw.thumbnailUrl || raw.imageUrl || raw.thumbnail),
-			category: raw.categoryName || raw.category?.name || raw.category || "Tin tức",
+			image: getImageUrl(
+				raw.coverImageUrl ||
+					raw.image ||
+					raw.thumbnail ||
+					"/assets/image/placeholder-news.webp",
+			),
+			category:
+				raw.categoryName || raw.category?.name || raw.category || "Tin tức",
 			author: raw.authorName || "AnhEm Motor",
-			createdAt: raw.createdAt,
-			publishedAt: raw.publishedAt || raw.createdAt,
-			date: formattedDate, // Used by NewsCard
+			createdAt: raw.createdAt || raw.publishedDate,
+			publishedAt: raw.publishedDate || raw.publishedAt || raw.createdAt,
+			date: formattedDate || raw.publishedDate,
 			featured: raw.isFeatured || raw.featured || false,
 			isHot: raw.isHot || false,
 		};
 	},
-
 
 	mapNewsDetail(raw) {
 		if (!raw) return null;
 		return {
 			...this.mapNewsItem(raw),
 			related: this.mapNewsList(raw.relatedNews || []),
+			linkedProducts: raw.linkedProducts || [],
 		};
 	},
 };

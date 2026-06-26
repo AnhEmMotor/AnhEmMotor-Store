@@ -101,7 +101,7 @@ const handleUpdateOrder = async () => {
 		toast.success("Cập nhật thông tin đơn hàng thành công!");
 		isEditing.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch (error) {
+	} catch {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi cập nhật đơn hàng.";
@@ -142,7 +142,7 @@ const confirmCancel = async () => {
 		toast.success("Hủy đơn hàng thành công!");
 		isCancelModalOpen.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch (error) {
+	} catch {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi hủy đơn hàng.";
@@ -165,7 +165,9 @@ const canEdit = (statusId) => {
 </script>
 
 <template>
-	<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 animate-fadeIn">
+	<div
+		class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 animate-fadeIn"
+	>
 		<div class="border-b border-gray-100 pb-4 mb-5">
 			<h3 class="text-xl font-bold text-gray-900">Đơn hàng của tôi</h3>
 			<p class="text-sm text-gray-500 mt-1">
@@ -174,11 +176,15 @@ const canEdit = (statusId) => {
 		</div>
 
 		<div v-if="isInitialLoading" class="flex justify-center py-20">
-			<div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
+			<div
+				class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"
+			/>
 		</div>
 
 		<div v-else-if="isLoading" class="flex justify-center py-10">
-			<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+			<div
+				class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"
+			/>
 		</div>
 
 		<template v-else>
@@ -196,7 +202,6 @@ const canEdit = (statusId) => {
 			/>
 		</template>
 
-		<!-- Modals -->
 		<Teleport to="body">
 			<OrderEditModal
 				v-model:form="editForm"
@@ -205,7 +210,9 @@ const canEdit = (statusId) => {
 				:errors="editErrors"
 				:is-submitting="isSubmittingEdit"
 				:locked-delivery="
-					orderStore.lockedStatuses?.deliveryInfo?.includes(selectedOrder?.status)
+					orderStore.lockedStatuses?.deliveryInfo?.includes(
+						selectedOrder?.status,
+					)
 				"
 				:locked-notes="
 					orderStore.lockedStatuses?.notes?.includes(selectedOrder?.status)

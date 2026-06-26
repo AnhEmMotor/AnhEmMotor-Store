@@ -8,7 +8,7 @@ const rememberMe = ref(false);
 const isLoading = ref(false);
 const passwordFieldType = ref("password");
 
-const emit = defineEmits(['loading']);
+const emit = defineEmits(["loading"]);
 
 function togglePassword() {
 	passwordFieldType.value =
@@ -19,10 +19,10 @@ async function handleLogin() {
 	if (!identifier.value || !password.value) {
 		return instance.$toast.error("Vui lòng nhập đầy đủ thông tin đăng nhập!");
 	}
-	
+
 	isLoading.value = true;
-	emit('loading', true);
-	
+	emit("loading", true);
+
 	const authStore = useAuthStore();
 	try {
 		const result = await authStore.login({
@@ -37,13 +37,14 @@ async function handleLogin() {
 		const route = useRoute();
 		const redirect = route.query.redirect || "/";
 		router.push(redirect);
-	} catch (error) {
-		const errorMessage = error.response?.data?.message || "Email hoặc mật khẩu không đúng!";
+	} catch {
+		const errorMessage =
+			error.response?.data?.message || "Email hoặc mật khẩu không đúng!";
 		instance.$toast.error(errorMessage);
 	} finally {
 		if (!authStore.isLoggedIn) {
 			isLoading.value = false;
-			emit('loading', false);
+			emit("loading", false);
 		}
 	}
 }
@@ -52,20 +53,30 @@ async function handleLogin() {
 <template>
 	<form class="space-y-6" @submit.prevent="handleLogin">
 		<div class="space-y-2 animate-fade-in-up" style="animation-delay: 100ms">
-			<label class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Email hoặc Tên đăng nhập</label>
+			<label
+				class="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1"
+				>Email hoặc Tên đăng nhập</label
+			>
 			<input
 				v-model="identifier"
 				type="text"
 				placeholder="example@email.com"
 				class="custom-input"
 				required
-			>
+			/>
 		</div>
 
 		<div class="space-y-2 animate-fade-in-up" style="animation-delay: 200ms">
 			<div class="flex justify-between items-center px-1">
-				<label class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Mật khẩu</label>
-				<NuxtLink to="/login" class="text-xs font-bold text-primary hover:underline">Quên mật khẩu?</NuxtLink>
+				<label
+					class="text-[11px] font-black text-gray-400 uppercase tracking-widest"
+					>Mật khẩu</label
+				>
+				<NuxtLink
+					to="/login"
+					class="text-xs font-bold text-primary hover:underline"
+					>Quên mật khẩu?</NuxtLink
+				>
 			</div>
 			<div class="relative group">
 				<input
@@ -74,19 +85,45 @@ async function handleLogin() {
 					placeholder="••••••••"
 					class="custom-input"
 					required
+				/>
+				<button
+					type="button"
+					class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
+					@click="togglePassword"
 				>
-				<button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors" @click="togglePassword">
-					<Icon :name="passwordFieldType === 'password' ? 'fa6-solid:eye' : 'fa6-solid:eye-slash'" class="text-lg" />
+					<Icon
+						:name="
+							passwordFieldType === 'password'
+								? 'fa6-solid:eye'
+								: 'fa6-solid:eye-slash'
+						"
+						class="text-lg"
+					/>
 				</button>
 			</div>
 		</div>
 
-		<div class="flex items-center animate-fade-in-up" style="animation-delay: 300ms">
-			<input id="remember" v-model="rememberMe" type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" >
-			<label for="remember" class="ml-2 text-sm font-bold text-gray-600">Ghi nhớ đăng nhập</label>
+		<div
+			class="flex items-center animate-fade-in-up"
+			style="animation-delay: 300ms"
+		>
+			<input
+				id="remember"
+				v-model="rememberMe"
+				type="checkbox"
+				class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+			/>
+			<label for="remember" class="ml-2 text-sm font-bold text-gray-600"
+				>Ghi nhớ đăng nhập</label
+			>
 		</div>
 
-		<button :disabled="isLoading" type="submit" class="primary-btn mt-4 animate-fade-in-up" style="animation-delay: 400ms">
+		<button
+			:disabled="isLoading"
+			type="submit"
+			class="primary-btn mt-4 animate-fade-in-up"
+			style="animation-delay: 400ms"
+		>
 			<template v-if="isLoading">
 				<Icon name="fa6-solid:circle-notch" class="animate-spin mr-2" />
 				Đang xử lý...
@@ -100,8 +137,14 @@ async function handleLogin() {
 @reference "../../assets/main.css";
 
 @keyframes fade-in-up {
-	from { opacity: 0; transform: translateY(15px); }
-	to { opacity: 1; transform: translateY(0); }
+	from {
+		opacity: 0;
+		transform: translateY(15px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 .animate-fade-in-up {
 	opacity: 0;
@@ -109,8 +152,6 @@ async function handleLogin() {
 }
 
 .custom-input {
-
-
 	@apply w-full h-14 px-6 rounded-2xl bg-gray-50 border border-gray-100 text-gray-900 font-medium placeholder:text-gray-300 focus:outline-none focus:ring-4 focus:ring-primary/5 focus:border-primary focus:bg-white transition-all duration-300;
 }
 

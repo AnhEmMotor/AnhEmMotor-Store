@@ -1,10 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { categoryRepository } from "@/core/infrastructure/repositories/category.repository";
-import { createCategoryService } from "@/services/category.service";
-import { categoryMapper } from "@/mappers/category.mapper";
-
-const categoryService = createCategoryService(categoryRepository);
+import { categoryService } from "../services/category.service";
+import { categoryMapper } from "../mappers/category.mapper";
 
 export const useCategoryStore = defineStore("category", () => {
 	const service = categoryService;
@@ -38,4 +35,3 @@ export const useCategoryStore = defineStore("category", () => {
 		getProductCategories,
 	};
 });
-

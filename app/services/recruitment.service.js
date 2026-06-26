@@ -1,29 +1,19 @@
-/**
- * Application Layer - Recruitment Service
- */
-import { IRecruitmentRepository } from "@/core/domain/repositories/recruitment.repository.interface";
+import { recruitmentRepository } from "../../infrastructure/repositories/recruitment.repository";
 
-/**
- * Factory function to create recruitment service with dependency injection
- * @param {IRecruitmentRepository} repository
- * @returns {IRecruitmentRepository}
- */
-export const createRecruitmentService = (repository) => ({
+export const recruitmentService = {
 	async getJobs() {
-		return await repository.getJobs();
+		return await recruitmentRepository.getJobs();
 	},
 
 	async getFaqs() {
-		return await repository.getFaqs();
+		return await recruitmentRepository.getFaqs();
 	},
 
 	async submitApplication(formData) {
-		return await repository.submitApplication(formData);
+		return await recruitmentRepository.submitApplication(formData);
 	},
 
 	async uploadCv(formData) {
 		return await repository.uploadCv(formData);
-	}
-});
-
-export default createRecruitmentService;
+	},
+};

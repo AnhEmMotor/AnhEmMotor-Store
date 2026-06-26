@@ -1,6 +1,3 @@
-/**
- * Infrastructure Layer - Layout Repository
- */
 export const layoutRepository = {
 	async getNavItems() {
 		return [
@@ -17,7 +14,8 @@ export const layoutRepository = {
 	async getFooterData() {
 		return {
 			contact: {
-				address: "193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai",
+				address:
+					"193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai",
 				phone: "(024) 8582 0808",
 				email: "anhemmotor@gmail.com",
 				socials: [

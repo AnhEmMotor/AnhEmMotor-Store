@@ -1,6 +1,3 @@
-/**
- * Infrastructure Layer - Booking Repository
- */
 export const bookingRepository = {
 	async createBooking(bookingData) {
 		const axios = useAxios();

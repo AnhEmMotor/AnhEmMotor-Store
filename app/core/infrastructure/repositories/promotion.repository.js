@@ -1,12 +1,8 @@
 import { promotionData } from "../../../constants/promotion";
 
-/**
- * Infrastructure Layer - Promotion Repository
- */
 export const promotionRepository = {
 	async getAllPromotions() {
-		// Mock delay removed for performance
-		// await new Promise(resolve => setTimeout(resolve, 500));
+		await new Promise((resolve) => setTimeout(resolve, 500));
 		return promotionData;
 	},
 

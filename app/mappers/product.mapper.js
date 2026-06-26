@@ -13,7 +13,10 @@ const productMapper = {
 			url: v.url || v.url_slug || v.urlSlug,
 			url_slug: v.url_slug || v.urlSlug || v.url,
 			option_values_text:
-				v.option_values_text || v.optionValuesText || v.propertyName || v.variant_name,
+				v.option_values_text ||
+				v.optionValuesText ||
+				v.propertyName ||
+				v.variant_name,
 			image: getImageUrl(v.image || v.cover_image_url),
 			cover_image_url: getImageUrl(v.cover_image_url || v.image),
 			colors: (v.colors || []).map((c) => ({
@@ -22,10 +25,19 @@ const productMapper = {
 				colorName: c.colorName || c.color_name || c.name,
 				code: c.colorCode || c.color_code || c.code || "#ccc",
 				colorCode: c.colorCode || c.color_code || c.code || "#ccc",
-				image: getImageUrl(c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url),
-				coverImageUrl: getImageUrl(c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url),
+				image: getImageUrl(
+					c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url,
+				),
+				coverImageUrl: getImageUrl(
+					c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url,
+				),
 				maxPurchaseQuantity: c.maxPurchaseQuantity,
-				effectiveMax: c.maxPurchaseQuantity ?? v.effectiveMax ?? v.productLimit ?? v.product_limit ?? null,
+				effectiveMax:
+					c.maxPurchaseQuantity ??
+					v.effectiveMax ??
+					v.productLimit ??
+					v.product_limit ??
+					null,
 			})),
 			effectiveMax: v.effectiveMax ?? v.productLimit ?? v.product_limit ?? null,
 			productLimit: v.productLimit ?? v.product_limit ?? null,
@@ -44,7 +56,9 @@ const productMapper = {
 			categoryId: raw.categoryId ?? raw.category_id ?? null,
 			category:
 				raw.categoryName ||
-				(typeof raw.category === "string" ? raw.category : raw.category?.name) ||
+				(typeof raw.category === "string"
+					? raw.category
+					: raw.category?.name) ||
 				"",
 			brandId: raw.brandId ?? raw.brand_id ?? null,
 			brand: raw.brand || "",
@@ -53,35 +67,35 @@ const productMapper = {
 			reviews: raw.reviewsCount || 0,
 			inventoryStatus: raw.inventoryStatus,
 			productLimit: raw.productLimit ?? raw.product_limit ?? null,
-			effectiveMax: raw.effectiveMax ?? raw.productLimit ?? raw.product_limit ?? null,
+			effectiveMax:
+				raw.effectiveMax ?? raw.productLimit ?? raw.product_limit ?? null,
 			variants: variants,
 		};
 	},
 
-
 	mapOptions(rawOptions) {
 		if (!rawOptions || !Array.isArray(rawOptions)) return [];
-		
+
 		const grouped = {};
-		
-		rawOptions.forEach(option => {
+
+		rawOptions.forEach((option) => {
 			if (!grouped[option.name]) {
 				grouped[option.name] = {
 					id: option.id,
 					name: option.name,
-					values: []
+					values: [],
 				};
 			}
-			
+
 			if (option.values && Array.isArray(option.values)) {
-				option.values.forEach(val => {
+				option.values.forEach((val) => {
 					const valName = val.value || val.name || "";
 					// Deduplicate values by their name/value string to avoid repeated labels
-					if (!grouped[option.name].values.find(v => v.name === valName)) {
+					if (!grouped[option.name].values.find((v) => v.name === valName)) {
 						grouped[option.name].values.push({
 							id: val.id,
 							name: valName,
-							code: val.colorCode || val.ColorCode || null
+							code: val.colorCode || val.ColorCode || null,
 						});
 					}
 				});
@@ -118,76 +132,75 @@ const productMapper = {
 		}
 
 		const defaultLabels = {
-			Weight: 'Trọng lượng bản thân',
-			weight: 'Trọng lượng bản thân',
-			Dimensions: 'Kích thước (D x R x C)',
-			dimensions: 'Kích thước (D x R x C)',
-			Wheelbase: 'Khoảng cách trục bánh xe',
-			wheelbase: 'Khoảng cách trục bánh xe',
-			SeatHeight: 'Độ cao yên',
-			seat_height: 'Độ cao yên',
-			GroundClearance: 'Khoảng sáng gầm xe',
-			ground_clearance: 'Khoảng sáng gầm xe',
-			FuelCapacity: 'Dung tích bình xăng',
-			fuel_capacity: 'Dung tích bình xăng',
-			FuelConsumption: 'Mức tiêu thụ nhiên liệu',
-			fuel_consumption: 'Mức tiêu thụ nhiên liệu',
-			OilCapacity: 'Dung tích nhớt máy',
-			oil_capacity: 'Dung tích nhớt máy',
-			EngineType: 'Loại động cơ',
-			engine_type: 'Loại động cơ',
-			Displacement: 'Dung tích xy-lanh',
-			displacement: 'Dung tích xy-lanh',
-			BoreStroke: 'Đường kính x Hành trình piston',
-			bore_stroke: 'Đường kính x Hành trình piston',
-			CompressionRatio: 'Tỷ số nén',
-			compression_ratio: 'Tỷ số nén',
-			MaxPower: 'Công suất tối đa',
-			max_power: 'Công suất tối đa',
-			MaxTorque: 'Moment xoắn cực đại',
-			max_torque: 'Moment xoắn cực đại',
-			FuelSystem: 'Hệ thống cung cấp nhiên liệu',
-			fuel_system: 'Hệ thống cung cấp nhiên liệu',
-			TransmissionType: 'Loại truyền động',
-			transmission_type: 'Loại truyền động',
-			StarterSystem: 'Hệ thống khởi động',
-			starter_system: 'Hệ thống khởi động',
-			FrameType: 'Loại khung xe',
-			frame_type: 'Loại khung xe',
-			FrontSuspension: 'Phuộc trước',
-			front_suspension: 'Phuộc trước',
-			RearSuspension: 'Phuộc sau',
-			rear_suspension: 'Phuộc sau',
-			FrontTireSize: 'Kích cỡ lốp trước',
-			front_tire_size: 'Kích cỡ lốp trước',
-			RearTireSize: 'Kích cỡ lốp sau',
-			rear_tire_size: 'Kích cỡ lốp sau',
-			FrontBrake: 'Phanh trước',
-			front_brake: 'Phanh trước',
-			RearBrake: 'Phanh sau',
-			rear_brake: 'Phanh sau',
-			BatteryType: 'Loại ắc quy',
-			battery_type: 'Loại ắc quy',
-			LightingSystem: 'Hệ thống chiếu sáng',
-			lighting_system: 'Hệ thống chiếu sáng',
-			DashboardType: 'Đồng hồ hiển thị',
-			dashboard_type: 'Đồng hồ hiển thị',
-			TireSize: 'Kích cỡ lốp trước/sau',
-			tire_size: 'Kích cỡ lốp trước/sau'
+			Weight: "Trọng lượng bản thân",
+			weight: "Trọng lượng bản thân",
+			Dimensions: "Kích thước (D x R x C)",
+			dimensions: "Kích thước (D x R x C)",
+			Wheelbase: "Khoảng cách trục bánh xe",
+			wheelbase: "Khoảng cách trục bánh xe",
+			SeatHeight: "Độ cao yên",
+			seat_height: "Độ cao yên",
+			GroundClearance: "Khoảng sáng gầm xe",
+			ground_clearance: "Khoảng sáng gầm xe",
+			FuelCapacity: "Dung tích bình xăng",
+			fuel_capacity: "Dung tích bình xăng",
+			FuelConsumption: "Mức tiêu thụ nhiên liệu",
+			fuel_consumption: "Mức tiêu thụ nhiên liệu",
+			OilCapacity: "Dung tích nhớt máy",
+			oil_capacity: "Dung tích nhớt máy",
+			EngineType: "Loại động cơ",
+			engine_type: "Loại động cơ",
+			Displacement: "Dung tích xy-lanh",
+			displacement: "Dung tích xy-lanh",
+			BoreStroke: "Đường kính x Hành trình piston",
+			bore_stroke: "Đường kính x Hành trình piston",
+			CompressionRatio: "Tỷ số nén",
+			compression_ratio: "Tỷ số nén",
+			MaxPower: "Công suất tối đa",
+			max_power: "Công suất tối đa",
+			MaxTorque: "Moment xoắn cực đại",
+			max_torque: "Moment xoắn cực đại",
+			FuelSystem: "Hệ thống cung cấp nhiên liệu",
+			fuel_system: "Hệ thống cung cấp nhiên liệu",
+			TransmissionType: "Loại truyền động",
+			transmission_type: "Loại truyền động",
+			StarterSystem: "Hệ thống khởi động",
+			starter_system: "Hệ thống khởi động",
+			FrameType: "Loại khung xe",
+			frame_type: "Loại khung xe",
+			FrontSuspension: "Phuộc trước",
+			front_suspension: "Phuộc trước",
+			RearSuspension: "Phuộc sau",
+			rear_suspension: "Phuộc sau",
+			FrontTireSize: "Kích cỡ lốp trước",
+			front_tire_size: "Kích cỡ lốp trước",
+			RearTireSize: "Kích cỡ lốp sau",
+			rear_tire_size: "Kích cỡ lốp sau",
+			FrontBrake: "Phanh trước",
+			front_brake: "Phanh trước",
+			RearBrake: "Phanh sau",
+			rear_brake: "Phanh sau",
+			BatteryType: "Loại ắc quy",
+			battery_type: "Loại ắc quy",
+			LightingSystem: "Hệ thống chiếu sáng",
+			lighting_system: "Hệ thống chiếu sáng",
+			DashboardType: "Đồng hồ hiển thị",
+			dashboard_type: "Đồng hồ hiển thị",
+			TireSize: "Kích cỡ lốp trước/sau",
+			tire_size: "Kích cỡ lốp trước/sau",
 		};
 
 		const labels = { ...defaultLabels, ...(attributeLabels || {}) };
 
 		let specifications = [];
 		if (product.specifications) {
-			// Handle array of {key, label, value} or {Key, Label, Value}
 			if (Array.isArray(product.specifications)) {
-				specifications = product.specifications.map(s => ({
+				specifications = product.specifications.map((s) => ({
 					key: s.key || s.Key || "",
 					label: labels[s.key || s.Key] || s.label || s.Label || "",
-					value: s.value || s.Value || ""
+					value: s.value || s.Value || "",
 				}));
-			} 
+			}
 			// Handle flat object { weight: 122, ... }
 			else {
 				specifications = Object.entries(product.specifications)
@@ -214,7 +227,8 @@ const productMapper = {
 					...h,
 					image: h.image ? getImageUrl(h.image) : null,
 				}));
-			} catch (e) {
+			} catch {
+				// Ignore parse error
 			}
 		}
 
@@ -224,23 +238,38 @@ const productMapper = {
 					id: c.id || c.Id,
 					name: c.colorName || c.color_name || c.name,
 					code: c.colorCode || c.color_code || c.code || "#ccc",
-					image: getImageUrl(c.coverImageUrl || c.cover_image_url || c.image || variantLike.cover_image_url),
-					effectiveMax: c.maxPurchaseQuantity ?? variantLike.effectiveMax ?? variantLike.product_limit ?? null,
+					image: getImageUrl(
+						c.coverImageUrl ||
+							c.cover_image_url ||
+							c.image ||
+							variantLike.cover_image_url,
+					),
+					effectiveMax:
+						c.maxPurchaseQuantity ??
+						variantLike.effectiveMax ??
+						variantLike.product_limit ??
+						null,
 					maxPurchaseQuantity: c.maxPurchaseQuantity,
 				}));
 			}
-			return (variantLike.color_name || "").split(",").filter(Boolean).map((name, index) => {
-				const codes = (variantLike.color_code || "").split(",");
-				const images = (variantLike.cover_image_url || "").split(",");
-				return {
-					id: null,
-					name: name.trim(),
-					code: (codes[index] || codes[0] || "#ccc").trim(),
-					image: getImageUrl(images[index] || images[0] || variantLike.cover_image_url),
-					effectiveMax: variantLike.effectiveMax ?? variantLike.product_limit ?? null,
-					maxPurchaseQuantity: null,
-				};
-			});
+			return (variantLike.color_name || "")
+				.split(",")
+				.filter(Boolean)
+				.map((name, index) => {
+					const codes = (variantLike.color_code || "").split(",");
+					const images = (variantLike.cover_image_url || "").split(",");
+					return {
+						id: null,
+						name: name.trim(),
+						code: (codes[index] || codes[0] || "#ccc").trim(),
+						image: getImageUrl(
+							images[index] || images[0] || variantLike.cover_image_url,
+						),
+						effectiveMax:
+							variantLike.effectiveMax ?? variantLike.product_limit ?? null,
+						maxPurchaseQuantity: null,
+					};
+				});
 		};
 
 		return {
@@ -254,7 +283,11 @@ const productMapper = {
 				metaTitle: product.meta_title,
 				metaDescription: product.meta_description,
 				productLimit: product.productLimit ?? product.product_limit ?? null,
-				effectiveMax: product.effectiveMax ?? product.productLimit ?? product.product_limit ?? null,
+				effectiveMax:
+					product.effectiveMax ??
+					product.productLimit ??
+					product.product_limit ??
+					null,
 				highlights: highlights,
 			},
 			currentVariant: {
@@ -263,8 +296,13 @@ const productMapper = {
 				slug: currentVariant.url_slug,
 				price: currentVariant.price || currentVariant.Price,
 				image: getImageUrl(currentVariant.cover_image_url),
-				effectiveMax: currentVariant.effectiveMax ?? currentVariant.product_limit ?? product.product_limit ?? null,
-				productLimit: currentVariant.productLimit ?? currentVariant.product_limit ?? null,
+				effectiveMax:
+					currentVariant.effectiveMax ??
+					currentVariant.product_limit ??
+					product.product_limit ??
+					null,
+				productLimit:
+					currentVariant.productLimit ?? currentVariant.product_limit ?? null,
 				colors: mapColors(currentVariant),
 				photos: currentVariant.photo_collection?.map((url) =>
 					getImageUrl(url),
@@ -275,7 +313,8 @@ const productMapper = {
 				name: v.display_name,
 				slug: v.url_slug,
 				price: v.price || v.Price,
-				effectiveMax: v.effectiveMax ?? v.product_limit ?? product.product_limit ?? null,
+				effectiveMax:
+					v.effectiveMax ?? v.product_limit ?? product.product_limit ?? null,
 				colors: mapColors(v),
 			})),
 			specifications,

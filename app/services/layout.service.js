@@ -1,29 +1,19 @@
-/**
- * Application Layer - Layout Service
- */
-import { ILayoutRepository } from "@/core/domain/repositories/layout.repository.interface";
-
-/**
- * Factory function to create layout service with dependency injection
- * @param {ILayoutRepository} repository
- * @returns {ILayoutRepository}
- */
-export const createLayoutService = (repository) => ({
+const layoutService = {
 	async getNavItems() {
 		try {
-			return await repository.getNavItems();
-		} catch (error) {
+			return await layoutRepository.getNavItems();
+		} catch {
 			return [];
 		}
 	},
 
 	async getFooterData() {
 		try {
-			return await repository.getFooterData();
-		} catch (error) {
+			return await layoutRepository.getFooterData();
+		} catch {
 			return null;
 		}
 	},
-});
+};
 
 export default createLayoutService;

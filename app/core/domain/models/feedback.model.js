@@ -10,11 +10,12 @@ export class FeedbackSubmission {
 
 	toContactPayload() {
 		return {
-			rating: this.rating,
-			feedbackArea: this.subject,
-			customerName: this.fullName,
+			fullName: this.fullName,
 			phoneNumber: this.phone,
-			content: this.message,
+			email: this.email,
+			subject: `Góp ý - ${this.subject}`,
+			message: `[Mức độ hài lòng: ${this.rating}/5]\n${this.message}`,
+			rating: this.rating,
 		};
 	}
 }

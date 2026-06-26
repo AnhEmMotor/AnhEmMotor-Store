@@ -1,14 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useAuthStore } from "./auth.store";
-import { userRepository } from "@/core/infrastructure/repositories/user.repository";
-import { createUserService } from "@/services/user.service";
+import { userService } from "@/services/user.service";
 import { userMapper } from "@/mappers/user.mapper";
-
-const userService = createUserService(userRepository);
 
 export const useUserStore = defineStore("user", () => {
 	const service = userService;
+
 	const authStore = useAuthStore();
 	const isLoading = ref(false);
 	const isUploadingAvatar = ref(false);
@@ -148,4 +146,3 @@ export const useUserStore = defineStore("user", () => {
 		changePassword,
 	};
 });
-

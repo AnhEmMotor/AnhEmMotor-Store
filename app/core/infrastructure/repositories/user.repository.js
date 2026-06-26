@@ -1,6 +1,3 @@
-/**
- * Infrastructure Layer - User Repository
- */
 export const userRepository = {
 	async getUserProfile() {
 		const axios = useAxios();
@@ -16,7 +13,10 @@ export const userRepository = {
 
 	async changePassword(passwordData) {
 		const axios = useAxios();
-		const response = await axios.post("/api/v1/auth/change-password", passwordData);
+		const response = await axios.post(
+			"/api/v1/auth/change-password",
+			passwordData,
+		);
 		return response.data;
 	},
 
@@ -26,5 +26,5 @@ export const userRepository = {
 			headers: { "Content-Type": "multipart/form-data" },
 		});
 		return response.data;
-	}
+	},
 };

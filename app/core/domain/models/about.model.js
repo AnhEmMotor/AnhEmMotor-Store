@@ -1,7 +1,3 @@
-/**
- * Domain Model: AboutContent
- * Value Object representing about page content
- */
 export class AboutContent {
 	constructor(data = {}) {
 		this.mission = {
@@ -10,7 +6,7 @@ export class AboutContent {
 		};
 		this.services = {
 			title: data.services?.title || "",
-			items: (data.services?.items || []).map(item => ({
+			items: (data.services?.items || []).map((item) => ({
 				label: item.label || "",
 				desc: item.desc || "",
 			})),
@@ -21,7 +17,7 @@ export class AboutContent {
 		};
 		this.whyChooseUs = {
 			title: data.whyChooseUs?.title || "",
-			items: (data.whyChooseUs?.items || []).map(item => ({
+			items: (data.whyChooseUs?.items || []).map((item) => ({
 				text: item.text || "",
 				isStrong: !!item.isStrong,
 			})),
@@ -37,5 +33,15 @@ export class AboutContent {
 			subtitle: data.video?.subtitle || "",
 			url: data.video?.url || "",
 		};
+	}
+}
+
+/**
+ * Entity for Store Location
+ */
+export class StoreLocation {
+	constructor(data = {}) {
+		this.title = data.title || "";
+		this.address = data.address || "";
 	}
 }

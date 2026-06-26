@@ -1,12 +1,5 @@
-import { recruitmentRepository } from "~/core/infrastructure/repositories/recruitment.repository"
-import { createRecruitmentService } from "~/services/recruitment.service"
+import { recruitmentService } from "../core/application/services/recruitment.service";
 
-const recruitmentService = createRecruitmentService(recruitmentRepository)
-
-/**
- * Application Layer - Recruitment Composable
- * Connects the UI to the Recruitment Service
- */
 export function useRecruitment() {
 	const jobs = ref([]);
 	const faqs = ref([]);
@@ -48,19 +41,6 @@ export function useRecruitment() {
 		}
 	};
 
-	const uploadCv = async (formData) => {
-		isLoading.value = true;
-		try {
-			const response = await recruitmentService.uploadCv(formData);
-			return response;
-		} catch (e) {
-			error.value = e;
-			throw e;
-		} finally {
-			isLoading.value = false;
-		}
-	};
-
 	return {
 		jobs,
 		faqs,
@@ -69,7 +49,5 @@ export function useRecruitment() {
 		fetchJobs,
 		fetchFaqs,
 		submitApplication,
-		uploadCv
 	};
 }
-
