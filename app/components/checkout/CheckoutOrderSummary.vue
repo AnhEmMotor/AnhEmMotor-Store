@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useCart } from "~/composables/useCart";
 import orderMapper from "~/mappers/order.mapper";
 
@@ -10,7 +10,6 @@ const {
 	updateQuantity,
 	isPending,
 	clearCart,
-	validateProductLimit,
 } = useCart();
 const orderStore = useOrderStore();
 const { depositSettings } = useStoreSettings();
@@ -40,9 +39,9 @@ async function handleUpdateQuantity(item, newQuantity, index) {
 		isChecking.value = true;
 		await new Promise((resolve) => setTimeout(resolve, 500));
 
-		const validation = validateProductLimit(item.id, change);
-		if (!validation.isValid) {
-			orderStore.fieldErrors[item.id] = validation.message;
+		const limit = item.effectiveMax;
+		if (limit != null && newQuantity > limit) {
+			orderStore.fieldErrors[item.id] = `Đã đạt số lượng mua tối đa (${limit}) cho sản phẩm này.`;
 			isChecking.value = false;
 			return;
 		}
@@ -52,54 +51,10 @@ async function handleUpdateQuantity(item, newQuantity, index) {
 	updateQuantity(item.id, newQuantity);
 }
 
-async function handlePlaceOrder() {
-	const instance = useNuxtApp();
-	const authStore = useAuthStore();
+const emit = defineEmits(["place-order"]);
 
-	if (!authStore.isLoggedIn) {
-		instance.$toast.error("Vui lòng đăng nhập để đặt hàng!");
-		return;
-	}
-
-	if (!orderStore.validateShippingInfo()) {
-		return;
-	}
-
-	try {
-		const order = await orderStore.createOrder(cartItems.value);
-		if (order?.id) {
-			clearCart();
-
-			if (orderStore.shippingInfo.paymentMethod === "COD") {
-				navigateTo(`/order-success?id=${order.id}`);
-			} else {
-				const config = useRuntimeConfig();
-				const { data: paymentLink } = await useFetch(
-					`${config.public.apiUrlForBrowserClient}/api/payment/link/${order.id}`,
-					{
-						headers: {
-							Authorization: authStore.accessToken
-								? `Bearer ${authStore.accessToken}`
-								: "",
-						},
-					},
-				);
-
-				if (paymentLink.value) {
-					window.location.href = paymentLink.value;
-				} else {
-					toast.error(
-						"Không thể lấy link thanh toán. Vui lòng thử lại trong danh sách đơn hàng.",
-					);
-					navigateTo("/orders");
-				}
-			}
-		}
-	} catch {
-		if (orderStore.error) {
-			toast.error(orderStore.error);
-		}
-	}
+function handlePlaceOrder() {
+	emit("place-order");
 }
 </script>
 

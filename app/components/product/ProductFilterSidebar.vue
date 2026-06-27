@@ -16,6 +16,8 @@ const productStore = useProductStore();
 const MAX_PRICE = 60000000;
 const BRAND_PAGE_SIZE = 8;
 const brandPage = ref(1);
+const CATEGORY_PAGE_SIZE = 8;
+const categoryPage = ref(1);
 
 const {
 	data: filterFacetsData,
@@ -56,7 +58,7 @@ const {
 
 		return {
 			brands: [...brandsById.values()].sort(byProductCount),
-			categories: [...categoriesById.values()].sort(byProductCount).slice(0, 5),
+			categories: [...categoriesById.values()].sort(byProductCount),
 		};
 	},
 	staleTime: 1000 * 60 * 60,
@@ -90,6 +92,34 @@ const goToNextBrandPage = () => {
 watch(brands, () => {
 	if (brandPage.value > brandTotalPages.value) {
 		brandPage.value = brandTotalPages.value;
+	}
+});
+
+const categoryTotalPages = computed(() => Math.max(1, Math.ceil(categories.value.length / CATEGORY_PAGE_SIZE)));
+
+const paginatedCategories = computed(() => {
+	const start = (categoryPage.value - 1) * CATEGORY_PAGE_SIZE;
+	return categories.value.slice(start, start + CATEGORY_PAGE_SIZE);
+});
+
+const canGoPreviousCategoryPage = computed(() => categoryPage.value > 1);
+const canGoNextCategoryPage = computed(() => categoryPage.value < categoryTotalPages.value);
+
+const goToPreviousCategoryPage = () => {
+	if (canGoPreviousCategoryPage.value) {
+		categoryPage.value -= 1;
+	}
+};
+
+const goToNextCategoryPage = () => {
+	if (canGoNextCategoryPage.value) {
+		categoryPage.value += 1;
+	}
+};
+
+watch(categories, () => {
+	if (categoryPage.value > categoryTotalPages.value) {
+		categoryPage.value = categoryTotalPages.value;
 	}
 });
 
@@ -352,20 +382,49 @@ const formatVND = (val) => {
 					<div v-if="isLoadingFilterFacets" class="py-4 flex justify-center">
 						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
 					</div>
-					<div v-else-if="categories.length > 0" class="grid grid-cols-3 sm:grid-cols-2 gap-2">
-						<button
-							v-for="cat in categories"
-							:key="cat.id"
-							class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
-							:class="[
-								isCategorySelected(cat.id)
-									? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-									: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
-							]"
-							@click="toggleCategory(cat.id)"
+					<div v-else-if="categories.length > 0" class="space-y-3">
+						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+							<button
+								v-for="cat in paginatedCategories"
+								:key="cat.id"
+								class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
+								:class="[
+									isCategorySelected(cat.id)
+										? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+										: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+								]"
+								@click="toggleCategory(cat.id)"
+							>
+								{{ cat.name }}
+							</button>
+						</div>
+
+						<div
+							v-if="categoryTotalPages > 1"
+							class="flex items-center justify-between rounded-xl bg-gray-50 px-2 py-1.5"
 						>
-							{{ cat.name }}
-						</button>
+							<button
+								type="button"
+								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+								:disabled="!canGoPreviousCategoryPage"
+								aria-label="Trang danh mục trước"
+								@click="goToPreviousCategoryPage"
+							>
+								<Icon name="fa6-solid:chevron-left" class="text-[10px]" />
+							</button>
+							<span class="text-[11px] font-black text-gray-500">
+								{{ categoryPage }} / {{ categoryTotalPages }}
+							</span>
+							<button
+								type="button"
+								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+								:disabled="!canGoNextCategoryPage"
+								aria-label="Trang danh mục sau"
+								@click="goToNextCategoryPage"
+							>
+								<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
+							</button>
+						</div>
 					</div>
 				</ClientOnly>
 			</div>
