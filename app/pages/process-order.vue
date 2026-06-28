@@ -42,10 +42,10 @@ const handleCheckout = async () => {
 	try {
 		const order = await orderStore.createOrder(cartItems.value);
 		if (order?.id) {
+			clearCart();
 			const instance = useNuxtApp();
 			const paymentMethod = orderStore.selectedPaymentMethod;
-			if (paymentMethod === "cod") {
-				clearCart();
+			if (paymentMethod?.toLowerCase() === "cod") {
 				instance.$toast.success("Dat hang thanh cong!");
 				navigateTo(`/order-success?id=${order.id}`);
 			} else {
@@ -55,7 +55,6 @@ const handleCheckout = async () => {
 					if (!url) {
 						throw new Error("Không nhận được link thanh toán.");
 					}
-					clearCart();
 					window.location.href = url;
 				} catch (paymentError) {
 					const message =

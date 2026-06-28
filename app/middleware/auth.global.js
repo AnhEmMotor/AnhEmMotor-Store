@@ -2,11 +2,11 @@ import { useAuthStore } from "@/stores/auth.store";
 export default defineNuxtRouteMiddleware(async (to) => {
 	const authStore = useAuthStore();
 
-	if (!authStore.accessToken && authStore.status === "idle") {
+	if ((!authStore.accessToken || !authStore.user) && authStore.status === "idle") {
 		await authStore.initAuth();
 	}
 
-	const token = authStore.accessToken;
+	const isLoggedIn = authStore.isLoggedIn;
 
 	const protectedPages = [
 		"/settings",
@@ -28,12 +28,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	});
 	const isPublicPage = publicPages.includes(to.path);
 
-	if (isProtectedPage && !token) {
+	if (isProtectedPage && !isLoggedIn) {
 		const redirect = encodeURIComponent(to.fullPath);
 		return navigateTo(`/login?redirect=${redirect}`);
 	}
 
-	if (isPublicPage && token) {
+	if (isPublicPage && isLoggedIn) {
 		return navigateTo("/");
 	}
 });

@@ -38,27 +38,6 @@ const calculateTotal = (items) => {
 		0,
 	);
 };
-
-const handlePayment = async () => {
-	const authStore = useAuthStore();
-	const config = useRuntimeConfig();
-	try {
-		const paymentLink = await $fetch(
-			`${config.public.apiUrlForBrowserClient}/api/payment/link/${props.order.id}`,
-			{
-				headers: {
-					Authorization: authStore.accessToken
-						? `Bearer ${authStore.accessToken}`
-						: "",
-				},
-			},
-		);
-
-		if (paymentLink) {
-			window.location.href = paymentLink;
-		}
-	} catch {}
-};
 </script>
 
 <template>
@@ -241,20 +220,6 @@ const handlePayment = async () => {
 					@click="emit('edit', order)"
 				>
 					Sửa thông tin
-				</button>
-				<button
-					v-if="
-						(order.statusId === 'pending' ||
-							order.statusId === 'waiting_deposit') &&
-						order.paymentMethod?.toLowerCase() !== 'cod' &&
-						order.paymentMethod
-					"
-					class="px-6 py-2 bg-red-600 text-white text-xs font-black rounded-full hover:bg-red-700 transition-all active:scale-95 shadow-lg shadow-red-600/20 uppercase tracking-wider flex items-center gap-2"
-					aria-label="Thanh toán ngay qua cổng online"
-					@click="handlePayment"
-				>
-					<Icon name="fa6-solid:credit-card" />
-					<span>Thanh toán ngay qua {{ order.paymentMethod }}</span>
 				</button>
 			</div>
 			<div class="text-right space-y-1">

@@ -14,10 +14,13 @@ const emit = defineEmits(["update:modelValue", "close"]);
 
 const productStore = useProductStore();
 const MAX_PRICE = 60000000;
-const BRAND_PAGE_SIZE = 8;
-const brandPage = ref(1);
-const CATEGORY_PAGE_SIZE = 8;
-const categoryPage = ref(1);
+
+// Static Parent Categories (Xe máy, Phụ tùng, Phụ kiện)
+const staticParentCategories = [
+	{ id: 8, name: "Xe máy" },
+	{ id: 13, name: "Phụ tùng" },
+	{ id: 12, name: "Phụ kiện" },
+];
 
 const {
 	data: filterFacetsData,
@@ -26,101 +29,40 @@ const {
 } = useQuery({
 	queryKey: ["product-filter-facets"],
 	queryFn: async () => {
+		// Fetch all products (page size 200 covers all 80 items) to extract unique brands
 		const response = await productStore.getProducts({
 			page: 1,
-			pageSize: 500,
+			pageSize: 200,
 		});
-		const brandsById = new Map();
-		const categoriesById = new Map();
 
+		const brandsById = new Map();
 		for (const product of response.items || []) {
 			if (product.brandId && product.brand) {
-				const brand = brandsById.get(product.brandId);
 				brandsById.set(product.brandId, {
 					id: product.brandId,
 					name: product.brand,
-					count: (brand?.count || 0) + 1,
-				});
-			}
-
-			if (product.categoryId && product.category) {
-				const category = categoriesById.get(product.categoryId);
-				categoriesById.set(product.categoryId, {
-					id: product.categoryId,
-					name: product.category,
-					count: (category?.count || 0) + 1,
 				});
 			}
 		}
 
-		const byProductCount = (a, b) =>
-			b.count - a.count || a.name.localeCompare(b.name, "vi");
-
 		return {
-			brands: [...brandsById.values()].sort(byProductCount),
-			categories: [...categoriesById.values()].sort(byProductCount),
+			brands: [...brandsById.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")),
 		};
 	},
 	staleTime: 1000 * 60 * 60,
 });
 
 const brands = computed(() => filterFacetsData.value?.brands || []);
-const categories = computed(() => filterFacetsData.value?.categories || []);
 
-const brandTotalPages = computed(() => Math.max(1, Math.ceil(brands.value.length / BRAND_PAGE_SIZE)));
-
-const paginatedBrands = computed(() => {
-	const start = (brandPage.value - 1) * BRAND_PAGE_SIZE;
-	return brands.value.slice(start, start + BRAND_PAGE_SIZE);
-});
-
-const canGoPreviousBrandPage = computed(() => brandPage.value > 1);
-const canGoNextBrandPage = computed(() => brandPage.value < brandTotalPages.value);
-
-const goToPreviousBrandPage = () => {
-	if (canGoPreviousBrandPage.value) {
-		brandPage.value -= 1;
-	}
-};
-
-const goToNextBrandPage = () => {
-	if (canGoNextBrandPage.value) {
-		brandPage.value += 1;
-	}
-};
-
-watch(brands, () => {
-	if (brandPage.value > brandTotalPages.value) {
-		brandPage.value = brandTotalPages.value;
-	}
-});
-
-const categoryTotalPages = computed(() => Math.max(1, Math.ceil(categories.value.length / CATEGORY_PAGE_SIZE)));
-
-const paginatedCategories = computed(() => {
-	const start = (categoryPage.value - 1) * CATEGORY_PAGE_SIZE;
-	return categories.value.slice(start, start + CATEGORY_PAGE_SIZE);
-});
-
-const canGoPreviousCategoryPage = computed(() => categoryPage.value > 1);
-const canGoNextCategoryPage = computed(() => categoryPage.value < categoryTotalPages.value);
-
-const goToPreviousCategoryPage = () => {
-	if (canGoPreviousCategoryPage.value) {
-		categoryPage.value -= 1;
-	}
-};
-
-const goToNextCategoryPage = () => {
-	if (canGoNextCategoryPage.value) {
-		categoryPage.value += 1;
-	}
-};
-
-watch(categories, () => {
-	if (categoryPage.value > categoryTotalPages.value) {
-		categoryPage.value = categoryTotalPages.value;
-	}
+const selectedBrandId = computed({
+	get: () => {
+		const ids = props.modelValue.brand_ids || [];
+		return ids.length > 0 ? ids[0] : "";
+	},
+	set: (val) => {
+		const ids = val ? [Number(val)] : [];
+		emit("update:modelValue", { ...props.modelValue, brand_ids: ids });
+	},
 });
 
 
@@ -323,49 +265,20 @@ const formatVND = (val) => {
 					>
 						Không thể tải danh sách thương hiệu.
 					</p>
-					<div v-else-if="brands.length > 0" class="space-y-3">
-						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
-							<button
-								v-for="brand in paginatedBrands"
-								:key="brand.id"
-								class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
-								:class="[
-									isBrandSelected(brand.id)
-										? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-										: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
-								]"
-								@click="toggleBrand(brand.id)"
-							>
-								{{ brand.name }}
-							</button>
-						</div>
-
-						<div
-							v-if="brandTotalPages > 1"
-							class="flex items-center justify-between rounded-xl bg-gray-50 px-2 py-1.5"
+					<div v-else class="relative">
+						<select
+							v-model="selectedBrandId"
+							class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl outline-none appearance-none font-semibold text-gray-800 cursor-pointer focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm"
 						>
-							<button
-								type="button"
-								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
-								:disabled="!canGoPreviousBrandPage"
-								aria-label="Trang thương hiệu trước"
-								@click="goToPreviousBrandPage"
-							>
-								<Icon name="fa6-solid:chevron-left" class="text-[10px]" />
-							</button>
-							<span class="text-[11px] font-black text-gray-500">
-								{{ brandPage }} / {{ brandTotalPages }}
-							</span>
-							<button
-								type="button"
-								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
-								:disabled="!canGoNextBrandPage"
-								aria-label="Trang thương hiệu sau"
-								@click="goToNextBrandPage"
-							>
-								<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
-							</button>
-						</div>
+							<option value="">Chọn tất cả</option>
+							<option v-for="brand in brands" :key="brand.id" :value="brand.id">
+								{{ brand.name }}
+							</option>
+						</select>
+						<Icon
+							name="ph:caret-down-bold"
+							class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"
+						/>
 					</div>
 				</ClientOnly>
 			</div>
@@ -378,55 +291,21 @@ const formatVND = (val) => {
 						>Danh Mục</label
 					>
 				</div>
-				<ClientOnly>
-					<div v-if="isLoadingFilterFacets" class="py-4 flex justify-center">
-						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
-					</div>
-					<div v-else-if="categories.length > 0" class="space-y-3">
-						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
-							<button
-								v-for="cat in paginatedCategories"
-								:key="cat.id"
-								class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
-								:class="[
-									isCategorySelected(cat.id)
-										? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-										: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
-								]"
-								@click="toggleCategory(cat.id)"
-							>
-								{{ cat.name }}
-							</button>
-						</div>
-
-						<div
-							v-if="categoryTotalPages > 1"
-							class="flex items-center justify-between rounded-xl bg-gray-50 px-2 py-1.5"
-						>
-							<button
-								type="button"
-								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
-								:disabled="!canGoPreviousCategoryPage"
-								aria-label="Trang danh mục trước"
-								@click="goToPreviousCategoryPage"
-							>
-								<Icon name="fa6-solid:chevron-left" class="text-[10px]" />
-							</button>
-							<span class="text-[11px] font-black text-gray-500">
-								{{ categoryPage }} / {{ categoryTotalPages }}
-							</span>
-							<button
-								type="button"
-								class="h-8 w-8 rounded-lg border border-gray-100 bg-white text-gray-500 transition hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
-								:disabled="!canGoNextCategoryPage"
-								aria-label="Trang danh mục sau"
-								@click="goToNextCategoryPage"
-							>
-								<Icon name="fa6-solid:chevron-right" class="text-[10px]" />
-							</button>
-						</div>
-					</div>
-				</ClientOnly>
+				<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+					<button
+						v-for="cat in staticParentCategories"
+						:key="cat.id"
+						class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
+						:class="[
+							isCategorySelected(cat.id)
+								? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+								: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+						]"
+						@click="toggleCategory(cat.id)"
+					>
+						{{ cat.name }}
+					</button>
+				</div>
 			</div>
 
 

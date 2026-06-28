@@ -133,8 +133,8 @@
 				</NuxtLink>
 
 				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
-				<nav class="hidden xl:block">
-					<ul class="flex items-center gap-4">
+				<nav class="hidden xl:block mx-auto">
+					<ul class="flex items-center gap-8">
 						
 						<li>
 							<NuxtLink
