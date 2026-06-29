@@ -1,8 +1,8 @@
 import {
 	FeedbackSubmission,
 	FeedbackSubmissionResult,
-} from "../../domain/models/feedback.model";
-import { feedbackRepository } from "../../infrastructure/repositories/feedback.repository";
+} from "../core/domain/models/feedback.model";
+import { feedbackRepository } from "../core/infrastructure/repositories/feedback.repository";
 
 export const feedbackService = {
 	async submitFeedback(formData) {

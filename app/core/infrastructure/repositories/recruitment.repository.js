@@ -134,9 +134,23 @@ export const recruitmentRepository = {
 		];
 	},
 
-	submitApplication: async () => {
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+	submitApplication: async (payload) => {
+		const axios = useAxios();
+		const response = await axios.post("/api/v1/Contacts/job-application", {
+			request: {
+				fullName: payload.name,
+				email: payload.email,
+				phoneNumber: payload.phone,
+				appliedPosition: payload.position,
+				cvFileUrl: payload.cvFileUrl || "",
+				coverLetter: payload.message,
+			},
+		});
 
-		return { success: true, message: "Application submitted successfully" };
+		return {
+			success: true,
+			id: response.data,
+			message: "Gửi hồ sơ ứng viên thành công.",
+		};
 	},
 };
