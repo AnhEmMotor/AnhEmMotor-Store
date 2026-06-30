@@ -59,7 +59,7 @@ function handlePlaceOrder() {
 </script>
 
 <template>
-	<div class="lg:w-[400px] space-y-6">
+	<div class="lg:w-[460px] space-y-6">
 		<div
 			class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 sticky top-24"
 		>
@@ -71,7 +71,7 @@ function handlePlaceOrder() {
 			</h3>
 
 			<div
-				class="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar mb-6"
+				class="space-y-5 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar mb-8"
 			>
 				<template v-if="isPending && cartDetails.length === 0">
 					<div
@@ -178,7 +178,7 @@ function handlePlaceOrder() {
 				</template>
 			</div>
 
-			<div class="space-y-3 pt-6 border-t border-gray-100">
+			<div class="space-y-4 pt-6 border-t border-gray-100">
 				<div class="flex justify-between text-sm">
 					<span class="text-gray-500 font-medium">Tạm tính</span>
 					<span class="font-bold text-gray-900">{{
@@ -195,7 +195,7 @@ function handlePlaceOrder() {
 				</div>
 				<div
 					v-if="orderSummary.requiresDeposit"
-					class="rounded-2xl border border-amber-200 bg-amber-50 p-4 space-y-2"
+					class="rounded-2xl border border-amber-200 bg-amber-50/70 p-5 space-y-3"
 				>
 					<div class="flex items-center gap-2 text-amber-700">
 						<Icon name="fa6-solid:circle-info" class="text-sm" />
@@ -221,7 +221,7 @@ function handlePlaceOrder() {
 					</div>
 				</div>
 
-				<div class="flex justify-between pt-4 border-t border-gray-100">
+				<div class="flex justify-between pt-6 border-t border-gray-100">
 					<span class="text-lg font-black text-gray-900 uppercase">
 						{{
 							orderSummary.requiresDeposit ? "Thanh toán hôm nay" : "Tổng cộng"
@@ -234,7 +234,7 @@ function handlePlaceOrder() {
 
 				<div
 					v-if="orderSummary.total >= orderStore.settings.Order_value_exceeds"
-					class="mt-4 p-3 bg-blue-50 rounded-xl border border-blue-100 space-y-1"
+					class="mt-6 p-4 bg-blue-50/70 rounded-2xl border border-blue-100 space-y-2.5"
 				>
 					<div class="flex items-center gap-2 text-blue-800">
 						<Icon name="fa6-solid:circle-info" class="text-sm" />

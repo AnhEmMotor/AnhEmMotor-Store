@@ -117,7 +117,7 @@ const handleCheckout = async () => {
 							<div class="h-64 bg-gray-200 rounded-3xl" />
 							<div class="h-48 bg-gray-200 rounded-3xl" />
 						</div>
-						<div class="lg:w-[400px]">
+						<div class="lg:w-[460px]">
 							<div class="h-[500px] bg-gray-200 rounded-3xl" />
 						</div>
 					</div>
