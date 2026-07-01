@@ -27,8 +27,7 @@ export class AppContent {
 		this.subtitle = data.subtitle || "";
 		this.description = data.description || "";
 		this.downloadLinks = {
-			appStore: data.downloadLinks?.appStore || "#",
-			googlePlay: data.downloadLinks?.googlePlay || "#",
+			apk: data.downloadLinks?.apk || "#",
 		};
 		this.stats = (data.stats || []).map((s) => new AppStat(s));
 		this.features = (data.features || []).map((f) => new AppFeature(f));

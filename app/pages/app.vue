@@ -95,38 +95,12 @@ if (import.meta.client) {
 						class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4 animate-reveal-up opacity-0 [animation-delay:600ms] fill-mode-forwards"
 					>
 						<a
-							:href="appStore.appContent.downloadLinks.appStore"
-							target="_blank"
-							class="flex items-center gap-3 px-6 py-3 bg-white hover:bg-gray-100 text-gray-900 rounded-2xl transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-white/5 hover:shadow-[0_8px_25px_rgba(255,255,255,0.08)] font-black text-left w-full sm:w-auto"
+							:href="appStore.appContent.downloadLinks.apk"
+							download
+							class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-red-600 hover:bg-red-500 text-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 shadow-[0_8px_25px_rgba(230,0,35,0.4)] font-black w-full sm:w-auto"
 						>
-							<Icon name="ph:apple-logo-fill" class="text-3xl text-gray-900" />
-							<div class="leading-none">
-								<div
-									class="text-[9px] uppercase tracking-wider text-gray-500 font-bold"
-								>
-									Tải ứng dụng trên
-								</div>
-								<div class="text-sm font-[1000] mt-0.5">App Store</div>
-							</div>
-						</a>
-
-						<a
-							:href="appStore.appContent.downloadLinks.googlePlay"
-							target="_blank"
-							class="flex items-center gap-3 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl transition-all duration-300 transform hover:-translate-y-1 border border-white/10 shadow-lg hover:shadow-[0_8px_25px_rgba(230,0,35,0.25)] hover:border-red-650/40 font-black text-left w-full sm:w-auto"
-						>
-							<Icon
-								name="ph:google-play-logo-fill"
-								class="text-3xl text-red-650"
-							/>
-							<div class="leading-none">
-								<div
-									class="text-[9px] uppercase tracking-wider text-gray-400 font-bold"
-								>
-									Tải ứng dụng trên
-								</div>
-								<div class="text-sm font-[1000] mt-0.5">Google Play</div>
-							</div>
+							<Icon name="ph:android-logo-fill" class="text-3xl text-white" />
+							<span class="text-lg font-[1000]">Tải file APK</span>
 						</a>
 					</div>
 
@@ -197,7 +171,7 @@ if (import.meta.client) {
 									>Ưu đãi hôm nay</span
 								>
 								<h3 class="text-sm font-black mt-1 leading-tight">
-									Thay dầu xe máy<br >Giảm ngay 20%
+									Thay dầu xe máy<br />Giảm ngay 20%
 								</h3>
 								<p class="text-[9px] text-white/80 mt-1 font-bold">
 									Độc quyền đặt lịch trên App
