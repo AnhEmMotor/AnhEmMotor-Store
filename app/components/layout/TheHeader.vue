@@ -504,7 +504,6 @@ const isScrolled = ref(false);
 const mobileNavActive = ref(false);
 const isSearchOpen = ref(false);
 const searchTerm = ref("");
-const isCartOpen = ref(false);
 const isTestRideModalOpen = ref(false);
 const isQuoteModalOpen = ref(false);
 
@@ -566,7 +565,7 @@ const closeMobileNav = () => {
 	document.body.style.overflow = "";
 };
 
-const { cartDetails, cartTotal, removeItem, updateQuantity } = useCart();
+const { cartDetails, cartTotal, removeItem, updateQuantity, isCartPanelOpen: isCartOpen } = useCart();
 const toggleCart = () => {
 	isCartOpen.value = !isCartOpen.value;
 };

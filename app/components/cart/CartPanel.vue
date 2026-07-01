@@ -4,9 +4,9 @@
 			:class="[
 				'fixed inset-0 bg-black/40',
 				isOpen
-					? 'opacity-100 pointer-events-auto z-[200]'
+					? 'opacity-100 pointer-events-auto z-[3000]'
 					: shouldRender
-						? 'opacity-0 pointer-events-none z-[200]'
+						? 'opacity-0 pointer-events-none z-[3000]'
 						: 'opacity-0 pointer-events-none -z-10',
 			]"
 			@click="$emit('close')"
@@ -16,7 +16,7 @@
 			:class="[
 				'fixed inset-y-0 right-0 w-full md:w-96 bg-white transform flex flex-col overflow-hidden shadow-2xl',
 				isOpen ? 'translate-x-0' : 'translate-x-full',
-				isOpen || shouldRender ? 'z-[200]' : '-z-10',
+				isOpen || shouldRender ? 'z-[3000]' : '-z-10',
 			]"
 		>
 			<div
