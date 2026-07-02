@@ -6,7 +6,7 @@ export const appRepository = {
 			description:
 				"Đặt lịch bảo dưỡng siêu tốc, quản lý lịch trình chăm sóc xế yêu, tích lũy điểm thưởng đổi quà đặc quyền và khám phá thế giới xe máy chính hãng ngay trên chiếc điện thoại của bạn.",
 			downloadLinks: {
-				apk: "https://github.com/AnhEmMotor/AnhEmMotor-Mobile/releases/download/latest/app-release.apk",
+				apk: "https://github.com/AnhEmMotor/AnhEmMotor-Mobile/releases/download/latest/AnhEmMotor-Latest-Release.apk",
 			},
 			stats: [
 				{
