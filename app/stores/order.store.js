@@ -277,6 +277,7 @@ export const useOrderStore = defineStore("order", () => {
 		fieldErrors,
 		shippingInfo,
 		errors,
+		selectedPaymentMethod,
 		settings,
 		initStatuses,
 		initShippingInfo,

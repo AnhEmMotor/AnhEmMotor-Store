@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"build": "cross-env NODE_OPTIONS='--no-deprecation' nuxi build",
-		"dev": "nuxt dev",
+		"dev": "cross-env NODE_OPTIONS='--max-old-space-size=8192' nuxt dev --port 3000",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",

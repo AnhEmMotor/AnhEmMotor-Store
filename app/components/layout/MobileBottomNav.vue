@@ -53,7 +53,7 @@ defineEmits(["open-menu"]);
 
 const navItems = [
 	{ name: "Trang chủ", path: "/", icon: "ph:house-bold" },
-	{ name: "Xe máy", path: "/products", icon: "ph:motorcycle-bold" },
+	{ name: "Sản phẩm", path: "/products", icon: "ph:package-bold" },
 	{ name: "Khuyến mãi", path: "/promotion", icon: "ph:ticket-bold" },
 	{ name: "Liên hệ", path: "/support", icon: "ph:chat-circle-dots-bold" },
 ];

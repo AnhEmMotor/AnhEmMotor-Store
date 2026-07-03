@@ -1,7 +1,9 @@
 <script setup>
 import { ref, reactive } from "vue";
+import { useFeedbackStore } from "../stores/feedback.store";
 
 const router = useRouter();
+const feedbackStore = useFeedbackStore();
 
 const isSubmitting = ref(false);
 const isSuccess = ref(false);
@@ -24,7 +26,7 @@ const form = reactive({
 	fullName: "",
 	phone: "",
 	email: "",
-	subject: "",
+	subjects: [],
 	message: "",
 	rating: 5,
 });
@@ -40,22 +42,45 @@ const getRatingIcon = (i) =>
 const getRatingLabel = (i) =>
 	["Tệ", "Chưa tốt", "Bình thường", "Tốt", "Rất tốt"][i - 1];
 
+const toggleSubject = (cat) => {
+	const index = form.subjects.indexOf(cat);
+	if (index > -1) {
+		form.subjects.splice(index, 1);
+	} else {
+		form.subjects.push(cat);
+	}
+};
+
 const handleSubmit = async () => {
-	if (!form.subject) return alert("Vui lòng chọn lĩnh vực.");
+	if (form.subjects.length === 0) {
+		return alert("Vui lòng chọn ít nhất một lĩnh vực.");
+	}
 	isSubmitting.value = true;
 
-	setTimeout(() => {
-		isSubmitting.value = false;
+	const success = await feedbackStore.submitFeedback({
+		fullName: form.fullName,
+		phone: form.phone,
+		email: form.email,
+		subject: form.subjects.join(", "),
+		message: form.message,
+		rating: form.rating,
+	});
+
+	isSubmitting.value = false;
+
+	if (success) {
 		isSuccess.value = true;
 		Object.assign(form, {
 			fullName: "",
 			phone: "",
 			email: "",
-			subject: "",
+			subjects: [],
 			message: "",
 			rating: 5,
 		});
-	}, 1500);
+	} else {
+		alert(feedbackStore.statusMessage || "Gửi góp ý thất bại. Vui lòng thử lại.");
+	}
 };
 
 useHead({ title: "Đóng góp ý kiến | AnhEm Motor" });
@@ -144,8 +169,8 @@ useHead({ title: "Đóng góp ý kiến | AnhEm Motor" });
 									:key="cat"
 									type="button"
 									class="fb-pill"
-									:class="{ active: form.subject === cat }"
-									@click="form.subject = cat"
+									:class="{ active: form.subjects.includes(cat) }"
+									@click="toggleSubject(cat)"
 								>
 									{{ cat }}
 								</button>

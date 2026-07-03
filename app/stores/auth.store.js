@@ -489,7 +489,7 @@ export const useAuthStore = defineStore("auth", () => {
 	}
 
 	async function initAuth() {
-		if (accessToken.value) {
+		if (accessToken.value && user.value) {
 			return;
 		}
 		status.value = "pending";

@@ -11,20 +11,40 @@ export const orderService = {
 		}
 	},
 
-	async getMyOrders() {
+	async getMyPurchases(params) {
 		try {
-			return await orderRepository.getMyOrders();
+			return await orderRepository.getMyPurchases(params);
+		} catch {
+			return { items: [], totalCount: 0 };
+		}
+	},
+
+	async getStatusMap() {
+		try {
+			return await orderRepository.getStatusMap();
+		} catch {
+			return {};
+		}
+	},
+
+	async getCancellableStatuses() {
+		try {
+			return await orderRepository.getCancellableStatuses();
 		} catch {
 			return [];
 		}
 	},
 
+	async cancelOrder(orderId) {
+		return await orderRepository.cancelOrder(orderId);
+	},
+
+	async updateOrder(orderId, payload) {
+		return await orderRepository.updateOrder(orderId, payload);
+	},
+
 	async getPaymentLink(orderId) {
-		try {
-			return await orderRepository.getPaymentLink(orderId);
-		} catch {
-			return null;
-		}
+		return await orderRepository.getPaymentLink(orderId);
 	},
 };
 

@@ -107,16 +107,35 @@ const {
 watch(
 	() => route.query,
 	(newQuery) => {
-		filters.value.search = newQuery.search || "";
-		filters.value.optionValueIds = parseArrayQuery(newQuery.optionValueIds);
-		filters.value.category_ids = parseArrayQuery(newQuery.category_ids);
-		filters.value.brand_ids = parseArrayQuery(newQuery.brand_ids);
-		filters.value.minPrice = newQuery.minPrice
-			? Number(newQuery.minPrice)
-			: null;
-		filters.value.maxPrice = newQuery.maxPrice
-			? Number(newQuery.maxPrice)
-			: null;
+		const newSearch = newQuery.search || "";
+		if (filters.value.search !== newSearch) {
+			filters.value.search = newSearch;
+		}
+
+		const newOptionValueIds = parseArrayQuery(newQuery.optionValueIds);
+		if (JSON.stringify(filters.value.optionValueIds) !== JSON.stringify(newOptionValueIds)) {
+			filters.value.optionValueIds = newOptionValueIds;
+		}
+
+		const newCategoryIds = parseArrayQuery(newQuery.category_ids);
+		if (JSON.stringify(filters.value.category_ids) !== JSON.stringify(newCategoryIds)) {
+			filters.value.category_ids = newCategoryIds;
+		}
+
+		const newBrandIds = parseArrayQuery(newQuery.brand_ids);
+		if (JSON.stringify(filters.value.brand_ids) !== JSON.stringify(newBrandIds)) {
+			filters.value.brand_ids = newBrandIds;
+		}
+
+		const newMinPrice = newQuery.minPrice ? Number(newQuery.minPrice) : null;
+		if (filters.value.minPrice !== newMinPrice) {
+			filters.value.minPrice = newMinPrice;
+		}
+
+		const newMaxPrice = newQuery.maxPrice ? Number(newQuery.maxPrice) : null;
+		if (filters.value.maxPrice !== newMaxPrice) {
+			filters.value.maxPrice = newMaxPrice;
+		}
 	},
 	{ deep: true },
 );
