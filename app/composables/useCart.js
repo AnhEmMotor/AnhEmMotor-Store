@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/vue-query";
 
 const CART_KEY = "cartItems";
 const cartItems = ref([]);
+const isCartPanelOpen = ref(false);
 
 const keyPartsFor = (item) => {
 	const rawVariantId = item.productVariantId ?? item.variantId ?? item.id;
@@ -198,40 +199,52 @@ export function useCart() {
 				h(
 					"div",
 					{
-						class: "flex flex-col gap-1",
-						style: { fontFamily: "'Be Vietnam Pro', sans-serif" },
+						class: "flex flex-col gap-2",
+						style: { fontFamily: "'Be Vietnam Pro', sans-serif", fontSize: "16px" },
 					},
 					[
 						h("div", { class: "flex items-center gap-2" }, [
-							h("span", { class: "font-bold text-sm" }, "Da them vao gio"),
+							h("span", { class: "font-bold text-base text-gray-800" }, "Đã thêm vào giỏ"),
 						]),
-						h("div", { class: "text-xs text-gray-600" }, [
+						h("div", { class: "text-sm text-gray-700" }, [
 							h(
 								"span",
 								{ class: "font-bold" },
 								product.displayName || product.name,
 							),
 						]),
-						h("div", { class: "text-xs text-gray-500" }, [
-							`So luong hien tai: ${newQuantity}`,
+						h("div", { class: "text-sm text-gray-600" }, [
+							`Số lượng hiện tại: ${newQuantity}`,
 						]),
 						h(
-							"span",
+							"button",
 							{
-								class:
-									"text-xs font-bold text-red-500 underline mt-1 block cursor-pointer",
+								style: {
+									marginTop: "12px",
+									width: "100%",
+									padding: "10px 16px",
+									backgroundColor: "#e31837", // bg-primary color
+									color: "white",
+									fontSize: "14px",
+									fontWeight: "bold",
+									borderRadius: "8px",
+									border: "none",
+									cursor: "pointer",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+									textAlign: "center"
+								},
 								onClick: (e) => {
 									e.preventDefault();
-									navigateTo("/process-order");
+									isCartPanelOpen.value = true;
 								},
 							},
-							"Xem gio hang & Thanh toan",
+							"Xem giỏ hàng & Thanh toán",
 						),
 					],
 				),
 				{
 					position: "bottom-right",
-					autoClose: 3000,
+					autoClose: 4000,
 					closeOnClick: true,
 				},
 			);
@@ -296,6 +309,7 @@ export function useCart() {
 		removeItem,
 		updateQuantity,
 		clearCart,
+		isCartPanelOpen,
 	};
 }
 

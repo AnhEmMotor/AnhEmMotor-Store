@@ -98,7 +98,7 @@ const handleCheckout = async () => {
 								class="text-2xl font-black text-gray-900 flex items-center gap-3"
 							>
 								<Icon name="fa6-solid:truck-fast" class="text-red-600" />
-								THONG TIN THANH TOAN
+								THÔNG TIN THANH TOÁN
 							</h1>
 						</div>
 
@@ -117,7 +117,7 @@ const handleCheckout = async () => {
 							<div class="h-64 bg-gray-200 rounded-3xl" />
 							<div class="h-48 bg-gray-200 rounded-3xl" />
 						</div>
-						<div class="lg:w-[400px]">
+						<div class="lg:w-[460px]">
 							<div class="h-[500px] bg-gray-200 rounded-3xl" />
 						</div>
 					</div>

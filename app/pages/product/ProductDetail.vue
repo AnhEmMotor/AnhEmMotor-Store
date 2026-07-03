@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import ProductBookingModal from "~/components/product/BookingModal.vue";
 definePageMeta({
 	path: "/product/:slug",
@@ -29,11 +29,14 @@ const mainImage = computed({
 	get: () => {
 		if (selectedImage.value) return selectedImage.value;
 		const colorImage =
-			currentVariant.value?.colors?.[selectedColorIndex.value]?.image;
+			currentVariant.value?.colors?.[selectedColorIndex.value]?.image ||
+			currentVariant.value?.colors?.[selectedColorIndex.value]?.coverImageUrl;
 		if (colorImage) return colorImage;
 		return (
 			detail.value?.currentVariant?.photos?.[0] ||
-			"/assets/image/placeholder-product.webp"
+			detail.value?.currentVariant?.image ||
+			detail.value?.currentVariant?.cover_image_url ||
+			"https://dummyimage.com/600x400/f3f4f6/a1a1aa.png&text=%20"
 		);
 	},
 	set: (val) => {
@@ -41,28 +44,30 @@ const mainImage = computed({
 	},
 });
 
-const isPlaceholderActive = computed(() => {
-	if (
-		selectedImage.value &&
-		selectedImage.value !== "/assets/image/placeholder-product.webp"
-	)
-		return false;
-	return detail.value?.currentVariant?.image?.includes("placeholder-product");
+const isPlaceholderImage = computed(() => {
+	const img = mainImage.value || "";
+	return (
+		img.includes("dummyimage.com") ||
+		img.includes("placeholder-product") ||
+		img.includes("placeholder")
+	);
 });
 
-const allPhotos = computed(() => detail.value?.currentVariant?.photos || []);
 const formattedPrice = computed(() =>
 	productMapper.formatPrice(currentVariant.value?.price),
 );
-const installmentPrice = computed(() => {
+const { depositSettings } = useStoreSettings();
+
+const showDepositInfo = computed(() => {
 	const price = currentVariant.value?.price || 0;
-	if (!price) return "0đ";
-	// Dummy calc: (Price * 1.1) / 24 months
-	const monthly = Math.round((price * 1.1) / 24 / 1000) * 1000;
-	return new Intl.NumberFormat("vi-VN", {
-		style: "currency",
-		currency: "VND",
-	}).format(monthly);
+	const limit = depositSettings.value.orderValueExceeds || 60000000;
+	return price >= limit;
+});
+
+const depositAmount = computed(() => {
+	const price = currentVariant.value?.price || 0;
+	const ratio = depositSettings.value.depositRatio || 30;
+	return productMapper.formatPrice(price * (ratio / 100));
 });
 const variantName = computed(() => currentVariant.value?.name || "");
 const specifications = computed(() => detail.value?.specifications || []);
@@ -222,22 +227,7 @@ watch(slug, () => {
 	selectedImage.value = null;
 });
 
-// Countdown Timer for FOMO
-const timeLeft = ref(3600 * 5 + 1240); // 5h 20m 40s
-let timer = null;
-onMounted(() => {
-	timer = setInterval(() => {
-		if (timeLeft.value > 0) timeLeft.value--;
-	}, 1000);
-});
-onUnmounted(() => clearInterval(timer));
 
-const formattedCountdown = computed(() => {
-	const h = Math.floor(timeLeft.value / 3600);
-	const m = Math.floor((timeLeft.value % 3600) / 60);
-	const s = timeLeft.value % 60;
-	return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-});
 
 useSeoMeta(productMapper.toSeoMeta(detail.value));
 
@@ -363,7 +353,8 @@ const bookTestDrive = () => {
 					<div class="lg:col-span-7 space-y-8">
 						<div class="relative">
 							<div
-								class="relative aspect-[16/10] rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 group z-10"
+								class="relative aspect-[16/10] rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 group z-10"
+								:class="isPlaceholderImage ? 'bg-slate-900' : 'bg-white'"
 							>
 								<div class="absolute top-6 left-6 z-20 flex flex-col gap-2">
 									<span
@@ -379,7 +370,8 @@ const bookTestDrive = () => {
 								<img
 									:src="mainImage"
 									:alt="detail.product.name"
-									class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+									class="w-full h-full transition-transform duration-1000 group-hover:scale-105"
+									:class="isPlaceholderImage ? 'object-contain p-8' : 'object-cover'"
 									loading="eager"
 								>
 							</div>
@@ -390,23 +382,26 @@ const bookTestDrive = () => {
 						</div>
 
 						<div
-							v-if="!isPlaceholderActive && allPhotos.length > 1"
+							v-if="currentVariant?.colors?.length > 0"
 							class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide px-2"
 						>
 							<button
-								v-for="(photo, index) in allPhotos"
+								v-for="(color, index) in currentVariant.colors"
 								:key="index"
 								class="relative w-20 h-20 rounded-[1.5rem] overflow-hidden flex-shrink-0 transition-all duration-500 border-2"
 								:class="
-									mainImage === photo
-										? 'border-primary ring-4 ring-primary/5 scale-105 shadow-xl'
-										: 'border-transparent hover:border-gray-200 shadow-sm opacity-50 hover:opacity-100'
+									selectedColorIndex === index
+										? 'border-primary ring-4 ring-primary/5 scale-105 shadow-xl bg-slate-900'
+										: 'border-transparent hover:border-gray-200 shadow-sm opacity-50 hover:opacity-100 bg-slate-900/80'
 								"
-								@click="mainImage = photo"
+								@click="
+									selectedColorIndex = index;
+									selectedImage = null;
+								"
 							>
 								<img
-									:src="photo"
-									class="w-full h-full object-cover"
+									:src="color.image || color.coverImageUrl || currentVariant.image || '/assets/image/placeholder-product.webp'"
+									class="w-full h-full object-contain p-2"
 									loading="lazy"
 								>
 							</button>
@@ -494,15 +489,15 @@ const bookTestDrive = () => {
 									{{ formattedPrice }}
 								</div>
 								<div
+									v-if="showDepositInfo"
 									class="flex items-center gap-2 text-gray-500 font-bold text-xs"
 								>
 									<Icon name="fa6-solid:calendar-check" class="text-primary" />
 									<span
-										>Trả góp chỉ từ
-										<span class="text-gray-900 font-black text-sm">{{
-											installmentPrice
-										}}</span
-										>/tháng</span
+										>Yêu cầu đặt cọc trước ({{ depositSettings.depositRatio }}%):
+										<span class="text-red-600 font-black text-sm">{{
+											depositAmount
+										}}</span></span
 									>
 								</div>
 							</div>
@@ -580,42 +575,6 @@ const bookTestDrive = () => {
 
 							<!-- Actions -->
 							<div class="space-y-4 pt-2">
-								<div
-									class="flex items-center justify-between px-6 py-4 bg-dark-900 rounded-[1.5rem] border border-white/10 shadow-xl"
-								>
-									<div class="flex items-center gap-3">
-										<div class="relative">
-											<Icon
-												name="fa6-solid:bolt-lightning"
-												class="text-primary text-base relative z-10"
-											/>
-											<div
-												class="absolute inset-0 bg-primary/50 blur-md animate-pulse"
-											/>
-										</div>
-										<div class="flex flex-col">
-											<span
-												class="text-[8px] font-black text-primary uppercase tracking-[0.1em]"
-												>Ưu đãi kết thúc</span
-											>
-											<span
-												class="text-base font-black text-white font-mono tracking-wider"
-												>{{ formattedCountdown }}</span
-											>
-										</div>
-									</div>
-									<div class="h-8 w-[1px] bg-white/10" />
-									<div class="text-right">
-										<span
-											class="text-[8px] font-black text-gray-400 uppercase tracking-[0.1em]"
-											>Còn lại</span
-										>
-										<div class="text-lg font-black text-white leading-none">
-											08 <span class="text-[10px] text-primary italic">xe</span>
-										</div>
-									</div>
-								</div>
-
 								<div class="grid grid-cols-1 gap-3">
 									<template v-if="isMotorbike">
 										<button
