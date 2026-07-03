@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import ProductBookingModal from "~/components/product/BookingModal.vue";
 definePageMeta({
 	path: "/product/:slug",
@@ -53,16 +53,6 @@ const isPlaceholderImage = computed(() => {
 	);
 });
 
-const isPlaceholderActive = computed(() => {
-	if (
-		selectedImage.value &&
-		selectedImage.value !== "/assets/image/placeholder-product.webp"
-	)
-		return false;
-	return detail.value?.currentVariant?.image?.includes("placeholder-product");
-});
-
-const allPhotos = computed(() => detail.value?.currentVariant?.photos || []);
 const formattedPrice = computed(() =>
 	productMapper.formatPrice(currentVariant.value?.price),
 );

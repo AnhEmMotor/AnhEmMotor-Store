@@ -171,7 +171,7 @@ if (import.meta.client) {
 									>Ưu đãi hôm nay</span
 								>
 								<h3 class="text-sm font-black mt-1 leading-tight">
-									Thay dầu xe máy<br />Giảm ngay 20%
+									Thay dầu xe máy<br >Giảm ngay 20%
 								</h3>
 								<p class="text-[9px] text-white/80 mt-1 font-bold">
 									Độc quyền đặt lịch trên App

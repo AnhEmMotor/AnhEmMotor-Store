@@ -9,7 +9,6 @@ const {
 	removeItem,
 	updateQuantity,
 	isPending,
-	clearCart,
 } = useCart();
 const orderStore = useOrderStore();
 const { depositSettings } = useStoreSettings();

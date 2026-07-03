@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 
 
@@ -98,12 +98,7 @@ const search = computed({
 	},
 });
 
-const selectedBrands = computed({
-	get: () => props.modelValue.brand_ids || [],
-	set: (val) => {
-		emit("update:modelValue", { ...props.modelValue, brand_ids: val });
-	},
-});
+
 
 const selectedCategories = computed({
     get: () => props.modelValue.category_ids || [],
@@ -127,18 +122,7 @@ const maxPrice = computed({
 	},
 });
 
-const isBrandSelected = (brandId) => selectedBrands.value.includes(brandId);
 
-const toggleBrand = (brandId) => {
-	const current = [...selectedBrands.value];
-	const index = current.indexOf(brandId);
-	if (index > -1) {
-		current.splice(index, 1);
-	} else {
-		current.push(brandId);
-	}
-	selectedBrands.value = current;
-};
 
 const isCategorySelected = (catId) => selectedCategories.value.includes(catId);
 
