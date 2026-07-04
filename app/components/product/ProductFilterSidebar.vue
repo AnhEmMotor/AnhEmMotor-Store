@@ -15,12 +15,6 @@ const emit = defineEmits(["update:modelValue", "close"]);
 const productStore = useProductStore();
 const MAX_PRICE = 60000000;
 
-// Static Parent Categories (Xe máy, Phụ tùng, Phụ kiện)
-const staticParentCategories = [
-	{ id: 8, name: "Xe máy" },
-	{ id: 13, name: "Phụ tùng" },
-	{ id: 12, name: "Phụ kiện" },
-];
 
 const {
 	data: filterFacetsData,
@@ -99,15 +93,6 @@ const search = computed({
 });
 
 
-
-const selectedCategories = computed({
-    get: () => props.modelValue.category_ids || [],
-    set: (val) => {
-        emit("update:modelValue", { ...props.modelValue, category_ids: val });
-    },
-});
-
-
 const minPrice = computed({
 	get: () => props.modelValue.minPrice ?? 0,
 	set: (val) => {
@@ -121,21 +106,6 @@ const maxPrice = computed({
 		emit("update:modelValue", { ...props.modelValue, maxPrice: val });
 	},
 });
-
-
-
-const isCategorySelected = (catId) => selectedCategories.value.includes(catId);
-
-const toggleCategory = (catId) => {
-    const current = [...selectedCategories.value];
-    const index = current.indexOf(catId);
-    if (index > -1) {
-        current.splice(index, 1);
-    } else {
-        current.push(catId);
-    }
-    selectedCategories.value = current;
-};
 
 
 const isSelected = (val) => {
@@ -267,30 +237,6 @@ const formatVND = (val) => {
 				</ClientOnly>
 			</div>
 
-			<!-- Categories -->
-			<div class="space-y-4">
-				<div class="flex items-center gap-2">
-					<div class="w-1 h-4 bg-primary rounded-full"/>
-					<label class="text-sm font-black text-gray-900 uppercase tracking-widest"
-						>Danh Mục</label
-					>
-				</div>
-				<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
-					<button
-						v-for="cat in staticParentCategories"
-						:key="cat.id"
-						class="group flex items-center justify-center px-2 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 min-h-[44px]"
-						:class="[
-							isCategorySelected(cat.id)
-								? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
-								: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
-						]"
-						@click="toggleCategory(cat.id)"
-					>
-						{{ cat.name }}
-					</button>
-				</div>
-			</div>
 
 
 			<!-- Price Range -->

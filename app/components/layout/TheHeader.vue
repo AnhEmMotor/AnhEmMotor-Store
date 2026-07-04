@@ -138,13 +138,24 @@
 						
 						<li>
 							<NuxtLink
-								to="/products"
+								:to="xeMayLink"
 								class="nav-link-refined"
-								:class="{ active: isRouteActive('/products') }"
-								>SẢN PHẨM
+								:class="{ active: isRouteActive(xeMayLink) }"
+								>XE MÁY
 								<span
 									class="nav-dot-floating"
-									:class="{ active: isRouteActive('/products') }"
+									:class="{ active: isRouteActive(xeMayLink) }"
+							/></NuxtLink>
+						</li>
+						<li>
+							<NuxtLink
+								:to="phuTungLink"
+								class="nav-link-refined"
+								:class="{ active: isRouteActive(phuTungLink) }"
+								>PHỤ TÙNG & PHỤ KIỆN
+								<span
+									class="nav-dot-floating"
+									:class="{ active: isRouteActive(phuTungLink) }"
 							/></NuxtLink>
 						</li>
 						<li>
@@ -545,16 +556,29 @@ const handleContactSubmit = async (data) => {
 const categoryStore = useCategoryStore();
 
 
-const navItemsMobile = [
+const xeMayLink = computed(() => {
+	const categories = categoryStore.categories || [];
+	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
+	return `/products?category_ids=${xeMayCat ? xeMayCat.id : 8}`;
+});
+
+const phuTungLink = computed(() => {
+	const categories = categoryStore.categories || [];
+	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
+	return `/products?category_ids=${phuTungCats.length > 0 ? phuTungCats.map(c => c.id).join(",") : "12,13"}`;
+});
+
+const navItemsMobile = computed(() => [
 	{ name: "TRANG CHỦ", path: "/" },
-	{ name: "SẢN PHẨM", path: "/products" },
+	{ name: "XE MÁY", path: xeMayLink.value },
+	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: phuTungLink.value },
 	{ name: "KHUYẾN MÃI", path: "/promotion" },
 	{ name: "DỊCH VỤ", path: "/service" },
 	{ name: "SO SÁNH XE", path: "/compare" },
 	{ name: "CÔNG NGHỆ", path: "/technology" },
 	{ name: "TIN TỨC", path: "/news" },
 	{ name: "TUYỂN DỤNG", path: "/recruitment" },
-];
+]);
 
 const openMobileNav = () => {
 	mobileNavActive.value = true;
