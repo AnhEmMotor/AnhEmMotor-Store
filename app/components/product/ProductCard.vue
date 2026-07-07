@@ -30,10 +30,53 @@ const normalizeText = (value) =>
     .trim();
 
 watch(
-  () => props.product,
-  (newProd) => {
-    selectedVariant.value = newProd?.variants?.[0] ?? null;
-    selectedColorKey.value = null;
+  [() => props.product, () => route.query.versions, () => route.query.colors],
+  ([newProd, urlVersions, urlColors]) => {
+    if (!newProd) {
+      selectedVariant.value = null;
+      selectedColorKey.value = null;
+      return;
+    }
+
+    const versionsList = urlVersions ? String(urlVersions).split(",").map(v => v.trim().toLowerCase()) : [];
+    const colorsList = urlColors ? String(urlColors).split(",").map(c => c.trim().toLowerCase()) : [];
+
+    let matchedVariant = null;
+    let matchedColor = null;
+    let matchedColorIndex = -1;
+
+    for (const v of newProd.variants || []) {
+      const fullVName = (v.option_values_text || v.variantName || v.name || "").trim();
+      const cleanVName = fullVName.split(" - ")[0].trim().toLowerCase();
+      const matchesVersion = versionsList.length === 0 || versionsList.includes(cleanVName);
+
+      if (matchesVersion) {
+        if (colorsList.length > 0) {
+          const colors = v.colors || [];
+          for (let i = 0; i < colors.length; i++) {
+            const cName = (colors[i].name || colors[i].colorName || "").trim().toLowerCase();
+            if (colorsList.includes(cName)) {
+              matchedVariant = v;
+              matchedColor = colors[i];
+              matchedColorIndex = i;
+              break;
+            }
+          }
+        } else {
+          matchedVariant = v;
+          break;
+        }
+      }
+      if (matchedVariant) break;
+    }
+
+    selectedVariant.value = matchedVariant || newProd.variants?.[0] || null;
+    
+    if (matchedColor) {
+      selectedColorKey.value = colorKey(matchedColor, matchedColorIndex);
+    } else {
+      selectedColorKey.value = null;
+    }
   },
   { immediate: true },
 );

@@ -135,13 +135,34 @@
 				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
 				<nav class="hidden xl:block mx-auto">
 					<ul class="flex items-center gap-8">
-						
+						<li>
+							<NuxtLink
+								to="/products?type=xe-may"
+								class="nav-link-refined"
+								:class="{ active: isRouteActive('/products?type=xe-may') }"
+								>XE MÁY
+								<span
+									class="nav-dot-floating"
+									:class="{ active: isRouteActive('/products?type=xe-may') }"
+							/></NuxtLink>
+						</li>
+						<li>
+							<NuxtLink
+								to="/products?type=phu-tung-phu-kien"
+								class="nav-link-refined"
+								:class="{ active: isRouteActive('/products?type=phu-tung-phu-kien') }"
+								>PHỤ TÙNG & PHỤ KIỆN
+								<span
+									class="nav-dot-floating"
+									:class="{ active: isRouteActive('/products?type=phu-tung-phu-kien') }"
+							/></NuxtLink>
+						</li>
 						<li>
 							<NuxtLink
 								to="/products"
 								class="nav-link-refined"
 								:class="{ active: isRouteActive('/products') }"
-								>SẢN PHẨM
+								>BẢNG GIÁ
 								<span
 									class="nav-dot-floating"
 									:class="{ active: isRouteActive('/products') }"
@@ -169,7 +190,6 @@
 									:class="{ active: isRouteActive('/service') }"
 							/></NuxtLink>
 						</li>
-						
 						<li>
 							<NuxtLink
 								to="/compare"
@@ -181,8 +201,6 @@
 									:class="{ active: isRouteActive('/compare') }"
 							/></NuxtLink>
 						</li>
-
-						<!-- KHÁM PHÁ -->
 						<li>
 							<NuxtLink
 								to="/technology"
@@ -525,6 +543,26 @@ const submitSearch = async () => {
 
 const isRouteActive = (targetPath) => {
 	if (targetPath === "/") return route.path === "/";
+
+	if (route.path === "/products") {
+		const catIdsStr = route.query.category_ids || "";
+		const catIdsList = catIdsStr ? String(catIdsStr).split(",").map(Number) : [];
+		const type = route.query.type || "";
+
+		const isXeMay = type === "xe-may" || (catIdsList.includes(8) && catIdsList.length === 1);
+		const isPhuTungPhuKien = type === "phu-tung-phu-kien" || (catIdsList.includes(12) && catIdsList.includes(13) && catIdsList.length === 2);
+
+		if (targetPath.includes("type=xe-may")) {
+			return isXeMay;
+		}
+		if (targetPath.includes("type=phu-tung-phu-kien")) {
+			return isPhuTungPhuKien;
+		}
+		if (targetPath === "/products") {
+			return !isXeMay && !isPhuTungPhuKien;
+		}
+	}
+
 	if (targetPath.includes("?")) {
 		return route.fullPath === targetPath;
 	}
@@ -547,7 +585,9 @@ const categoryStore = useCategoryStore();
 
 const navItemsMobile = [
 	{ name: "TRANG CHỦ", path: "/" },
-	{ name: "SẢN PHẨM", path: "/products" },
+	{ name: "XE MÁY", path: "/products?type=xe-may" },
+	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: "/products?type=phu-tung-phu-kien" },
+	{ name: "BẢNG GIÁ", path: "/products" },
 	{ name: "KHUYẾN MÃI", path: "/promotion" },
 	{ name: "DỊCH VỤ", path: "/service" },
 	{ name: "SO SÁNH XE", path: "/compare" },
