@@ -21,15 +21,23 @@ const {
 	isLoading: isLoadingFilterFacets,
 	isError: isFilterFacetsError,
 } = useQuery({
-	queryKey: ["product-filter-facets"],
+	queryKey: computed(() => ["product-filter-facets", props.modelValue.category_ids]),
 	queryFn: async () => {
-		// Fetch all products (page size 200 covers all 80 items) to extract unique brands
-		const response = await productStore.getProducts({
+		const categoryIds = props.modelValue.category_ids || [];
+		const params = {
 			page: 1,
 			pageSize: 200,
-		});
+		};
+		if (categoryIds.length > 0) {
+			params.categoryIds = categoryIds.join(",");
+		}
+		// Fetch all products (page size 200 covers all 80 items) to extract unique brands
+		const response = await productStore.getProducts(params);
 
 		const brandsById = new Map();
+		const versionsSet = new Set();
+		const colorsSet = new Set();
+
 		for (const product of response.items || []) {
 			if (product.brandId && product.brand) {
 				brandsById.set(product.brandId, {
@@ -37,16 +45,36 @@ const {
 					name: product.brand,
 				});
 			}
+
+			for (const v of product.variants || []) {
+				const verName = v.option_values_text || v.variantName || v.name;
+				if (verName) {
+					const cleanVer = verName.split(" - ")[0].trim();
+					if (cleanVer) {
+						versionsSet.add(cleanVer);
+					}
+				}
+				for (const c of v.colors || []) {
+					const colName = c.name || c.colorName;
+					if (colName) {
+						colorsSet.add(colName.trim());
+					}
+				}
+			}
 		}
 
 		return {
 			brands: [...brandsById.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")),
+			versions: [...versionsSet].sort((a, b) => a.localeCompare(b, "vi")),
+			colors: [...colorsSet].sort((a, b) => a.localeCompare(b, "vi")),
 		};
 	},
 	staleTime: 1000 * 60 * 60,
 });
 
 const brands = computed(() => filterFacetsData.value?.brands || []);
+const versions = computed(() => filterFacetsData.value?.versions || []);
+const colors = computed(() => filterFacetsData.value?.colors || []);
 
 const selectedBrandId = computed({
 	get: () => {
@@ -144,7 +172,32 @@ const resetFilters = () => {
 		brand_ids: [],
 		minPrice: null,
 		maxPrice: null,
+		versions: [],
+		colors: [],
 	});
+};
+
+const selectedVersion = computed({
+	get: () => {
+		const vers = props.modelValue.versions || [];
+		return vers.length > 0 ? vers[0] : "";
+	},
+	set: (val) => {
+		const vers = val ? [val] : [];
+		emit("update:modelValue", { ...props.modelValue, versions: vers });
+	},
+});
+
+const isColorSelected = (color) => (props.modelValue.colors || []).includes(color);
+const toggleColor = (color) => {
+	const current = [...(props.modelValue.colors || [])];
+	const index = current.indexOf(color);
+	if (index > -1) {
+		current.splice(index, 1);
+	} else {
+		current.push(color);
+	}
+	emit("update:modelValue", { ...props.modelValue, colors: current });
 };
 
 const optionLabels = {
@@ -161,6 +214,10 @@ const formatVND = (val) => {
 		currency: "VND",
 		maximumFractionDigits: 0,
 	}).format(val);
+};
+
+const searchArticle = (event) => {
+	console.log("Search input change:", event.target.value);
 };
 </script>
 
@@ -197,6 +254,7 @@ const formatVND = (val) => {
 						aria-label="Tìm kiếm sản phẩm"
 						placeholder="Tên xe, phiên bản, màu sắc..."
 						class="w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm font-medium text-gray-900 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+						@input="searchArticle"
 					>
 				</div>
 			</div>
@@ -324,6 +382,56 @@ const formatVND = (val) => {
 									{{ val.name }}
 								</button>
 							</template>
+						</div>
+					</div>
+
+					<!-- Phiên bản -->
+					<div v-if="versions.length > 0" class="space-y-4">
+						<div class="flex items-center gap-2">
+							<div class="w-1 h-4 bg-primary rounded-full"/>
+							<h3 class="text-sm font-black text-gray-900 uppercase tracking-widest">
+								Phiên Bản
+							</h3>
+						</div>
+						<div class="relative">
+							<select
+								v-model="selectedVersion"
+								class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl outline-none appearance-none font-semibold text-gray-800 cursor-pointer focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm"
+							>
+								<option value="">Chọn tất cả</option>
+								<option v-for="ver in versions" :key="ver" :value="ver">
+									{{ ver }}
+								</option>
+							</select>
+							<Icon
+								name="ph:caret-down-bold"
+								class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"
+							/>
+						</div>
+					</div>
+
+					<!-- Màu sắc -->
+					<div v-if="colors.length > 0" class="space-y-4">
+						<div class="flex items-center gap-2">
+							<div class="w-1 h-4 bg-primary rounded-full"/>
+							<h3 class="text-sm font-black text-gray-900 uppercase tracking-widest">
+								Màu Sắc
+							</h3>
+						</div>
+						<div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
+							<button
+								v-for="col in colors"
+								:key="col"
+								class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
+								:class="[
+									isColorSelected(col)
+										? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+										: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+								]"
+								@click="toggleColor(col)"
+							>
+								{{ col }}
+							</button>
 						</div>
 					</div>
 				</div>

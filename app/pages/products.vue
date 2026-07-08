@@ -2,6 +2,7 @@
 import { ref } from "vue";
 
 const route = useRoute();
+const router = useRouter();
 
 const productStore = useProductStore();
 const isSidebarOpen = ref(false);
@@ -16,6 +17,15 @@ function parseArrayQuery(val) {
 }
 
 const categoryStore = useCategoryStore();
+
+function parseStringArrayQuery(val) {
+	if (!val) return [];
+	const strVal = String(val);
+	return strVal
+		.split(",")
+		.map((s) => s.trim())
+		.filter((s) => s !== "");
+}
 
 const pageMode = computed(() => {
 	const ids = parseArrayQuery(route.query.category_ids);
@@ -76,6 +86,8 @@ const filters = ref({
 	brand_ids: parseArrayQuery(route.query.brand_ids),
 	minPrice: route.query.minPrice ? Number(route.query.minPrice) : null,
 	maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : null,
+	versions: parseStringArrayQuery(route.query.versions),
+	colors: parseStringArrayQuery(route.query.colors),
 });
 
 const {
@@ -87,8 +99,19 @@ const {
 	queryFn: (params) => {
 		const sieveParams = { ...params };
 
+		const filterParts = [];
 		if (filters.value.search) {
-			sieveParams.filters = `search@${filters.value.search}`;
+			filterParts.push(`search@${filters.value.search}`);
+		}
+		if (filters.value.versions && filters.value.versions.length > 0) {
+			filterParts.push(`VariantName==${filters.value.versions.join("|")}`);
+		}
+		if (filters.value.colors && filters.value.colors.length > 0) {
+			filterParts.push(`ColorName==${filters.value.colors.join("|")}`);
+		}
+
+		if (filterParts.length > 0) {
+			sieveParams.filters = filterParts.join(",");
 		}
 
 		if (filters.value.optionValueIds.length > 0) {
@@ -118,6 +141,20 @@ const {
 watch(
 	() => route.query,
 	(newQuery) => {
+		const query = { ...newQuery };
+		if (query.type === "xe-may") {
+			delete query.type;
+			query.category_ids = "8";
+			router.replace({ query });
+			return;
+		}
+		if (query.type === "phu-tung-phu-kien") {
+			delete query.type;
+			query.category_ids = "12,13";
+			router.replace({ query });
+			return;
+		}
+
 		const newSearch = newQuery.search || "";
 		if (filters.value.search !== newSearch) {
 			filters.value.search = newSearch;
@@ -147,8 +184,18 @@ watch(
 		if (filters.value.maxPrice !== newMaxPrice) {
 			filters.value.maxPrice = newMaxPrice;
 		}
+
+		const newVersions = parseStringArrayQuery(newQuery.versions);
+		if (JSON.stringify(filters.value.versions) !== JSON.stringify(newVersions)) {
+			filters.value.versions = newVersions;
+		}
+
+		const newColors = parseStringArrayQuery(newQuery.colors);
+		if (JSON.stringify(filters.value.colors) !== JSON.stringify(newColors)) {
+			filters.value.colors = newColors;
+		}
 	},
-	{ deep: true },
+	{ immediate: true, deep: true },
 );
 
 const toggleSidebar = () => {
