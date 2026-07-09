@@ -110,7 +110,6 @@ export function useCart() {
 			limit
 				? `Da dat so luong mua toi da (${limit}) cho san pham nay.`
 				: "Da dat so luong mua toi da cho san pham nay.",
-			{ position: "bottom-right" },
 		);
 	};
 
@@ -199,40 +198,36 @@ export function useCart() {
 				h(
 					"div",
 					{
-						class: "flex flex-col gap-2",
-						style: { fontFamily: "'Be Vietnam Pro', sans-serif", fontSize: "16px" },
+						class: "toast-modal-body",
 					},
 					[
-						h("div", { class: "flex items-center gap-2" }, [
-							h("span", { class: "font-bold text-base text-gray-800" }, "Đã thêm vào giỏ"),
-						]),
-						h("div", { class: "text-sm text-gray-700" }, [
+						// Shopping cart icon centered at the top
+						h("div", { class: "toast-modal-icon-wrapper" }, [
 							h(
-								"span",
-								{ class: "font-bold" },
-								product.displayName || product.name,
-							),
+								"svg",
+								{
+									viewBox: "0 0 24 24",
+									fill: "none",
+									stroke: "currentColor",
+									"stroke-width": "2.5",
+									"stroke-linecap": "round",
+									"stroke-linejoin": "round",
+									class: "toast-modal-icon-svg",
+								},
+								[
+									h("circle", { cx: "9", cy: "21", r: "1" }),
+									h("circle", { cx: "20", cy: "21", r: "1" }),
+									h("path", { d: "M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" }),
+								]
+							)
 						]),
-						h("div", { class: "text-sm text-gray-600" }, [
-							`Số lượng hiện tại: ${newQuantity}`,
-						]),
+						h("h3", { class: "toast-modal-title" }, "Đã thêm vào giỏ"),
+						h("p", { class: "toast-modal-desc" }, product.displayName || product.name),
+						h("div", { class: "toast-modal-meta" }, `Số lượng hiện tại: ${newQuantity}`),
 						h(
 							"button",
 							{
-								style: {
-									marginTop: "12px",
-									width: "100%",
-									padding: "10px 16px",
-									backgroundColor: "#e31837", // bg-primary color
-									color: "white",
-									fontSize: "14px",
-									fontWeight: "bold",
-									borderRadius: "8px",
-									border: "none",
-									cursor: "pointer",
-									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-									textAlign: "center"
-								},
+								class: "toast-modal-btn",
 								onClick: (e) => {
 									e.preventDefault();
 									isCartPanelOpen.value = true;
@@ -243,7 +238,6 @@ export function useCart() {
 					],
 				),
 				{
-					position: "bottom-right",
 					autoClose: 4000,
 					closeOnClick: true,
 				},

@@ -24,6 +24,9 @@ export const IOrderRepository = {
 	updateOrder: async () => {
 		throw new Error("IOrderRepository.updateOrder not implemented");
 	},
+	updateCompanyInvoice: async () => {
+		throw new Error("IOrderRepository.updateCompanyInvoice not implemented");
+	},
 	getPaymentLink: async () => {
 		throw new Error("IOrderRepository.getPaymentLink not implemented");
 	},

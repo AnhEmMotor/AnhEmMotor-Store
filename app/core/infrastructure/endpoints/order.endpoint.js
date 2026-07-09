@@ -6,5 +6,6 @@ export const ORDER_ENDPOINTS = {
 	DETAIL: (id) => `/api/v1/SalesOrders/my-purchases/${id}`,
 	UPDATE: (id) => `/api/v1/SalesOrders/${id}`,
 	CANCEL: (id) => `/api/v1/SalesOrders/${id}/cancel-my-order`,
+	COMPANY_INVOICE: (id) => `/api/v1/SalesOrders/${id}/company-invoice`,
 	PAYMENT_LINK: (id) => `/api/v1/Payment/${id}/link`,
 };

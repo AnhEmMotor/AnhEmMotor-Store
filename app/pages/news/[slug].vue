@@ -75,9 +75,7 @@ const shareOnFacebook = () => {
 const copyLink = () => {
 	if (import.meta.client) {
 		navigator.clipboard.writeText(window.location.href);
-		toast.success("Đã sao chép liên kết bài viết!", {
-			position: "bottom-right",
-		});
+		toast.success("Đã sao chép liên kết bài viết!");
 	}
 };
 </script>

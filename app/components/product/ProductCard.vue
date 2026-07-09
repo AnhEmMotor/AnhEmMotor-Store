@@ -162,7 +162,7 @@ const handleAddToCart = () => {
   if (!variant) return;
 
   if (selectedVariantColors.value.length > 0 && !selectedColor.value) {
-    toast.warning("Vui lòng chọn màu sản phẩm.", { position: "bottom-right" });
+    toast.warning("Vui lòng chọn màu sản phẩm.");
     return;
   }
 
