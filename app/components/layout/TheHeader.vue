@@ -134,7 +134,7 @@
 
 				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
 				<nav class="hidden xl:block mx-auto">
-					<ul class="flex items-center gap-8">
+					<ul class="flex items-center gap-3 2xl:gap-6">
 						<li>
 							<NuxtLink
 								to="/products?type=xe-may"
@@ -253,17 +253,17 @@
 
 					<!-- PREMIUM CTA GROUP (Hidden on mobile for better space) -->
 					<div
-						class="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-inner"
+						class="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-inner shrink-0"
 					>
 						<NuxtLink
 							to="/test-drive"
-							class="px-3 sm:px-6 py-2 sm:py-2.5 text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover:text-primary active:scale-95"
+							class="px-4 2xl:px-6 py-2 sm:py-2.5 text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover:text-primary active:scale-95 whitespace-nowrap"
 						>
 							Lái thử
 						</NuxtLink>
 						<NuxtLink
 							to="/feedback"
-							class="px-3 sm:px-6 py-2 sm:py-2.5 bg-primary text-white text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl shadow-[0_10px_20px_-5px_rgba(230,0,35,0.4)] transition-all duration-500 hover:scale-105 hover:shadow-[0_15px_30px_-5px_rgba(230,0,35,0.5)] active:scale-95"
+							class="px-4 2xl:px-6 py-2 sm:py-2.5 bg-primary text-white text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl shadow-[0_10px_20px_-5px_rgba(230,0,35,0.4)] transition-all duration-500 hover:scale-105 hover:shadow-[0_15px_30px_-5px_rgba(230,0,35,0.5)] active:scale-95 whitespace-nowrap"
 						>
 							Góp ý
 						</NuxtLink>
@@ -634,7 +634,7 @@ if (import.meta.client) {
 @reference "../../assets/main.css";
 
 .nav-link-refined {
-	@apply relative flex items-center text-[12px] font-black text-gray-900 transition-all duration-300 cursor-pointer uppercase tracking-widest px-1 whitespace-nowrap;
+	@apply relative flex items-center text-[10px] 2xl:text-[12px] font-black text-gray-900 transition-all duration-300 cursor-pointer uppercase tracking-wider 2xl:tracking-widest px-1 whitespace-nowrap;
 }
 
 .nav-link-refined:hover,
