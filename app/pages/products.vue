@@ -16,6 +16,8 @@ function parseArrayQuery(val) {
 		.filter((n) => !Number.isNaN(n));
 }
 
+const categoryStore = useCategoryStore();
+
 function parseStringArrayQuery(val) {
 	if (!val) return [];
 	const strVal = String(val);
@@ -27,8 +29,17 @@ function parseStringArrayQuery(val) {
 
 const pageMode = computed(() => {
 	const ids = parseArrayQuery(route.query.category_ids);
-	if (ids.includes(8) && ids.length === 1) return "motorcycles";
-	if (ids.some((id) => [12, 13].includes(id))) return "accessories";
+	
+	const categories = categoryStore.categories || [];
+	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
+	const xeMayId = xeMayCat ? xeMayCat.id : 8;
+	
+	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
+	const phuTungIds = phuTungCats.length > 0 ? phuTungCats.map(c => c.id) : [12, 13];
+	
+	if (ids.includes(xeMayId) && ids.length === 1) return "motorcycles";
+	if (ids.some((id) => phuTungIds.includes(id))) return "accessories";
+	
 	return "all";
 });
 

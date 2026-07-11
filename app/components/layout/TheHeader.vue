@@ -168,6 +168,7 @@
 									:class="{ active: isRouteActive('/products') }"
 							/></NuxtLink>
 						</li>
+
 						<li>
 							<NuxtLink
 								to="/promotion"
@@ -583,7 +584,19 @@ const handleContactSubmit = async (data) => {
 const categoryStore = useCategoryStore();
 
 
-const navItemsMobile = [
+const xeMayLink = computed(() => {
+	const categories = categoryStore.categories || [];
+	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
+	return `/products?category_ids=${xeMayCat ? xeMayCat.id : 8}`;
+});
+
+const phuTungLink = computed(() => {
+	const categories = categoryStore.categories || [];
+	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
+	return `/products?category_ids=${phuTungCats.length > 0 ? phuTungCats.map(c => c.id).join(",") : "12,13"}`;
+});
+
+const navItemsMobile = computed(() => [
 	{ name: "TRANG CHỦ", path: "/" },
 	{ name: "XE MÁY", path: "/products?type=xe-may" },
 	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: "/products?type=phu-tung-phu-kien" },
@@ -594,7 +607,7 @@ const navItemsMobile = [
 	{ name: "CÔNG NGHỆ", path: "/technology" },
 	{ name: "TIN TỨC", path: "/news" },
 	{ name: "TUYỂN DỤNG", path: "/recruitment" },
-];
+]);
 
 const openMobileNav = () => {
 	mobileNavActive.value = true;
