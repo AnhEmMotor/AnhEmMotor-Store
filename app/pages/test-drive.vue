@@ -606,10 +606,15 @@ onMounted(async () => {
 		const res = await productStore.getProducts({ pageSize: 100 });
 
 		if (res?.items && res.items.length > 0) {
-			variants.value = res.items.flatMap((product) =>
+			const vehicleProducts = res.items.filter((product) => {
+				const catName = (product.category || "").toLowerCase();
+				return catName.includes("xe máy") || catName.includes("motor");
+			});
+
+			variants.value = vehicleProducts.flatMap((product) =>
 				(product.variants || []).map((v) => ({
 					id: v.id,
-					fullName: `${product.name} - ${v.versionName || v.name}`,
+					fullName: `${product.name} - ${v.option_values_text || v.versionName || v.name || "Tiêu chuẩn"}`,
 					name: product.name,
 					brand: product.brand,
 					price: productMapper.formatPrice(v.price),
@@ -727,7 +732,7 @@ const handleSubmit = async () => {
 
 		isSuccess.value = true;
 		window.scrollTo({ top: 0, behavior: "smooth" });
-	} catch {
+	} catch (error) {
 		alert(
 			error.message || "Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại sau.",
 		);

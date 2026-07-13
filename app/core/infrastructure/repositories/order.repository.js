@@ -36,6 +36,11 @@ export const orderRepository = {
 		const response = await axios.put(ORDER_ENDPOINTS.UPDATE(orderId), payload);
 		return response.data;
 	},
+	async updateCompanyInvoice(orderId, payload) {
+		const axios = useAxios();
+		const response = await axios.patch(ORDER_ENDPOINTS.COMPANY_INVOICE(orderId), payload);
+		return response.data;
+	},
 	async getPaymentLink(orderId) {
 		const axios = useAxios();
 		const response = await axios.get(ORDER_ENDPOINTS.PAYMENT_LINK(orderId));

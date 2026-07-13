@@ -96,12 +96,23 @@ export const useOrderStore = defineStore("order", () => {
 		address: "",
 		notes: "",
 		paymentMethod: "COD",
+		isCompanyInvoice: false,
+		companyName: "",
+		companyAddress: "",
+		companyTaxCode: "",
+		companyEmail: "",
+		budgetCode: "",
 	});
 
 	const errors = ref({
 		fullName: "",
 		phone: "",
 		address: "",
+		companyName: "",
+		companyAddress: "",
+		companyTaxCode: "",
+		companyEmail: "",
+		budgetCode: "",
 	});
 
 	const initShippingInfo = (user) => {
@@ -114,7 +125,16 @@ export const useOrderStore = defineStore("order", () => {
 
 	const validateShippingInfo = () => {
 		let isValid = true;
-		errors.value = { fullName: "", phone: "", address: "" };
+		errors.value = {
+			fullName: "",
+			phone: "",
+			address: "",
+			companyName: "",
+			companyAddress: "",
+			companyTaxCode: "",
+			companyEmail: "",
+			budgetCode: "",
+		};
 
 		if (!shippingInfo.value.fullName?.trim()) {
 			errors.value.fullName = "Vui lòng nhập họ và tên người nhận";
@@ -127,6 +147,34 @@ export const useOrderStore = defineStore("order", () => {
 		if (!shippingInfo.value.address?.trim()) {
 			errors.value.address = "Vui lòng nhập địa chỉ giao hàng chi tiết";
 			isValid = false;
+		}
+
+		if (shippingInfo.value.isCompanyInvoice) {
+			if (!shippingInfo.value.companyName?.trim()) {
+				errors.value.companyName = "Tên công ty không được để trống";
+				isValid = false;
+			}
+			if (!shippingInfo.value.companyAddress?.trim()) {
+				errors.value.companyAddress = "Địa chỉ công ty không được để trống";
+				isValid = false;
+			}
+			if (!shippingInfo.value.companyTaxCode?.trim()) {
+				errors.value.companyTaxCode = "Mã số thuế không được để trống";
+				isValid = false;
+			} else {
+				const taxRegex = /^\d{3}$|^\d{10}$|^\d{13}$|^\d{10}-\d{3}$/;
+				if (!taxRegex.test(shippingInfo.value.companyTaxCode.trim())) {
+					errors.value.companyTaxCode = "Mã số thuế không hợp lệ. Nhập đúng 3 số hoặc MST chuẩn (10/13 số).";
+					isValid = false;
+				}
+			}
+			if (shippingInfo.value.companyEmail?.trim()) {
+				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				if (!emailRegex.test(shippingInfo.value.companyEmail.trim())) {
+					errors.value.companyEmail = "Email không đúng định dạng";
+					isValid = false;
+				}
+			}
 		}
 
 		return isValid;
@@ -233,6 +281,23 @@ export const useOrderStore = defineStore("order", () => {
 		_refreshMyOrders();
 	};
 
+	const updateOrderCompanyInvoice = async (orderId, invoiceData) => {
+		isLoading.value = true;
+		error.value = null;
+		try {
+			const res = await service.updateCompanyInvoice(orderId, invoiceData);
+			currentOrder.value = orderMapper.mapOrderResponse(res);
+			queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+			_refreshMyOrders();
+			return currentOrder.value;
+		} catch (e) {
+			error.value = e.response?.data?.message || "Không thể cập nhật thông tin hóa đơn";
+			throw e;
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
 	const setPaymentUrl = (url) => {
 		paymentUrl.value = url;
 	};
@@ -262,6 +327,7 @@ export const useOrderStore = defineStore("order", () => {
 		error.value = null;
 		fieldErrors.value = {};
 		errors.value = { fullName: "", phone: "", address: "" };
+		shippingInfo.value.isCompanyInvoice = false;
 		clearPayment();
 	};
 
@@ -287,6 +353,7 @@ export const useOrderStore = defineStore("order", () => {
 		fetchOrderDetail,
 		cancelOrder,
 		updateOrderInfo,
+		updateOrderCompanyInvoice,
 		getPaymentLink,
 		setPaymentUrl,
 		clearPayment,

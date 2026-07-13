@@ -17,10 +17,7 @@ const isSubmitting = ref(false);
 
 const handleSubmit = () => {
 	if (!validatePhone(leadForm.phone)) {
-		toast.error("Số điện thoại không đúng định dạng Việt Nam!", {
-			position: "bottom-center",
-			theme: "dark",
-		});
+		toast.error("Số điện thoại không đúng định dạng Việt Nam!");
 		return;
 	}
 
@@ -28,10 +25,6 @@ const handleSubmit = () => {
 	setTimeout(() => {
 		toast.success(
 			"Cảm ơn bạn! AnhEm Motor sẽ liên hệ tư vấn trong 5 phút nữa.",
-			{
-				position: "bottom-center",
-				theme: "dark",
-			},
 		);
 		leadForm.phone = "";
 		leadForm.bike = "";

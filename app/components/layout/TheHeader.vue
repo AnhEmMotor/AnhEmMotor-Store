@@ -134,19 +134,41 @@
 
 				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
 				<nav class="hidden xl:block mx-auto">
-					<ul class="flex items-center gap-8">
-						
+					<ul class="flex items-center gap-3 2xl:gap-6">
+						<li>
+							<NuxtLink
+								to="/products?type=xe-may"
+								class="nav-link-refined"
+								:class="{ active: isRouteActive('/products?type=xe-may') }"
+								>XE MÁY
+								<span
+									class="nav-dot-floating"
+									:class="{ active: isRouteActive('/products?type=xe-may') }"
+							/></NuxtLink>
+						</li>
+						<li>
+							<NuxtLink
+								to="/products?type=phu-tung-phu-kien"
+								class="nav-link-refined"
+								:class="{ active: isRouteActive('/products?type=phu-tung-phu-kien') }"
+								>PHỤ TÙNG & PHỤ KIỆN
+								<span
+									class="nav-dot-floating"
+									:class="{ active: isRouteActive('/products?type=phu-tung-phu-kien') }"
+							/></NuxtLink>
+						</li>
 						<li>
 							<NuxtLink
 								to="/products"
 								class="nav-link-refined"
 								:class="{ active: isRouteActive('/products') }"
-								>SẢN PHẨM
+								>BẢNG GIÁ
 								<span
 									class="nav-dot-floating"
 									:class="{ active: isRouteActive('/products') }"
 							/></NuxtLink>
 						</li>
+
 						<li>
 							<NuxtLink
 								to="/promotion"
@@ -169,7 +191,6 @@
 									:class="{ active: isRouteActive('/service') }"
 							/></NuxtLink>
 						</li>
-						
 						<li>
 							<NuxtLink
 								to="/compare"
@@ -181,8 +202,6 @@
 									:class="{ active: isRouteActive('/compare') }"
 							/></NuxtLink>
 						</li>
-
-						<!-- KHÁM PHÁ -->
 						<li>
 							<NuxtLink
 								to="/technology"
@@ -235,17 +254,17 @@
 
 					<!-- PREMIUM CTA GROUP (Hidden on mobile for better space) -->
 					<div
-						class="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-inner"
+						class="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-inner shrink-0"
 					>
 						<NuxtLink
 							to="/test-drive"
-							class="px-3 sm:px-6 py-2 sm:py-2.5 text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover:text-primary active:scale-95"
+							class="px-4 2xl:px-6 py-2 sm:py-2.5 text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 hover:bg-white hover:shadow-lg hover:text-primary active:scale-95 whitespace-nowrap"
 						>
 							Lái thử
 						</NuxtLink>
 						<NuxtLink
 							to="/feedback"
-							class="px-3 sm:px-6 py-2 sm:py-2.5 bg-primary text-white text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl shadow-[0_10px_20px_-5px_rgba(230,0,35,0.4)] transition-all duration-500 hover:scale-105 hover:shadow-[0_15px_30px_-5px_rgba(230,0,35,0.5)] active:scale-95"
+							class="px-4 2xl:px-6 py-2 sm:py-2.5 bg-primary text-white text-[10px] sm:text-[11px] font-black uppercase tracking-widest rounded-xl shadow-[0_10px_20px_-5px_rgba(230,0,35,0.4)] transition-all duration-500 hover:scale-105 hover:shadow-[0_15px_30px_-5px_rgba(230,0,35,0.5)] active:scale-95 whitespace-nowrap"
 						>
 							Góp ý
 						</NuxtLink>
@@ -525,6 +544,26 @@ const submitSearch = async () => {
 
 const isRouteActive = (targetPath) => {
 	if (targetPath === "/") return route.path === "/";
+
+	if (route.path === "/products") {
+		const catIdsStr = route.query.category_ids || "";
+		const catIdsList = catIdsStr ? String(catIdsStr).split(",").map(Number) : [];
+		const type = route.query.type || "";
+
+		const isXeMay = type === "xe-may" || (catIdsList.includes(8) && catIdsList.length === 1);
+		const isPhuTungPhuKien = type === "phu-tung-phu-kien" || (catIdsList.includes(12) && catIdsList.includes(13) && catIdsList.length === 2);
+
+		if (targetPath.includes("type=xe-may")) {
+			return isXeMay;
+		}
+		if (targetPath.includes("type=phu-tung-phu-kien")) {
+			return isPhuTungPhuKien;
+		}
+		if (targetPath === "/products") {
+			return !isXeMay && !isPhuTungPhuKien;
+		}
+	}
+
 	if (targetPath.includes("?")) {
 		return route.fullPath === targetPath;
 	}
@@ -545,16 +584,32 @@ const handleContactSubmit = async (data) => {
 const categoryStore = useCategoryStore();
 
 
-const navItemsMobile = [
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const xeMayLink = computed(() => {
+	const categories = categoryStore.categories || [];
+	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
+	return `/products?category_ids=${xeMayCat ? xeMayCat.id : 8}`;
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const phuTungLink = computed(() => {
+	const categories = categoryStore.categories || [];
+	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
+	return `/products?category_ids=${phuTungCats.length > 0 ? phuTungCats.map(c => c.id).join(",") : "12,13"}`;
+});
+
+const navItemsMobile = computed(() => [
 	{ name: "TRANG CHỦ", path: "/" },
-	{ name: "SẢN PHẨM", path: "/products" },
+	{ name: "XE MÁY", path: "/products?type=xe-may" },
+	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: "/products?type=phu-tung-phu-kien" },
+	{ name: "BẢNG GIÁ", path: "/products" },
 	{ name: "KHUYẾN MÃI", path: "/promotion" },
 	{ name: "DỊCH VỤ", path: "/service" },
 	{ name: "SO SÁNH XE", path: "/compare" },
 	{ name: "CÔNG NGHỆ", path: "/technology" },
 	{ name: "TIN TỨC", path: "/news" },
 	{ name: "TUYỂN DỤNG", path: "/recruitment" },
-];
+]);
 
 const openMobileNav = () => {
 	mobileNavActive.value = true;
@@ -594,7 +649,7 @@ if (import.meta.client) {
 @reference "../../assets/main.css";
 
 .nav-link-refined {
-	@apply relative flex items-center text-[12px] font-black text-gray-900 transition-all duration-300 cursor-pointer uppercase tracking-widest px-1 whitespace-nowrap;
+	@apply relative flex items-center text-[10px] 2xl:text-[12px] font-black text-gray-900 transition-all duration-300 cursor-pointer uppercase tracking-wider 2xl:tracking-widest px-1 whitespace-nowrap;
 }
 
 .nav-link-refined:hover,

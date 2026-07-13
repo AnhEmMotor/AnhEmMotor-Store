@@ -251,7 +251,7 @@ const calculateTotal = (items) => {
 				<p class="text-2xl font-black text-red-500">
 					{{ formatPrice(order.totalAmount || calculateTotal(order.items)) }}
 				</p>
-				<div v-if="hasDeposit" class="mt-2 space-y-1">
+				<div v-if="order.depositAmount > 0" class="mt-2 space-y-1">
 					<p class="text-xs font-bold text-amber-600">
 						Đặt cọc: {{ formatPrice(order.depositAmount) }}
 						<span v-if="order.depositRatio">({{ order.depositRatio }}%)</span>

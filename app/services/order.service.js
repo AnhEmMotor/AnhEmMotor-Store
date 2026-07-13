@@ -43,6 +43,10 @@ export const orderService = {
 		return await orderRepository.updateOrder(orderId, payload);
 	},
 
+	async updateCompanyInvoice(orderId, payload) {
+		return await orderRepository.updateCompanyInvoice(orderId, payload);
+	},
+
 	async getPaymentLink(orderId) {
 		return await orderRepository.getPaymentLink(orderId);
 	},

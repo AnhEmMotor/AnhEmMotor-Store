@@ -16,6 +16,12 @@ const orderMapper = {
 			customerAddress: shippingInfo.address,
 			customerPhone: shippingInfo.phone,
 			paymentMethod: this.normalizePaymentMethod(paymentMethod),
+			isCompanyInvoice: shippingInfo.isCompanyInvoice || false,
+			companyName: shippingInfo.isCompanyInvoice ? shippingInfo.companyName : null,
+			companyAddress: shippingInfo.isCompanyInvoice ? shippingInfo.companyAddress : null,
+			companyTaxCode: shippingInfo.isCompanyInvoice ? shippingInfo.companyTaxCode : null,
+			companyEmail: shippingInfo.isCompanyInvoice ? (shippingInfo.companyEmail || null) : null,
+			budgetCode: shippingInfo.isCompanyInvoice ? (shippingInfo.budgetCode || null) : null,
 			products: cartItems.map((item) => ({
 				productVariantId: item.productVariantId ?? item.variantId,
 				productVariantColorId:
@@ -59,6 +65,12 @@ const orderMapper = {
 				phone: raw.customerPhone || raw.customer_phone,
 				address: raw.customerAddress || raw.customer_address,
 			},
+			isCompanyInvoice: raw.isCompanyInvoice || raw.IsCompanyInvoice || false,
+			companyName: raw.companyName || raw.CompanyName || null,
+			companyAddress: raw.companyAddress || raw.CompanyAddress || null,
+			companyTaxCode: raw.companyTaxCode || raw.CompanyTaxCode || null,
+			companyEmail: raw.companyEmail || raw.CompanyEmail || null,
+			budgetCode: raw.budgetCode || raw.BudgetCode || null,
 			items: (raw.outputInfos || raw.products || raw.items || []).map(
 				(item) => ({
 					id: item.id,
