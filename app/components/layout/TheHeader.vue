@@ -584,12 +584,14 @@ const handleContactSubmit = async (data) => {
 const categoryStore = useCategoryStore();
 
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const xeMayLink = computed(() => {
 	const categories = categoryStore.categories || [];
 	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
 	return `/products?category_ids=${xeMayCat ? xeMayCat.id : 8}`;
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const phuTungLink = computed(() => {
 	const categories = categoryStore.categories || [];
 	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
