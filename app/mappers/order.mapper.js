@@ -56,6 +56,7 @@ const orderMapper = {
 			paymentMethod: raw.paymentMethod || "COD",
 			paymentStatus: raw.paymentStatus || raw.payment_status || null,
 			paymentUrl: raw.paymentUrl || null,
+			notes: raw.notes || raw.Notes || null,
 			createdAt:
 				raw.createdAt ||
 				raw.created_at ||

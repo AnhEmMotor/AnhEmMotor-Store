@@ -8,4 +8,6 @@ export const ORDER_ENDPOINTS = {
 	CANCEL: (id) => `/api/v1/SalesOrders/${id}/cancel-my-order`,
 	COMPANY_INVOICE: (id) => `/api/v1/SalesOrders/${id}/company-invoice`,
 	PAYMENT_LINK: (id) => `/api/v1/Payment/${id}/link`,
+	PROVINCES: "/api/v1/SalesOrders/provinces",
+	WARDS: (provinceId) => `/api/v1/SalesOrders/wards/${provinceId}`,
 };

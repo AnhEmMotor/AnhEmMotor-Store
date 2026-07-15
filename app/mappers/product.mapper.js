@@ -1,5 +1,12 @@
 import { getImageUrl } from "~/utils/image";
 
+const validId = (...args) => {
+	for (const val of args) {
+		if (val !== null && val !== undefined && val !== "") return val;
+	}
+	return undefined;
+};
+
 const productMapper = {
 	mapProductList(rawItems) {
 		if (!rawItems || !Array.isArray(rawItems)) return [];
@@ -7,9 +14,10 @@ const productMapper = {
 	},
 
 	mapProductItem(raw) {
+		console.log("=== [productMapper] mapProductItem raw ===", raw);
 		const variants = (raw.variants || []).map((v) => ({
 			...v,
-			id: v.id || v.Id,
+			id: validId(v.id, v.Id, v.productVariantId, v.variantId, raw.id, raw.Id),
 			url: v.url || v.url_slug || v.urlSlug,
 			url_slug: v.url_slug || v.urlSlug || v.url,
 			option_values_text:
@@ -20,7 +28,7 @@ const productMapper = {
 			image: getImageUrl(v.image || v.cover_image_url),
 			cover_image_url: getImageUrl(v.cover_image_url || v.image),
 			colors: (v.colors || []).map((c) => ({
-				id: c.id || c.Id,
+				id: validId(c.id, c.Id, c.productVariantColorId, c.colorId),
 				name: c.colorName || c.color_name || c.name,
 				colorName: c.colorName || c.color_name || c.name,
 				code: c.colorCode || c.color_code || c.code || "#ccc",
@@ -235,7 +243,7 @@ const productMapper = {
 		const mapColors = (variantLike) => {
 			if (Array.isArray(variantLike.colors) && variantLike.colors.length > 0) {
 				return variantLike.colors.map((c) => ({
-					id: c.id || c.Id,
+					id: validId(c.id, c.Id, c.productVariantColorId, c.colorId),
 					name: c.colorName || c.color_name || c.name,
 					code: c.colorCode || c.color_code || c.code || "#ccc",
 					image: getImageUrl(
@@ -291,7 +299,7 @@ const productMapper = {
 				highlights: highlights,
 			},
 			currentVariant: {
-				id: currentVariant.id || currentVariant.Id,
+				id: validId(currentVariant.id, currentVariant.Id, currentVariant.productVariantId, currentVariant.variantId, product.id),
 				name: currentVariant.display_name,
 				slug: currentVariant.url_slug,
 				price: currentVariant.price || currentVariant.Price,
@@ -309,7 +317,7 @@ const productMapper = {
 				) || [getImageUrl(currentVariant.cover_image_url)],
 			},
 			otherVariants: raw.other_variants?.map((v) => ({
-				id: v.id,
+				id: validId(v.id, v.Id, v.productVariantId, v.variantId, product.id),
 				name: v.display_name,
 				slug: v.url_slug,
 				price: v.price || v.Price,
@@ -359,16 +367,14 @@ const productMapper = {
 		const product = detail.product;
 		const variant = detail.currentVariant;
 		const selectedColor = variant.colors?.[colorIndex];
-		const colorId =
-			selectedColor?.id && Number(selectedColor.id) > 0
-				? Number(selectedColor.id)
-				: null;
-		const cartKey = `${variant.id}:${colorId ?? 0}`;
+		const colorId = selectedColor?.id ?? null;
+		const vId = variant.id || product.id || 0;
+		const cartKey = `${vId}:${colorId ?? 0}`;
 
 		return {
 			id: cartKey,
 			cartKey,
-			productVariantId: variant.id,
+			productVariantId: vId,
 			productVariantColorId: colorId,
 			name:
 				product.name +

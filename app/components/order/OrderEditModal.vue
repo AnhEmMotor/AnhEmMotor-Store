@@ -1,5 +1,8 @@
 <script setup>
-defineProps({
+import { ref, watch } from 'vue';
+import { useOrderStore } from '@/stores/order.store';
+
+const props = defineProps({
 	isOpen: {
 		type: Boolean,
 		default: false,
@@ -28,9 +31,32 @@ defineProps({
 		type: Boolean,
 		default: false,
 	},
+	provinces: {
+		type: Array,
+		default: () => [],
+	},
 });
 
-const emit = defineEmits(["close", "save", "update:form"]);
+const emit = defineEmits(["close", "save", "update:form", "change-province"]);
+const orderStore = useOrderStore();
+const wards = ref([]);
+
+const fetchWardsForEdit = async (provinceId) => {
+	if (!provinceId) {
+		wards.value = [];
+		return;
+	}
+	try {
+		const data = await orderStore.fetchWards(provinceId);
+		wards.value = data || [];
+	} catch (error) {
+		console.error("Failed to load wards", error);
+	}
+};
+
+watch(() => props.form.provinceId, (newVal) => {
+	fetchWardsForEdit(newVal);
+}, { immediate: true });
 
 const handleSave = () => {
 	emit("save");
@@ -109,6 +135,59 @@ const handleSave = () => {
 						>
 						<p v-if="errors.customerPhone" class="text-xs text-red-500 mt-1">
 							{{ errors.customerPhone }}
+						</p>
+					</div>
+
+					<div class="space-y-2">
+						<label
+							class="text-xs font-black text-gray-400 uppercase tracking-widest"
+						>
+							Tỉnh/Thành phố
+						</label>
+						<select
+							:value="form.provinceId || ''"
+							class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+							:class="{ 'border-red-500 bg-red-50/10': errors.provinceId }"
+							:disabled="lockedDelivery"
+							@change="
+								emit('change-province', Number($event.target.value));
+							"
+						>
+							<option value="" disabled>Chọn Tỉnh/Thành phố</option>
+							<option v-for="p in provinces" :key="p.provinceId" :value="p.provinceId">
+								{{ p.provinceName }}
+							</option>
+						</select>
+						<p v-if="errors.provinceId" class="text-xs text-red-500 mt-1">
+							{{ errors.provinceId }}
+						</p>
+					</div>
+
+					<div class="space-y-2">
+						<label
+							class="text-xs font-black text-gray-400 uppercase tracking-widest"
+						>
+							Quận/Huyện/Phường/Xã
+						</label>
+						<select
+							:value="form.wardCode || ''"
+							class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+							:class="{ 'border-red-500 bg-red-50/10': errors.wardCode }"
+							:disabled="lockedDelivery || !form.provinceId"
+							@change="
+								emit('update:form', {
+									...form,
+									wardCode: $event.target.value,
+								})
+							"
+						>
+							<option value="" disabled>Chọn Phường/Xã</option>
+							<option v-for="w in wards" :key="w.wardCode" :value="w.wardCode">
+								{{ w.wardName }}
+							</option>
+						</select>
+						<p v-if="errors.wardCode" class="text-xs text-red-500 mt-1">
+							{{ errors.wardCode }}
 						</p>
 					</div>
 

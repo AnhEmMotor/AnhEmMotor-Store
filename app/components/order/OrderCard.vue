@@ -101,6 +101,12 @@ const calculateTotal = (items) => {
 						<h4 class="font-bold text-gray-900 truncate">
 							{{ item.name || "Sản phẩm" }}
 						</h4>
+						<p
+							v-if="item.productVariantName || item.colorName"
+							class="text-xs text-gray-500 mt-1 truncate"
+						>
+							{{ [item.productVariantName, item.colorName].filter(Boolean).join(' - ') }}
+						</p>
 						<div class="flex items-center justify-between">
 							<p class="text-xs text-gray-500">
 								Số lượng:

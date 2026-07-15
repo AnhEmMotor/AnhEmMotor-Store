@@ -8,13 +8,24 @@ const isCartPanelOpen = ref(false);
 
 const keyPartsFor = (item) => {
 	const rawVariantId = item.productVariantId ?? item.variantId ?? item.id;
-	const variantId = Number(String(rawVariantId).split(":")[0]);
+	const rawString = String(rawVariantId || "");
+	const variantPart = rawString.split(":")[0];
+	let variantId = variantPart;
+	// if it's purely numeric, convert to number, otherwise keep as string (for UUIDs)
+	if (variantPart && !isNaN(Number(variantPart))) {
+		variantId = Number(variantPart);
+	}
 	const rawColorId =
 		item.productVariantColorId ??
 		item.colorId ??
-		String(rawVariantId).split(":")[1] ??
-		0;
-	const colorId = rawColorId && Number(rawColorId) > 0 ? Number(rawColorId) : 0;
+		rawString.split(":")[1] ??
+		null;
+	let colorId = rawColorId;
+	if (colorId === "0" || colorId === 0 || colorId === "undefined" || colorId === "null") {
+		colorId = null;
+	} else if (colorId != null && !isNaN(Number(colorId))) {
+		colorId = Number(colorId);
+	}
 	return { variantId, colorId };
 };
 
@@ -39,7 +50,9 @@ if (import.meta.client) {
 	const stored = localStorage.getItem(CART_KEY);
 	if (stored) {
 		try {
-			cartItems.value = JSON.parse(stored).map(normalizeCartItem);
+			cartItems.value = JSON.parse(stored)
+				.map(normalizeCartItem)
+				.filter(item => item.productVariantId != null && String(item.productVariantId) !== "NaN");
 		} catch {
 			cartItems.value = [];
 		}
@@ -61,7 +74,7 @@ export function useCart() {
 		...new Set(
 			cartItems.value
 				.map((item) => keyPartsFor(item).variantId)
-				.filter((id) => Number.isFinite(id)),
+				.filter((id) => id && (Number.isFinite(id) || (typeof id === 'string' && id.trim() !== ''))),
 		),
 	]);
 
@@ -86,13 +99,13 @@ export function useCart() {
 
 	const detailMap = computed(() => {
 		const map = new Map();
-		(batchDetails.value || []).forEach((d) => map.set(Number(d.id), d));
+		(batchDetails.value || []).forEach((d) => map.set(String(d.id), d));
 		return map;
 	});
 
 	const resolveEffectiveMax = (item) => {
 		const { variantId, colorId } = keyPartsFor(item);
-		const detail = detailMap.value.get(variantId);
+		const detail = detailMap.value.get(String(variantId));
 		const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
 		return (
 			color?.effectiveMax ??
@@ -116,7 +129,7 @@ export function useCart() {
 	const cartDetails = computed(() =>
 		cartItems.value.map((item) => {
 			const { variantId, colorId } = keyPartsFor(item);
-			const detail = detailMap.value.get(variantId);
+			const detail = detailMap.value.get(String(variantId));
 			const color = (detail?.colors || []).find(
 				(c) => Number(c.id) === colorId,
 			);
@@ -145,11 +158,12 @@ export function useCart() {
 	);
 
 	function addItem(product, quantity = 1) {
-		const variantId = Number(
-			product.productVariantId ?? product.variantId ?? product.id,
-		);
-		const colorId =
-			Number(product.productVariantColorId ?? product.colorId ?? 0) || 0;
+		console.log("=== [useCart] addItem ===");
+		console.log("Product passed to addItem:", product);
+		
+		const { variantId, colorId } = keyPartsFor(product);
+		console.log("Extracted from keyPartsFor -> variantId:", variantId, "colorId:", colorId);
+		
 		const key = `${variantId}:${colorId}`;
 		const probe = {
 			...product,

@@ -24,7 +24,7 @@ useHead({
 	link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
 
-const { cartItems, clearCart } = useCart();
+const { cartItems, cartDetails, clearCart } = useCart();
 const authStore = useAuthStore();
 const orderStore = useOrderStore();
 
@@ -40,7 +40,7 @@ const handleCheckout = async () => {
 		return;
 	}
 	try {
-		const order = await orderStore.createOrder(cartItems.value);
+		const order = await orderStore.createOrder(cartDetails.value);
 		if (order?.id) {
 			clearCart();
 			const instance = useNuxtApp();

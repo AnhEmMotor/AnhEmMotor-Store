@@ -46,4 +46,14 @@ export const orderRepository = {
 		const response = await axios.get(ORDER_ENDPOINTS.PAYMENT_LINK(orderId));
 		return response.data;
 	},
+	async getProvinces() {
+		const axios = useAxios();
+		const response = await axios.get(ORDER_ENDPOINTS.PROVINCES);
+		return response.data;
+	},
+	async getWards(provinceId) {
+		const axios = useAxios();
+		const response = await axios.get(ORDER_ENDPOINTS.WARDS(provinceId));
+		return response.data;
+	},
 };

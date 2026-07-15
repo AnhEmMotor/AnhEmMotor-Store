@@ -192,10 +192,7 @@ const handleAddToCart = () => {
 		return;
 	}
 
-	const colorId =
-		selectedColor.value?.id && Number(selectedColor.value.id) > 0
-			? Number(selectedColor.value.id)
-			: null;
+	const colorId = selectedColor.value?.id ?? null;
 	const variantLabel = variant.option_values_text || variant.variant_name || "";
 	const selectedColorLabel = selectedColor.value
 		? colorLabel(selectedColor.value, 0)
@@ -204,26 +201,32 @@ const handleAddToCart = () => {
 		.filter(Boolean)
 		.join(" - ");
 
-	addItem(
-		{
-			id: `${variant.id}:${colorId ?? 0}`,
-			cartKey: `${variant.id}:${colorId ?? 0}`,
-			productVariantId: variant.id,
-			productVariantColorId: colorId,
-			name,
-			displayName: name,
-			price: variant.price,
-			image: currentImage.value,
-			effectiveMax:
-				selectedColor.value?.effectiveMax ??
-				selectedColor.value?.maxPurchaseQuantity ??
-				variant.effectiveMax ??
-				props.product.effectiveMax ??
-				props.product.productLimit ??
-				null,
-		},
-		1,
-	);
+	const vId = variant.id || props.product.id || 0;
+	const cartPayload = {
+		id: `${vId}:${colorId ?? null}`,
+		cartKey: `${vId}:${colorId ?? null}`,
+		productVariantId: vId,
+		productVariantColorId: colorId,
+		name,
+		displayName: name,
+		price: variant.price,
+		image: currentImage.value,
+		effectiveMax:
+			selectedColor.value?.effectiveMax ??
+			selectedColor.value?.maxPurchaseQuantity ??
+			variant.effectiveMax ??
+			props.product.effectiveMax ??
+			props.product.productLimit ??
+			null,
+	};
+	
+	console.log("=== [ProductCard] handleAddToCart ===");
+	console.log("props.product:", props.product);
+	console.log("variant:", variant);
+	console.log("selectedColor.value:", selectedColor.value);
+	console.log("cartPayload created:", cartPayload);
+
+	addItem(cartPayload, 1);
 };
 
 const compareStore = useCompareStore();
@@ -267,7 +270,7 @@ const toggleCompare = (e) => {
 						? 'object-contain'
 						: 'object-cover group-hover:scale-110'
 				"
-			/>
+			>
 
 			<div
 				class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
