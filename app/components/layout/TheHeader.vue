@@ -285,6 +285,7 @@
 											:src="authStore.user.avatarUrl"
 											alt="Avatar"
 											class="w-full h-full object-cover"
+											referrerpolicy="no-referrer"
 										>
 										<Icon
 											v-else
@@ -375,6 +376,7 @@
 									:src="authStore.user.avatarUrl"
 									alt="Avatar"
 									class="w-full h-full object-cover"
+									referrerpolicy="no-referrer"
 								>
 								<div
 									v-else

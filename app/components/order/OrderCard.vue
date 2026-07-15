@@ -173,7 +173,7 @@ const calculateTotal = (items) => {
 							/>
 							<span
 								class="text-sm font-medium text-gray-600 leading-relaxed italic"
-								>{{ order.customer?.address || "Chưa có địa chỉ" }}</span
+								>{{ [order.customer?.address, order.customer?.wardName, order.customer?.provinceName].filter(Boolean).join(", ") || "Chưa có địa chỉ" }}</span
 							>
 						</div>
 					</div>
