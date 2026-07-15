@@ -102,6 +102,8 @@ export const useOrderStore = defineStore("order", () => {
 		companyTaxCode: "",
 		companyEmail: "",
 		budgetCode: "",
+		provinceId: null,
+		wardCode: "",
 	});
 
 	const errors = ref({
@@ -113,6 +115,8 @@ export const useOrderStore = defineStore("order", () => {
 		companyTaxCode: "",
 		companyEmail: "",
 		budgetCode: "",
+		provinceId: "",
+		wardCode: "",
 	});
 
 	const initShippingInfo = (user) => {
@@ -134,7 +138,18 @@ export const useOrderStore = defineStore("order", () => {
 			companyTaxCode: "",
 			companyEmail: "",
 			budgetCode: "",
+			provinceId: "",
+			wardCode: "",
 		};
+
+		if (!shippingInfo.value.provinceId) {
+			errors.value.provinceId = "Vui lòng chọn Tỉnh/Thành phố";
+			isValid = false;
+		}
+		if (!shippingInfo.value.wardCode) {
+			errors.value.wardCode = "Vui lòng chọn Quận/Huyện/Phường/Xã";
+			isValid = false;
+		}
 
 		if (!shippingInfo.value.fullName?.trim()) {
 			errors.value.fullName = "Vui lòng nhập họ và tên người nhận";
@@ -244,6 +259,18 @@ export const useOrderStore = defineStore("order", () => {
 		} finally {
 			isLoading.value = false;
 		}
+	};
+
+	const fetchProvinces = async () => {
+		const axios = useAxios();
+		const response = await axios.get("/api/v1/salesorders/provinces");
+		return response.data;
+	};
+
+	const fetchWards = async (provinceId) => {
+		const axios = useAxios();
+		const response = await axios.get(`/api/v1/salesorders/wards/${provinceId}`);
+		return response.data;
 	};
 
 	const getMyPurchases = async (params) => {
@@ -359,5 +386,8 @@ export const useOrderStore = defineStore("order", () => {
 		clearPayment,
 		getStatusName,
 		clearOrder,
+		fetchProvinces,
+		fetchWards,
 	};
 });
+

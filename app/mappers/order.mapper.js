@@ -15,6 +15,8 @@ const orderMapper = {
 			customerName: shippingInfo.fullName,
 			customerAddress: shippingInfo.address,
 			customerPhone: shippingInfo.phone,
+			provinceId: shippingInfo.provinceId,
+			wardCode: shippingInfo.wardCode,
 			paymentMethod: this.normalizePaymentMethod(paymentMethod),
 			isCompanyInvoice: shippingInfo.isCompanyInvoice || false,
 			companyName: shippingInfo.isCompanyInvoice ? shippingInfo.companyName : null,
@@ -64,6 +66,10 @@ const orderMapper = {
 				name: raw.customerName || raw.customer_name,
 				phone: raw.customerPhone || raw.customer_phone,
 				address: raw.customerAddress || raw.customer_address,
+				provinceId: raw.provinceId || raw.ProvinceId || null,
+				provinceName: raw.provinceName || raw.ProvinceName || null,
+				wardCode: raw.wardCode || raw.WardCode || null,
+				wardName: raw.wardName || raw.WardName || null,
 			},
 			isCompanyInvoice: raw.isCompanyInvoice || raw.IsCompanyInvoice || false,
 			companyName: raw.companyName || raw.CompanyName || null,
@@ -156,3 +162,4 @@ const orderMapper = {
 };
 
 export default orderMapper;
+

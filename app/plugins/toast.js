@@ -5,7 +5,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.use(Vue3Toastify, {
 		autoClose: 3000,
 		theme: "light",
-		position: "top-center",
+		position: "bottom-right",
 	});
 
 	return {

@@ -30,7 +30,7 @@ function parseStringArrayQuery(val) {
 const pageMode = computed(() => {
 	const ids = parseArrayQuery(route.query.category_ids);
 	
-	const categories = categoryStore.categories || [];
+	const categories = Array.isArray(categoryStore.categories) ? categoryStore.categories : [];
 	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
 	const xeMayId = xeMayCat ? xeMayCat.id : 8;
 	
