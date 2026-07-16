@@ -498,6 +498,21 @@ const submitInvoiceRequest = async () => {
 
 <style>
 @media print {
+  @page {
+    margin: 5mm !important;
+  }
+
+  html, body {
+    width: 210mm !important;
+    height: 297mm !important;
+  }
+
+  /* Force override global visibility restrictions */
+  #printable-receipt,
+  #printable-receipt * {
+    visibility: visible !important;
+  }
+
   /* Force override animations, transitions, and opacities so they don't hide print content */
   *, *:before, *:after {
     animation: none !important;
@@ -537,11 +552,59 @@ const submitInvoiceRequest = async () => {
   #printable-receipt {
     border: none !important;
     box-shadow: none !important;
-    padding: 0 !important;
+    padding: 1rem !important;
     margin: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     display: block !important;
+    font-size: 14px !important;
+  }
+
+  /* Force 2 columns grid on print to save vertical space */
+  #printable-receipt .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Scale font size and adjust line height for perfect readability */
+  #printable-receipt p,
+  #printable-receipt span,
+  #printable-receipt td,
+  #printable-receipt th,
+  #printable-receipt div {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  #printable-receipt h2 {
+    font-size: 24px !important;
+  }
+
+  #printable-receipt h3 {
+    font-size: 20px !important;
+  }
+
+  #printable-receipt h4 {
+    font-size: 16px !important;
+  }
+
+  /* Tighten paddings/margins to fit exactly in one A4 portrait page */
+  #printable-receipt .p-6,
+  #printable-receipt .p-8,
+  #printable-receipt .p-12 {
+    padding: 1.25rem !important;
+  }
+
+  #printable-receipt .space-y-6 > :not([hidden]) ~ :not([hidden]),
+  #printable-receipt .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem !important;
+  }
+
+  #printable-receipt .mt-6,
+  #printable-receipt .pt-6 {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
   }
 }
 </style>

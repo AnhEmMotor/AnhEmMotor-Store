@@ -1,6 +1,7 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useQuery } from "@tanstack/vue-query";
+import { categoryMapper } from "../../mappers/category.mapper";
 
 
 const props = defineProps({
@@ -70,11 +71,33 @@ const {
 		};
 	},
 	staleTime: 1000 * 60 * 60,
+	placeholderData: (prev) => prev,
 });
 
 const brands = computed(() => filterFacetsData.value?.brands || []);
 const versions = computed(() => filterFacetsData.value?.versions || []);
 const colors = computed(() => filterFacetsData.value?.colors || []);
+
+const staticCategories = [
+	{ id: 13, name: "Phụ tùng" },
+	{ id: 8, name: "Xe máy" },
+	{ id: 12, name: "Phụ kiện" },
+];
+
+const isCategorySelected = (catId) => {
+	return (props.modelValue.category_ids || []).includes(catId);
+};
+
+const toggleCategory = (catId) => {
+	const current = [...(props.modelValue.category_ids || [])];
+	const index = current.indexOf(catId);
+	if (index > -1) {
+		current.splice(index, 1);
+	} else {
+		current.push(catId);
+	}
+	emit("update:modelValue", { ...props.modelValue, category_ids: current });
+};
 
 const selectedBrandId = computed({
 	get: () => {
@@ -293,6 +316,29 @@ const searchArticle = (_event) => {
 						/>
 					</div>
 				</ClientOnly>
+			</div>
+
+			<!-- Categories (Danh mục) -->
+			<div class="space-y-4">
+				<div class="flex items-center gap-2">
+					<div class="w-1 h-4 bg-primary rounded-full"/>
+					<label class="text-sm font-black text-gray-900 uppercase tracking-widest">Danh Mục</label>
+				</div>
+				<div class="grid grid-cols-2 gap-2">
+					<button
+						v-for="cat in staticCategories"
+						:key="cat.id"
+						class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
+						:class="[
+							isCategorySelected(cat.id)
+								? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+								: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
+						]"
+						@click="toggleCategory(cat.id)"
+					>
+						{{ cat.name }}
+					</button>
+				</div>
 			</div>
 
 
