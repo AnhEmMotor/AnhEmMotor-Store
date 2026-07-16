@@ -57,29 +57,22 @@ onMounted(() => {
 
 
 const totalAmount = computed(() => Number(order.value?.totalAmount || 0));
-const depositThreshold = computed(() =>
-  Number(depositSettings.value?.orderValueExceeds || 0),
-);
 const depositRatio = computed(() =>
-  Number(order.value?.depositRatio || depositSettings.value?.depositRatio || 0),
+  Number(order.value?.depositRatio || 0),
 );
 
 const requiresDeposit = computed(
-  () =>
-    totalAmount.value > 0 &&
-    depositThreshold.value > 0 &&
-    depositRatio.value > 0 &&
-    totalAmount.value >= depositThreshold.value,
+  () => (order.value?.depositAmount || 0) > 0
 );
 
 const payableNow = computed(() =>
   requiresDeposit.value
-    ? Math.round((totalAmount.value * depositRatio.value) / 100)
+    ? order.value?.depositAmount || 0
     : totalAmount.value,
 );
 
 const remainingAmount = computed(() =>
-  requiresDeposit.value ? Math.max(totalAmount.value - payableNow.value, 0) : 0,
+  order.value?.remainingAmount || 0
 );
 
 useSeoMeta({

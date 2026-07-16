@@ -138,10 +138,7 @@ const calculateTotal = (items) => {
 					<p class="text-sm font-bold text-blue-700 leading-tight">
 						Vui lòng đặt cọc
 						<span class="text-red-500">{{
-							formatPrice(
-								(order.totalAmount || calculateTotal(order.items)) *
-									((order.depositRatio || 50) / 100),
-							)
+							formatPrice(order.depositAmount)
 						}}</span>
 						({{ order.depositRatio || 50 }}%) để xác nhận đơn. Liên hệ hotline
 						hoặc chờ Admin gọi xác nhận.

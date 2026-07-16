@@ -394,3 +394,4 @@ const productMapper = {
 };
 
 export default productMapper;
+

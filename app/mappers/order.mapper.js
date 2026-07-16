@@ -129,12 +129,12 @@ const orderMapper = {
 		});
 	},
 
-	calculateSummary(cartDetails, depositSettings = {}) {
+	calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null) {
 		const subtotal = cartDetails.reduce(
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
-		const shipping = subtotal > 10000000 ? 0 : 200000;
+		const shipping = calculatedShipping !== null ? calculatedShipping : null;
 		const total = subtotal + shipping;
 		const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
 		const depositRatio = Number(depositSettings.depositRatio || 0);
@@ -143,7 +143,7 @@ const orderMapper = {
 			depositRatio > 0 &&
 			subtotal >= orderValueExceeds;
 		const depositAmount = requiresDeposit
-			? Math.round((total * depositRatio) / 100)
+			? Math.round((subtotal * depositRatio) / 100)
 			: 0;
 		const remainingAmount = requiresDeposit
 			? Math.max(total - depositAmount, 0)
@@ -163,4 +163,6 @@ const orderMapper = {
 };
 
 export default orderMapper;
+
+
 

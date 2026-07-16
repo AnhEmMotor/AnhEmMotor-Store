@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";
@@ -32,6 +32,16 @@ onMounted(() => {
 	orderStore.clearOrder();
 	orderStore.initShippingInfo(authStore.user);
 });
+
+watch(
+	() => [orderStore.shippingInfo.wardCode, cartDetails.value],
+	() => {
+		if (orderStore.shippingInfo.wardCode) {
+			orderStore.calculateShippingFee(cartDetails.value);
+		}
+	},
+	{ deep: true }
+);
 
 const handleCheckout = async () => {
 	if (!orderStore.validateShippingInfo()) {
@@ -130,3 +140,4 @@ const handleCheckout = async () => {
 <style scoped>
 @reference "../assets/main.css";
 </style>
+

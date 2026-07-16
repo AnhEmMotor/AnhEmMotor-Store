@@ -63,6 +63,34 @@ export const useOrderStore = defineStore("order", () => {
 		),
 	}));
 
+	const calculatedShippingFee = ref(null);
+	const isCalculatingShipping = ref(false);
+
+	const calculateShippingFee = async (cartDetails) => {
+		if (!shippingInfo.value.provinceId || !shippingInfo.value.wardCode || !cartDetails || cartDetails.length === 0) {
+			calculatedShippingFee.value = null;
+			return;
+		}
+		isCalculatingShipping.value = true;
+		try {
+			const axios = useAxios();
+			const res = await axios.post('/api/v1/logistics/calculate-fee', {
+				provinceId: Number(shippingInfo.value.provinceId),
+				wardId: String(shippingInfo.value.wardCode),
+				items: cartDetails.map(item => ({ 
+					productVariantId: item.productVariantId || item.variantId || item.id, 
+					productVariantColorId: item.productVariantColorId && item.productVariantColorId > 0 ? item.productVariantColorId : null,
+					quantity: item.quantity 
+				}))
+			});
+			calculatedShippingFee.value = res.data;
+		} catch {
+			calculatedShippingFee.value = null;
+		} finally {
+			isCalculatingShipping.value = false;
+		}
+	};
+
 	const initStatuses = async () => {
 		try {
 			const [mapRes, cancellableRes] = await Promise.all([
@@ -388,6 +416,15 @@ export const useOrderStore = defineStore("order", () => {
 		clearOrder,
 		fetchProvinces,
 		fetchWards,
+		calculatedShippingFee,
+		isCalculatingShipping,
+		calculateShippingFee,
 	};
 });
+
+
+
+
+
+
 
