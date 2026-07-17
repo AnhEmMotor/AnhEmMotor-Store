@@ -161,6 +161,7 @@ const validateInvoiceForm = () => {
   return isValid;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const submitInvoiceRequest = async () => {
   if (!validateInvoiceForm()) return;
   isSubmittingInvoice.value = true;
@@ -438,8 +439,8 @@ const submitInvoiceRequest = async () => {
                   <!-- Nút in hóa đơn PDF -->
                   <div class="pt-3 border-t border-blue-100/50 flex justify-end">
                     <button 
-                      @click="printInvoice"
                       class="print-hide inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all text-xs uppercase tracking-wider cursor-pointer shadow-md shadow-blue-600/10"
+                      @click="printInvoice"
                     >
                       <Icon name="fa6-solid:file-pdf" class="text-sm" />
                       Xuất hóa đơn PDF

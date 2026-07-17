@@ -134,7 +134,7 @@ const orderStore = useOrderStore();
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
 							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyName }"
 							@input="orderStore.errors.companyName = ''"
-						/>
+						>
 						<p v-if="orderStore.errors.companyName" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyName }}</p>
 					</div>
 					
@@ -147,7 +147,7 @@ const orderStore = useOrderStore();
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
 							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyTaxCode }"
 							@input="orderStore.errors.companyTaxCode = ''"
-						/>
+						>
 						<p v-if="orderStore.errors.companyTaxCode" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyTaxCode }}</p>
 					</div>
 
@@ -160,7 +160,7 @@ const orderStore = useOrderStore();
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
 							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyAddress }"
 							@input="orderStore.errors.companyAddress = ''"
-						/>
+						>
 						<p v-if="orderStore.errors.companyAddress" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyAddress }}</p>
 					</div>
 
@@ -173,7 +173,7 @@ const orderStore = useOrderStore();
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
 							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyEmail }"
 							@input="orderStore.errors.companyEmail = ''"
-						/>
+						>
 						<p v-if="orderStore.errors.companyEmail" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyEmail }}</p>
 					</div>
 
@@ -186,7 +186,7 @@ const orderStore = useOrderStore();
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
 							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.budgetCode }"
 							@input="orderStore.errors.budgetCode = ''"
-						/>
+						>
 						<p v-if="orderStore.errors.budgetCode" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.budgetCode }}</p>
 					</div>
 				</div>

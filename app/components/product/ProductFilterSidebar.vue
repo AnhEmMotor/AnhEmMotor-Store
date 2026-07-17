@@ -239,8 +239,8 @@ const formatVND = (val) => {
 	}).format(val);
 };
 
-const searchArticle = (event) => {
-	console.log("Search input change:", event.target.value);
+const searchArticle = (_event) => {
+	// console.log("Search input change:", _event.target.value);
 };
 </script>
 
