@@ -1,7 +1,6 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { categoryMapper } from "../../mappers/category.mapper";
 
 
 const props = defineProps({
@@ -65,7 +64,6 @@ const {
 		}
 
 		return {
-			brands: [...brandsById.values()].sort((a, b) => a.name.localeCompare(b.name, "vi")),
 			versions: [...versionsSet].sort((a, b) => a.localeCompare(b, "vi")),
 			colors: [...colorsSet].sort((a, b) => a.localeCompare(b, "vi")),
 		};
@@ -74,7 +72,18 @@ const {
 	placeholderData: (prev) => prev,
 });
 
-const brands = computed(() => filterFacetsData.value?.brands || []);
+const {
+	data: brandsData,
+} = useQuery({
+	queryKey: ["product-brands"],
+	queryFn: () => productStore.getBrands(),
+	staleTime: 1000 * 60 * 60,
+});
+
+const brands = computed(() => {
+	const items = brandsData.value?.items || brandsData.value || [];
+	return [...items].sort((a, b) => (a.name || "").localeCompare(b.name || "", "vi"));
+});
 const versions = computed(() => filterFacetsData.value?.versions || []);
 const colors = computed(() => filterFacetsData.value?.colors || []);
 

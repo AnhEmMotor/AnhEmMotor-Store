@@ -7,7 +7,7 @@ import { toast } from "vue3-toastify";
 
 const route = useRoute();
 const orderStore = useOrderStore();
-const { depositSettings } = useStoreSettings();
+// const { depositSettings } = useStoreSettings();
 const orderId = computed(() => route.query.id);
 
 if (import.meta.server) {

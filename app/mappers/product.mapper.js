@@ -14,7 +14,6 @@ const productMapper = {
 	},
 
 	mapProductItem(raw) {
-		console.log("=== [productMapper] mapProductItem raw ===", raw);
 		const variants = (raw.variants || []).map((v) => ({
 			...v,
 			id: validId(v.id, v.Id, v.productVariantId, v.variantId, raw.id, raw.Id),
@@ -68,8 +67,13 @@ const productMapper = {
 					? raw.category
 					: raw.category?.name) ||
 				"",
-			brandId: raw.brandId ?? raw.brand_id ?? null,
-			brand: raw.brand || "",
+			brandId: raw.brandId ?? raw.brand_id ?? (typeof raw.brand === "object" ? raw.brand?.id : null) ?? null,
+			brand:
+				raw.brandName ||
+				(typeof raw.brand === "string"
+					? raw.brand
+					: raw.brand?.name) ||
+				"",
 			type: raw.type || "",
 			rating: raw.rating || 5,
 			reviews: raw.reviewsCount || 0,
