@@ -441,6 +441,82 @@ const submitInvoiceRequest = async () => {
                   </div>
                 </div>
               </div>
+              <div v-else class="border-t border-gray-100 pt-6 mt-6 print-hide">
+                <div v-if="!showInvoiceForm" class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                  <div class="text-left">
+                    <p class="text-sm font-bold text-gray-900">Bạn cần xuất hóa đơn công ty?</p>
+                    <p class="text-xs text-gray-500 mt-1">Cung cấp thông tin doanh nghiệp để nhận hóa đơn điện tử (VAT).</p>
+                  </div>
+                  <button 
+                    class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-all text-xs uppercase tracking-wider whitespace-nowrap"
+                    @click="showInvoiceForm = true"
+                  >
+                    Yêu cầu xuất HĐ
+                  </button>
+                </div>
+                
+                <div v-else class="bg-white border border-gray-200 rounded-2xl p-6 text-left">
+                  <div class="flex items-center justify-between mb-4">
+                    <h5 class="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                      <Icon name="fa6-solid:building" class="text-gray-400" />
+                      Thông tin xuất hóa đơn
+                    </h5>
+                    <button 
+                      class="text-gray-400 hover:text-gray-600"
+                      @click="showInvoiceForm = false"
+                    >
+                      <Icon name="fa6-solid:xmark" class="text-lg" />
+                    </button>
+                  </div>
+                  
+                  <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Tên công ty <span class="text-red-500">*</span></label>
+                        <input v-model="invoiceForm.companyName" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập tên công ty">
+                        <p v-if="invoiceErrors.companyName" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyName }}</p>
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Mã số thuế <span class="text-red-500">*</span></label>
+                        <input v-model="invoiceForm.companyTaxCode" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập mã số thuế">
+                        <p v-if="invoiceErrors.companyTaxCode" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyTaxCode }}</p>
+                      </div>
+                      <div class="space-y-1 md:col-span-2">
+                        <label class="text-xs font-bold text-gray-700">Địa chỉ công ty <span class="text-red-500">*</span></label>
+                        <input v-model="invoiceForm.companyAddress" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập địa chỉ công ty">
+                        <p v-if="invoiceErrors.companyAddress" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyAddress }}</p>
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Email nhận hóa đơn</label>
+                        <input v-model="invoiceForm.companyEmail" type="email" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="email@congty.com">
+                        <p v-if="invoiceErrors.companyEmail" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyEmail }}</p>
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Mã ngân sách (nếu có)</label>
+                        <input v-model="invoiceForm.budgetCode" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Mã ngân sách">
+                      </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                      <button 
+                        class="px-5 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-all text-xs uppercase tracking-wider"
+                        @click="showInvoiceForm = false"
+                        :disabled="isSubmittingInvoice"
+                      >
+                        Hủy
+                      </button>
+                      <button 
+                        class="px-6 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all text-xs uppercase tracking-wider flex items-center gap-2 shadow-md shadow-red-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                        @click="submitInvoiceRequest"
+                        :disabled="isSubmittingInvoice"
+                      >
+                        <Icon v-if="isSubmittingInvoice" name="fa6-solid:circle-notch" class="animate-spin" />
+                        Gửi yêu cầu
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

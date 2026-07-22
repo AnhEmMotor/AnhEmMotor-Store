@@ -234,7 +234,7 @@ export const useOrderStore = defineStore("order", () => {
 				shippingInfo.value,
 				cartItems,
 				userId,
-				selectedPaymentMethod.value,
+				shippingInfo.value.paymentMethod,
 			);
 			const res = await service.createOrder(payload);
 			lastCreatedOrderId.value = res.id || res.Id;
@@ -291,14 +291,28 @@ export const useOrderStore = defineStore("order", () => {
 
 	const fetchProvinces = async () => {
 		const axios = useAxios();
-		const response = await axios.get("/api/v1/salesorders/provinces");
-		return response.data;
+		const response = await axios.get("/api/shipping-location/provinces");
+		const data = response.data?.data || response.data;
+		if (Array.isArray(data)) {
+			return data.map(p => ({
+				provinceId: p.ProvinceID || p.provinceId || p._id || p.id,
+				provinceName: p.ProvinceName || p.provinceName || p.name
+			}));
+		}
+		return Array.isArray(response.data) ? response.data : [];
 	};
 
 	const fetchWards = async (provinceId) => {
 		const axios = useAxios();
-		const response = await axios.get(`/api/v1/salesorders/wards/${provinceId}`);
-		return response.data;
+		const response = await axios.get(`/api/shipping-location/wards/${provinceId}`);
+		const data = response.data?.data || response.data;
+		if (Array.isArray(data)) {
+			return data.map(w => ({
+				wardCode: w.WardCode || w.wardCode || w._id || w.code || w.id,
+				wardName: w.WardName || w.wardName || w.name
+			}));
+		}
+		return Array.isArray(response.data) ? response.data : [];
 	};
 
 	const getMyPurchases = async (params) => {
@@ -368,6 +382,7 @@ export const useOrderStore = defineStore("order", () => {
 
 	const clearPayment = () => {
 		paymentUrl.value = null;
+		shippingInfo.value.paymentMethod = "COD";
 		selectedPaymentMethod.value = "cod";
 	};
 

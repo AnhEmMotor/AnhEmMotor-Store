@@ -54,7 +54,7 @@ const handleCheckout = async () => {
 		if (order?.id) {
 			clearCart();
 			const instance = useNuxtApp();
-			const paymentMethod = orderStore.selectedPaymentMethod;
+			const paymentMethod = orderStore.shippingInfo.paymentMethod;
 			if (paymentMethod?.toLowerCase() === "cod") {
 				instance.$toast.success("Dat hang thanh cong!");
 				navigateTo(`/order-success?id=${order.id}`);

@@ -1,6 +1,7 @@
 import { ref, computed, watch, h } from "vue";
 import { toast } from "vue3-toastify";
 import { useQuery } from "@tanstack/vue-query";
+import { getImageUrl } from "~/utils/image";
 
 const CART_KEY = "cartItems";
 const cartItems = ref([]);
@@ -141,9 +142,9 @@ export function useCart() {
 				name: item.name || detail?.displayName || "San pham",
 				price: detail?.price ?? item.price ?? 0,
 				image:
-					color?.coverImageUrl ||
+					(color?.coverImageUrl ? getImageUrl(color.coverImageUrl) : null) ||
 					item.image ||
-					detail?.coverImageUrl ||
+					(detail?.coverImageUrl ? getImageUrl(detail.coverImageUrl) : null) ||
 					"/assets/image/placeholder-product.webp",
 				loading: false,
 				productVariantId: variantId,
