@@ -25,8 +25,8 @@ const productMapper = {
 				v.optionValuesText ||
 				v.propertyName ||
 				v.variant_name,
-			image: getImageUrl(v.image || v.cover_image_url),
-			cover_image_url: getImageUrl(v.cover_image_url || v.image),
+			image: getImageUrl(v.image || v.coverImageUrl || v.cover_image_url),
+			cover_image_url: getImageUrl(v.coverImageUrl || v.cover_image_url || v.image),
 			colors: (v.colors || []).map((c) => ({
 				id: validId(c.id, c.Id, c.productVariantColorId, c.colorId),
 				name: c.colorName || c.color_name || c.name,
@@ -34,10 +34,10 @@ const productMapper = {
 				code: c.colorCode || c.color_code || c.code || "#ccc",
 				colorCode: c.colorCode || c.color_code || c.code || "#ccc",
 				image: getImageUrl(
-					c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url,
+					c.coverImageUrl || c.cover_image_url || c.image || v.coverImageUrl || v.cover_image_url,
 				),
 				coverImageUrl: getImageUrl(
-					c.coverImageUrl || c.cover_image_url || c.image || v.cover_image_url,
+					c.coverImageUrl || c.cover_image_url || c.image || v.coverImageUrl || v.cover_image_url,
 				),
 				maxPurchaseQuantity: c.maxPurchaseQuantity,
 				effectiveMax:
@@ -59,7 +59,7 @@ const productMapper = {
 			originalPrice: raw.originalPrice || 0,
 			discount: raw.discount || 0,
 			image: getImageUrl(
-				raw.thumbnailUrl || variants[0]?.image || variants[0]?.cover_image_url,
+				raw.thumbnailUrl || raw.coverImageUrl || variants[0]?.image || variants[0]?.coverImageUrl || variants[0]?.cover_image_url,
 			),
 			categoryId: raw.categoryId ?? raw.category_id ?? null,
 			category:
