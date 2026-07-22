@@ -132,8 +132,8 @@ const chipVariants = computed(() => {
       (v) => (v.option_values_text ?? v.variant_name ?? "").trim().length > 0,
     )
     .map((v) => {
-      let fullLabel = (v.option_values_text ?? v.variant_name ?? "").trim();
-      let label = fullLabel.includes(" - ") ? fullLabel.split(" - ")[0].trim() : fullLabel;
+      const fullLabel = (v.option_values_text ?? v.variant_name ?? "").trim();
+      const label = fullLabel.includes(" - ") ? fullLabel.split(" - ")[0].trim() : fullLabel;
       return {
         variant: v,
         label: label,

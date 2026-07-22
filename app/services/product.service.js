@@ -28,6 +28,15 @@ export const productService = {
 	async getAttributeLabels() {
 		return await productRepository.getAttributeLabels();
 	},
+
+	async getBrands() {
+		try {
+			const data = await productRepository.getBrands();
+			return data?.items || data || [];
+		} catch {
+			return [];
+		}
+	},
 };
 
 export default productService;

@@ -159,11 +159,7 @@ export function useCart() {
 	);
 
 	function addItem(product, quantity = 1) {
-		console.log("=== [useCart] addItem ===");
-		console.log("Product passed to addItem:", product);
-		
 		const { variantId, colorId } = keyPartsFor(product);
-		console.log("Extracted from keyPartsFor -> variantId:", variantId, "colorId:", colorId);
 		
 		const key = `${variantId}:${colorId}`;
 		const probe = {

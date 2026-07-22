@@ -50,6 +50,7 @@ const fetchWardsForEdit = async (provinceId) => {
 		const data = await orderStore.fetchWards(provinceId);
 		wards.value = data || [];
 	} catch (error) {
+		// eslint-disable-next-line no-console
 		console.error("Failed to load wards", error);
 	}
 };
