@@ -129,7 +129,7 @@ const handleUpdateOrder = async () => {
 		toast.success("Cập nhật thông tin đơn hàng thành công!");
 		isEditing.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch {
+	} catch (error) {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi cập nhật đơn hàng.";
@@ -189,7 +189,7 @@ const confirmCancel = async () => {
 		toast.success("Hủy đơn hàng thành công!");
 		isCancelModalOpen.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch {
+	} catch (error) {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi hủy đơn hàng.";
@@ -212,9 +212,9 @@ const canEdit = (statusId) => {
 
 const isOnlineUnpaid = (order) => {
 	const method = String(order?.paymentMethod || "").toLowerCase();
-	const statusId = order?.statusId || order?.status || "";
+	const statusId = String(order?.statusId || order?.status || "").toLowerCase();
 	return ["vnpay", "payos"].includes(method) &&
-		["pending", "waiting_deposit"].includes(statusId);
+		["pending", "waiting_deposit", "waitingdeposit"].includes(statusId);
 };
 
 const handleContinuePayment = async (order) => {
