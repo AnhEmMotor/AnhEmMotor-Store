@@ -5,6 +5,7 @@ import { contactRepository } from '../app/core/infrastructure/repositories/conta
 import { FeedbackSubmission } from '../app/core/domain/models/feedback.model.js'
 import { feedbackRepository } from '../app/core/infrastructure/repositories/feedback.repository.js'
 import { recruitmentRepository } from '../app/core/infrastructure/repositories/recruitment.repository.js'
+import { bookingRepository } from '../app/core/infrastructure/repositories/booking.repository.js'
 
 const calls = []
 
@@ -46,6 +47,31 @@ test('support form submits to the Management support-request inbox contract', as
     id: 123,
     message: 'Gửi yêu cầu hỗ trợ thành công.',
   })
+})
+
+test('test-drive and service appointments share the Marketing booking inbox contract', async () => {
+  calls.length = 0
+
+  const testDrive = {
+    bookingType: 'TestDrive',
+    customerName: 'Nguyen Van A',
+    customerPhone: '0909123456',
+    preferredDate: '2026-07-20',
+  }
+  const maintenance = {
+    bookingType: 'Maintenance',
+    customerName: 'Tran Thi B',
+    customerPhone: '0911222333',
+    preferredDate: '2026-07-21',
+  }
+
+  await bookingRepository.createBooking(testDrive)
+  await bookingRepository.createBooking(maintenance)
+
+  assert.deepEqual(calls, [
+    { url: '/api/v1/Bookings', payload: testDrive },
+    { url: '/api/v1/Bookings', payload: maintenance },
+  ])
 })
 
 test('feedback form maps storefront fields to the Management feedback inbox contract', () => {
