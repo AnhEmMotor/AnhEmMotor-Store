@@ -154,7 +154,7 @@ const validateInvoiceForm = () => {
   return isValid;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const submitInvoiceRequest = async () => {
   if (!validateInvoiceForm()) return;
   isSubmittingInvoice.value = true;
@@ -500,15 +500,15 @@ const submitInvoiceRequest = async () => {
                     <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
                       <button 
                         class="px-5 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-all text-xs uppercase tracking-wider"
-                        @click="showInvoiceForm = false"
                         :disabled="isSubmittingInvoice"
+                        @click="showInvoiceForm = false"
                       >
                         Hủy
                       </button>
                       <button 
                         class="px-6 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all text-xs uppercase tracking-wider flex items-center gap-2 shadow-md shadow-red-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
-                        @click="submitInvoiceRequest"
                         :disabled="isSubmittingInvoice"
+                        @click="submitInvoiceRequest"
                       >
                         <Icon v-if="isSubmittingInvoice" name="fa6-solid:circle-notch" class="animate-spin" />
                         Gửi yêu cầu

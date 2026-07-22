@@ -268,7 +268,8 @@ const timeRemaining = computed(() => {
 						<Icon name="fa6-solid:clock" />
 						Thời gian thanh toán còn lại:
 					</p>
-					<p class="text-sm font-black bg-red-50 px-3 py-1 rounded-full mt-1 shadow-sm border border-red-100"
+					<p
+class="text-sm font-black bg-red-50 px-3 py-1 rounded-full mt-1 shadow-sm border border-red-100"
 					   :class="timeRemaining === 'Đã hết hạn' ? 'text-gray-500 bg-gray-50 border-gray-200' : 'text-red-600'">
 						{{ timeRemaining }}
 					</p>
