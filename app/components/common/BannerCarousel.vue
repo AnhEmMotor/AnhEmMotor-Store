@@ -70,7 +70,7 @@ onUnmounted(() => {
 			>
 				<picture>
 					<source media="(max-width: 767px)" :srcset="banner.mobileImageUrl || defaultBg">
-					<img :src="banner.desktopImageUrl || defaultBg" alt="Banner" class="w-full h-full object-cover">
+					<img :src="useAssetUrl(banner.desktopImageUrl) || defaultBg" alt="Banner" class="w-full h-full object-cover">
 				</picture>
 				<div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 			</div>

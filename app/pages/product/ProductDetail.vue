@@ -36,7 +36,7 @@ const mainImage = computed({
 			detail.value?.currentVariant?.photos?.[0] ||
 			detail.value?.currentVariant?.image ||
 			detail.value?.currentVariant?.cover_image_url ||
-			"https://dummyimage.com/600x400/f3f4f6/a1a1aa.png&text=%20"
+			"/assets/image/placeholder-product.webp"
 		);
 	},
 	set: (val) => {
@@ -47,7 +47,6 @@ const mainImage = computed({
 const isPlaceholderImage = computed(() => {
 	const img = mainImage.value || "";
 	return (
-		img.includes("dummyimage.com") ||
 		img.includes("placeholder-product") ||
 		img.includes("placeholder")
 	);
@@ -354,7 +353,7 @@ const bookTestDrive = () => {
 						<div class="relative">
 							<div
 								class="relative aspect-[16/10] rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 group z-10"
-								:class="isPlaceholderImage ? 'bg-slate-900' : 'bg-white'"
+								:class="isPlaceholderImage ? 'bg-gray-50' : 'bg-white'"
 							>
 								<div class="absolute top-6 left-6 z-20 flex flex-col gap-2">
 									<span
@@ -632,6 +631,25 @@ const bookTestDrive = () => {
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<!-- Product Description Section -->
+				<div
+					v-if="detail.product.description"
+					class="space-y-8 relative py-12"
+				>
+					<div class="text-center space-y-4 reveal-up">
+						<div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 rounded-full">
+							<span class="text-[8px] font-black text-primary uppercase tracking-[0.3em]">Chi tiết</span>
+						</div>
+						<h2 class="text-3xl lg:text-5xl font-black text-gray-900 uppercase tracking-tight italic leading-[1.1]">
+							Nội dung <span class="text-primary">Sản phẩm</span>
+						</h2>
+					</div>
+					
+					<div class="max-w-4xl mx-auto px-4 html-content text-gray-700 text-base md:text-lg leading-relaxed">
+						<div v-html="detail.product.description"></div>
 					</div>
 				</div>
 
@@ -1197,6 +1215,31 @@ const bookTestDrive = () => {
 </template>
 
 <style scoped>
+.html-content :deep(img) {
+	max-width: 100%;
+	height: auto;
+	border-radius: 1rem;
+	margin: 1.5rem auto;
+	box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+}
+.html-content :deep(h1), .html-content :deep(h2), .html-content :deep(h3) {
+	font-weight: 900;
+	color: #111827;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+.html-content :deep(p) {
+	margin-bottom: 1rem;
+}
+.html-content :deep(ul), .html-content :deep(ol) {
+	padding-left: 1.5rem;
+	margin-bottom: 1rem;
+}
+.html-content :deep(a) {
+	color: #e31837;
+	text-decoration: underline;
+}
+
 :deep(*) {
 	font-family: "Manrope", sans-serif;
 }

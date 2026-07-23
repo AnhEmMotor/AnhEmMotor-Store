@@ -9,7 +9,8 @@ export const categoryService = {
 	async getApiCategories(params = {}) {
 		try {
 			return await categoryRepository.getCategories(params);
-		} catch {
+		} catch (error) {
+			console.error("Failed to fetch categories:", error);
 			return [];
 		}
 	},

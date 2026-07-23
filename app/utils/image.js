@@ -25,13 +25,18 @@ export const getImageUrl = (path) => {
 };
 
 export const getBrandLogo = (brandName) => {
-	const logos = {
-		honda: "/assets/image/index/brand/honda.webp",
-		yamaha: "/assets/image/index/brand/yamaha.webp",
-		suzuki: "/assets/image/index/brand/suzuki.webp",
-		kawasaki: "/assets/image/index/brand/kawasaki.webp",
-	};
-	return (
-		logos[brandName.toLowerCase()] || "/assets/image/placeholder-product.webp"
-	);
+	if (!brandName) return "/assets/image/placeholder-product.webp";
+	
+	const name = brandName.toLowerCase();
+	
+	if (name.includes("honda")) return "/assets/image/index/brand/honda.webp";
+	if (name.includes("yamaha")) return "/assets/image/index/brand/yamaha.webp";
+	if (name.includes("suzuki")) return "/assets/image/index/brand/suzuki.webp";
+	if (name.includes("kawasaki")) return "/assets/image/index/brand/kawasaki.webp";
+	if (name.includes("vinfast")) return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Logo_of_VinFast_%283D%29.svg/3840px-Logo_of_VinFast_%283D%29.svg.png";
+	if (name.includes("piaggio")) return "https://inviva.vn/wp-content/uploads/2026/04/logo-piaggio-vector-06.png";
+	if (name.includes("sym")) return "https://icon2.cleanpng.com/20180506/irw/avsqu6kzz.webp";
+	if (name.includes("ducati")) return "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Ducati_red_logo.svg/1920px-Ducati_red_logo.svg.png";
+
+	return "/assets/image/placeholder-product.webp";
 };

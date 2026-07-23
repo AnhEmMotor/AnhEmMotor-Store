@@ -133,8 +133,8 @@
 				</NuxtLink>
 
 				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
-				<nav class="hidden xl:block mx-auto">
-					<ul class="flex items-center gap-3 2xl:gap-6">
+				<nav class="hidden xl:block mx-auto flex-1 px-4">
+					<ul class="flex items-center justify-center gap-3 xl:gap-5 2xl:gap-8">
 						<li>
 							<NuxtLink
 								:to="xeMayLink"
@@ -652,7 +652,7 @@ if (import.meta.client) {
 @reference "../../assets/main.css";
 
 .nav-link-refined {
-	@apply relative flex items-center text-[10px] 2xl:text-[12px] font-black text-gray-900 transition-all duration-300 cursor-pointer uppercase tracking-wider 2xl:tracking-widest px-1 whitespace-nowrap;
+	@apply relative flex items-center text-xs xl:text-[13px] 2xl:text-[15px] font-black text-gray-900 transition-all duration-300 cursor-pointer uppercase tracking-wider 2xl:tracking-widest px-2 py-1 whitespace-nowrap;
 }
 
 .nav-link-refined:hover,

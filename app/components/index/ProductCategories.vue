@@ -2,11 +2,14 @@
 
 import BaseSectionHeader from "../ui/BaseSectionHeader.vue";
 import CategoryCard from "../ui/CategoryCard.vue";
+import { categoryMapper } from "../../mappers/category.mapper";
 
 const categoryStore = useCategoryStore();
 const { data: categories, isLoading } = useAsyncData('home-categories', async () => {
-    const response = await categoryStore.getProductCategories({ pageSize: 6 });
-    return categoryMapper.toUIList(response.items);
+    const response = await categoryStore.getProductCategories({ pageSize: 50 });
+    const all = categoryMapper.toUIList(response.items);
+    const allowed = ["xe máy", "phụ tùng", "phụ kiện"];
+    return all.filter(c => allowed.includes(c.name.toLowerCase()));
 });
 </script>
 

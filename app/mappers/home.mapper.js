@@ -1,4 +1,4 @@
-import { getImageUrl } from "~/utils/image";
+import { getImageUrl, getBrandLogo } from "~/utils/image";
 
 const homeMapper = {
 	mapHeroStats(stats) {
@@ -11,7 +11,7 @@ const homeMapper = {
 	mapBrands(brands) {
 		return brands.map((brand) => ({
 			id: brand.id,
-			img: getImageUrl(brand.logoUrl),
+			img: getBrandLogo(brand.name),
 			alt: brand.name,
 			text: brand.description || "",
 			name: brand.name,
