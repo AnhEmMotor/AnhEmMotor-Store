@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useAssetUrl } from "~/composables/useAssetUrl";
 
 const props = defineProps({
 	banners: {

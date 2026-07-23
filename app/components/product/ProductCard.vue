@@ -2,6 +2,7 @@
 import { ref, computed, watch } from "vue";
 import { toast } from "vue3-toastify";
 import { useCart } from "~/composables/useCart";
+import { useAssetUrl } from "~/composables/useAssetUrl";
 
 import ProductColorChip from "./ProductColorChip.vue";
 
