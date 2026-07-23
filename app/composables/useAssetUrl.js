@@ -5,7 +5,7 @@ export const useAssetUrl = (path) => {
     let config;
     try {
         config = useRuntimeConfig();
-    } catch (e) {
+    } catch {
         // Fallback if useRuntimeConfig is called outside setup
         config = { public: { apiUrlForBrowserClient: 'http://localhost:5000' } };
     }

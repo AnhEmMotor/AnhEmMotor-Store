@@ -649,7 +649,7 @@ const bookTestDrive = () => {
 					</div>
 					
 					<div class="max-w-4xl mx-auto px-4 html-content text-gray-700 text-base md:text-lg leading-relaxed">
-						<div v-html="detail.product.description"></div>
+						<div v-html="detail.product.description"/>
 					</div>
 				</div>
 
