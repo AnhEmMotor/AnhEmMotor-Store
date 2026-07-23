@@ -23,7 +23,7 @@
 		<div class="marquee-wrapper">
 			<div class="marquee-content group">
 				<div
-					v-for="(brand, index) in homeStore.brands"
+					v-for="(brand, index) in manualBrands"
 					:key="`brand-${index}`"
 					class="brand-card"
 				>
@@ -39,7 +39,7 @@
 				</div>
 
 				<div
-					v-for="(brand, index) in homeStore.brands"
+					v-for="(brand, index) in manualBrands"
 					:key="`brand-clone-${index}`"
 					class="brand-card"
 				>
@@ -59,7 +59,18 @@
 </template>
 
 <script setup lang="js">
-const homeStore = useHomeStore();
+import { getBrandLogo } from "~/utils/image";
+
+const manualBrands = [
+	{ name: "Honda", img: getBrandLogo("Honda"), alt: "Honda" },
+	{ name: "Yamaha", img: getBrandLogo("Yamaha"), alt: "Yamaha" },
+	{ name: "Suzuki", img: getBrandLogo("Suzuki"), alt: "Suzuki" },
+	{ name: "Vinfast", img: getBrandLogo("Vinfast"), alt: "Vinfast" },
+	{ name: "Piaggio", img: getBrandLogo("Piaggio"), alt: "Piaggio" },
+	{ name: "SYM", img: getBrandLogo("SYM"), alt: "SYM" },
+	{ name: "Ducati", img: getBrandLogo("Ducati"), alt: "Ducati" },
+	{ name: "Kawasaki", img: getBrandLogo("Kawasaki"), alt: "Kawasaki" },
+];
 </script>
 
 <style lang="css" scoped>
@@ -117,11 +128,12 @@ const homeStore = useHomeStore();
 }
 
 .brand-logo {
-	@apply h-8 md:h-12 w-auto object-contain transition-all duration-500 filter grayscale opacity-40;
+	@apply h-16 md:h-24 w-auto max-w-[80%] object-contain transition-all duration-500;
+	mix-blend-mode: multiply;
 }
 
 .brand-inner:hover .brand-logo {
-	@apply grayscale-0 opacity-100 scale-110;
+	@apply scale-110;
 }
 
 .brand-name {

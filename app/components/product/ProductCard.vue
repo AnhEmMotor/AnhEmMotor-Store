@@ -2,6 +2,7 @@
 import { ref, computed, watch } from "vue";
 import { toast } from "vue3-toastify";
 import { useCart } from "~/composables/useCart";
+import { useAssetUrl } from "~/composables/useAssetUrl";
 
 import ProductColorChip from "./ProductColorChip.vue";
 
@@ -194,7 +195,7 @@ const handleAddToCart = () => {
       name,
       displayName: name,
       price: variant.price,
-      image: currentImage.value,
+      image: useAssetUrl(currentImage.value),
       effectiveMax:
         selectedColor.value?.effectiveMax ??
         selectedColor.value?.maxPurchaseQuantity ??
@@ -223,7 +224,7 @@ const toggleCompare = (e) => {
       name: props.product.name,
       slug: props.product.slug,
       brand: props.product.brand,
-      image: currentImage.value,
+      image: useAssetUrl(currentImage.value),
       price: selectedVariant.value?.price,
     });
   }
@@ -240,7 +241,7 @@ const toggleCompare = (e) => {
       :class="isPlaceholderImage ? 'bg-slate-900' : 'bg-slate-50'"
     >
       <img
-        :src="currentImage"
+        :src="useAssetUrl(currentImage)"
         :alt="product.name"
         class="w-full h-full transition-transform duration-700"
         :class="isPlaceholderImage ? 'object-contain' : 'object-cover group-hover:scale-110'"
