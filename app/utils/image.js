@@ -21,7 +21,13 @@ export const getImageUrl = (path) => {
 
 	// Remove leading slash if exists to avoid double slashes
 	const cleanPath = path.startsWith("/") ? path.substring(1) : path;
-	return `${baseURL}/${cleanPath}`;
+	
+	// If path already contains the view-image route (e.g., from backend), just use it directly
+	if (cleanPath.startsWith("api/v1/MediaFile/view-image/")) {
+		return `${baseURL}/${cleanPath}`;
+	}
+	
+	return `${baseURL}/api/v1/MediaFile/view-image/${cleanPath}`;
 };
 
 export const getBrandLogo = (brandName) => {
