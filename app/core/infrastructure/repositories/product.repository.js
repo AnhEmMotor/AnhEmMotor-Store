@@ -24,4 +24,10 @@ export const productRepository = {
 		const response = await axios.get(PRODUCT_ENDPOINTS.ATTRIBUTE_LABELS);
 		return response.data;
 	},
+
+	async getBrands() {
+		const axios = useAxios();
+		const response = await axios.get(PRODUCT_ENDPOINTS.BRANDS);
+		return response.data;
+	},
 };

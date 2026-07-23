@@ -15,6 +15,8 @@ const orderMapper = {
 			customerName: shippingInfo.fullName,
 			customerAddress: shippingInfo.address,
 			customerPhone: shippingInfo.phone,
+			provinceId: shippingInfo.provinceId,
+			wardCode: shippingInfo.wardCode,
 			paymentMethod: this.normalizePaymentMethod(paymentMethod),
 			isCompanyInvoice: shippingInfo.isCompanyInvoice || false,
 			companyName: shippingInfo.isCompanyInvoice ? shippingInfo.companyName : null,
@@ -54,6 +56,7 @@ const orderMapper = {
 			paymentMethod: raw.paymentMethod || "COD",
 			paymentStatus: raw.paymentStatus || raw.payment_status || null,
 			paymentUrl: raw.paymentUrl || null,
+			notes: raw.notes || raw.Notes || null,
 			createdAt:
 				raw.createdAt ||
 				raw.created_at ||
@@ -64,6 +67,10 @@ const orderMapper = {
 				name: raw.customerName || raw.customer_name,
 				phone: raw.customerPhone || raw.customer_phone,
 				address: raw.customerAddress || raw.customer_address,
+				provinceId: raw.provinceId || raw.ProvinceId || null,
+				provinceName: raw.provinceName || raw.ProvinceName || null,
+				wardCode: raw.wardCode || raw.WardCode || null,
+				wardName: raw.wardName || raw.WardName || null,
 			},
 			isCompanyInvoice: raw.isCompanyInvoice || raw.IsCompanyInvoice || false,
 			companyName: raw.companyName || raw.CompanyName || null,
@@ -122,12 +129,12 @@ const orderMapper = {
 		});
 	},
 
-	calculateSummary(cartDetails, depositSettings = {}) {
+	calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null) {
 		const subtotal = cartDetails.reduce(
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
-		const shipping = subtotal > 10000000 ? 0 : 200000;
+		const shipping = calculatedShipping !== null ? calculatedShipping : null;
 		const total = subtotal + shipping;
 		const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
 		const depositRatio = Number(depositSettings.depositRatio || 0);
@@ -136,7 +143,7 @@ const orderMapper = {
 			depositRatio > 0 &&
 			subtotal >= orderValueExceeds;
 		const depositAmount = requiresDeposit
-			? Math.round((total * depositRatio) / 100)
+			? Math.round((subtotal * depositRatio) / 100)
 			: 0;
 		const remainingAmount = requiresDeposit
 			? Math.max(total - depositAmount, 0)
@@ -156,3 +163,6 @@ const orderMapper = {
 };
 
 export default orderMapper;
+
+
+

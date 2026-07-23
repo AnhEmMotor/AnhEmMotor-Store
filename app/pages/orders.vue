@@ -32,12 +32,15 @@ const editForm = ref({
 	customerName: "",
 	customerPhone: "",
 	customerAddress: "",
-	notes: "",
+	provinceId: null,
+	wardCode: "",
 });
 const editErrors = ref({
 	customerName: "",
 	customerPhone: "",
 	customerAddress: "",
+	provinceId: "",
+	wardCode: "",
 });
 
 const regexPhoneVN = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
@@ -48,7 +51,19 @@ const validateEditForm = () => {
 		customerName: "",
 		customerPhone: "",
 		customerAddress: "",
+		provinceId: "",
+		wardCode: "",
 	};
+
+	if (!editForm.value.provinceId) {
+		editErrors.value.provinceId = "Vui lòng chọn Tỉnh/Thành phố.";
+		isValid = false;
+	}
+
+	if (!editForm.value.wardCode) {
+		editErrors.value.wardCode = "Vui lòng chọn Phường/Xã.";
+		isValid = false;
+	}
 
 	if (!editForm.value.customerName?.trim()) {
 		editErrors.value.customerName = "Tên người nhận không được để trống.";
@@ -78,11 +93,15 @@ const openEditModal = (order) => {
 		customerPhone: order.customer?.phone || "",
 		customerAddress: order.customer?.address || "",
 		notes: order.notes || "",
+		provinceId: order.customer?.provinceId || null,
+		wardCode: order.customer?.wardCode || "",
 	};
 	editErrors.value = {
 		customerName: "",
 		customerPhone: "",
 		customerAddress: "",
+		provinceId: "",
+		wardCode: "",
 	};
 	isEditing.value = true;
 };
@@ -101,6 +120,8 @@ const handleUpdateOrder = async () => {
 			customerName: editForm.value.customerName,
 			customerPhone: editForm.value.customerPhone,
 			customerAddress: editForm.value.customerAddress,
+			provinceId: editForm.value.provinceId,
+			wardCode: editForm.value.wardCode,
 			notes: editForm.value.notes,
 		};
 
@@ -108,7 +129,7 @@ const handleUpdateOrder = async () => {
 		toast.success("Cập nhật thông tin đơn hàng thành công!");
 		isEditing.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch {
+	} catch (error) {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi cập nhật đơn hàng.";
@@ -117,6 +138,26 @@ const handleUpdateOrder = async () => {
 		isSubmittingEdit.value = false;
 	}
 };
+
+const provinces = ref([]);
+const fetchProvincesForEdit = async () => {
+	try {
+		const data = await orderStore.fetchProvinces();
+		provinces.value = data || [];
+	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.error("Failed to load provinces", error);
+	}
+};
+
+const handleEditProvinceChange = async (provinceId) => {
+	editForm.value.wardCode = "";
+	editForm.value.provinceId = provinceId;
+};
+
+onMounted(() => {
+	fetchProvincesForEdit();
+});
 
 const filters = ref({});
 
@@ -149,7 +190,7 @@ const confirmCancel = async () => {
 		toast.success("Hủy đơn hàng thành công!");
 		isCancelModalOpen.value = false;
 		await queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-	} catch {
+	} catch (error) {
 		const message =
 			error.response?.data?.Errors?.[0]?.Message ||
 			"Có lỗi xảy ra khi hủy đơn hàng.";
@@ -172,9 +213,9 @@ const canEdit = (statusId) => {
 
 const isOnlineUnpaid = (order) => {
 	const method = String(order?.paymentMethod || "").toLowerCase();
-	const statusId = order?.statusId || order?.status || "";
+	const statusId = String(order?.statusId || order?.status || "").toLowerCase();
 	return ["vnpay", "payos"].includes(method) &&
-		["pending", "waiting_deposit"].includes(statusId);
+		["pending", "waiting_deposit", "waitingdeposit"].includes(statusId);
 };
 
 const handleContinuePayment = async (order) => {
@@ -236,6 +277,7 @@ const handleContinuePayment = async (order) => {
 			:is-open="isEditing"
 			:order="selectedOrder"
 			:errors="editErrors"
+			:provinces="provinces"
 			:is-submitting="isSubmittingEdit"
 			:locked-delivery="
 				orderStore.lockedStatuses?.deliveryInfo?.includes(selectedOrder?.status)
@@ -245,6 +287,7 @@ const handleContinuePayment = async (order) => {
 			"
 			@close="isEditing = false"
 			@save="handleUpdateOrder"
+			@change-province="handleEditProvinceChange"
 		/>
 
 		<OrderCancelModal

@@ -37,6 +37,11 @@ export const useProductStore = defineStore("product", () => {
 		};
 	};
 
+	const getBrands = async () => {
+		const res = await service.getBrands();
+		return res;
+	};
+
 	const getProductStoreDetailBySlug = async (slug, attributeLabels = null) => {
 		const res = await service.getProductDetail(slug);
 		return productMapper.mapProductDetail(res, attributeLabels);
@@ -65,6 +70,7 @@ export const useProductStore = defineStore("product", () => {
 		fetchOptions,
 		getOptions,
 		getProducts,
+		getBrands,
 		getProductStoreDetailBySlug,
 		getProductAttributeLabels,
 		fetchFullProductDetail,

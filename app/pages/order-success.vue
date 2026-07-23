@@ -7,7 +7,7 @@ import { toast } from "vue3-toastify";
 
 const route = useRoute();
 const orderStore = useOrderStore();
-const { depositSettings } = useStoreSettings();
+// const { depositSettings } = useStoreSettings();
 const orderId = computed(() => route.query.id);
 
 if (import.meta.server) {
@@ -57,29 +57,22 @@ onMounted(() => {
 
 
 const totalAmount = computed(() => Number(order.value?.totalAmount || 0));
-const depositThreshold = computed(() =>
-  Number(depositSettings.value?.orderValueExceeds || 0),
-);
 const depositRatio = computed(() =>
-  Number(order.value?.depositRatio || depositSettings.value?.depositRatio || 0),
+  Number(order.value?.depositRatio || 0),
 );
 
 const requiresDeposit = computed(
-  () =>
-    totalAmount.value > 0 &&
-    depositThreshold.value > 0 &&
-    depositRatio.value > 0 &&
-    totalAmount.value >= depositThreshold.value,
+  () => (order.value?.depositAmount || 0) > 0
 );
 
 const payableNow = computed(() =>
   requiresDeposit.value
-    ? Math.round((totalAmount.value * depositRatio.value) / 100)
+    ? order.value?.depositAmount || 0
     : totalAmount.value,
 );
 
 const remainingAmount = computed(() =>
-  requiresDeposit.value ? Math.max(totalAmount.value - payableNow.value, 0) : 0,
+  order.value?.remainingAmount || 0
 );
 
 useSeoMeta({
@@ -161,7 +154,7 @@ const validateInvoiceForm = () => {
   return isValid;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const submitInvoiceRequest = async () => {
   if (!validateInvoiceForm()) return;
   isSubmittingInvoice.value = true;
@@ -448,6 +441,82 @@ const submitInvoiceRequest = async () => {
                   </div>
                 </div>
               </div>
+              <div v-else class="border-t border-gray-100 pt-6 mt-6 print-hide">
+                <div v-if="!showInvoiceForm" class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                  <div class="text-left">
+                    <p class="text-sm font-bold text-gray-900">Bạn cần xuất hóa đơn công ty?</p>
+                    <p class="text-xs text-gray-500 mt-1">Cung cấp thông tin doanh nghiệp để nhận hóa đơn điện tử (VAT).</p>
+                  </div>
+                  <button 
+                    class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-all text-xs uppercase tracking-wider whitespace-nowrap"
+                    @click="showInvoiceForm = true"
+                  >
+                    Yêu cầu xuất HĐ
+                  </button>
+                </div>
+                
+                <div v-else class="bg-white border border-gray-200 rounded-2xl p-6 text-left">
+                  <div class="flex items-center justify-between mb-4">
+                    <h5 class="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                      <Icon name="fa6-solid:building" class="text-gray-400" />
+                      Thông tin xuất hóa đơn
+                    </h5>
+                    <button 
+                      class="text-gray-400 hover:text-gray-600"
+                      @click="showInvoiceForm = false"
+                    >
+                      <Icon name="fa6-solid:xmark" class="text-lg" />
+                    </button>
+                  </div>
+                  
+                  <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Tên công ty <span class="text-red-500">*</span></label>
+                        <input v-model="invoiceForm.companyName" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập tên công ty">
+                        <p v-if="invoiceErrors.companyName" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyName }}</p>
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Mã số thuế <span class="text-red-500">*</span></label>
+                        <input v-model="invoiceForm.companyTaxCode" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập mã số thuế">
+                        <p v-if="invoiceErrors.companyTaxCode" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyTaxCode }}</p>
+                      </div>
+                      <div class="space-y-1 md:col-span-2">
+                        <label class="text-xs font-bold text-gray-700">Địa chỉ công ty <span class="text-red-500">*</span></label>
+                        <input v-model="invoiceForm.companyAddress" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập địa chỉ công ty">
+                        <p v-if="invoiceErrors.companyAddress" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyAddress }}</p>
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Email nhận hóa đơn</label>
+                        <input v-model="invoiceForm.companyEmail" type="email" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="email@congty.com">
+                        <p v-if="invoiceErrors.companyEmail" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyEmail }}</p>
+                      </div>
+                      <div class="space-y-1">
+                        <label class="text-xs font-bold text-gray-700">Mã ngân sách (nếu có)</label>
+                        <input v-model="invoiceForm.budgetCode" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Mã ngân sách">
+                      </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                      <button 
+                        class="px-5 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-all text-xs uppercase tracking-wider"
+                        :disabled="isSubmittingInvoice"
+                        @click="showInvoiceForm = false"
+                      >
+                        Hủy
+                      </button>
+                      <button 
+                        class="px-6 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all text-xs uppercase tracking-wider flex items-center gap-2 shadow-md shadow-red-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                        :disabled="isSubmittingInvoice"
+                        @click="submitInvoiceRequest"
+                      >
+                        <Icon v-if="isSubmittingInvoice" name="fa6-solid:circle-notch" class="animate-spin" />
+                        Gửi yêu cầu
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -505,6 +574,21 @@ const submitInvoiceRequest = async () => {
 
 <style>
 @media print {
+  @page {
+    margin: 5mm !important;
+  }
+
+  html, body {
+    width: 210mm !important;
+    height: 297mm !important;
+  }
+
+  /* Force override global visibility restrictions */
+  #printable-receipt,
+  #printable-receipt * {
+    visibility: visible !important;
+  }
+
   /* Force override animations, transitions, and opacities so they don't hide print content */
   *, *:before, *:after {
     animation: none !important;
@@ -544,11 +628,59 @@ const submitInvoiceRequest = async () => {
   #printable-receipt {
     border: none !important;
     box-shadow: none !important;
-    padding: 0 !important;
+    padding: 1rem !important;
     margin: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     display: block !important;
+    font-size: 14px !important;
+  }
+
+  /* Force 2 columns grid on print to save vertical space */
+  #printable-receipt .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Scale font size and adjust line height for perfect readability */
+  #printable-receipt p,
+  #printable-receipt span,
+  #printable-receipt td,
+  #printable-receipt th,
+  #printable-receipt div {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  #printable-receipt h2 {
+    font-size: 24px !important;
+  }
+
+  #printable-receipt h3 {
+    font-size: 20px !important;
+  }
+
+  #printable-receipt h4 {
+    font-size: 16px !important;
+  }
+
+  /* Tighten paddings/margins to fit exactly in one A4 portrait page */
+  #printable-receipt .p-6,
+  #printable-receipt .p-8,
+  #printable-receipt .p-12 {
+    padding: 1.25rem !important;
+  }
+
+  #printable-receipt .space-y-6 > :not([hidden]) ~ :not([hidden]),
+  #printable-receipt .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1rem !important;
+  }
+
+  #printable-receipt .mt-6,
+  #printable-receipt .pt-6 {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
   }
 }
 </style>

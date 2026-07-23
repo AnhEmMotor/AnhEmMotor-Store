@@ -63,6 +63,34 @@ export const useOrderStore = defineStore("order", () => {
 		),
 	}));
 
+	const calculatedShippingFee = ref(null);
+	const isCalculatingShipping = ref(false);
+
+	const calculateShippingFee = async (cartDetails) => {
+		if (!shippingInfo.value.provinceId || !shippingInfo.value.wardCode || !cartDetails || cartDetails.length === 0) {
+			calculatedShippingFee.value = null;
+			return;
+		}
+		isCalculatingShipping.value = true;
+		try {
+			const axios = useAxios();
+			const res = await axios.post('/api/v1/logistics/calculate-fee', {
+				provinceId: Number(shippingInfo.value.provinceId),
+				wardId: String(shippingInfo.value.wardCode),
+				items: cartDetails.map(item => ({ 
+					productVariantId: item.productVariantId || item.variantId || item.id, 
+					productVariantColorId: item.productVariantColorId && item.productVariantColorId > 0 ? item.productVariantColorId : null,
+					quantity: item.quantity 
+				}))
+			});
+			calculatedShippingFee.value = res.data;
+		} catch {
+			calculatedShippingFee.value = null;
+		} finally {
+			isCalculatingShipping.value = false;
+		}
+	};
+
 	const initStatuses = async () => {
 		try {
 			const [mapRes, cancellableRes] = await Promise.all([
@@ -102,6 +130,8 @@ export const useOrderStore = defineStore("order", () => {
 		companyTaxCode: "",
 		companyEmail: "",
 		budgetCode: "",
+		provinceId: null,
+		wardCode: "",
 	});
 
 	const errors = ref({
@@ -113,6 +143,8 @@ export const useOrderStore = defineStore("order", () => {
 		companyTaxCode: "",
 		companyEmail: "",
 		budgetCode: "",
+		provinceId: "",
+		wardCode: "",
 	});
 
 	const initShippingInfo = (user) => {
@@ -134,7 +166,18 @@ export const useOrderStore = defineStore("order", () => {
 			companyTaxCode: "",
 			companyEmail: "",
 			budgetCode: "",
+			provinceId: "",
+			wardCode: "",
 		};
+
+		if (!shippingInfo.value.provinceId) {
+			errors.value.provinceId = "Vui lòng chọn Tỉnh/Thành phố";
+			isValid = false;
+		}
+		if (!shippingInfo.value.wardCode) {
+			errors.value.wardCode = "Vui lòng chọn Quận/Huyện/Phường/Xã";
+			isValid = false;
+		}
 
 		if (!shippingInfo.value.fullName?.trim()) {
 			errors.value.fullName = "Vui lòng nhập họ và tên người nhận";
@@ -191,7 +234,7 @@ export const useOrderStore = defineStore("order", () => {
 				shippingInfo.value,
 				cartItems,
 				userId,
-				selectedPaymentMethod.value,
+				shippingInfo.value.paymentMethod,
 			);
 			const res = await service.createOrder(payload);
 			lastCreatedOrderId.value = res.id || res.Id;
@@ -244,6 +287,32 @@ export const useOrderStore = defineStore("order", () => {
 		} finally {
 			isLoading.value = false;
 		}
+	};
+
+	const fetchProvinces = async () => {
+		const axios = useAxios();
+		const response = await axios.get("/api/shipping-location/provinces");
+		const data = response.data?.data || response.data;
+		if (Array.isArray(data)) {
+			return data.map(p => ({
+				provinceId: p.ProvinceID || p.provinceId || p._id || p.id,
+				provinceName: p.ProvinceName || p.provinceName || p.name
+			}));
+		}
+		return Array.isArray(response.data) ? response.data : [];
+	};
+
+	const fetchWards = async (provinceId) => {
+		const axios = useAxios();
+		const response = await axios.get(`/api/shipping-location/wards/${provinceId}`);
+		const data = response.data?.data || response.data;
+		if (Array.isArray(data)) {
+			return data.map(w => ({
+				wardCode: w.WardCode || w.wardCode || w._id || w.code || w.id,
+				wardName: w.WardName || w.wardName || w.name
+			}));
+		}
+		return Array.isArray(response.data) ? response.data : [];
 	};
 
 	const getMyPurchases = async (params) => {
@@ -313,6 +382,7 @@ export const useOrderStore = defineStore("order", () => {
 
 	const clearPayment = () => {
 		paymentUrl.value = null;
+		shippingInfo.value.paymentMethod = "COD";
 		selectedPaymentMethod.value = "cod";
 	};
 
@@ -359,5 +429,17 @@ export const useOrderStore = defineStore("order", () => {
 		clearPayment,
 		getStatusName,
 		clearOrder,
+		fetchProvinces,
+		fetchWards,
+		calculatedShippingFee,
+		isCalculatingShipping,
+		calculateShippingFee,
 	};
 });
+
+
+
+
+
+
+

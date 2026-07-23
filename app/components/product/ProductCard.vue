@@ -102,8 +102,11 @@ const currentImage = computed(() => {
   return (
     selectedColor.value?.image ||
     selectedColor.value?.coverImageUrl ||
+    selectedColor.value?.cover_image_url ||
+    selectedVariant.value?.coverImageUrl ||
     selectedVariant.value?.cover_image_url ||
     selectedVariant.value?.image ||
+    props.product?.coverImageUrl ||
     props.product?.image ||
     "/assets/image/placeholder-product.webp"
   );
@@ -128,10 +131,14 @@ const chipVariants = computed(() => {
     .filter(
       (v) => (v.option_values_text ?? v.variant_name ?? "").trim().length > 0,
     )
-    .map((v) => ({
-      variant: v,
-      label: (v.option_values_text ?? v.variant_name ?? "").trim(),
-    }));
+    .map((v) => {
+      const fullLabel = (v.option_values_text ?? v.variant_name ?? "").trim();
+      const label = fullLabel.includes(" - ") ? fullLabel.split(" - ")[0].trim() : fullLabel;
+      return {
+        variant: v,
+        label: label,
+      };
+    });
 
   if (variants.length !== 1) return variants;
 
@@ -343,7 +350,7 @@ const toggleCompare = (e) => {
   flex-direction: column;
   gap: 0.25rem;
   min-height: 8.25rem;
-  max-height: 8.25rem;
+  max-height: 12rem;
   overflow: hidden;
 }
 
@@ -365,8 +372,8 @@ const toggleCompare = (e) => {
 }
 
 .variant-selector:not(.variant-selector--single) .variant-section--separated {
-  flex: 0 0 2.875rem;
-  max-height: 2.875rem;
+  flex: 0 0 5rem;
+  max-height: 5rem;
 }
 
 .variant-section--separated {

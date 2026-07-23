@@ -137,7 +137,7 @@
 					<ul class="flex items-center gap-3 2xl:gap-6">
 						<li>
 							<NuxtLink
-								to="/products?type=xe-may"
+								:to="xeMayLink"
 								class="nav-link-refined"
 								:class="{ active: isRouteActive('/products?type=xe-may') }"
 								>XE MÁY
@@ -148,7 +148,7 @@
 						</li>
 						<li>
 							<NuxtLink
-								to="/products?type=phu-tung-phu-kien"
+								:to="phuTungLink"
 								class="nav-link-refined"
 								:class="{ active: isRouteActive('/products?type=phu-tung-phu-kien') }"
 								>PHỤ TÙNG & PHỤ KIỆN
@@ -161,11 +161,11 @@
 							<NuxtLink
 								to="/products"
 								class="nav-link-refined"
-								:class="{ active: isRouteActive('/products') }"
+								:class="{ active: false }"
 								>BẢNG GIÁ
 								<span
 									class="nav-dot-floating"
-									:class="{ active: isRouteActive('/products') }"
+									:class="{ active: false }"
 							/></NuxtLink>
 						</li>
 
@@ -285,6 +285,7 @@
 											:src="authStore.user.avatarUrl"
 											alt="Avatar"
 											class="w-full h-full object-cover"
+											referrerpolicy="no-referrer"
 										>
 										<Icon
 											v-else
@@ -375,6 +376,7 @@
 									:src="authStore.user.avatarUrl"
 									alt="Avatar"
 									class="w-full h-full object-cover"
+									referrerpolicy="no-referrer"
 								>
 								<div
 									v-else
@@ -510,6 +512,7 @@
 
 <script setup>
 import { ref, onBeforeUnmount, onMounted, watch } from "vue";
+import { categoryMapper } from "../../mappers/category.mapper";
 import CartPanel from "../cart/CartPanel.vue";
 import QuickActionModal from "../common/QuickActionModal.vue";
 import TestRideForm from "../service/TestRideForm.vue";
@@ -560,7 +563,7 @@ const isRouteActive = (targetPath) => {
 			return isPhuTungPhuKien;
 		}
 		if (targetPath === "/products") {
-			return !isXeMay && !isPhuTungPhuKien;
+			return false;
 		}
 	}
 
@@ -584,14 +587,14 @@ const handleContactSubmit = async (data) => {
 const categoryStore = useCategoryStore();
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const xeMayLink = computed(() => {
 	const categories = categoryStore.categories || [];
 	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
 	return `/products?category_ids=${xeMayCat ? xeMayCat.id : 8}`;
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const phuTungLink = computed(() => {
 	const categories = categoryStore.categories || [];
 	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
@@ -600,8 +603,8 @@ const phuTungLink = computed(() => {
 
 const navItemsMobile = computed(() => [
 	{ name: "TRANG CHỦ", path: "/" },
-	{ name: "XE MÁY", path: "/products?type=xe-may" },
-	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: "/products?type=phu-tung-phu-kien" },
+	{ name: "XE MÁY", path: xeMayLink.value },
+	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: phuTungLink.value },
 	{ name: "BẢNG GIÁ", path: "/products" },
 	{ name: "KHUYẾN MÃI", path: "/promotion" },
 	{ name: "DỊCH VỤ", path: "/service" },
@@ -637,7 +640,7 @@ if (import.meta.client) {
 		handleScroll();
 		// Fetch all categories from API for the mega menu
 		const data = await categoryStore.getProductCategories();
-		categoryStore.categories = data;
+		categoryStore.categories = categoryMapper.toUIList(data?.items || []);
 	});
 	onBeforeUnmount(() => {
 		window.removeEventListener("scroll", handleScroll);

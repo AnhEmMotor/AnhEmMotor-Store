@@ -1,6 +1,7 @@
 import { ref, computed, watch, h } from "vue";
 import { toast } from "vue3-toastify";
 import { useQuery } from "@tanstack/vue-query";
+import { getImageUrl } from "~/utils/image";
 
 const CART_KEY = "cartItems";
 const cartItems = ref([]);
@@ -8,13 +9,24 @@ const isCartPanelOpen = ref(false);
 
 const keyPartsFor = (item) => {
 	const rawVariantId = item.productVariantId ?? item.variantId ?? item.id;
-	const variantId = Number(String(rawVariantId).split(":")[0]);
+	const rawString = String(rawVariantId || "");
+	const variantPart = rawString.split(":")[0];
+	let variantId = variantPart;
+	// if it's purely numeric, convert to number, otherwise keep as string (for UUIDs)
+	if (variantPart && !isNaN(Number(variantPart))) {
+		variantId = Number(variantPart);
+	}
 	const rawColorId =
 		item.productVariantColorId ??
 		item.colorId ??
-		String(rawVariantId).split(":")[1] ??
-		0;
-	const colorId = rawColorId && Number(rawColorId) > 0 ? Number(rawColorId) : 0;
+		rawString.split(":")[1] ??
+		null;
+	let colorId = rawColorId;
+	if (colorId === "0" || colorId === 0 || colorId === "undefined" || colorId === "null") {
+		colorId = null;
+	} else if (colorId != null && !isNaN(Number(colorId))) {
+		colorId = Number(colorId);
+	}
 	return { variantId, colorId };
 };
 
@@ -39,7 +51,9 @@ if (import.meta.client) {
 	const stored = localStorage.getItem(CART_KEY);
 	if (stored) {
 		try {
-			cartItems.value = JSON.parse(stored).map(normalizeCartItem);
+			cartItems.value = JSON.parse(stored)
+				.map(normalizeCartItem)
+				.filter(item => item.productVariantId != null && String(item.productVariantId) !== "NaN");
 		} catch {
 			cartItems.value = [];
 		}
@@ -61,7 +75,7 @@ export function useCart() {
 		...new Set(
 			cartItems.value
 				.map((item) => keyPartsFor(item).variantId)
-				.filter((id) => Number.isFinite(id)),
+				.filter((id) => id && (Number.isFinite(id) || (typeof id === 'string' && id.trim() !== ''))),
 		),
 	]);
 
@@ -86,13 +100,13 @@ export function useCart() {
 
 	const detailMap = computed(() => {
 		const map = new Map();
-		(batchDetails.value || []).forEach((d) => map.set(Number(d.id), d));
+		(batchDetails.value || []).forEach((d) => map.set(String(d.id), d));
 		return map;
 	});
 
 	const resolveEffectiveMax = (item) => {
 		const { variantId, colorId } = keyPartsFor(item);
-		const detail = detailMap.value.get(variantId);
+		const detail = detailMap.value.get(String(variantId));
 		const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
 		return (
 			color?.effectiveMax ??
@@ -116,7 +130,7 @@ export function useCart() {
 	const cartDetails = computed(() =>
 		cartItems.value.map((item) => {
 			const { variantId, colorId } = keyPartsFor(item);
-			const detail = detailMap.value.get(variantId);
+			const detail = detailMap.value.get(String(variantId));
 			const color = (detail?.colors || []).find(
 				(c) => Number(c.id) === colorId,
 			);
@@ -128,9 +142,9 @@ export function useCart() {
 				name: item.name || detail?.displayName || "San pham",
 				price: detail?.price ?? item.price ?? 0,
 				image:
-					color?.coverImageUrl ||
+					(color?.coverImageUrl ? getImageUrl(color.coverImageUrl) : null) ||
 					item.image ||
-					detail?.coverImageUrl ||
+					(detail?.coverImageUrl ? getImageUrl(detail.coverImageUrl) : null) ||
 					"/assets/image/placeholder-product.webp",
 				loading: false,
 				productVariantId: variantId,
@@ -145,11 +159,8 @@ export function useCart() {
 	);
 
 	function addItem(product, quantity = 1) {
-		const variantId = Number(
-			product.productVariantId ?? product.variantId ?? product.id,
-		);
-		const colorId =
-			Number(product.productVariantColorId ?? product.colorId ?? 0) || 0;
+		const { variantId, colorId } = keyPartsFor(product);
+		
 		const key = `${variantId}:${colorId}`;
 		const probe = {
 			...product,
@@ -194,53 +205,23 @@ export function useCart() {
 		}
 
 		if (import.meta.client) {
-			toast(
-				h(
-					"div",
-					{
-						class: "toast-modal-body",
-					},
-					[
-						// Shopping cart icon centered at the top
-						h("div", { class: "toast-modal-icon-wrapper" }, [
-							h(
-								"svg",
-								{
-									viewBox: "0 0 24 24",
-									fill: "none",
-									stroke: "currentColor",
-									"stroke-width": "2.5",
-									"stroke-linecap": "round",
-									"stroke-linejoin": "round",
-									class: "toast-modal-icon-svg",
-								},
-								[
-									h("circle", { cx: "9", cy: "21", r: "1" }),
-									h("circle", { cx: "20", cy: "21", r: "1" }),
-									h("path", { d: "M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" }),
-								]
-							)
-						]),
-						h("h3", { class: "toast-modal-title" }, "Đã thêm vào giỏ"),
-						h("p", { class: "toast-modal-desc" }, product.displayName || product.name),
-						h("div", { class: "toast-modal-meta" }, `Số lượng hiện tại: ${newQuantity}`),
-						h(
-							"button",
-							{
-								class: "toast-modal-btn",
-								onClick: (e) => {
-									e.preventDefault();
-									isCartPanelOpen.value = true;
-								},
-							},
-							"Xem giỏ hàng & Thanh toán",
-						),
-					],
-				),
+			const toastId = toast.success(
+				h('div', { class: 'flex flex-col gap-2' }, [
+					h('div', { class: 'text-base font-semibold text-gray-800' }, `Đã thêm ${product.displayName || product.name} vào giỏ hàng.`),
+					h('div', { class: 'text-sm text-gray-500' }, `Số lượng: ${newQuantity}`),
+					h('button', {
+						class: 'mt-3 px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-lg hover:bg-red-700 transition-colors w-fit shadow-sm',
+						onClick: (e) => {
+							e.preventDefault();
+							toast.remove(toastId);
+							isCartPanelOpen.value = true;
+						}
+					}, 'Xem giỏ hàng & Thanh toán')
+				]),
 				{
 					autoClose: 4000,
-					closeOnClick: true,
-				},
+					closeOnClick: false,
+				}
 			);
 		}
 	}

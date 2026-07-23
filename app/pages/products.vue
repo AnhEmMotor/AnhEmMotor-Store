@@ -30,7 +30,7 @@ function parseStringArrayQuery(val) {
 const pageMode = computed(() => {
 	const ids = parseArrayQuery(route.query.category_ids);
 	
-	const categories = categoryStore.categories || [];
+	const categories = Array.isArray(categoryStore.categories) ? categoryStore.categories : [];
 	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
 	const xeMayId = xeMayCat ? xeMayCat.id : 8;
 	
@@ -308,6 +308,21 @@ const formatVND = (value) => {
 							/>
 						</button>
 
+						<!-- Category Chip -->
+						<button
+							v-for="catId in filters.category_ids"
+							:key="'cat-' + catId"
+							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
+							@click="filters.category_ids = filters.category_ids.filter(id => id !== catId)"
+						>
+							<Icon name="fa6-solid:folder-open" class="text-xs" />
+							<span>Danh mục: {{ categoryStore.categories.find(c => c.id === catId)?.name || catId }}</span>
+							<Icon
+								name="fa6-solid:xmark"
+								class="ml-1 opacity-50 group-hover:opacity-100"
+							/>
+						</button>
+
 						<!-- Price Chip -->
 						<button
 							v-if="filters.minPrice !== null || filters.maxPrice !== null"
@@ -339,6 +354,8 @@ const formatVND = (value) => {
 								filters.brand_ids = [];
 								filters.minPrice = null;
 								filters.maxPrice = null;
+								filters.versions = [];
+								filters.colors = [];
 							"
 						>
 							Xóa tất cả

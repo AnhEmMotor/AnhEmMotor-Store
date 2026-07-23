@@ -268,22 +268,7 @@ export function usePaginatedQuery(config) {
 		queryKey: computed(() => [...queryKey, queryParams.value]),
 		queryFn: () => queryFn(queryParams.value),
 		initialData: initialData,
-		placeholderData: (previousData, previousQuery) => {
-			if (!previousQuery || !previousData) return undefined;
-			const previousKey = previousQuery.queryKey;
-			const previousParams = previousKey[previousKey.length - 1] || {};
-			const currentParams = queryParams.value;
-
-			const prevFiltersObj = { ...previousParams };
-			delete prevFiltersObj.page;
-			const curFiltersObj = { ...currentParams };
-			delete curFiltersObj.page;
-
-			if (JSON.stringify(prevFiltersObj) === JSON.stringify(curFiltersObj)) {
-				return previousData;
-			}
-			return undefined;
-		},
+		placeholderData: (previousData) => previousData,
 		...options,
 		enabled: enabled,
 	});

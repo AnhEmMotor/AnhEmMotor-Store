@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import { useCart } from "~/composables/useCart";
 import { useAuthStore } from "~/stores/auth.store";
 import { useOrderStore } from "~/stores/order.store";
@@ -24,7 +24,7 @@ useHead({
 	link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 });
 
-const { cartItems, clearCart } = useCart();
+const { cartItems, cartDetails, clearCart } = useCart();
 const authStore = useAuthStore();
 const orderStore = useOrderStore();
 
@@ -33,6 +33,16 @@ onMounted(() => {
 	orderStore.initShippingInfo(authStore.user);
 });
 
+watch(
+	() => [orderStore.shippingInfo.wardCode, cartDetails.value],
+	() => {
+		if (orderStore.shippingInfo.wardCode) {
+			orderStore.calculateShippingFee(cartDetails.value);
+		}
+	},
+	{ deep: true }
+);
+
 const handleCheckout = async () => {
 	if (!orderStore.validateShippingInfo()) {
 		const instance = useNuxtApp();
@@ -40,11 +50,11 @@ const handleCheckout = async () => {
 		return;
 	}
 	try {
-		const order = await orderStore.createOrder(cartItems.value);
+		const order = await orderStore.createOrder(cartDetails.value);
 		if (order?.id) {
 			clearCart();
 			const instance = useNuxtApp();
-			const paymentMethod = orderStore.selectedPaymentMethod;
+			const paymentMethod = orderStore.shippingInfo.paymentMethod;
 			if (paymentMethod?.toLowerCase() === "cod") {
 				instance.$toast.success("Dat hang thanh cong!");
 				navigateTo(`/order-success?id=${order.id}`);
@@ -130,3 +140,4 @@ const handleCheckout = async () => {
 <style scoped>
 @reference "../assets/main.css";
 </style>
+

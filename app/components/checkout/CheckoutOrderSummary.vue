@@ -11,13 +11,19 @@ const {
 	isPending,
 } = useCart();
 const orderStore = useOrderStore();
-const { depositSettings } = useStoreSettings();
 const isChecking = ref(false);
 
 const isSubmitting = computed(() => orderStore.isLoading);
 
 const orderSummary = computed(() =>
-	orderMapper.calculateSummary(cartDetails.value, depositSettings.value),
+	orderMapper.calculateSummary(
+		cartDetails.value, 
+		{
+			orderValueExceeds: orderStore.settings.Order_value_exceeds,
+			depositRatio: orderStore.settings.Deposit_ratio
+		}, 
+		orderStore.calculatedShippingFee
+	),
 );
 
 const formatPrice = (val) => orderMapper.formatPrice(val);
@@ -184,9 +190,13 @@ function handlePlaceOrder() {
 						formatPrice(orderSummary.subtotal)
 					}}</span>
 				</div>
-				<div class="flex justify-between text-sm">
+				<div v-if="orderSummary.shipping !== null" class="flex justify-between text-sm">
 					<span class="text-gray-500 font-medium">Phí giao hàng</span>
-					<span class="font-bold text-gray-900">{{
+					<span v-if="orderStore.isCalculatingShipping" class="flex gap-2 items-center text-gray-400">
+						<Icon name="fa6-solid:circle-notch" class="animate-spin" />
+						Đang tính...
+					</span>
+					<span v-else class="font-bold text-gray-900">{{
 						orderSummary.shipping === 0
 							? "Miễn phí"
 							: formatPrice(orderSummary.shipping)
@@ -231,30 +241,6 @@ function handlePlaceOrder() {
 					}}</span>
 				</div>
 
-				<div
-					v-if="orderSummary.total >= orderStore.settings.Order_value_exceeds"
-					class="mt-6 p-4 bg-blue-50/70 rounded-2xl border border-blue-100 space-y-2.5"
-				>
-					<div class="flex items-center gap-2 text-blue-800">
-						<Icon name="fa6-solid:circle-info" class="text-sm" />
-						<span class="text-xs font-black uppercase tracking-wider"
-							>Yêu cầu đặt cọc ({{ orderStore.settings.Deposit_ratio }}%)</span
-						>
-					</div>
-					<div class="flex justify-between items-baseline">
-						<span class="text-[10px] text-blue-600 font-medium"
-							>Số tiền cần cọc trước:</span
-						>
-						<span class="text-sm font-black text-blue-800">{{
-							formatPrice(
-								orderSummary.total * (orderStore.settings.Deposit_ratio / 100),
-							)
-						}}</span>
-					</div>
-					<p class="text-[9px] text-blue-500 leading-tight">
-						* Đơn hàng giá trị cao cần thanh toán cọc để xác nhận.
-					</p>
-				</div>
 			</div>
 
 			<button
@@ -282,3 +268,5 @@ function handlePlaceOrder() {
 	@apply bg-gray-200 rounded-full;
 }
 </style>
+
+

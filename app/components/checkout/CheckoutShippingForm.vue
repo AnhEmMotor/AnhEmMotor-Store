@@ -1,10 +1,32 @@
 <script setup>
 import { useOrderStore } from "@/stores/order.store";
+import { useQuery } from "@tanstack/vue-query";
+import { watch } from "vue";
 
 const orderStore = useOrderStore();
+
+const { isLoading: isLoadingProvinces, data: provinces } = useQuery({
+	queryKey: ["provinces"],
+	queryFn: () => orderStore.fetchProvinces(),
+});
+
+const { isLoading: isLoadingWards, data: wards } = useQuery({
+	queryKey: ["wards", () => orderStore.shippingInfo.provinceId],
+	queryFn: () => orderStore.fetchWards(orderStore.shippingInfo.provinceId),
+	enabled: () => !!orderStore.shippingInfo.provinceId,
+});
+
+watch(
+	() => orderStore.shippingInfo.provinceId,
+	() => {
+		orderStore.shippingInfo.wardCode = "";
+	},
+);
 </script>
 
 <template>
+	<CommonFullLoading :show="isLoadingProvinces" text="Đang tải danh sách tỉnh thành phố..." />
+
 	<div
 		class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6"
 	>
@@ -60,6 +82,50 @@ const orderStore = useOrderStore();
 				>
 					{{ orderStore.errors.phone }}
 				</p>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div class="space-y-2">
+				<label class="text-xs font-black text-gray-400 uppercase tracking-widest">Tỉnh/Thành phố</label>
+				<div class="relative">
+					<select
+						v-model="orderStore.shippingInfo.provinceId"
+						class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm appearance-none cursor-pointer"
+						:class="{ '!border-red-500 !bg-red-50': orderStore.errors.provinceId }"
+						:disabled="isLoadingProvinces"
+						@change="orderStore.errors.provinceId = ''"
+					>
+						<option value="" disabled>{{ isLoadingProvinces ? 'Đang tải...' : 'Chọn Tỉnh/Thành phố' }}</option>
+						<option v-for="p in provinces" :key="p.provinceId" :value="p.provinceId">{{ p.provinceName }}</option>
+					</select>
+					<div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">
+						<Icon v-if="isLoadingProvinces" name="line-md:loading-loop" class="w-4 h-4 text-red-500" />
+						<Icon v-else name="fa6-solid:chevron-down" class="w-3 h-3" />
+					</div>
+				</div>
+				<p v-if="orderStore.errors.provinceId" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.provinceId }}</p>
+			</div>
+
+			<div class="space-y-2">
+				<label class="text-xs font-black text-gray-400 uppercase tracking-widest">Quận/Huyện/Phường/Xã</label>
+				<div class="relative">
+					<select
+						v-model="orderStore.shippingInfo.wardCode"
+						class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+						:class="{ '!border-red-500 !bg-red-50': orderStore.errors.wardCode }"
+						:disabled="!orderStore.shippingInfo.provinceId || isLoadingWards"
+						@change="orderStore.errors.wardCode = ''"
+					>
+						<option value="" disabled>{{ isLoadingWards ? 'Đang tải...' : 'Chọn Quận/Huyện/Phường/Xã' }}</option>
+						<option v-for="w in wards" :key="w.wardCode" :value="w.wardCode">{{ w.wardName }}</option>
+					</select>
+					<div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">
+						<Icon v-if="isLoadingWards" name="line-md:loading-loop" class="w-4 h-4 text-red-500" />
+						<Icon v-else name="fa6-solid:chevron-down" class="w-3 h-3" />
+					</div>
+				</div>
+				<p v-if="orderStore.errors.wardCode" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.wardCode }}</p>
 			</div>
 		</div>
 
@@ -194,3 +260,4 @@ const orderStore = useOrderStore();
 		</div>
 	</div>
 </template>
+

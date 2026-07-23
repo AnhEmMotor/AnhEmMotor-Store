@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { computed, ref, onMounted, onUnmounted } from 'vue';
+
+const props = defineProps({
 	order: {
 		type: Object,
 		required: true,
@@ -38,6 +40,41 @@ const calculateTotal = (items) => {
 		0,
 	);
 };
+
+const now = ref(Date.now());
+let timer = null;
+
+onMounted(() => {
+	timer = setInterval(() => {
+		now.value = Date.now();
+	}, 1000);
+});
+
+onUnmounted(() => {
+	if (timer) clearInterval(timer);
+});
+
+const expireTime = computed(() => {
+	if (props.order.paymentExpiredAt) {
+		return new Date(props.order.paymentExpiredAt).getTime();
+	}
+	if (props.order.createdAt) {
+		return new Date(props.order.createdAt).getTime() + 24 * 60 * 60 * 1000;
+	}
+	return 0;
+});
+
+const timeRemaining = computed(() => {
+	if (!props.canContinuePayment || expireTime.value === 0) return null;
+	const diff = expireTime.value - now.value;
+	if (diff <= 0) return "Đã hết hạn";
+	
+	const hours = Math.floor(diff / (1000 * 60 * 60));
+	const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+	const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+	
+	return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+});
 </script>
 
 <template>
@@ -101,6 +138,12 @@ const calculateTotal = (items) => {
 						<h4 class="font-bold text-gray-900 truncate">
 							{{ item.name || "Sản phẩm" }}
 						</h4>
+						<p
+							v-if="item.productVariantName || item.colorName"
+							class="text-xs text-gray-500 mt-1 truncate"
+						>
+							{{ [item.productVariantName, item.colorName].filter(Boolean).join(' - ') }}
+						</p>
 						<div class="flex items-center justify-between">
 							<p class="text-xs text-gray-500">
 								Số lượng:
@@ -132,10 +175,7 @@ const calculateTotal = (items) => {
 					<p class="text-sm font-bold text-blue-700 leading-tight">
 						Vui lòng đặt cọc
 						<span class="text-red-500">{{
-							formatPrice(
-								(order.totalAmount || calculateTotal(order.items)) *
-									((order.depositRatio || 50) / 100),
-							)
+							formatPrice(order.depositAmount)
 						}}</span>
 						({{ order.depositRatio || 50 }}%) để xác nhận đơn. Liên hệ hotline
 						hoặc chờ Admin gọi xác nhận.
@@ -173,7 +213,7 @@ const calculateTotal = (items) => {
 							/>
 							<span
 								class="text-sm font-medium text-gray-600 leading-relaxed italic"
-								>{{ order.customer?.address || "Chưa có địa chỉ" }}</span
+								>{{ [order.customer?.address, order.customer?.wardName, order.customer?.provinceName].filter(Boolean).join(", ") || "Chưa có địa chỉ" }}</span
 							>
 						</div>
 					</div>
@@ -223,6 +263,17 @@ const calculateTotal = (items) => {
 				</button>
 			</div>
 			<div class="text-right space-y-1">
+				<div v-if="timeRemaining" class="mb-3 flex flex-col items-end">
+					<p class="text-[10px] text-gray-400 font-black uppercase tracking-widest flex items-center gap-1">
+						<Icon name="fa6-solid:clock" />
+						Thời gian thanh toán còn lại:
+					</p>
+					<p
+class="text-sm font-black bg-red-50 px-3 py-1 rounded-full mt-1 shadow-sm border border-red-100"
+					   :class="timeRemaining === 'Đã hết hạn' ? 'text-gray-500 bg-gray-50 border-gray-200' : 'text-red-600'">
+						{{ timeRemaining }}
+					</p>
+				</div>
 				<div
 					v-if="
 						(order.statusId === 'deposit_paid' ||
