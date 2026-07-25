@@ -75,7 +75,7 @@
 			]"
 		>
 			<div
-				class="max-w-360 mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2 sm:gap-6"
+				class="max-w-[1600px] mx-auto px-2 sm:px-4 lg:px-4 xl:px-6 flex items-center gap-2 sm:gap-4"
 			>
 				<!-- Mobile Menu Toggle (Moved to Left) -->
 				<button
@@ -133,8 +133,8 @@
 				</NuxtLink>
 
 				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
-				<nav class="hidden xl:block mx-auto flex-1 px-4">
-					<ul class="flex items-center justify-center gap-3 xl:gap-5 2xl:gap-8">
+				<nav class="hidden xl:block mx-auto flex-1 px-2">
+					<ul class="flex items-center justify-center gap-2 xl:gap-3 2xl:gap-5">
 						<li>
 							<NuxtLink
 								:to="xeMayLink"
@@ -252,6 +252,24 @@
 						</div>
 					</div>
 
+					<!-- Cart Button -->
+					<div class="relative">
+						<button
+							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
+							:class="{ 'text-primary bg-primary/5': isCartOpen }"
+							@click="isCartOpen = !isCartOpen"
+							aria-label="Giỏ hàng"
+						>
+							<Icon name="fa6-solid:cart-shopping" class="w-5 h-5" />
+							<span
+								v-if="cartDetails.length > 0"
+								class="absolute -top-0.5 -right-0.5 w-5 h-5 bg-primary text-white text-[9px] font-black rounded-full flex items-center justify-center"
+							>
+								{{ cartDetails.length }}
+							</span>
+						</button>
+					</div>
+
 					<!-- PREMIUM CTA GROUP (Hidden on mobile for better space) -->
 					<div
 						class="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-inner shrink-0"
@@ -340,7 +358,7 @@
 						<template v-else>
 							<NuxtLink
 								to="/login"
-								class="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gray-900 text-white font-black text-xs sm:text-[11px] uppercase tracking-widest hover:bg-primary hover:shadow-lg hover:shadow-primary/20 transition-all"
+								class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gray-900 text-white font-black text-xs sm:text-[11px] uppercase tracking-widest hover:bg-primary hover:shadow-lg hover:shadow-primary/20 transition-all whitespace-nowrap"
 							>
 								<Icon name="ph:sign-in-fill" class="text-sm" />
 								Đăng nhập

@@ -129,13 +129,13 @@ const orderMapper = {
 		});
 	},
 
-	calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null) {
+calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null, discountAmount = 0) {
 		const subtotal = cartDetails.reduce(
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
 		const shipping = calculatedShipping !== null ? calculatedShipping : null;
-		const total = subtotal + shipping;
+  const total = Math.max(0, subtotal + shipping - discountAmount);
 		const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
 		const depositRatio = Number(depositSettings.depositRatio || 0);
 		const requiresDeposit =
@@ -148,7 +148,7 @@ const orderMapper = {
 		const remainingAmount = requiresDeposit
 			? Math.max(total - depositAmount, 0)
 			: 0;
-		const payableNow = requiresDeposit ? depositAmount : total;
+  const payableNow = requiresDeposit ? Math.max(0, depositAmount - discountAmount) : total;
 		return {
 			subtotal,
 			shipping,

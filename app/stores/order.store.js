@@ -223,6 +223,24 @@ export const useOrderStore = defineStore("order", () => {
 		return isValid;
 	};
 
+const appliedVoucherId = ref(null);
+const appliedVoucherDiscount = ref(0);
+
+const setAppliedVoucher = (appliedVoucher) => {
+  if (appliedVoucher?.discountAmount > 0) {
+    appliedVoucherId.value = appliedVoucher.voucherId;
+    appliedVoucherDiscount.value = appliedVoucher.discountAmount;
+  } else {
+    appliedVoucherId.value = null;
+    appliedVoucherDiscount.value = 0;
+  }
+};
+
+const clearAppliedVoucher = () => {
+  appliedVoucherId.value = null;
+  appliedVoucherDiscount.value = 0;
+};
+
 	const createOrder = async (cartItems) => {
 		isLoading.value = true;
 		error.value = null;
@@ -236,6 +254,14 @@ export const useOrderStore = defineStore("order", () => {
 				userId,
 				shippingInfo.value.paymentMethod,
 			);
+    if (appliedVoucherId.value) {
+      payload.voucherId = appliedVoucherId.value;
+      payload.discountAmount = appliedVoucherDiscount.value;
+    }
+    if (appliedVoucherId.value) {
+      payload.voucherId = appliedVoucherId.value;
+      payload.discountAmount = appliedVoucherDiscount.value;
+    }
 			const res = await service.createOrder(payload);
 			lastCreatedOrderId.value = res.id || res.Id;
 			currentOrder.value = orderMapper.mapOrderResponse(res);
@@ -399,6 +425,7 @@ export const useOrderStore = defineStore("order", () => {
 		errors.value = { fullName: "", phone: "", address: "" };
 		shippingInfo.value.isCompanyInvoice = false;
 		clearPayment();
+  clearAppliedVoucher();
 	};
 
 	return {
