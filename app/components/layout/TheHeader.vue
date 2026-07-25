@@ -257,8 +257,8 @@
 						<button
 							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
 							:class="{ 'text-primary bg-primary/5': isCartOpen }"
-							@click="isCartOpen = !isCartOpen"
 							aria-label="Giỏ hàng"
+							@click="isCartOpen = !isCartOpen"
 						>
 							<Icon name="fa6-solid:cart-shopping" class="w-5 h-5" />
 							<span

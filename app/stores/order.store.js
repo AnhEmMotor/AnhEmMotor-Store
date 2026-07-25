@@ -226,6 +226,7 @@ export const useOrderStore = defineStore("order", () => {
 const appliedVoucherId = ref(null);
 const appliedVoucherDiscount = ref(0);
 
+// eslint-disable-next-line no-unused-vars
 const setAppliedVoucher = (appliedVoucher) => {
   if (appliedVoucher?.discountAmount > 0) {
     appliedVoucherId.value = appliedVoucher.voucherId;

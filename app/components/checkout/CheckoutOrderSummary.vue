@@ -5,7 +5,7 @@ import { useOrderStore } from "~/stores/order.store";
 import orderMapper from "~/mappers/order.mapper";
 import voucherService from "~/services/voucher.service";
 
-const { cartItems, cartDetails, removeItem, updateQuantity, isPending } =
+const { cartItems, cartDetails, removeItem, _updateQuantity, isPending } =
   useCart();
 const orderStore = useOrderStore();
 const isChecking = ref(false);
