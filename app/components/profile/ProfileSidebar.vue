@@ -51,7 +51,7 @@ function setActiveTab(tab) {
 </script>
 
 <template>
-	<div class="lg:w-1/3 xl:w-1/4 flex flex-col gap-5">
+	<div class="lg:w-1/3 xl:w-1/4 flex flex-col gap-5 lg:sticky lg:top-24 lg:h-max">
 		<div
 			class="bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex flex-col items-center"
 		>

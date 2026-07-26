@@ -10,9 +10,9 @@ defineProps({
 <template>
 	<NuxtLink
 		:to="`/news/${news.slug}`"
-		class="group flex flex-col bg-white rounded-[2rem] border border-gray-100 hover:border-red-100 hover:shadow-[0_20px_50px_rgba(230,0,35,0.08)] transition-all duration-700 h-full overflow-hidden"
+		class="group flex flex-col bg-white rounded-xl border border-gray-100 hover:border-red-100 hover:shadow-[0_20px_50px_rgba(230,0,35,0.08)] transition-all duration-700 h-full overflow-hidden"
 	>
-		<div class="relative aspect-[16/10] overflow-hidden bg-gray-50">
+		<div class="relative aspect-video overflow-hidden bg-gray-50">
 			<img
 				:src="news.image"
 				:alt="news.title"
@@ -67,19 +67,9 @@ defineProps({
 			<p
 				class="hidden md:block text-gray-500 text-sm font-medium leading-relaxed mb-8 line-clamp-2 italic border-l-2 border-gray-100 pl-4"
 			>
-				{{ news.excerpt || news.shortDescription || news.description }}
+				{{ news.metaDescription || news.excerpt || news.shortDescription || news.description }}
 			</p>
 
-			<div
-				class="mt-auto pt-3 md:pt-6 border-gray-50 flex items-center justify-between"
-			>
-				<div class="flex flex-col" />
-				<div
-					class="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-all duration-500 group-hover:rotate-12"
-				>
-					<Icon name="ph:arrow-up-right-bold" class="text-base md:text-xl" />
-				</div>
-			</div>
 		</div>
 	</NuxtLink>
 </template>

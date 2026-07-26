@@ -33,7 +33,7 @@ defineProps({
 				{{ news.title }}
 			</h3>
 			<p class="text-gray-700 text-sm md:text-base line-clamp-3">
-				{{ news.excerpt }}
+				{{ news.metaDescription || news.excerpt || news.shortDescription || news.description }}
 			</p>
 		</div>
 	</NuxtLink>

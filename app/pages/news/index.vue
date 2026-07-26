@@ -352,7 +352,7 @@ onMounted(() => {
 						<template v-else>
 							<div
 								v-if="filteredNewsList.length > 0"
-								class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 transition-opacity duration-300"
+								class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-300"
 								:class="{ 'opacity-50 pointer-events-none': isFetching }"
 							>
 								<div

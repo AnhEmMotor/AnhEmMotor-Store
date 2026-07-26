@@ -24,12 +24,13 @@ export const newsService = {
 				id: item.id,
 				title: item.title,
 				slug: item.slug,
-				image:
+				image: getImageUrl(
 					item.coverImageUrl ||
 					item.image ||
-					item.thumbnail ||
-					"/assets/image/placeholder-news.webp",
+					item.thumbnail
+				),
 				content: item.content,
+				excerpt: item.metaDescription || item.excerpt || item.shortDescription || item.description || "",
 				category:
 					item.categoryName ||
 					item.category?.name ||
@@ -57,12 +58,13 @@ export const newsService = {
 				id: item.id,
 				title: item.title,
 				slug: item.slug,
-				image:
+				image: getImageUrl(
 					item.coverImageUrl ||
 					item.image ||
-					item.thumbnail ||
-					"/assets/image/placeholder-news.webp",
+					item.thumbnail
+				),
 				content: item.content,
+				excerpt: item.metaDescription || item.excerpt || item.shortDescription || item.description || "",
 				category:
 					item.categoryName ||
 					item.category?.name ||
@@ -90,12 +92,13 @@ export const newsService = {
 				id: item.id,
 				title: item.title,
 				slug: item.slug,
-				image:
+				image: getImageUrl(
 					item.coverImageUrl ||
 					item.image ||
-					item.thumbnail ||
-					"/assets/image/placeholder-news.webp",
+					item.thumbnail
+				),
 				content: item.content,
+				excerpt: item.metaDescription || item.excerpt || item.shortDescription || item.description || "",
 				category:
 					item.categoryName ||
 					item.category?.name ||
@@ -129,14 +132,14 @@ export const newsService = {
 					id: item.id,
 					title: item.title,
 					slug: item.slug,
-					image:
+					image: getImageUrl(
 						item.coverImageUrl ||
 						item.image ||
-						item.thumbnail ||
-						"/assets/image/placeholder-news.webp",
+						item.thumbnail
+					),
 					content: item.content || "",
 					excerpt:
-						item.excerpt || item.shortDescription || item.description || "",
+						item.metaDescription || item.excerpt || item.shortDescription || item.description || "",
 					category:
 						item.categoryName ||
 						item.category?.name ||
