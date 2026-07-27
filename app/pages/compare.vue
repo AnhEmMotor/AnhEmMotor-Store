@@ -1,43 +1,90 @@
 <script setup>
 import { storeToRefs } from "pinia";
+import { ref, computed, watch, onMounted } from "vue";
 
 const compareStore = useCompareStore();
 const productStore = useProductStore();
 const { products: compareProducts } = storeToRefs(compareStore);
 
-const detailedProducts = ref([]);
-const isLoading = ref(true);
+// State
+const isComparing = ref(false);
+const isModalOpen = ref(false);
+const searchQuery = ref("");
+
+// All products for selection
+const allProducts = ref([]);
+const { data, pending: isLoadingProducts } = await useAsyncData(
+	"all-products-compare",
+	() => productStore.getProducts({ pageSize: 100 })
+);
+
+if (data.value && data.value.items) {
+	allProducts.value = data.value.items.filter(p => {
+		const cat = p.category?.toLowerCase() || '';
+		return cat.includes("xe máy") || cat.includes("motor");
+	});
+}
+
+// Comparison details
+const detailedProducts = ref([null, null, null]);
+const isLoadingComparison = ref(true);
 
 const fetchComparisonData = async () => {
-	isLoading.value = true;
+	if (compareProducts.value.length === 0) {
+		detailedProducts.value = [null, null, null];
+		isLoadingComparison.value = false;
+		return;
+	}
+	isLoadingComparison.value = true;
 	try {
-		const promises = compareProducts.value.map((p) =>
-			productStore.fetchFullProductDetail(p.slug),
-		);
+		// Remove products no longer in compareProducts
+		for (let i = 0; i < 3; i++) {
+			if (detailedProducts.value[i] && !compareProducts.value.find(p => p.id === detailedProducts.value[i].product.id)) {
+				detailedProducts.value[i] = null;
+			}
+		}
+
+		// Add new products
+		const promises = compareProducts.value.map(async (p) => {
+			if (!detailedProducts.value.find(item => item && item.product.id === p.id)) {
+				const detail = await productStore.fetchFullProductDetail(p.slug);
+				if (detail && detail.product) {
+					detail.product.id = p.id;
+				}
+				return detail;
+			}
+			return null;
+		});
 		const results = await Promise.all(promises);
-		detailedProducts.value = results.filter(Boolean);
-	} catch {
+		
+		results.forEach(res => {
+			if (res) {
+				const emptySlot = detailedProducts.value.findIndex(item => item === null);
+				if (emptySlot !== -1) {
+					detailedProducts.value[emptySlot] = res;
+				}
+			}
+		});
+	} catch (error) {
+		console.error("Lỗi lấy chi tiết so sánh", error);
 	} finally {
-		isLoading.value = false;
+		isLoadingComparison.value = false;
 	}
 };
 
-onMounted(fetchComparisonData);
-watch(compareProducts, fetchComparisonData, { deep: true });
+onMounted(() => {
+	if (compareProducts.value.length >= 2) {
+		isComparing.value = true;
+	}
+	fetchComparisonData();
+});
 
 const specGroups = [
 	{
-		name: "Động cơ & Truyền động",
+		name: "Động cơ",
 		keys: [
 			"engine_type",
-			"displacement",
-			"bore_stroke",
-			"compression_ratio",
-			"max_power",
-			"max_torque",
-			"fuel_system",
 			"transmission_type",
-			"starter_system",
 		],
 	},
 	{
@@ -63,13 +110,30 @@ const specGroups = [
 		],
 	},
 	{
-		name: "Tiện ích & Khác",
+		name: "Công nghệ",
 		keys: [
+			"starter_system",
+			"fuel_system",
+		],
+	},
+	{
+		name: "Tiện ích",
+		keys: [
+			"lighting_system",
+			"dashboard_type",
+		],
+	},
+	{
+		name: "Thông số kỹ thuật",
+		keys: [
+			"displacement",
+			"bore_stroke",
+			"compression_ratio",
+			"max_power",
+			"max_torque",
 			"fuel_consumption",
 			"oil_capacity",
 			"battery_type",
-			"lighting_system",
-			"dashboard_type",
 		],
 	},
 ];
@@ -110,201 +174,351 @@ const getSpecValue = (productDetail, key) => {
 
 const removeProduct = (productId) => {
 	compareStore.removeProduct(productId);
+	const index = detailedProducts.value.findIndex(item => item && item.product.id === productId);
+	if (index !== -1) {
+		detailedProducts.value[index] = null;
+	}
+	if (compareProducts.value.length === 0) {
+		isComparing.value = false;
+	}
 };
 
 const formatPrice = (price) => productMapper.formatPrice(price);
+
+const getProductImage = (item) => {
+	return (
+		item?.currentVariant?.colors?.[0]?.image ||
+		item?.currentVariant?.photos?.[0] ||
+		item?.currentVariant?.image ||
+		item?.currentVariant?.coverImageUrl ||
+		item?.currentVariant?.cover_image_url ||
+		item?.product?.image ||
+		item?.product?.coverImageUrl ||
+		item?.product?.cover_image_url ||
+		"/assets/image/placeholder-product.webp"
+	);
+};
+
+const getBasicProductImage = (product) => {
+	return (
+		product?.image ||
+		product?.coverImageUrl ||
+		product?.cover_image_url ||
+		"/assets/image/placeholder-product.webp"
+	);
+};
+
+// Selection Actions
+const toggleSelect = (product) => {
+	const isSelected = compareProducts.value.some(p => p.id === product.id);
+	if (isSelected) {
+		compareStore.removeProduct(product.id);
+		const index = detailedProducts.value.findIndex(item => item && item.product.id === product.id);
+		if (index !== -1) {
+			detailedProducts.value[index] = null;
+		}
+		if (compareProducts.value.length === 0) {
+			isComparing.value = false;
+		}
+	} else {
+		if (compareProducts.value.length < 3) {
+			compareStore.addProduct(product);
+			if (isComparing.value) {
+				productStore.fetchFullProductDetail(product.slug).then(res => {
+					if (res && res.product) {
+						res.product.id = product.id;
+						const emptySlot = detailedProducts.value.findIndex(item => item === null);
+						if (emptySlot !== -1) {
+							detailedProducts.value[emptySlot] = res;
+						}
+					}
+				});
+			}
+		}
+	}
+};
+
+const handleCompare = async () => {
+	if (compareProducts.value.length >= 2) {
+		const currentCount = detailedProducts.value.filter(Boolean).length;
+		if (currentCount !== compareProducts.value.length) {
+			await fetchComparisonData();
+		}
+		isComparing.value = true;
+	}
+};
+
+// Modal Filter
+const filteredProducts = computed(() => {
+	if (!searchQuery.value) return allProducts.value;
+	return allProducts.value.filter(p => p.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+});
 </script>
 
 <template>
-	<div class="min-h-screen bg-gray-50 pt-32 pb-24">
+	<div class="min-h-screen bg-white pt-32 pb-24">
 		<div class="max-w-[1400px] mx-auto px-6">
-			<div
-				class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
-			>
-				<div>
-					<div
-						class="flex items-center gap-3 text-[#CC0000] font-black uppercase tracking-[0.3em] text-[10px] mb-3"
+			
+			<!-- Tiêu đề Header -->
+			<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+				<div class="flex flex-col">
+					<button
+						v-if="isComparing"
+						@click="isComparing = false"
+						class="flex items-center text-sm font-bold text-gray-900 hover:text-[#CC0000] transition-colors mb-4"
 					>
-						<Icon name="fa6-solid:code-compare" />
-						So sánh sản phẩm
+						<Icon name="fa6-solid:chevron-left" class="mr-2 text-xs" /> Quay về bộ sưu tập sản phẩm
+					</button>
+					
+					<div v-if="!isComparing">
+						<h1 class="text-3xl font-black text-gray-900 uppercase tracking-tighter leading-none">
+							SO SÁNH THÔNG SỐ XE
+						</h1>
 					</div>
-					<h1
-						class="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none"
-					>
-						So sánh <span class="text-[#CC0000]">Thông số xe</span>
+					<h1 v-else class="text-3xl font-black text-[#CC0000] uppercase tracking-tighter leading-none italic mt-4">
+						SO SÁNH SẢN PHẨM
 					</h1>
 				</div>
 
 				<div class="flex items-center gap-4">
-					<span class="text-sm font-bold text-gray-400"
-						>{{ compareProducts.length }}/3 mẫu xe</span
-					>
+					<span v-if="!isComparing" class="text-sm font-bold text-gray-400">{{ compareProducts.length }}/3 mẫu xe</span>
+					
 					<button
-						v-if="compareProducts.length > 0"
-						class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-[#CC0000] transition-colors"
+						v-if="compareProducts.length > 0 && !isComparing"
+						class="text-[10px] font-black uppercase tracking-widest text-[#CC0000] hover:text-black transition-colors"
 						@click="compareStore.clearAll"
 					>
-						Xóa tất cả
+						Xóa lựa chọn
 					</button>
-					<NuxtLink
-						to="/products"
-						class="px-8 py-4 bg-black text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-[#CC0000] transition-all shadow-xl shadow-black/10 active:scale-95"
+					
+					<button
+						v-if="!isComparing"
+						@click="handleCompare"
+						:disabled="compareProducts.length < 2"
+						:class="compareProducts.length >= 2 ? 'bg-black text-white hover:bg-[#CC0000] cursor-pointer active:scale-95' : 'bg-black text-white cursor-not-allowed opacity-50'"
+						class="px-8 py-3 rounded-none font-black uppercase tracking-widest text-[10px] transition-all"
 					>
-						+ Thêm xe khác
-					</NuxtLink>
+						So sánh ngay <Icon name="fa6-solid:arrow-right" class="ml-1" />
+					</button>
 				</div>
 			</div>
 
-			<div
-				v-if="compareProducts.length === 0"
-				class="bg-white rounded-[40px] p-24 text-center border border-gray-100 shadow-xl"
-			>
-				<div
-					class="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8"
-				>
-					<Icon name="fa6-solid:motorcycle" class="text-5xl text-gray-200" />
+			<!-- Bước 1: Màn hình Danh sách Sản phẩm (Selection Mode) -->
+			<div v-if="!isComparing" class="bg-gray-50/30 p-8 lg:p-12 border border-gray-100">
+				<div v-if="isLoadingProducts" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-pulse">
+					<div v-for="i in 8" :key="i" class="aspect-square bg-gray-100" />
 				</div>
-				<h2
-					class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4"
-				>
-					Chưa có xe để so sánh
-				</h2>
-				<p class="text-gray-500 max-w-md mx-auto mb-10 font-medium">
-					Hãy chọn tối đa 3 mẫu xe bạn đang quan tâm để xem bảng so sánh thông
-					số kỹ thuật chi tiết nhất.
-				</p>
-				<NuxtLink
-					to="/products"
-					class="inline-flex items-center gap-3 px-10 py-5 bg-[#CC0000] text-white rounded-2xl font-black uppercase tracking-widest shadow-2xl shadow-red-200 hover:bg-black transition-all active:scale-95"
-				>
-					Khám phá ngay <Icon name="fa6-solid:arrow-right" />
-				</NuxtLink>
+				<div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
+					<div
+						v-for="product in allProducts"
+						:key="product.id"
+						@click="toggleSelect(product)"
+						class="relative group cursor-pointer transition-all duration-300 flex flex-col justify-between"
+					>
+						<div>
+							<h3 class="text-sm font-black text-black uppercase leading-tight line-clamp-1 mb-2">{{ product.name }}</h3>
+							<!-- MỚI Badge -->
+							<span class="inline-block px-2 py-0.5 bg-red-500 text-white text-[8px] font-black uppercase mb-2">MỚI</span>
+							
+							<div class="aspect-[4/3] mb-4 relative p-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+								<img :src="getBasicProductImage(product)" :alt="product.name" class="max-w-full max-h-full object-contain mix-blend-multiply" />
+							</div>
+						</div>
+						
+						<div class="flex items-center justify-between mt-4">
+							<p class="text-xs font-medium text-gray-500">Giá từ: <span class="text-gray-900 font-black text-xs">{{ formatPrice(product.price) }}</span></p>
+							<!-- Checkbox -->
+							<div
+								class="w-5 h-5 rounded-full flex items-center justify-center transition-colors shadow-sm"
+								:class="compareProducts.some(p => p.id === product.id) ? 'bg-[#CC0000] text-white' : 'bg-gray-100 text-transparent group-hover:border-gray-300'"
+							>
+								<Icon name="fa6-solid:check" class="text-[9px]" />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<div v-else class="relative">
-				<div class="overflow-x-auto pb-8 -mx-6 px-6 scrollbar-hide">
+			<!-- Bước 2: Bảng so sánh (Comparison Mode) -->
+			<div v-else class="relative bg-white border border-gray-100 pb-12">
+				<div class="overflow-x-auto scrollbar-hide">
 					<div class="min-w-[900px] lg:min-w-0">
-						<div class="sticky top-20 z-40 bg-gray-50/80 backdrop-blur-md pb-6">
-							<div class="grid grid-cols-12 gap-4 lg:gap-6 items-stretch">
-								<div class="col-span-3" />
-								<div
-									v-for="item in detailedProducts"
-									:key="item.product.id"
-									class="col-span-3 bg-white rounded-3xl p-4 lg:p-6 border border-gray-100 shadow-xl relative group"
-								>
-									<button
-										class="absolute -top-2 -right-2 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center hover:bg-[#CC0000] transition-colors z-10 opacity-0 group-hover:opacity-100"
-										@click="removeProduct(item.product.id)"
-									>
-										<Icon name="fa6-solid:xmark" />
-									</button>
+						
+						<!-- Header Cột Xe -->
+						<div class="bg-white pt-8 pb-4 border-b border-gray-200">
+							<div class="grid grid-cols-12 items-stretch">
+								
+								<!-- Vòng lặp xe đã chọn & ô trống -->
+								<template v-for="(item, idx) in detailedProducts" :key="item ? item.product.id : 'empty-' + idx">
+									<!-- Slot Xe -->
 									<div
-										class="aspect-square mb-4 rounded-2xl overflow-hidden bg-gray-50 p-2"
+										v-if="item"
+										class="col-span-4 flex flex-col items-center relative border-r border-gray-200 px-6 last:border-r-0"
 									>
-										<img
-											:src="item.currentVariant.colors[0]?.image"
-											:alt="item.product.name"
-											class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700"
-										>
-									</div>
-									<div class="space-y-1">
-										<p
-											class="text-[9px] lg:text-[10px] font-black text-gray-400 uppercase tracking-widest"
-										>
-											{{ item.product.brand }}
-										</p>
-										<h3
-											class="text-sm lg:text-lg font-black text-gray-900 uppercase leading-tight line-clamp-2"
-										>
-											{{ item.product.name }}
-										</h3>
-										<p class="text-base lg:text-lg font-black text-[#CC0000]">
-											{{ formatPrice(item.currentVariant.price) }}
-										</p>
-									</div>
-									<NuxtLink
-										:to="`/product/${item.currentVariant.slug}`"
-										class="mt-4 block w-full py-2 lg:py-3 bg-gray-50 text-center rounded-xl text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-gray-400 hover:bg-black hover:text-white transition-all"
-									>
-										Chi tiết
-									</NuxtLink>
-								</div>
+										<div class="aspect-[4/3] w-full mb-4 overflow-hidden flex items-center justify-center pt-4">
+											<img
+												:src="getProductImage(item)"
+												:alt="item.product.name"
+												@error="$event.target.src = '/assets/image/placeholder-product.webp'"
+												class="w-full h-full object-contain hover:scale-105 transition-transform duration-500 p-4"
+											>
+										</div>
 
-								<div
-									v-for="i in 3 - detailedProducts.length"
-									:key="'empty-' + i"
-									class="col-span-3 rounded-3xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-4 hover:border-[#CC0000] hover:bg-red-50/50 transition-all cursor-pointer group"
-									@click="navigateTo('/products')"
-								>
-									<div
-										class="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-[#CC0000] group-hover:text-white transition-all"
-									>
-										<Icon name="fa6-solid:plus" />
+										<div class="w-full flex items-center justify-between bg-[#CC0000] text-white px-4 py-3">
+											<h3 class="text-base font-black truncate flex-1">{{ item.product.name }}</h3>
+											<div class="flex gap-4 shrink-0 ml-2">
+												<button @click="isModalOpen = true" class="hover:opacity-70 transition-opacity"><Icon name="fa6-solid:arrows-rotate" class="text-sm" /></button>
+												<button @click="removeProduct(item.product.id)" class="hover:opacity-70 transition-opacity"><Icon name="fa6-solid:xmark" class="text-xl font-light" /></button>
+											</div>
+										</div>
+										<div class="w-full bg-white border-x border-b border-gray-200 relative">
+											<select v-model="item.currentVariant" class="w-full text-[13px] font-black text-gray-700 py-4 px-4 outline-none cursor-pointer appearance-none bg-transparent relative z-10">
+												<option :value="item.currentVariant">Phiên bản {{ item.currentVariant.name || 'Tiêu chuẩn' }}</option>
+												<option v-for="v in item.otherVariants" :key="v.slug" :value="v">Phiên bản {{ v.name || 'Tiêu chuẩn' }}</option>
+											</select>
+											<!-- Chevron overlay -->
+											<Icon name="fa6-solid:chevron-down" class="absolute right-4 top-[50%] -translate-y-1/2 text-gray-400 pointer-events-none text-xs" />
+										</div>
+										<div class="w-full text-center bg-white border-x border-b border-gray-200">
+											<NuxtLink :to="`/product/${item.currentVariant.slug}`" class="block w-full py-4 text-[#CC0000] text-[11px] font-black uppercase tracking-widest hover:bg-red-50 transition-colors">
+												XEM CHI TIẾT XE <Icon name="fa6-solid:arrow-right" class="ml-1" />
+											</NuxtLink>
+										</div>
 									</div>
-									<span
-										class="text-[9px] lg:text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-[#CC0000]"
-										>Thêm xe</span
+
+									<!-- Slot Ô trống -->
+									<div
+										v-else
+										class="col-span-4 flex flex-col items-center justify-center bg-white border-r border-gray-200 p-8 min-h-[300px] last:border-r-0"
 									>
-								</div>
+										<div class="mb-10 relative opacity-20 flex justify-center items-center">
+											<Icon name="fa6-solid:motorcycle" class="text-8xl text-gray-400" />
+											<Icon name="fa6-solid:plus" class="absolute top-0 right-0 text-3xl text-gray-500 font-bold" />
+										</div>
+										<div class="w-full mt-auto">
+											<button @click="isModalOpen = true" class="w-full py-4 border border-[#CC0000] text-[#CC0000] hover:bg-[#CC0000] hover:text-white text-[11px] font-black uppercase tracking-widest transition-colors flex justify-center items-center gap-2 bg-white group hover:bg-[#CC0000]">
+												CHỌN THÊM SẢN PHẨM <Icon name="fa6-solid:plus" />
+											</button>
+										</div>
+									</div>
+								</template>
 							</div>
 						</div>
 
-						<div class="space-y-8 lg:space-y-12">
-							<div
-								v-for="group in specGroups"
-								:key="group.name"
-								class="reveal reveal-up"
-							>
-								<div
-									class="bg-black text-white p-4 lg:p-6 rounded-t-[2rem] flex items-center gap-4"
-								>
-									<div class="w-1.5 h-6 bg-[#CC0000]" />
-									<h4
-										class="text-xs lg:text-sm font-black uppercase tracking-[0.4em]"
-									>
-										{{ group.name }}
-									</h4>
-								</div>
-								<div
-									class="bg-white rounded-b-[2rem] border-x border-b border-gray-100 shadow-xl overflow-hidden"
-								>
-									<div
-										v-for="(key, idx) in group.keys"
-										:key="key"
-										class="grid grid-cols-12 items-center border-t border-gray-50 first:border-t-0"
-										:class="idx % 2 === 0 ?'bg-white' : 'bg-gray-50/30'"
-									>
-										<div class="col-span-3 p-4 lg:p-6 border-r border-gray-100">
-											<span
-												class="text-[9px] lg:text-[11px] font-black text-gray-400 uppercase tracking-widest leading-relaxed"
-												>{{ specLabels[key] }}</span
-											>
-										</div>
-										<div
-											v-for="item in detailedProducts"
-											:key="item.product.id"
-											class="col-span-3 p-4 lg:p-6 text-center"
-										>
-											<span
-												class="text-xs lg:text-sm font-bold text-gray-900 leading-relaxed"
-												>{{ getSpecValue(item, key) }}</span
-											>
-										</div>
+						<!-- Nội dung bảng thông số -->
+						<div class="relative">
+							<!-- Hàng Giá bán -->
+							<div class="grid grid-cols-12 items-stretch border-b border-gray-200 bg-white">
+								<template v-for="(item, idx) in detailedProducts" :key="'price-'+(item ? item.product.id : idx)">
+									<div v-if="item" class="col-span-4 p-8 border-r border-gray-200 last:border-r-0 flex flex-col justify-center">
+										<h4 class="text-[17px] font-black text-[#CC0000] mb-3">Giá bán lẻ đề xuất</h4>
+										<span class="text-[15px] text-gray-900 font-medium">{{ formatPrice(item.currentVariant.price) }}</span>
+									</div>
+									<div v-else class="col-span-4 p-8 border-r border-gray-200 last:border-r-0 flex flex-col justify-center bg-gray-50/50">
+										<h4 class="text-[17px] font-black text-gray-400 mb-3">Giá bán lẻ đề xuất</h4>
+										<span class="text-[15px] text-gray-400 font-medium">-</span>
+									</div>
+								</template>
+							</div>
 
-										<div
-											v-for="i in 3 - detailedProducts.length"
-											:key="'empty-val-' + i"
-											class="col-span-3 p-4 lg:p-6 text-center text-gray-300"
-										>
-											—
+							<!-- Lặp qua từng nhóm thông số -->
+							<div v-for="(group, gIdx) in specGroups" :key="group.name" class="grid grid-cols-12 items-stretch border-b border-gray-200 bg-white">
+								
+								<template v-for="(item, idx) in detailedProducts" :key="'group-'+gIdx+'-'+(item ? item.product.id : idx)">
+									<div v-if="item" class="col-span-4 p-8 border-r border-gray-200 last:border-r-0">
+										<h4 class="text-[17px] font-black text-[#CC0000] mb-6">{{ group.name }}</h4>
+										<div class="space-y-6">
+											<div v-for="key in group.keys" :key="'val-'+key">
+												<div class="text-[14px] text-gray-500 font-medium mb-1.5">{{ specLabels[key] }}</div>
+												<div class="text-[15px] text-gray-900 font-medium leading-relaxed pr-4">
+													{{ getSpecValue(item, key) }}
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div v-else class="col-span-4 p-8 border-r border-gray-200 last:border-r-0 bg-gray-50/50">
+									</div>
+								</template>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal CHỌN THÊM SẢN PHẨM -->
+			<div v-if="isModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+				<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="isModalOpen = false" />
+				<div class="relative w-full max-w-5xl bg-white rounded-none shadow-2xl flex flex-col h-[85vh] animate-in fade-in zoom-in-95 duration-200">
+					
+					<!-- Nút Tắt (X) màu Đỏ -->
+					<div class="absolute top-0 right-0 z-10">
+						<button @click="isModalOpen = false" class="w-12 h-12 bg-[#CC0000] text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer">
+							<Icon name="fa6-solid:xmark" class="text-xl" />
+						</button>
+					</div>
+
+					<!-- Header & Tabs -->
+					<div class="pt-6 px-8 border-b border-gray-200 bg-white sticky top-0 z-0">
+						<div class="flex gap-8 overflow-x-auto scrollbar-hide pr-12">
+							<button class="pb-3 border-b-2 border-[#CC0000] text-black font-black text-[13px] tracking-widest whitespace-nowrap">Tất cả</button>
+							<button class="pb-3 border-b-2 border-transparent text-gray-600 font-medium hover:text-black text-[13px] tracking-widest whitespace-nowrap">Xe tay ga</button>
+							<button class="pb-3 border-b-2 border-transparent text-gray-600 font-medium hover:text-black text-[13px] tracking-widest whitespace-nowrap">Xe số</button>
+							<button class="pb-3 border-b-2 border-transparent text-gray-600 font-medium hover:text-black text-[13px] tracking-widest whitespace-nowrap">Xe côn tay</button>
+							<button class="pb-3 border-b-2 border-transparent text-gray-600 font-medium hover:text-black text-[13px] tracking-widest whitespace-nowrap">Xe phân khối lớn</button>
+						</div>
+					</div>
+
+					<!-- Thanh Tìm kiếm -->
+					<div class="p-6 pb-2 bg-white sticky top-[57px] z-0">
+						<div class="relative border border-gray-300 flex items-center group focus-within:border-gray-900">
+							<input v-model="searchQuery" type="text" placeholder="Nhập tên loại xe" class="w-full h-12 pl-4 pr-12 outline-none text-sm font-medium bg-transparent" />
+							<Icon name="fa6-solid:magnifying-glass" class="absolute right-4 text-gray-500 text-lg" />
+						</div>
+					</div>
+
+					<!-- Danh sách xe -->
+					<div class="flex-1 overflow-y-auto p-6 scrollbar-hide bg-white">
+						<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+							<div
+								v-for="product in filteredProducts"
+								:key="product.id"
+								@click="toggleSelect(product)"
+								class="group cursor-pointer flex flex-col justify-between"
+							>
+								<div>
+									<h3 class="text-[13px] font-black text-black leading-tight line-clamp-1 mb-2">{{ product.name }}</h3>
+									<div class="aspect-[4/3] flex items-center justify-center p-2 transition-transform duration-300 group-hover:scale-105">
+										<img :src="getBasicProductImage(product)" :alt="product.name" @error="$event.target.src = '/assets/image/placeholder-product.webp'" class="max-w-full max-h-full object-contain mix-blend-multiply" />
+									</div>
+								</div>
+								
+								<div>
+									<span class="inline-block px-2 py-0.5 bg-red-600 text-white text-[9px] font-black uppercase mb-3">MỚI</span>
+									<div class="flex items-center justify-between mt-1">
+										<p class="text-[11px] font-medium text-black">Giá từ: <span class="font-black">{{ formatPrice(product.price) }}</span></p>
+										<div class="w-5 h-5 rounded-full flex items-center justify-center border transition-all"
+											 :class="compareProducts.some(p => p.id === product.id) ? 'bg-[#CC0000] border-[#CC0000] text-white' : 'border-transparent bg-gray-100 text-transparent'">
+											<Icon name="fa6-solid:check" class="text-[9px]" />
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+
+					<!-- Footer Modal -->
+					<div class="p-6 border-t border-gray-200 flex justify-center bg-white">
+						<button @click="isModalOpen = false" class="px-10 py-3 bg-white border border-[#CC0000] text-[#CC0000] hover:bg-[#CC0000] hover:text-white font-black uppercase tracking-widest text-[11px] transition-colors flex items-center gap-2">
+							XÁC NHẬN <Icon name="fa6-solid:arrow-right" />
+						</button>
+					</div>
+
 				</div>
 			</div>
+
 		</div>
 	</div>
 </template>

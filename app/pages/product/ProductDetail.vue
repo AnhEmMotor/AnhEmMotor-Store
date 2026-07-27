@@ -35,6 +35,7 @@ const mainImage = computed({
 		return (
 			detail.value?.currentVariant?.photos?.[0] ||
 			detail.value?.currentVariant?.image ||
+			detail.value?.currentVariant?.coverImageUrl ||
 			detail.value?.currentVariant?.cover_image_url ||
 			"/assets/image/placeholder-product.webp"
 		);
@@ -302,7 +303,7 @@ const bookTestDrive = () => {
 				</ol>
 			</nav>
 
-			<div v-if="error" class="text-center py-32 bg-gray-50 rounded-[3rem]">
+			<div v-if="error || (!isLoading && !detail)" class="text-center py-32 bg-gray-50 rounded-[3rem]">
 				<div
 					class="inline-flex items-center justify-center w-24 h-24 bg-red-50 rounded-full mb-8"
 				>
