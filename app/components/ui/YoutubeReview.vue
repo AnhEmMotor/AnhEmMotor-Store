@@ -37,7 +37,7 @@ const isVideoPlaying = ref(false);
 	>
 		<div class="relative z-10 space-y-2">
 			<h3
-				class="text-2xl font-black uppercase italic tracking-wider leading-none"
+				class="text-2xl font-black uppercase tracking-wider leading-none"
 			>
 				{{ title }} <br ><span class="text-red-500 text-4xl">{{
 					highlightText

@@ -86,9 +86,7 @@ function markAsRead(type, id) {
 					v-for="tab in subTabs"
 					:key="tab.id"
 					class="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all"
-					:class="
-						activeSubTab === tab.id
-							? 'bg-primary text-white shadow-lg shadow-primary/20'
+					:class="activeSubTab === tab.id ?'bg-primary text-white shadow-lg shadow-primary/20'
 							: 'bg-gray-50 text-gray-600 hover:bg-gray-100'
 					"
 					@click="activeSubTab = tab.id"
@@ -122,9 +120,7 @@ function markAsRead(type, id) {
 							v-for="item in notifications[activeSubTab]"
 							:key="item.id"
 							class="group p-4 rounded-md border transition-all hover:shadow-md"
-							:class="
-								item.isRead
-									? 'bg-white border-gray-100'
+							:class="item.isRead ?'bg-white border-gray-100'
 									: 'bg-primary/5 border-primary/20'
 							"
 							@click="markAsRead(activeSubTab, item.id)"

@@ -53,7 +53,7 @@ const inputId = useId();
 				@input="$emit('update:modelValue', Number($event.target.value))"
 			>
 		</div>
-		<p v-if="subLabel" class="text-[10px] text-gray-400 font-medium italic">
+		<p v-if="subLabel" class="text-[10px] text-gray-400 font-medium">
 			{{ subLabel }}
 		</p>
 	</div>

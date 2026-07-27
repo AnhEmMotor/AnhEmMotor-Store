@@ -77,7 +77,7 @@
 				v-if="financialCompanies && financialCompanies.length > 0"
 				class="mt-6"
 			>
-				<p class="italic mb-3">
+				<p class="mb-3">
 					Danh sách các công ty tài chính áp dụng trong CTKM:
 				</p>
 				<div class="overflow-x-auto">
@@ -97,7 +97,7 @@
 								v-for="(company, index) in financialCompanies"
 								:key="index"
 								class="border-b border-gray-200 hover:bg-red-50 transition-colors"
-								:class="{ 'bg-red-50': index % 2 === 0 }"
+								:class="{'bg-red-50': index % 2 === 0 }"
 							>
 								<td class="p-3">{{ index + 1 }}</td>
 								<td class="p-3">{{ company }}</td>

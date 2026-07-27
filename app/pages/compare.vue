@@ -129,7 +129,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 						So sánh sản phẩm
 					</div>
 					<h1
-						class="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none italic"
+						class="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none"
 					>
 						So sánh <span class="text-[#CC0000]">Thông số xe</span>
 					</h1>
@@ -214,7 +214,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 											{{ item.product.brand }}
 										</p>
 										<h3
-											class="text-sm lg:text-lg font-black text-gray-900 uppercase leading-tight italic line-clamp-2"
+											class="text-sm lg:text-lg font-black text-gray-900 uppercase leading-tight line-clamp-2"
 										>
 											{{ item.product.name }}
 										</h3>
@@ -272,7 +272,7 @@ const formatPrice = (price) => productMapper.formatPrice(price);
 										v-for="(key, idx) in group.keys"
 										:key="key"
 										class="grid grid-cols-12 items-center border-t border-gray-50 first:border-t-0"
-										:class="idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'"
+										:class="idx % 2 === 0 ?'bg-white' : 'bg-gray-50/30'"
 									>
 										<div class="col-span-3 p-4 lg:p-6 border-r border-gray-100">
 											<span

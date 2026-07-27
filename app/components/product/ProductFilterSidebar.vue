@@ -338,9 +338,7 @@ const searchArticle = (_event) => {
 						v-for="cat in staticCategories"
 						:key="cat.id"
 						class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
-						:class="[
-							isCategorySelected(cat.id)
-								? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+						:class="[ isCategorySelected(cat.id) ?'bg-primary border-primary text-white shadow-lg shadow-primary/20'
 								: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
 						]"
 						@click="toggleCategory(cat.id)"
@@ -427,9 +425,7 @@ const searchArticle = (_event) => {
 								<!-- Default Button -->
 								<button
 									class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
-									:class="[
-										isSelected(val)
-											? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+									:class="[ isSelected(val) ?'bg-primary border-primary text-white shadow-lg shadow-primary/20'
 											: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
 									]"
 									@click="toggleOption(val)"
@@ -478,9 +474,7 @@ const searchArticle = (_event) => {
 								v-for="col in colors"
 								:key="col"
 								class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
-								:class="[
-									isColorSelected(col)
-										? 'bg-primary border-primary text-white shadow-lg shadow-primary/20'
+								:class="[ isColorSelected(col) ?'bg-primary border-primary text-white shadow-lg shadow-primary/20'
 										: 'bg-white border-gray-100 text-gray-500 hover:border-primary hover:text-primary',
 								]"
 								@click="toggleColor(col)"

@@ -116,7 +116,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
 			<div class="max-w-7xl mx-auto">
 				<div class="mb-4 animate-reveal-down">
 					<h1
-						class="text-3xl lg:text-4xl font-[1000] text-gray-900 leading-none tracking-tighter uppercase italic"
+						class="text-3xl lg:text-4xl font-[1000] text-gray-900 leading-none tracking-tighter uppercase"
 					>
 						Đăng ký <span class="text-red-600">Dịch vụ</span>
 					</h1>
@@ -325,8 +325,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
 													]"
 													:key="sug"
 													type="button"
-													:class="[
-														'text-[10px] font-black px-4 py-2 rounded-xl transition-all border uppercase tracking-wider',
+													:class="['text-[10px] font-black px-4 py-2 rounded-xl transition-all border uppercase tracking-wider',
 														form.condition === sug
 															? 'bg-red-600 text-white border-red-600'
 															: 'bg-gray-50 text-gray-500 border-gray-100 hover:bg-white hover:border-red-600/30',
@@ -475,7 +474,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
 								</div>
 								<div class="space-y-4">
 									<h2
-										class="text-3xl font-black text-gray-900 uppercase italic"
+										class="text-3xl font-black text-gray-900 uppercase"
 									>
 										Đăng ký thành công!
 									</h2>
@@ -538,7 +537,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
 												Dịch vụ đã chọn
 											</p>
 											<h3
-												class="text-2xl font-[1000] uppercase italic leading-[0.9] text-white tracking-tighter"
+												class="text-2xl font-[1000] uppercase leading-[0.9] text-white tracking-tighter"
 											>
 												{{ service.name }}
 											</h3>
@@ -573,7 +572,7 @@ useHead({ title: "Đăng ký Dịch vụ | AnhEm Motor" });
 													Thời gian hẹn
 												</p>
 												<p
-													class="text-base font-[1000] text-white leading-tight uppercase italic"
+													class="text-base font-[1000] text-white leading-tight uppercase"
 												>
 													{{
 														form.date

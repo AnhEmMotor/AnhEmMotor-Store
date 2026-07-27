@@ -40,7 +40,7 @@ const steps = [
 				<h2
 					class="text-4xl md:text-5xl font-black text-gray-950 uppercase tracking-tighter"
 				>
-					Quy trình nhận <span class="text-red-600 italic">ưu đãi</span>
+					Quy trình nhận <span class="text-red-600">ưu đãi</span>
 				</h2>
 				<p class="text-gray-400 text-xs font-black uppercase tracking-[0.3em]">
 					Sở hữu chiếc xe mơ ước chỉ với 4 bước đơn giản

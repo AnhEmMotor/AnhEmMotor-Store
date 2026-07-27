@@ -320,7 +320,7 @@ const submitInvoiceRequest = async () => {
                         Địa chỉ
                       </p>
                       <p
-                        class="text-sm font-medium text-gray-600 leading-relaxed italic"
+                        class="text-sm font-medium text-gray-600 leading-relaxed"
                       >
                         {{ order.customer?.address }}
                       </p>

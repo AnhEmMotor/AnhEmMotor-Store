@@ -301,7 +301,7 @@ if (import.meta.client) {
 		>
 			<div class="text-center max-w-3xl mx-auto mb-16">
 				<h2
-					class="text-3xl sm:text-4xl font-[1000] tracking-tight uppercase italic"
+					class="text-3xl sm:text-4xl font-[1000] tracking-tight uppercase"
 				>
 					TÍNH NĂNG <span class="text-red-500">NỔI BẬT</span> CỦA APP
 				</h2>
@@ -337,7 +337,7 @@ if (import.meta.client) {
 		>
 			<div class="text-center mb-12">
 				<h2
-					class="text-2xl sm:text-3xl font-[1000] tracking-tight uppercase italic"
+					class="text-2xl sm:text-3xl font-[1000] tracking-tight uppercase"
 				>
 					CÂU HỎI <span class="text-red-500">THƯỜNG GẶP</span>
 				</h2>
@@ -348,9 +348,7 @@ if (import.meta.client) {
 					v-for="(faq, index) in appStore.appContent.faqs"
 					:key="index"
 					class="bg-white/5 border rounded-2xl overflow-hidden transition-all duration-300"
-					:class="[
-						activeFaq === index
-							? 'border-red-600/40 bg-white/10 shadow-[0_10px_30px_rgba(230,0,35,0.06)]'
+					:class="[ activeFaq === index ?'border-red-600/40 bg-white/10 shadow-[0_10px_30px_rgba(230,0,35,0.06)]'
 							: 'border-white/10 hover:border-red-600/20 hover:bg-white/[0.07] hover:shadow-[0_8px_20px_rgba(230,0,35,0.04)]',
 					]"
 				>

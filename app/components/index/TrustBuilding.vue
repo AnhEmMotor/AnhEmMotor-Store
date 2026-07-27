@@ -161,9 +161,7 @@ const paginatedTestimonials = computed(() => {
 
 						<div
 							class="absolute lg:hidden bottom-4 left-4 right-4 bg-white/95 p-6 rounded-[28px] shadow-2xl border border-white/50 space-y-5 z-30 transition-all duration-500"
-							:class="[
-								isInfoOpen
-									? 'flex flex-col translate-y-0 opacity-100'
+							:class="[ isInfoOpen ?'flex flex-col translate-y-0 opacity-100'
 									: 'hidden',
 							]"
 						>

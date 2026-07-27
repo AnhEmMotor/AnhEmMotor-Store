@@ -129,12 +129,12 @@ onUnmounted(() => {
 				
 				<div
 					class="relative rounded-full overflow-hidden transition-all duration-300 flex-shrink-0"
-					:class="index === currentBannerIndex ? 'w-8 h-2' : 'w-2 h-2 group-hover:w-3'"
+					:class="index === currentBannerIndex ?'w-8 h-2' : 'w-2 h-2 group-hover:w-3'"
 				>
 					
 					<div
 						class="absolute inset-0 transition-colors duration-300"
-						:class="index === currentBannerIndex ? 'bg-white/30' : 'bg-white/50 group-hover:bg-white/80'"
+						:class="index === currentBannerIndex ?'bg-white/30' : 'bg-white/50 group-hover:bg-white/80'"
 					/>
 					
 					<div

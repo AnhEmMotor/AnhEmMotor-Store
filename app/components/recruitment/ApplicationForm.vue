@@ -18,7 +18,7 @@
 							>
 						</div>
 						<h2
-							class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] italic uppercase tracking-tighter"
+							class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] uppercase tracking-tighter"
 						>
 							Quy trình <br >
 							<span
@@ -49,7 +49,7 @@
 							</div>
 							<div class="pt-2">
 								<h3
-									class="text-xl font-black text-gray-900 mb-2 group-hover:text-primary transition-colors italic uppercase tracking-tight"
+									class="text-xl font-black text-gray-900 mb-2 group-hover:text-primary transition-colors uppercase tracking-tight"
 								>
 									{{ step.title }}
 								</h3>
@@ -70,7 +70,7 @@
 						</div>
 						<div>
 							<h4
-								class="text-lg font-black text-gray-900 italic uppercase tracking-tight mb-2"
+								class="text-lg font-black text-gray-900 uppercase tracking-tight mb-2"
 							>
 								Lưu ý nhỏ
 							</h4>
@@ -97,7 +97,7 @@
 						<div class="relative z-10">
 							<div class="mb-12">
 								<h3
-									class="text-4xl font-black text-white italic uppercase tracking-tighter mb-4"
+									class="text-4xl font-black text-white uppercase tracking-tighter mb-4"
 								>
 									Gửi hồ sơ ngay
 								</h3>

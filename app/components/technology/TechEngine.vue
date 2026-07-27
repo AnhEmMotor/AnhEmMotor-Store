@@ -5,7 +5,7 @@
 		<div class="max-w-7xl mx-auto">
 			<div class="text-center mb-16 reveal reveal-up">
 				<h2
-					class="text-3xl sm:text-4xl md:text-6xl font-black mb-6 italic tracking-tighter uppercase"
+					class="text-3xl sm:text-4xl md:text-6xl font-black mb-6 tracking-tighter uppercase"
 				>
 					Sức mạnh <span class="text-red-600">Kỹ Thuật</span>
 				</h2>

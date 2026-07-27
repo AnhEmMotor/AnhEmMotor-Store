@@ -65,7 +65,7 @@ const compareStore = useCompareStore();
 							<Icon name="fa6-solid:plus" class="text-xs" />
 						</div>
 						<span
-							class="text-[10px] font-black uppercase tracking-widest italic"
+							class="text-[10px] font-black uppercase tracking-widest"
 							>Chọn thêm xe...</span
 						>
 					</div>

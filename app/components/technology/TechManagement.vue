@@ -12,7 +12,7 @@
             </div>
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight uppercase leading-tight text-white">Quản lý & <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-white to-red-100">Giao dịch Thông minh</span></h2>
           </div>
-          <p class="text-gray-400 text-base leading-relaxed italic border-l-4 border-red-600 pl-4">
+          <p class="text-gray-400 text-base leading-relaxed border-l-4 border-red-600 pl-4">
             "Chúng tôi không chỉ cung cấp xe, chúng tôi cung cấp giải pháp vận hành doanh nghiệp toàn diện. Hệ thống quản trị tập trung giúp tối ưu hóa mọi quy trình kinh doanh."
           </p>
           

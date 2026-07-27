@@ -257,7 +257,7 @@ const formatVND = (value) => {
 					>
 						<div>
 							<h1
-								class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 italic uppercase tracking-tighter"
+								class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 uppercase tracking-tighter"
 							>
 								{{ pageConfig.heading }}
 							</h1>

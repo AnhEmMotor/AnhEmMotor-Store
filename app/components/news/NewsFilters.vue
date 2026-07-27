@@ -64,8 +64,7 @@ const getTabLink = (cat) => {
 					:key="cat.id"
 					:to="getTabLink(cat)"
 					class="flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-4 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item flex-shrink-0"
-					:class="[
-						activeTab === cat.slug || (activeTab === 'all' && cat.id === 'all')
+					:class="[ activeTab === cat.slug || (activeTab ==='all' && cat.id === 'all')
 							? 'bg-red-600 text-white shadow-lg scale-105 z-20'
 							: 'text-gray-400 hover:text-gray-900 hover:bg-white',
 					]"
@@ -85,8 +84,7 @@ const getTabLink = (cat) => {
 					:key="`${cat.id}-clone`"
 					:to="getTabLink(cat)"
 					class="flex lg:hidden items-center gap-2 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item flex-shrink-0"
-					:class="[
-						activeTab === cat.slug || (activeTab === 'all' && cat.id === 'all')
+					:class="[ activeTab === cat.slug || (activeTab ==='all' && cat.id === 'all')
 							? 'bg-red-600 text-white shadow-lg scale-105'
 							: 'text-gray-400 hover:text-gray-900 hover:bg-white',
 					]"
@@ -94,9 +92,7 @@ const getTabLink = (cat) => {
 					<Icon
 						:name="cat.icon"
 						class="text-base"
-						:class="
-							activeTab === cat.slug ||
-							(activeTab === 'all' && cat.id === 'all')
+						:class="activeTab === cat.slug || (activeTab ==='all' && cat.id === 'all')
 								? 'text-white'
 								: 'text-gray-400 group-hover:text-red-500'
 						"

@@ -141,9 +141,7 @@ const emit = defineEmits(["place-order"]);
             v-for="(item, index) in cartDetails"
             :key="item.id"
             class="flex flex-col gap-1 p-2 rounded-2xl transition-all border"
-            :class="
-              orderStore.fieldErrors[item.id]
-                ? 'border-red-500 bg-red-50'
+            :class="orderStore.fieldErrors[item.id] ?'border-red-500 bg-red-50'
                 : 'border-transparent'
             "
           >
@@ -251,7 +249,7 @@ const emit = defineEmits(["place-order"]);
               type="text"
               placeholder="Nhập mã giảm giá"
               class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all uppercase"
-              :class="{ 'border-red-300': voucherError }"
+              :class="{'border-red-300': voucherError }"
               :disabled="voucherApplying"
               @keyup.enter="handleApplyVoucher"
             >

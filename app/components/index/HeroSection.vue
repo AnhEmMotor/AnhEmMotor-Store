@@ -294,12 +294,12 @@ onUnmounted(() => {
 				v-for="(_, index) in banners"
 				:key="index"
 				class="group relative h-2 transition-all duration-300"
-				:class="index === currentBannerIndex ? 'w-12' : 'w-2 hover:w-4'"
+				:class="index === currentBannerIndex ?'w-12' : 'w-2 hover:w-4'"
 				@click="setBanner(index)"
 			>
 				<div
 					class="absolute inset-0 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors"
-					:class="{ 'bg-white': index === currentBannerIndex }"
+					:class="{'bg-white': index === currentBannerIndex }"
 				/>
 				<div
 					v-if="index === currentBannerIndex"

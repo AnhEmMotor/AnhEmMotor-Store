@@ -109,7 +109,7 @@ const _newsCategories = [
 
 				<div class="space-y-2">
 					<h4 class="text-xl font-black uppercase tracking-tighter">
-						Đăng ký nhận <br ><span class="text-red-500 italic"
+						Đăng ký nhận <br ><span class="text-red-500"
 							>ưu đãi sớm</span
 						>
 					</h4>

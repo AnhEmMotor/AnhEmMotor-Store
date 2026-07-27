@@ -41,9 +41,7 @@ const setActiveTab = (id) => {
 					v-for="cat in categories"
 					:key="cat.id"
 					class="flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-4 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item"
-					:class="[
-						activeTab === cat.id
-							? 'bg-red-600 text-white shadow-lg scale-105 z-20'
+					:class="[ activeTab === cat.id ?'bg-red-600 text-white shadow-lg scale-105 z-20'
 							: 'text-gray-400 hover:text-gray-900 hover:bg-white',
 					]"
 					@click="setActiveTab(cat.id)"
@@ -51,9 +49,7 @@ const setActiveTab = (id) => {
 					<Icon
 						:name="cat.icon"
 						class="text-base md:text-lg transition-transform duration-500 group-hover:scale-110"
-						:class="
-							activeTab === cat.id
-								? 'text-white'
+						:class="activeTab === cat.id ?'text-white'
 								: 'text-gray-400 group-hover:text-red-500'
 						"
 					/>
@@ -68,9 +64,7 @@ const setActiveTab = (id) => {
 					v-for="cat in categories"
 					:key="`${cat.id}-clone`"
 					class="flex lg:hidden items-center gap-2 px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-500 group relative whitespace-nowrap marquee-item"
-					:class="[
-						activeTab === cat.id
-							? 'bg-red-600 text-white shadow-lg scale-105'
+					:class="[ activeTab === cat.id ?'bg-red-600 text-white shadow-lg scale-105'
 							: 'text-gray-400 hover:text-gray-900 hover:bg-white',
 					]"
 					@click="setActiveTab(cat.id)"
@@ -78,9 +72,7 @@ const setActiveTab = (id) => {
 					<Icon
 						:name="cat.icon"
 						class="text-base"
-						:class="
-							activeTab === cat.id
-								? 'text-white'
+						:class="activeTab === cat.id ?'text-white'
 								: 'text-gray-400 group-hover:text-red-500'
 						"
 					/>

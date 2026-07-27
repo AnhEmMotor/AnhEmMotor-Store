@@ -1,7 +1,6 @@
 <template>
 	<article
-		:class="[
-			'group relative p-6 bg-white border border-gray-100 transition-all duration-500 flex flex-col h-full hover:shadow-xl hover:shadow-gray-200/40 rounded-2xl',
+		:class="['group relative p-6 bg-white border border-gray-100 transition-all duration-500 flex flex-col h-full hover:shadow-xl hover:shadow-gray-200/40 rounded-2xl',
 			service.isFeatured ? 'ring-2 ring-red-600 bg-gray-50' : '',
 		]"
 	>

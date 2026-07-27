@@ -119,7 +119,7 @@ const scrollToNews = () => {
 								class="text-[9px] font-black uppercase text-center leading-none mb-1"
 								>Showroom</span
 							>
-							<span class="text-base font-black italic uppercase leading-none"
+							<span class="text-base font-black uppercase leading-none"
 								>HOT</span
 							>
 						</div>
@@ -137,7 +137,7 @@ const scrollToNews = () => {
 									class="text-3xl font-black text-white uppercase tracking-tighter"
 								>
 									KHAI TRƯƠNG
-									<span class="text-red-500 italic">SHOWROOM MỚI</span>
+									<span class="text-red-500">SHOWROOM MỚI</span>
 								</h3>
 								<div class="flex items-center gap-4 pt-4">
 									<div
