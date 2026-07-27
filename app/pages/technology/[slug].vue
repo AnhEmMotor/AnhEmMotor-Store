@@ -39,7 +39,7 @@ const copyLink = () => {
 <template>
 	<div class="bg-black text-white min-h-screen pb-24 font-['Manrope']">
 		<div v-if="pending" class="h-screen flex items-center justify-center">
-			<div class="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+			<div class="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin"/>
 		</div>
 
 		<div v-else-if="interactionCard">

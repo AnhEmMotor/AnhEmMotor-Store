@@ -1,45 +1,47 @@
+import { logError } from '~/utils/logger'
+
 export const voucherService = {
   async getByCode(code) {
-    const trimmed = String(code || "").trim().toUpperCase();
-    if (!trimmed) return null;
+    const trimmed = String(code || '').trim().toUpperCase()
+    if (!trimmed) return null
     try {
-      const data = await voucherRepository.getByCode(trimmed);
-      return data;
+      const data = await voucherRepository.getByCode(trimmed)
+      return data
     } catch (e) {
-      console.error("Voucher lookup failed:", e);
-      return null;
+      logError('voucherService.getByCode', { error: e.message })
+      return null
     }
   },
 
   async validate(voucherId, outputId) {
     try {
-      const data = await voucherRepository.validate(voucherId, outputId);
-      return data;
+      const data = await voucherRepository.validate(voucherId, outputId)
+      return data
     } catch (e) {
-      console.error("Voucher validate failed:", e);
-      return { isValid: false, message: e?.message || "Voucher không hợp lệ" };
+      logError('voucherService.validate', { error: e.message, voucherId, outputId })
+      return { isValid: false, message: e?.message || 'Voucher không hợp lệ' }
     }
   },
 
   async apply(voucherId, outputId) {
     try {
-      const data = await voucherRepository.apply(voucherId, outputId);
-      return data;
+      const data = await voucherRepository.apply(voucherId, outputId)
+      return data
     } catch (e) {
-      console.error("Voucher apply failed:", e);
-      return null;
+      logError('voucherService.apply', { error: e.message, voucherId, outputId })
+      return null
     }
   },
 
   async remove(orderVoucherId) {
     try {
-      const data = await voucherRepository.remove(orderVoucherId);
-      return data;
+      const data = await voucherRepository.remove(orderVoucherId)
+      return data
     } catch (e) {
-      console.error("Voucher remove failed:", e);
-      return null;
+      logError('voucherService.remove', { error: e.message, orderVoucherId })
+      return null
     }
   },
-};
+}
 
-export default voucherService;
+export default voucherService
