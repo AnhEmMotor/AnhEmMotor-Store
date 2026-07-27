@@ -144,9 +144,8 @@ const fetchProvincesForEdit = async () => {
 	try {
 		const data = await orderStore.fetchProvinces();
 		provinces.value = data || [];
-	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.error("Failed to load provinces", error);
+	} catch {
+		 
 	}
 };
 

@@ -10,8 +10,8 @@ export const categoryService = {
 		try {
 			return await categoryRepository.getCategories(params);
 		} catch (error) {
-			// eslint-disable-next-line no-console
-			console.error("Failed to fetch categories:", error);
+			 
+			console.error("categoryService.getApiCategories", { error: error.message });
 			return [];
 		}
 	},
