@@ -249,7 +249,6 @@ const formatVND = (val) => {
 };
 
 const searchArticle = (_event) => {
-	// console.log("Search input change:", _event.target.value);
 };
 </script>
 
