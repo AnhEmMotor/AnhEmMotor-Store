@@ -115,7 +115,7 @@ const relatedPromotions = computed(() => {
 										>
 											{{ bike.name }}
 										</h4>
-										<p class="text-red-600 font-black text-sm italic mt-1">
+										<p class="text-red-600 font-black text-sm mt-1">
 											Từ {{ bike.price }} VNĐ
 										</p>
 									</div>

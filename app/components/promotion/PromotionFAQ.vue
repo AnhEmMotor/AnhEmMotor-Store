@@ -37,14 +37,14 @@ const toggleFaq = (index) => {
 					v-for="(faq, index) in faqs" 
 					:key="index"
 					class="group border border-gray-100 rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-300"
-					:class="openIndex === index ? 'bg-gray-50 border-gray-200' : 'bg-white hover:border-gray-200'"
+					:class="openIndex === index ?'bg-gray-50 border-gray-200' : 'bg-white hover:border-gray-200'"
 				>
 					<button 
 						class="w-full flex items-center justify-between p-5 md:p-8 text-left outline-none"
 						@click="toggleFaq(index)"
 					>
 						<span class="text-sm md:text-lg font-black text-gray-900 uppercase tracking-tight pr-4">{{ faq.question }}</span>
-						<div class="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full flex items-center justify-center bg-white border border-gray-100 shadow-sm transition-transform duration-500" :class="{ 'rotate-180 bg-primary text-white border-primary': openIndex === index }">
+						<div class="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full flex items-center justify-center bg-white border border-gray-100 shadow-sm transition-transform duration-500" :class="{'rotate-180 bg-primary text-white border-primary': openIndex === index }">
 							<Icon :name="openIndex === index ? 'ph:minus-bold' : 'ph:plus-bold'" class="text-xs md:text-base" />
 						</div>
 					</button>

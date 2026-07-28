@@ -16,23 +16,19 @@
 				v-for="(cat, idx) in categories"
 				:key="idx"
 				class="group p-8 bg-white border transition-all duration-500 cursor-pointer text-center space-y-6 hover:-translate-y-2"
-				:class="[
-					activeIdx === idx
-						? 'border-red-600 ring-4 ring-red-600/5 shadow-xl shadow-red-600/5 rounded-2xl'
+				:class="[ activeIdx === idx ?'border-red-600 ring-4 ring-red-600/5 shadow-xl shadow-red-600/5 rounded-2xl'
 						: 'border-gray-100 rounded-2xl hover:border-red-600/30',
 				]"
 				@click="activeIdx = activeIdx === idx ? -1 : idx"
 			>
 				<div
 					class="w-16 h-16 mx-auto bg-gray-50 rounded-xl flex items-center justify-center transition-all duration-500"
-					:class="activeIdx === idx ? 'bg-red-600' : 'group-hover:bg-red-600'"
+					:class="activeIdx === idx ?'bg-red-600' : 'group-hover:bg-red-600'"
 				>
 					<Icon
 						:name="cat.icon"
 						class="text-2xl transition-all duration-500"
-						:class="
-							activeIdx === idx
-								? 'text-white'
+						:class="activeIdx === idx ?'text-white'
 								: 'text-gray-700 group-hover:text-white'
 						"
 					/>
@@ -40,7 +36,7 @@
 				<div class="space-y-3">
 					<h3
 						class="text-[15px] font-extrabold text-gray-900 uppercase tracking-tight transition-colors"
-						:class="{ 'text-red-600': activeIdx === idx }"
+						:class="{'text-red-600': activeIdx === idx }"
 					>
 						{{ cat.title }}
 					</h3>
@@ -57,13 +53,13 @@
 					>
 						<span
 							class="text-[10px] font-extrabold text-gray-900 uppercase tracking-widest transition-colors"
-							:class="{ 'text-red-600': activeIdx === idx }"
+							:class="{'text-red-600': activeIdx === idx }"
 							>{{ cat.cta }}</span
 						>
 						<Icon
 							name="fa6-solid:arrow-right"
 							class="text-[9px] text-red-600 transition-all"
-							:class="{ 'translate-x-1': activeIdx === idx }"
+							:class="{'translate-x-1': activeIdx === idx }"
 						/>
 					</div>
 				</div>

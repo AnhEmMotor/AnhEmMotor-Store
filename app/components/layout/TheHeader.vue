@@ -1,7 +1,7 @@
 <template>
 	<header
 		class="fixed top-0 w-full z-1000 bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
-		:class="[isScrolled ? 'shadow-lg' : '']"
+		:class="[isScrolled ?'shadow-lg' : '']"
 	>
 		<!-- TẦNG 1: TOP BAR (MINIMAL & COHESIVE) -->
 		<div
@@ -49,14 +49,12 @@
 						:key="item.name"
 						:to="item.path"
 						class="text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all duration-300 relative group/top flex items-center gap-1"
-						:class="{ 'text-primary font-black': isRouteActive(item.path) }"
+						:class="{'text-primary font-black': isRouteActive(item.path) }"
 					>
 						{{ item.name }}
 						<span
 							class="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[1.5px] bg-primary transition-all duration-300"
-							:class="
-								isRouteActive(item.path)
-									? 'w-full'
+							:class="isRouteActive(item.path) ?'w-full'
 									: 'w-0 group-hover/top:w-full'
 							"
 						/>
@@ -68,9 +66,7 @@
 		<!-- TẦNG 2: MAIN HEADER (PREMIUM & INTEGRATED) -->
 		<div
 			class="py-2 sm:py-3 bg-white/70 backdrop-blur-xl transition-all duration-500 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)]"
-			:class="[
-				isScrolled
-					? 'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]'
+			:class="[ isScrolled ?'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]'
 					: '',
 			]"
 		>
@@ -116,7 +112,7 @@
 					>
 						<div class="relative overflow-hidden pr-2">
 							<span
-								class="text-[18px] sm:text-[22px] font-[1000] text-gray-950 uppercase tracking-[-0.04em] italic block"
+								class="text-[18px] sm:text-[22px] font-[1000] text-gray-950 uppercase tracking-[-0.04em] block"
 								>AnhEm</span
 							>
 							<!-- Subtle sweep effect on hover -->
@@ -159,13 +155,13 @@
 						</li>
 						<li>
 							<NuxtLink
-								to="/products"
+								to="/bang-gia"
 								class="nav-link-refined"
-								:class="{ active: false }"
+								:class="{ active: isRouteActive('/bang-gia') }"
 								>BẢNG GIÁ
 								<span
 									class="nav-dot-floating"
-									:class="{ active: false }"
+									:class="{ active: isRouteActive('/bang-gia') }"
 							/></NuxtLink>
 						</li>
 
@@ -222,7 +218,7 @@
 					<div class="relative">
 						<button
 							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
-							:class="{ 'text-primary bg-primary/5': isSearchOpen }"
+							:class="{'text-primary bg-primary/5': isSearchOpen }"
 							@click="isSearchOpen = !isSearchOpen"
 						>
 							<Icon
@@ -256,7 +252,7 @@
 					<div class="relative">
 						<button
 							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
-							:class="{ 'text-primary bg-primary/5': isCartOpen }"
+							:class="{'text-primary bg-primary/5': isCartOpen }"
 							aria-label="Giỏ hàng"
 							@click="isCartOpen = !isCartOpen"
 						>
@@ -380,7 +376,7 @@
 				/>
 				<nav
 					class="fixed top-0 bottom-0 left-0 w-[85%] max-w-sm bg-white z-2100 transform transition-transform duration-500 ease-in-out shadow-2xl"
-					:class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'"
+					:class="mobileNavActive ?'translate-x-0' : '-translate-x-full'"
 				>
 					<div
 						class="p-4 sm:p-8 border-b flex justify-between items-center bg-gray-50/50"
@@ -623,7 +619,7 @@ const navItemsMobile = computed(() => [
 	{ name: "TRANG CHỦ", path: "/" },
 	{ name: "XE MÁY", path: xeMayLink.value },
 	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: phuTungLink.value },
-	{ name: "BẢNG GIÁ", path: "/products" },
+	{ name: "BẢNG GIÁ", path: "/bang-gia" },
 	{ name: "KHUYẾN MÃI", path: "/promotion" },
 	{ name: "DỊCH VỤ", path: "/service" },
 	{ name: "SO SÁNH XE", path: "/compare" },

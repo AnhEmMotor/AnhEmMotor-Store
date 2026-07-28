@@ -57,7 +57,7 @@ function setActiveTab(tab) {
 		>
 			<div
 				class="w-28 h-28 rounded-full bg-red-50 flex items-center justify-center overflow-hidden ring-4 ring-white shadow-sm transition-all relative group cursor-pointer"
-				:class="{ 'opacity-50 blur-[2px]': isUploadingAvatar }"
+				:class="{'opacity-50 blur-[2px]': isUploadingAvatar }"
 				@click="triggerAvatarUpload"
 			>
 				<img
@@ -133,8 +133,7 @@ function setActiveTab(tab) {
 		>
 			<nav class="flex flex-col">
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'profile'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -142,8 +141,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('profile')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'profile'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -157,8 +155,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'security'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -166,8 +163,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('security')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'security'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -181,8 +177,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'notifications'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -190,8 +185,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('notifications')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'notifications'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -205,8 +199,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'orders'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -214,8 +207,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('orders')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'orders'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -229,8 +221,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'services'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -238,8 +229,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('services')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'services'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',

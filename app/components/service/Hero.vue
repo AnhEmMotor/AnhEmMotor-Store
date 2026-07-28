@@ -49,7 +49,7 @@
 						class="text-4xl md:text-6xl lg:text-7xl font-[1000] text-white leading-[0.95] tracking-tight animate-reveal-left"
 					>
 						DỊCH VỤ <br >
-						<span class="text-primary italic relative inline-block">
+						<span class="text-primary relative inline-block">
 							CHUẨN 5 SAO
 							<span
 								class="absolute -bottom-1.5 left-0 w-full h-1.5 bg-primary/20 -skew-x-12"

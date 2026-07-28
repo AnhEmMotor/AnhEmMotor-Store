@@ -178,8 +178,7 @@ const formatPrice = (price) => {
 			<button
 				v-for="filter in filters"
 				:key="filter.id"
-				:class="[
-					'flex items-center gap-2 px-5 py-3 rounded-md text-[11px] font-black transition-all whitespace-nowrap border shrink-0',
+				:class="['flex items-center gap-2 px-5 py-3 rounded-md text-[11px] font-black transition-all whitespace-nowrap border shrink-0',
 					activeFilter === filter.id
 						? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
 						: 'bg-white text-gray-500 border-gray-100 hover:border-primary/30 hover:bg-gray-50',
@@ -289,9 +288,7 @@ const formatPrice = (price) => {
                     v-for="page in totalPages"
                     :key="page"
                     class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-bold transition-colors"
-                    :class="
-                        currentPage === page
-                            ? 'bg-primary text-white shadow-md border-primary'
+                    :class="currentPage === page ?'bg-primary text-white shadow-md border-primary'
                             : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
                     "
                     @click="currentPage = page"

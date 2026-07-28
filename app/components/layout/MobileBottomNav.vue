@@ -8,15 +8,13 @@
 				:key="item.path"
 				:to="item.path"
 				class="flex flex-col items-center justify-center gap-1 group flex-1 transition-all duration-300"
-				:class="[route.path === item.path ? 'text-primary' : 'text-gray-400']"
+				:class="[route.path === item.path ?'text-primary' : 'text-gray-400']"
 			>
 				<div class="relative">
 					<Icon
 						:name="item.icon"
 						class="text-2xl transition-transform duration-300 group-active:scale-110"
-						:class="[
-							route.path === item.path
-								? 'text-primary'
+						:class="[ route.path === item.path ?'text-primary'
 								: 'text-gray-400 group-hover:text-gray-600',
 						]"
 					/>

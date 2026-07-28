@@ -179,7 +179,7 @@ watch(promotionPage, () => {
 									</h2>
 
 									<p
-										class="text-gray-500 text-base md:text-xl lg:text-2xl font-medium leading-relaxed italic border-l-4 border-red-600/30 pl-6 md:pl-10"
+										class="text-gray-500 text-base md:text-xl lg:text-2xl font-medium leading-relaxed border-l-4 border-red-600/30 pl-6 md:pl-10"
 									>
 										"{{ featuredPromotion.shortDescription }}"
 									</p>
@@ -193,7 +193,7 @@ watch(promotionPage, () => {
 												>Đặc quyền</span
 											>
 											<span
-												class="text-2xl md:text-5xl font-black text-red-600 uppercase tracking-tighter italic"
+												class="text-2xl md:text-5xl font-black text-red-600 uppercase tracking-tighter"
 												>Trả góp 0%</span
 											>
 										</div>
@@ -308,7 +308,7 @@ watch(promotionPage, () => {
 				<h2
 					class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-tight"
 				>
-					Bạn đã chọn được <br ><span class="text-red-600 italic">xế yêu</span
+					Bạn đã chọn được <br ><span class="text-red-600">xế yêu</span
 					>?
 				</h2>
 				<p

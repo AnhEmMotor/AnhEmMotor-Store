@@ -65,7 +65,7 @@ defineProps({
 			</h3>
 
 			<p
-				class="hidden md:block text-gray-500 text-sm font-medium leading-relaxed mb-8 line-clamp-2 italic border-l-2 border-gray-100 pl-4"
+				class="hidden md:block text-gray-500 text-sm font-medium leading-relaxed mb-8 line-clamp-2 border-l-2 border-gray-100 pl-4"
 			>
 				{{ news.metaDescription || news.excerpt || news.shortDescription || news.description }}
 			</p>

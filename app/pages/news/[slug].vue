@@ -137,10 +137,7 @@ const copyLink = () => {
 			<main class="container mx-auto px-6 mt-4 md:mt-12">
 				<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-20">
 					<article
-						:class="[
-							(relatedNews && relatedNews.length > 0) ||
-							filteredLatestNews.length > 0
-								? 'lg:col-span-8'
+						:class="[ (relatedNews && relatedNews.length > 0) || filteredLatestNews.length > 0 ?'lg:col-span-8'
 								: 'lg:col-span-10 lg:col-start-2',
 							'space-y-16',
 						]"

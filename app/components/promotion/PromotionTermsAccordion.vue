@@ -19,7 +19,7 @@ const toggle = (index) => {
 			v-for="(term, index) in terms" 
 			:key="index"
 			class="bg-white rounded-3xl border border-gray-100 overflow-hidden transition-all duration-500"
-			:class="{ 'shadow-xl shadow-gray-200/50 border-primary/20': activeIndex === index }"
+			:class="{'shadow-xl shadow-gray-200/50 border-primary/20': activeIndex === index }"
 		>
 			<button 
 				class="w-full px-8 py-6 flex items-center justify-between text-left group"
@@ -27,13 +27,13 @@ const toggle = (index) => {
 			>
 				<span 
 					class="text-sm font-black uppercase tracking-widest transition-colors"
-					:class="activeIndex === index ? 'text-red-600' : 'text-gray-900 group-hover:text-red-600'"
+					:class="activeIndex === index ?'text-red-600' : 'text-gray-900 group-hover:text-red-600'"
 				>
 					{{ index + 1 }}. {{ term.title }}
 				</span>
 				<div 
 					class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center transition-all duration-500"
-					:class="{ 'rotate-180 bg-red-600 text-white': activeIndex === index }"
+					:class="{'rotate-180 bg-red-600 text-white': activeIndex === index }"
 				>
 					<Icon name="ph:caret-down-bold" class="text-sm" />
 				</div>

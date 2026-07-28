@@ -148,8 +148,7 @@ const scrollToTop = () => {
 					:href="btn.action"
 					target="_blank"
 					:style="{ transitionDelay: `${idx * 50}ms` }"
-					:class="[
-						'flex items-center gap-2.5 p-3 sm:p-4 rounded-3xl transition-all hover:scale-105 active:scale-95 shadow-2xl border border-white/10 text-white',
+					:class="['flex items-center gap-2.5 p-3 sm:p-4 rounded-3xl transition-all hover:scale-105 active:scale-95 shadow-2xl border border-white/10 text-white',
 						btn.color,
 					]"
 				>
@@ -179,8 +178,7 @@ const scrollToTop = () => {
 
 		<button
 			class="floating-icon-button floating-chatbot-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl border-4 border-white/20 hover:scale-110 active:scale-95 text-white animate-bounce-subtle group relative"
-			:class="
-				isAiOpen ? 'bg-primary border-primary/20 rotate-180' : 'bg-slate-900'
+			:class="isAiOpen ?'bg-primary border-primary/20 rotate-180' : 'bg-slate-900'
 			"
 			@click="isAiOpen = !isAiOpen"
 		>
@@ -198,8 +196,7 @@ const scrollToTop = () => {
 		</button>
 
 		<button
-			:class="[
-				'floating-icon-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl relative z-101 border-4 border-white/20 overflow-hidden text-white',
+			:class="['floating-icon-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl relative z-101 border-4 border-white/20 overflow-hidden text-white',
 				isContactOpen
 					? 'bg-slate-800 rotate-180 scale-90'
 					: 'bg-red-600 hover:scale-110',

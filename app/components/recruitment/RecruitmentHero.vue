@@ -47,7 +47,7 @@
 				</div>
 
 				<h1
-					class="text-4xl md:text-6xl font-black text-white leading-[0.9] mb-6 animate-fade-in-up delay-100 italic uppercase tracking-tighter"
+					class="text-4xl md:text-6xl font-black text-white leading-[0.9] mb-6 animate-fade-in-up delay-100 uppercase tracking-tighter"
 				>
 					Gia nhập <br >
 					<span
@@ -96,7 +96,7 @@
 						:key="stat.l"
 					>
 						<div
-							class="text-3xl font-black text-white mb-1 italic tracking-tighter"
+							class="text-3xl font-black text-white mb-1 tracking-tighter"
 						>
 							{{ stat.v }}
 						</div>

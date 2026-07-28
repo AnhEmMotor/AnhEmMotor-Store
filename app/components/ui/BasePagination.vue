@@ -75,9 +75,7 @@ const pageNumbers = computed(() => {
 			<button
 				:disabled="isPrevDisabled"
 				class="inline-flex items-center justify-center w-10 h-10 sm:w-auto sm:px-4 rounded-xl font-bold transition-all duration-300 border text-sm"
-				:class="
-					isPrevDisabled
-						? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+				:class="isPrevDisabled ?'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
 						: 'bg-white text-gray-700 border-gray-200 hover:border-primary hover:text-primary hover:shadow-lg active:scale-95'
 				"
 				aria-label="Chuyển sang trang trước"
@@ -98,9 +96,7 @@ const pageNumbers = computed(() => {
 					<button
 						v-else
 						class="w-10 h-10 flex items-center justify-center rounded-xl font-bold transition-all duration-300 border text-sm"
-						:class="
-							page === currentPage
-								? 'bg-primary border-primary text-white shadow-lg shadow-primary/20 scale-110'
+						:class="page === currentPage ?'bg-primary border-primary text-white shadow-lg shadow-primary/20 scale-110'
 								: 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary hover:shadow-md'
 						"
 						:aria-label="'Đến trang ' + page"
@@ -114,9 +110,7 @@ const pageNumbers = computed(() => {
 			<button
 				:disabled="isNextDisabled"
 				class="inline-flex items-center justify-center w-10 h-10 sm:w-auto sm:px-4 rounded-xl font-bold transition-all duration-300 border text-sm"
-				:class="
-					isNextDisabled
-						? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+				:class="isNextDisabled ?'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
 						: 'bg-white text-gray-700 border-gray-200 hover:border-primary hover:text-primary hover:shadow-lg active:scale-95'
 				"
 				aria-label="Chuyển sang trang tiếp theo"

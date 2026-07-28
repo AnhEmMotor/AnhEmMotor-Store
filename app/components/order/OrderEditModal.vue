@@ -99,7 +99,7 @@ const handleSave = () => {
 							type="text"
 							placeholder="Tên khách hàng"
 							class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ 'border-red-500 bg-red-50/10': errors.customerName }"
+							:class="{'border-red-500 bg-red-50/10': errors.customerName }"
 							:disabled="lockedDelivery"
 							@input="
 								emit('update:form', {
@@ -124,7 +124,7 @@ const handleSave = () => {
 							type="tel"
 							placeholder="Số điện thoại"
 							class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ 'border-red-500 bg-red-50/10': errors.customerPhone }"
+							:class="{'border-red-500 bg-red-50/10': errors.customerPhone }"
 							:disabled="lockedDelivery"
 							@input="
 								emit('update:form', {
@@ -147,7 +147,7 @@ const handleSave = () => {
 						<select
 							:value="form.provinceId || ''"
 							class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ 'border-red-500 bg-red-50/10': errors.provinceId }"
+							:class="{'border-red-500 bg-red-50/10': errors.provinceId }"
 							:disabled="lockedDelivery"
 							@change="
 								emit('change-province', Number($event.target.value));
@@ -172,7 +172,7 @@ const handleSave = () => {
 						<select
 							:value="form.wardCode || ''"
 							class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ 'border-red-500 bg-red-50/10': errors.wardCode }"
+							:class="{'border-red-500 bg-red-50/10': errors.wardCode }"
 							:disabled="lockedDelivery || !form.provinceId"
 							@change="
 								emit('update:form', {
@@ -202,7 +202,7 @@ const handleSave = () => {
 							rows="3"
 							placeholder="Địa chỉ chi tiết"
 							class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
-							:class="{ 'border-red-500 bg-red-50/10': errors.customerAddress }"
+							:class="{'border-red-500 bg-red-50/10': errors.customerAddress }"
 							:disabled="lockedDelivery"
 							@input="
 								emit('update:form', {

@@ -26,7 +26,7 @@
 						>
 					</div>
 					<h1
-						class="text-[32px] md:text-[50px] lg:text-[58px] font-extrabold text-white uppercase italic leading-[1.1] tracking-tight reveal-up"
+						class="text-[32px] md:text-[50px] lg:text-[58px] font-extrabold text-white uppercase leading-[1.1] tracking-tight reveal-up"
 					>
 						ĐẶT LỊCH<br ><span
 							class="text-primary drop-shadow-[0_0_20px_rgba(227,24,55,0.5)]"
@@ -75,13 +75,13 @@
 												>{{ selectedVehicle.brand }}</span
 											>
 											<h3
-												class="text-[22px] font-extrabold text-gray-900 uppercase italic tracking-normal"
+												class="text-[22px] font-extrabold text-gray-900 uppercase tracking-normal"
 											>
 												{{ selectedVehicle.name }}
 											</h3>
 										</div>
 										<p
-											class="text-primary font-black text-[18px] italic leading-none"
+											class="text-primary font-black text-[18px] leading-none"
 										>
 											{{ selectedVehicle.price }}
 										</p>
@@ -117,12 +117,12 @@
 									/>
 								</div>
 								<h3
-									class="text-[16px] font-extrabold text-gray-400 uppercase italic tracking-wide"
+									class="text-[16px] font-extrabold text-gray-400 uppercase tracking-wide"
 								>
 									Chọn xe lái thử
 								</h3>
 								<p
-									class="text-[10px] text-gray-400 px-8 leading-relaxed italic"
+									class="text-[10px] text-gray-400 px-8 leading-relaxed"
 								>
 									Vui lòng chọn dòng xe ở biểu mẫu bên cạnh để xem trước diện
 									mạo & thông số.
@@ -167,7 +167,7 @@
 									class="flex items-end justify-between border-b border-gray-50 pb-4"
 								>
 									<h2
-										class="text-[32px] md:text-[38px] font-extrabold text-gray-950 uppercase italic tracking-tight"
+										class="text-[32px] md:text-[38px] font-extrabold text-gray-950 uppercase tracking-tight"
 									>
 										Đăng ký <span class="text-primary">Lịch hẹn</span>
 									</h2>
@@ -362,7 +362,7 @@
 										name="ph:check-circle-fill"
 										class="text-[50px] text-green-500"
 									/>
-									<h2 class="text-[26px] font-extrabold uppercase italic">
+									<h2 class="text-[26px] font-extrabold uppercase">
 										Thành công!
 									</h2>
 									<NuxtLink
@@ -383,7 +383,7 @@
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
 					<div class="space-y-6">
 						<h2
-							class="text-[28px] font-extrabold uppercase italic tracking-tight"
+							class="text-[28px] font-extrabold uppercase tracking-tight"
 						>
 							Quy trình <span class="text-primary">Lái thử</span>
 						</h2>
@@ -413,7 +413,7 @@
 					</div>
 					<div class="space-y-6">
 						<h2
-							class="text-[28px] font-extrabold uppercase italic tracking-tight"
+							class="text-[28px] font-extrabold uppercase tracking-tight"
 						>
 							Câu hỏi <span class="text-primary">Thường gặp</span>
 						</h2>
@@ -422,7 +422,7 @@
 								v-for="(faq, idx) in faqs"
 								:key="idx"
 								class="bg-white rounded-xl border border-gray-100 overflow-hidden transition-all duration-300"
-								:class="{ 'shadow-lg border-primary/20': activeFaq === idx }"
+								:class="{'shadow-lg border-primary/20': activeFaq === idx }"
 							>
 								<button
 									class="w-full p-4 flex items-center justify-between text-left group"
@@ -430,16 +430,14 @@
 								>
 									<h4
 										class="text-[15px] font-extrabold uppercase transition-colors tracking-tight"
-										:class="
-											activeFaq === idx ? 'text-primary' : 'text-gray-900'
+										:class="activeFaq === idx ?'text-primary' : 'text-gray-900'
 										"
 									>
 										{{ faq.q }}
 									</h4>
 									<div
 										class="w-6 h-6 rounded-full bg-gray-50 flex items-center justify-center transition-transform duration-300"
-										:class="{
-											'rotate-180 bg-primary/10 text-primary':
+										:class="{'rotate-180 bg-primary/10 text-primary':
 												activeFaq === idx,
 										}"
 									>

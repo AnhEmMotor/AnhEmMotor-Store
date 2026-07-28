@@ -64,7 +64,7 @@ defineProps({
 					</div>
 					<p
 						class="text-gray-300 leading-relaxed"
-						:class="{ 'font-bold text-white': item.isStrong }"
+						:class="{'font-bold text-white': item.isStrong }"
 					>
 						{{ item.text }}
 					</p>

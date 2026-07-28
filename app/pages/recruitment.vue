@@ -63,7 +63,7 @@
 							>
 						</div>
 						<h2
-							class="text-3xl md:text-4xl font-black text-gray-900 mb-4 italic uppercase tracking-tighter"
+							class="text-3xl md:text-4xl font-black text-gray-900 mb-4 uppercase tracking-tighter"
 						>
 							Câu hỏi <span class="text-primary">Thường gặp</span>
 						</h2>
@@ -88,7 +88,7 @@
 									@click="activeFaq = activeFaq === index ? -1 : index"
 								>
 									<span
-										class="text-lg font-black text-gray-900 group-hover:text-primary transition-colors italic uppercase tracking-tight"
+										class="text-lg font-black text-gray-900 group-hover:text-primary transition-colors uppercase tracking-tight"
 										>{{ item.label }}</span
 									>
 									<div
@@ -97,7 +97,7 @@
 										<Icon
 											name="fa6-solid:chevron-down"
 											class="text-xs transition-transform duration-500"
-											:class="{ 'rotate-180': activeFaq === index }"
+											:class="{'rotate-180': activeFaq === index }"
 										/>
 									</div>
 								</button>
@@ -124,7 +124,7 @@
 
 				<div class="container mx-auto px-4 relative z-10 reveal reveal-up">
 					<h2
-						class="text-4xl md:text-5xl font-black text-white mb-8 italic uppercase tracking-tighter leading-tight"
+						class="text-4xl md:text-5xl font-black text-white mb-8 uppercase tracking-tighter leading-tight"
 					>
 						SẴN SÀNG GIA NHẬP <br >
 						<span

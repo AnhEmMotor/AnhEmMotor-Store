@@ -49,8 +49,7 @@ watch(
 					type="text"
 					placeholder="Nhập họ và tên người nhận"
 					class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-					:class="{
-						'!border-red-500 !bg-red-50': orderStore.errors.fullName,
+					:class="{'!border-red-500 !bg-red-50': orderStore.errors.fullName,
 					}"
 					@input="orderStore.errors.fullName = ''"
 				>
@@ -71,8 +70,7 @@ watch(
 					type="tel"
 					placeholder="Nhập số điện thoại"
 					class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-					:class="{
-						'!border-red-500 !bg-red-50': orderStore.errors.phone,
+					:class="{'!border-red-500 !bg-red-50': orderStore.errors.phone,
 					}"
 					@input="orderStore.errors.phone = ''"
 				>
@@ -92,7 +90,7 @@ watch(
 					<select
 						v-model="orderStore.shippingInfo.provinceId"
 						class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm appearance-none cursor-pointer"
-						:class="{ '!border-red-500 !bg-red-50': orderStore.errors.provinceId }"
+						:class="{'!border-red-500 !bg-red-50': orderStore.errors.provinceId }"
 						:disabled="isLoadingProvinces"
 						@change="orderStore.errors.provinceId = ''"
 					>
@@ -113,7 +111,7 @@ watch(
 					<select
 						v-model="orderStore.shippingInfo.wardCode"
 						class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-						:class="{ '!border-red-500 !bg-red-50': orderStore.errors.wardCode }"
+						:class="{'!border-red-500 !bg-red-50': orderStore.errors.wardCode }"
 						:disabled="!orderStore.shippingInfo.provinceId || isLoadingWards"
 						@change="orderStore.errors.wardCode = ''"
 					>
@@ -138,8 +136,7 @@ watch(
 				rows="3"
 				placeholder="Nhập địa chỉ nhận hàng chi tiết"
 				class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
-				:class="{
-					'!border-red-500 !bg-red-50': orderStore.errors.address,
+				:class="{'!border-red-500 !bg-red-50': orderStore.errors.address,
 				}"
 				@input="orderStore.errors.address = ''"
 			/>
@@ -198,7 +195,7 @@ watch(
 							type="text" 
 							placeholder="Ví dụ: Công ty TNHH Motor Anh Em"
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyName }"
+							:class="{'!border-red-500 !bg-red-50': orderStore.errors.companyName }"
 							@input="orderStore.errors.companyName = ''"
 						>
 						<p v-if="orderStore.errors.companyName" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyName }}</p>
@@ -211,7 +208,7 @@ watch(
 							type="text" 
 							placeholder="Ví dụ: 0102030405 hoặc 123"
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyTaxCode }"
+							:class="{'!border-red-500 !bg-red-50': orderStore.errors.companyTaxCode }"
 							@input="orderStore.errors.companyTaxCode = ''"
 						>
 						<p v-if="orderStore.errors.companyTaxCode" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyTaxCode }}</p>
@@ -224,7 +221,7 @@ watch(
 							type="text" 
 							placeholder="Ví dụ: 123 Đường Láng, Đống Đa, Hà Nội"
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyAddress }"
+							:class="{'!border-red-500 !bg-red-50': orderStore.errors.companyAddress }"
 							@input="orderStore.errors.companyAddress = ''"
 						>
 						<p v-if="orderStore.errors.companyAddress" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyAddress }}</p>
@@ -237,7 +234,7 @@ watch(
 							type="text" 
 							placeholder="Ví dụ: invoice@anhem.com"
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.companyEmail }"
+							:class="{'!border-red-500 !bg-red-50': orderStore.errors.companyEmail }"
 							@input="orderStore.errors.companyEmail = ''"
 						>
 						<p v-if="orderStore.errors.companyEmail" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.companyEmail }}</p>
@@ -250,7 +247,7 @@ watch(
 							type="text" 
 							placeholder="Ví dụ: 1045678"
 							class="w-full px-5 py-3.5 bg-white border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-							:class="{ '!border-red-500 !bg-red-50': orderStore.errors.budgetCode }"
+							:class="{'!border-red-500 !bg-red-50': orderStore.errors.budgetCode }"
 							@input="orderStore.errors.budgetCode = ''"
 						>
 						<p v-if="orderStore.errors.budgetCode" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase tracking-tighter">{{ orderStore.errors.budgetCode }}</p>

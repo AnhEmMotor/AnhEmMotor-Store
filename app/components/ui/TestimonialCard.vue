@@ -47,7 +47,7 @@ defineProps({
 				{{ testimonial.date }}
 			</div>
 		</div>
-		<p class="text-base text-slate-500 leading-relaxed font-medium italic">
+		<p class="text-base text-slate-500 leading-relaxed font-medium">
 			"{{ testimonial.comment }}"
 		</p>
 

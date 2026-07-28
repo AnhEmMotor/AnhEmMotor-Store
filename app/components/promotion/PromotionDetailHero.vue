@@ -44,8 +44,7 @@ onMounted(() => {
 				<div class="flex flex-wrap items-center gap-4 animate-fade-in">
 					<div
 						class="px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border"
-						:class="
-							promotion.status === 'ongoing'
+						:class="promotion.status ==='ongoing'
 								? 'bg-green-500/10 text-green-500 border-green-500/20'
 								: 'bg-gray-500/10 text-gray-400 border-gray-500/20'
 						"
@@ -71,7 +70,7 @@ onMounted(() => {
 						{{ promotion.title }}
 					</h1>
 					<p
-						class="text-xl md:text-2xl text-gray-300 font-medium max-w-2xl leading-relaxed italic border-l-4 border-red-600 pl-8"
+						class="text-xl md:text-2xl text-gray-300 font-medium max-w-2xl leading-relaxed border-l-4 border-red-600 pl-8"
 					>
 						"{{ promotion.shortDescription }}"
 					</p>

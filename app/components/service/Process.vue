@@ -14,9 +14,7 @@
 			<div class="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
 				<div
 					class="lg:col-span-5 relative order-2 lg:order-1 transition-all duration-1000"
-					:class="
-						isVisible
-							? 'opacity-100 -translate-x-0'
+					:class="isVisible ?'opacity-100 -translate-x-0'
 							: 'opacity-0 -translate-x-20'
 					"
 				>
@@ -46,8 +44,7 @@
 
 				<div
 					class="lg:col-span-7 space-y-12 order-1 lg:order-2 transition-all duration-1000 delay-300"
-					:class="
-						isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
+					:class="isVisible ?'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
 					"
 				>
 					<div class="space-y-6">
@@ -56,7 +53,7 @@
 						>
 							QUY TRÌNH
 							<span
-								class="text-primary italic underline decoration-primary/10 underline-offset-8"
+								class="text-primary underline decoration-primary/10 underline-offset-8"
 								>TẬN TÂM</span
 							>
 							<br >
@@ -77,9 +74,7 @@
 							:key="idx"
 							class="flex gap-6 p-6 bg-white border border-gray-100 rounded-[2rem] hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 group"
 							:style="{ transitionDelay: `${idx * 200 + 500}ms` }"
-							:class="
-								isVisible
-									? 'opacity-100 translate-y-0'
+							:class="isVisible ?'opacity-100 translate-y-0'
 									: 'opacity-0 translate-y-10'
 							"
 						>

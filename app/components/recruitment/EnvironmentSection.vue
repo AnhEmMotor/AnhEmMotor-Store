@@ -22,7 +22,7 @@
 							>
 						</div>
 						<h2
-							class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] italic uppercase tracking-tighter"
+							class="text-3xl md:text-4xl font-black text-gray-900 leading-[0.95] uppercase tracking-tighter"
 						>
 							Làm việc tại <br >
 							<span
@@ -53,7 +53,7 @@
 								<Icon :name="item.icon" class="text-2xl" />
 							</div>
 							<h3
-								class="text-xl font-black text-gray-900 mb-3 italic uppercase tracking-tight"
+								class="text-xl font-black text-gray-900 mb-3 uppercase tracking-tight"
 							>
 								{{ item.title }}
 							</h3>
@@ -82,7 +82,7 @@
 							<div
 								class="p-8 bg-primary rounded-[2.5rem] text-white shadow-2xl shadow-primary/30 transform hover:-translate-y-2 transition-transform duration-500"
 							>
-								<div class="text-5xl font-black mb-3 italic tracking-tighter">
+								<div class="text-5xl font-black mb-3 tracking-tighter">
 									100%
 								</div>
 								<div
@@ -97,7 +97,7 @@
 								class="p-8 bg-gray-900 rounded-[2.5rem] text-white shadow-2xl shadow-black/20 transform hover:-translate-y-2 transition-transform duration-500"
 							>
 								<div
-									class="text-2xl font-black mb-2 italic uppercase tracking-tight"
+									class="text-2xl font-black mb-2 uppercase tracking-tight"
 								>
 									Văn hóa Team
 								</div>

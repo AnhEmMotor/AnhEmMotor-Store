@@ -73,7 +73,7 @@ onMounted(() => {
 								</h2>
 
 								<p
-									class="text-gray-500 text-lg font-medium leading-relaxed max-w-md italic border-l-4 border-red-600/30 pl-6"
+									class="text-gray-500 text-lg font-medium leading-relaxed max-w-md border-l-4 border-red-600/30 pl-6"
 								>
 									"Chúng tôi lắng nghe để thấu hiểu, phản hồi để sẻ chia. Mọi
 									thắc mắc của bạn là cơ hội để AnhEm Motor hoàn thiện hơn."

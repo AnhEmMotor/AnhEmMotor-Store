@@ -11,7 +11,7 @@
 		
 		<div class="relative h-full flex flex-col justify-end p-16 text-white">
 			<div class="mb-8">
-				<h2 class="text-4xl font-extrabold leading-tight mb-4 italic uppercase tracking-tighter">
+				<h2 class="text-4xl font-extrabold leading-tight mb-4 uppercase tracking-tighter">
 					Đồng hành cùng bạn <br >
 					<span class="text-primary">trên mọi hành trình</span>
 				</h2>

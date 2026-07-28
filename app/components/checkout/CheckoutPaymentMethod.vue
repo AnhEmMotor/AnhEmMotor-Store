@@ -66,9 +66,7 @@ onMounted(() => {
 				v-for="method in paymentMethods"
 				:key="method.id"
 				class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex items-center gap-4 group"
-				:class="[
-					orderStore.shippingInfo.paymentMethod === method.id
-						? 'bg-red-50 border-red-500 shadow-md shadow-red-500/10'
+				:class="[ orderStore.shippingInfo.paymentMethod === method.id ?'bg-red-50 border-red-500 shadow-md shadow-red-500/10'
 						: 'border-gray-100 hover:border-red-200 hover:bg-gray-50',
 				]"
 				@click="selectMethod(method.id)"
@@ -96,9 +94,7 @@ onMounted(() => {
 				</div>
 				<div
 					class="transition-all duration-300"
-					:class="[
-						orderStore.shippingInfo.paymentMethod === method.id
-							? 'text-red-500 scale-110'
+					:class="[ orderStore.shippingInfo.paymentMethod === method.id ?'text-red-500 scale-110'
 							: 'text-gray-200 group-hover:text-gray-300',
 					]"
 				>

@@ -97,7 +97,7 @@ onMounted(async () => {
 
 			<div class="relative z-20 max-w-4xl mx-auto reveal reveal-up">
 				<h2
-					class="text-4xl md:text-5xl font-black mb-8 uppercase italic tracking-tighter leading-tight"
+					class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter leading-tight"
 				>
 					GIA NHẬP CỘNG ĐỒNG <br >
 					<span
