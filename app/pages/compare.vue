@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const compareStore = useCompareStore();
 const productStore = useProductStore();
@@ -264,8 +264,8 @@ const filteredProducts = computed(() => {
 				<div class="flex flex-col">
 					<button
 						v-if="isComparing"
-						@click="isComparing = false"
 						class="flex items-center text-sm font-bold text-gray-900 hover:text-[#CC0000] transition-colors mb-4"
+						@click="isComparing = false"
 					>
 						<Icon name="fa6-solid:chevron-left" class="mr-2 text-xs" /> Quay về bộ sưu tập sản phẩm
 					</button>
@@ -293,10 +293,10 @@ const filteredProducts = computed(() => {
 					
 					<button
 						v-if="!isComparing"
-						@click="handleCompare"
 						:disabled="compareProducts.length < 2"
 						:class="compareProducts.length >= 2 ? 'bg-black text-white hover:bg-[#CC0000] cursor-pointer active:scale-95' : 'bg-black text-white cursor-not-allowed opacity-50'"
 						class="px-8 py-3 rounded-none font-black uppercase tracking-widest text-[10px] transition-all"
+						@click="handleCompare"
 					>
 						So sánh ngay <Icon name="fa6-solid:arrow-right" class="ml-1" />
 					</button>
@@ -312,8 +312,8 @@ const filteredProducts = computed(() => {
 					<div
 						v-for="product in allProducts"
 						:key="product.id"
-						@click="toggleSelect(product)"
 						class="relative group cursor-pointer transition-all duration-300 flex flex-col justify-between"
+						@click="toggleSelect(product)"
 					>
 						<div>
 							<h3 class="text-sm font-black text-black uppercase leading-tight line-clamp-1 mb-2">{{ product.name }}</h3>
@@ -321,7 +321,7 @@ const filteredProducts = computed(() => {
 							<span class="inline-block px-2 py-0.5 bg-red-500 text-white text-[8px] font-black uppercase mb-2">MỚI</span>
 							
 							<div class="aspect-[4/3] mb-4 relative p-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-								<img :src="getBasicProductImage(product)" :alt="product.name" class="max-w-full max-h-full object-contain mix-blend-multiply" />
+								<img :src="getBasicProductImage(product)" :alt="product.name" class="max-w-full max-h-full object-contain mix-blend-multiply" >
 							</div>
 						</div>
 						
@@ -359,16 +359,16 @@ const filteredProducts = computed(() => {
 											<img
 												:src="getProductImage(item)"
 												:alt="item.product.name"
-												@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 												class="w-full h-full object-contain hover:scale-105 transition-transform duration-500 p-4"
+												@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 											>
 										</div>
 
 										<div class="w-full flex items-center justify-between bg-[#CC0000] text-white px-4 py-3">
 											<h3 class="text-base font-black truncate flex-1">{{ item.product.name }}</h3>
 											<div class="flex gap-4 shrink-0 ml-2">
-												<button @click="isModalOpen = true" class="hover:opacity-70 transition-opacity"><Icon name="fa6-solid:arrows-rotate" class="text-sm" /></button>
-												<button @click="removeProduct(item.product.id)" class="hover:opacity-70 transition-opacity"><Icon name="fa6-solid:xmark" class="text-xl font-light" /></button>
+												<button class="hover:opacity-70 transition-opacity" @click="isModalOpen = true"><Icon name="fa6-solid:arrows-rotate" class="text-sm" /></button>
+												<button class="hover:opacity-70 transition-opacity" @click="removeProduct(item.product.id)"><Icon name="fa6-solid:xmark" class="text-xl font-light" /></button>
 											</div>
 										</div>
 										<div class="w-full bg-white border-x border-b border-gray-200 relative">
@@ -396,7 +396,7 @@ const filteredProducts = computed(() => {
 											<Icon name="fa6-solid:plus" class="absolute top-0 right-0 text-3xl text-gray-500 font-bold" />
 										</div>
 										<div class="w-full mt-auto">
-											<button @click="isModalOpen = true" class="w-full py-4 border border-[#CC0000] text-[#CC0000] hover:bg-[#CC0000] hover:text-white text-[11px] font-black uppercase tracking-widest transition-colors flex justify-center items-center gap-2 bg-white group hover:bg-[#CC0000]">
+											<button class="w-full py-4 border border-[#CC0000] text-[#CC0000] hover:bg-[#CC0000] hover:text-white text-[11px] font-black uppercase tracking-widest transition-colors flex justify-center items-center gap-2 bg-white group hover:bg-[#CC0000]" @click="isModalOpen = true">
 												CHỌN THÊM SẢN PHẨM <Icon name="fa6-solid:plus" />
 											</button>
 										</div>
@@ -437,8 +437,7 @@ const filteredProducts = computed(() => {
 										</div>
 									</div>
 
-									<div v-else class="col-span-4 p-8 border-r border-gray-200 last:border-r-0 bg-gray-50/50">
-									</div>
+									<div v-else class="col-span-4 p-8 border-r border-gray-200 last:border-r-0 bg-gray-50/50"/>
 								</template>
 
 							</div>
@@ -455,7 +454,7 @@ const filteredProducts = computed(() => {
 					
 					<!-- Nút Tắt (X) màu Đỏ -->
 					<div class="absolute top-0 right-0 z-10">
-						<button @click="isModalOpen = false" class="w-12 h-12 bg-[#CC0000] text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer">
+						<button class="w-12 h-12 bg-[#CC0000] text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer" @click="isModalOpen = false">
 							<Icon name="fa6-solid:xmark" class="text-xl" />
 						</button>
 					</div>
@@ -474,7 +473,7 @@ const filteredProducts = computed(() => {
 					<!-- Thanh Tìm kiếm -->
 					<div class="p-6 pb-2 bg-white sticky top-[57px] z-0">
 						<div class="relative border border-gray-300 flex items-center group focus-within:border-gray-900">
-							<input v-model="searchQuery" type="text" placeholder="Nhập tên loại xe" class="w-full h-12 pl-4 pr-12 outline-none text-sm font-medium bg-transparent" />
+							<input v-model="searchQuery" type="text" placeholder="Nhập tên loại xe" class="w-full h-12 pl-4 pr-12 outline-none text-sm font-medium bg-transparent" >
 							<Icon name="fa6-solid:magnifying-glass" class="absolute right-4 text-gray-500 text-lg" />
 						</div>
 					</div>
@@ -485,13 +484,13 @@ const filteredProducts = computed(() => {
 							<div
 								v-for="product in filteredProducts"
 								:key="product.id"
-								@click="toggleSelect(product)"
 								class="group cursor-pointer flex flex-col justify-between"
+								@click="toggleSelect(product)"
 							>
 								<div>
 									<h3 class="text-[13px] font-black text-black leading-tight line-clamp-1 mb-2">{{ product.name }}</h3>
 									<div class="aspect-[4/3] flex items-center justify-center p-2 transition-transform duration-300 group-hover:scale-105">
-										<img :src="getBasicProductImage(product)" :alt="product.name" @error="$event.target.src = '/assets/image/placeholder-product.webp'" class="max-w-full max-h-full object-contain mix-blend-multiply" />
+										<img :src="getBasicProductImage(product)" :alt="product.name" class="max-w-full max-h-full object-contain mix-blend-multiply" @error="$event.target.src = '/assets/image/placeholder-product.webp'" >
 									</div>
 								</div>
 								
@@ -499,7 +498,8 @@ const filteredProducts = computed(() => {
 									<span class="inline-block px-2 py-0.5 bg-red-600 text-white text-[9px] font-black uppercase mb-3">MỚI</span>
 									<div class="flex items-center justify-between mt-1">
 										<p class="text-[11px] font-medium text-black">Giá từ: <span class="font-black">{{ formatPrice(product.price) }}</span></p>
-										<div class="w-5 h-5 rounded-full flex items-center justify-center border transition-all"
+										<div
+class="w-5 h-5 rounded-full flex items-center justify-center border transition-all"
 											 :class="compareProducts.some(p => p.id === product.id) ? 'bg-[#CC0000] border-[#CC0000] text-white' : 'border-transparent bg-gray-100 text-transparent'">
 											<Icon name="fa6-solid:check" class="text-[9px]" />
 										</div>
@@ -511,7 +511,7 @@ const filteredProducts = computed(() => {
 
 					<!-- Footer Modal -->
 					<div class="p-6 border-t border-gray-200 flex justify-center bg-white">
-						<button @click="isModalOpen = false" class="px-10 py-3 bg-white border border-[#CC0000] text-[#CC0000] hover:bg-[#CC0000] hover:text-white font-black uppercase tracking-widest text-[11px] transition-colors flex items-center gap-2">
+						<button class="px-10 py-3 bg-white border border-[#CC0000] text-[#CC0000] hover:bg-[#CC0000] hover:text-white font-black uppercase tracking-widest text-[11px] transition-colors flex items-center gap-2" @click="isModalOpen = false">
 							XÁC NHẬN <Icon name="fa6-solid:arrow-right" />
 						</button>
 					</div>

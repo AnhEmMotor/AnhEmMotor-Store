@@ -54,13 +54,14 @@ useSeoMeta({
                         </tr>
                     </thead>
                     <tbody>
-                        <template v-for="(product, pIndex) in products" :key="product.id">
-                            <tr v-for="(variant, vIndex) in product.variants" :key="variant.id" 
+                        <template v-for="(product) in products" :key="product.id">
+                            <tr
+v-for="(variant, vIndex) in product.variants" :key="variant.id" 
                                 class="bg-white hover:bg-gray-50 transition-colors text-center"
                                 :class="vIndex === product.variants.length - 1 ?'border-b-[8px] border-gray-100' : 'border-b border-gray-100'">
                                 <td v-if="vIndex === 0" :rowspan="product.variants.length" class="px-6 py-6 border-r border-gray-200 align-middle">
                                     <div class="flex flex-col items-center gap-3">
-                                        <img :src="product.image || '/assets/image/placeholder-product.webp'" :alt="product.name" class="w-32 h-auto object-contain mix-blend-multiply" />
+                                        <img :src="product.image || '/assets/image/placeholder-product.webp'" :alt="product.name" class="w-32 h-auto object-contain mix-blend-multiply" >
                                         <span class="font-bold text-gray-900 text-base">{{ product.name }}</span>
                                     </div>
                                 </td>

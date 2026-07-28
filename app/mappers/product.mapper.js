@@ -204,7 +204,7 @@ const productMapper = {
 
 		const labels = { ...defaultLabels, ...(attributeLabels || {}) };
 
-		let specifications = [];
+		let specifications;
 		const specObj = { ...product, ...currentVariant, ...(product.specifications || {}) };
 		
 		// Tổng hợp kích thước nếu có
