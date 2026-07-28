@@ -1,5 +1,22 @@
 import { getImageUrl, getBrandLogo } from "~/utils/image";
 
+const apiMediaPathPrefix = "/api/v1/mediafile/view-image/";
+
+const normalizeBannerImagePath = (path) => {
+	if (!path || typeof path !== "string" || !/^https?:\/\//i.test(path)) {
+		return path;
+	}
+	try {
+		const parsedUrl = new URL(path);
+		if (parsedUrl.pathname.toLowerCase().startsWith(apiMediaPathPrefix)) {
+			return `${parsedUrl.pathname}${parsedUrl.search}`;
+		}
+	} catch {
+		return path;
+	}
+	return path;
+};
+
 const homeMapper = {
 	mapHeroStats(stats) {
 		return stats.map((stat) => ({
@@ -38,8 +55,14 @@ const homeMapper = {
 	mapBanners(banners) {
 		return banners.map((banner) => ({
 			id: banner.id,
-			desktopImageUrl: getImageUrl(banner.desktopImageUrl),
-			mobileImageUrl: getImageUrl(banner.mobileImageUrl),
+			desktopImageUrl: getImageUrl(
+				normalizeBannerImagePath(banner.desktopImageUrl),
+			),
+			mobileImageUrl: getImageUrl(
+				normalizeBannerImagePath(
+					banner.mobileImageUrl || banner.desktopImageUrl,
+				),
+			),
 			title: banner.title,
 			description: banner.description,
 			ctaLink: banner.ctaLink,
