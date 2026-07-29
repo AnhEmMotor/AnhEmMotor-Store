@@ -115,9 +115,9 @@ const emit = defineEmits(["place-order"]);
 </script>
 
 <template>
-  <div class="lg:w-[460px] space-y-6">
+  <div class="lg:w-[460px] space-y-6 sticky top-24 h-fit">
     <div
-      class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 sticky top-24"
+      class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100"
     >
       <h3
         class="text-lg font-black text-gray-900 mb-6 uppercase tracking-wider flex items-center gap-2"

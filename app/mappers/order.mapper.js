@@ -1,3 +1,5 @@
+import { getImageUrl } from "~/utils/image";
+
 const orderMapper = {
 	normalizePaymentMethod(method) {
 		const map = {
@@ -88,7 +90,7 @@ const orderMapper = {
 					name: item.productName || item.name,
 					quantity: item.count || item.quantity,
 					price: item.price,
-					image: item.coverImageUrl || item.image,
+					image: getImageUrl(item.coverImageUrl || item.image),
 				}),
 			),
 		};

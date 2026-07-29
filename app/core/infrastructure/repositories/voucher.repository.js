@@ -1,28 +1,28 @@
 export const voucherRepository = {
-  getByCode(code) {
+  async getByCode(code) {
     const axios = useAxios();
-    const response = axios.get(`/api/v1/voucher/code/${code}`);
-    return response;
+    const response = await axios.get(`/api/v1/voucher/code/${code}`);
+    return response.data?.data || response.data;
   },
-  validate(voucherId, outputId) {
+  async validate(voucherId, outputId) {
     const axios = useAxios();
-    const response = axios.post("/api/v1/voucher/validate", {
+    const response = await axios.post("/api/v1/voucher/validate", {
       voucherId,
       outputId,
     });
-    return response;
+    return response.data?.data || response.data;
   },
-  apply(voucherId, outputId) {
+  async apply(voucherId, outputId) {
     const axios = useAxios();
-    const response = axios.post("/api/v1/voucher/apply", {
+    const response = await axios.post("/api/v1/voucher/apply", {
       voucherId,
       outputId,
     });
-    return response;
+    return response.data?.data || response.data;
   },
-  remove(orderVoucherId) {
+  async remove(orderVoucherId) {
     const axios = useAxios();
-    const response = axios.delete(`/api/v1/voucher/apply/${orderVoucherId}`);
-    return response;
+    const response = await axios.delete(`/api/v1/voucher/apply/${orderVoucherId}`);
+    return response.data?.data || response.data;
   },
 };

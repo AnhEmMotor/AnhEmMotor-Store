@@ -131,7 +131,6 @@
 				<BaseButton
 					v-if="!auth.isLoggedIn"
 					id="checkout-button"
-					:to="{ path: '/login', query: { redirect: '/process-order' } }"
 					:disabled="cartItems.length === 0"
 					aria-label="Đăng nhập để tiếp tục thanh toán"
 					class="!w-full"
@@ -191,6 +190,7 @@ watch(
 
 function onCheckout() {
 	emit("close");
+	navigateTo({ path: "/login", query: { redirect: "/process-order" } });
 }
 
 function handleCheckout() {
