@@ -13,10 +13,10 @@ export const voucherService = {
     }
   },
 
-  async validate(voucherId, outputId) {
+  async validate(voucherId, outputId, orderTotal) {
     try {
-      const data = await voucherRepository.validate(voucherId, outputId)
-      return data
+      const result = await voucherRepository.validate(voucherId, outputId, orderTotal);
+      return result;
     } catch (e) {
       logError('voucherService.validate', { error: e.message, voucherId, outputId })
       return { isValid: false, message: e?.message || 'Voucher không hợp lệ' }

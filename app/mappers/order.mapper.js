@@ -10,9 +10,10 @@ const orderMapper = {
 		return map[String(method || "cod").toLowerCase()] || "COD";
 	},
 
-	mapOrderPayload(shippingInfo, cartItems, userId, paymentMethod = "cod") {
+	mapOrderPayload(shippingInfo, cartItems, userId, paymentMethod = "cod", voucherCode = null) {
 		return {
 			buyerId: userId,
+            voucherCode: voucherCode,
 			notes: shippingInfo.notes,
 			customerName: shippingInfo.fullName,
 			customerAddress: shippingInfo.address,

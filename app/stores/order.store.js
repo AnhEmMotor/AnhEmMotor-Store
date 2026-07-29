@@ -224,21 +224,25 @@ export const useOrderStore = defineStore("order", () => {
 	};
 
 const appliedVoucherId = ref(null);
+const appliedVoucherCode = ref(null);
 const appliedVoucherDiscount = ref(0);
 
 // eslint-disable-next-line no-unused-vars
 const setAppliedVoucher = (appliedVoucher) => {
   if (appliedVoucher?.discountAmount > 0) {
-    appliedVoucherId.value = appliedVoucher.voucherId;
+    appliedVoucherId.value = appliedVoucher.id || appliedVoucher.voucherId;
+    appliedVoucherCode.value = appliedVoucher.code;
     appliedVoucherDiscount.value = appliedVoucher.discountAmount;
   } else {
     appliedVoucherId.value = null;
+    appliedVoucherCode.value = null;
     appliedVoucherDiscount.value = 0;
   }
 };
 
 const clearAppliedVoucher = () => {
   appliedVoucherId.value = null;
+  appliedVoucherCode.value = null;
   appliedVoucherDiscount.value = 0;
 };
 
@@ -254,11 +258,8 @@ const clearAppliedVoucher = () => {
 				cartItems,
 				userId,
 				shippingInfo.value.paymentMethod,
+                appliedVoucherCode.value
 			);
-    if (appliedVoucherId.value) {
-      payload.voucherId = appliedVoucherId.value;
-      payload.discountAmount = appliedVoucherDiscount.value;
-    }
     if (appliedVoucherId.value) {
       payload.voucherId = appliedVoucherId.value;
       payload.discountAmount = appliedVoucherDiscount.value;
@@ -462,6 +463,8 @@ const clearAppliedVoucher = () => {
 		calculatedShippingFee,
 		isCalculatingShipping,
 		calculateShippingFee,
+		setAppliedVoucher,
+		clearAppliedVoucher,
 	};
 });
 

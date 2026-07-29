@@ -74,20 +74,15 @@ async function handleApplyVoucher() {
       voucherError.value = "Mã voucher này không còn hoạt động";
       return;
     }
-    const validation = await voucherService.validate(voucher.id, null);
+    const validation = await voucherService.validate(voucher.id, null, orderTotal);
     if (!validation || !validation.isValid) {
       voucherError.value = validation?.message || "Mã voucher không hợp lệ";
       return;
     }
-    const result = await voucherService.apply(voucher.id, null);
-    if (!result) {
-      voucherError.value = "Không thể áp dụng voucher. Vui lòng thử lại";
-      return;
-    }
     appliedVoucher.value = {
       ...voucher,
-      discountAmount: result.discountAmount || 0,
-      orderVoucherId: result.orderVoucherId,
+      discountAmount: validation.discountAmount || 0,
+      orderVoucherId: null, // Will be generated on the backend upon order creation
     };
     orderStore.setAppliedVoucher(appliedVoucher.value);
   } catch (e) {
@@ -98,13 +93,9 @@ async function handleApplyVoucher() {
 }
 
 async function handleRemoveVoucher() {
-  if (!appliedVoucher.value?.orderVoucherId) return;
-  const success = await voucherService.remove(appliedVoucher.value.orderVoucherId);
-  if (success !== false) {
-    appliedVoucher.value = null;
-    voucherCode.value = "";
-    orderStore.clearAppliedVoucher();
-  }
+  appliedVoucher.value = null;
+  voucherCode.value = "";
+  orderStore.clearAppliedVoucher();
 }
 
 function handlePlaceOrder() {

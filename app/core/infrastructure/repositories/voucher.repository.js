@@ -4,11 +4,12 @@ export const voucherRepository = {
     const response = await axios.get(`/api/v1/voucher/code/${code}`);
     return response.data?.data || response.data;
   },
-  async validate(voucherId, outputId) {
+  async validate(voucherId, outputId, orderTotal) {
     const axios = useAxios();
     const response = await axios.post("/api/v1/voucher/validate", {
       voucherId,
       outputId,
+      orderTotal,
     });
     return response.data?.data || response.data;
   },
