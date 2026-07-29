@@ -379,6 +379,7 @@ const formatVND = (value) => {
 				</div>
 			</div>
 		</div>
+		<ProductCompareBar />
 	</div>
 </template>
 
