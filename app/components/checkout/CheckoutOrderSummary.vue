@@ -5,12 +5,20 @@ import { useOrderStore } from "~/stores/order.store";
 import orderMapper from "~/mappers/order.mapper";
 import voucherService from "~/services/voucher.service";
 
-const { cartItems, cartDetails, removeItem, _updateQuantity, isPending } =
+const { cartItems, cartDetails, removeItem, updateQuantity, isPending } =
   useCart();
 const orderStore = useOrderStore();
 const isChecking = ref(false);
 
 const isSubmitting = computed(() => orderStore.isLoading);
+
+function handleUpdateQuantity(item, newQuantity, index) {
+  if (newQuantity < 1) {
+    removeItem(index);
+    return;
+  }
+  updateQuantity(item.id, newQuantity);
+}
 
 const voucherCode = ref("");
 const appliedVoucher = ref(null);
@@ -39,6 +47,8 @@ const orderSummary = computed(() =>
     {
       orderValueExceeds: orderStore.settings.Order_value_exceeds,
       depositRatio: orderStore.settings.Deposit_ratio,
+      depositType: orderStore.settings.Deposit_type,
+      fixedDepositAmount: orderStore.settings.Fixed_deposit_amount,
     },
     orderStore.calculatedShippingFee,
     voucherDiscountAmount.value
@@ -296,7 +306,7 @@ const emit = defineEmits(["place-order"]);
               <span class="text-xs font-black uppercase tracking-widest">Đơn hàng cần đặt cọc</span>
             </div>
             <p class="text-xs font-medium text-amber-800 leading-relaxed">
-              Đơn hàng vượt ngưỡng áp dụng đặt cọc. Bạn chỉ cần thanh toán {{ orderSummary.depositRatio }}% trước, phần còn lại thanh toán sau.
+              Đơn hàng vượt ngưỡng áp dụng đặt cọc. Bạn chỉ cần thanh toán {{ orderSummary.depositType === 'fixed' ? formatPrice(orderSummary.depositFixedAmount) + ' cho mỗi xe' : orderSummary.depositRatio + '%' }} trước, phần còn lại thanh toán sau.
             </p>
             <div class="flex justify-between text-sm">
               <span class="text-amber-700 font-bold">Tiền đặt cọc</span>
@@ -321,12 +331,12 @@ const emit = defineEmits(["place-order"]);
       <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
         <button
           class="w-full py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-sm"
-          aria-label="Xác nhận và đặt hàng ngay"
+          :aria-label="orderSummary.requiresDeposit ? 'Thanh toán đặt cọc ngay' : 'Xác nhận và đặt hàng ngay'"
           :disabled="isSubmitting"
           @click="handlePlaceOrder"
         >
           <Icon name="fa6-solid:lock" class="text-xs" />
-          <span>Xác nhận đặt hàng</span>
+          <span>{{ orderSummary.requiresDeposit ? "Thanh toán đặt cọc" : "Xác nhận đặt hàng" }}</span>
         </button>
       </div>
     </div>

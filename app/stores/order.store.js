@@ -61,6 +61,19 @@ export const useOrderStore = defineStore("order", () => {
 				storeSettings.value?.deposit_ratio ||
 				50,
 		),
+		Deposit_type: storeSettings.value?.Deposit_type ||
+			storeSettings.value?.deposit_type ||
+			"percentage",
+		Fixed_deposit_amount: Number(
+			storeSettings.value?.Fixed_deposit_amount ||
+				storeSettings.value?.fixed_deposit_amount ||
+				2000000,
+		),
+		Deposit_amount: Number(
+			storeSettings.value?.Deposit_amount ||
+				storeSettings.value?.deposit_amount ||
+				0,
+		),
 	}));
 
 	const calculatedShippingFee = ref(null);

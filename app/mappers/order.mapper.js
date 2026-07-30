@@ -132,32 +132,60 @@ const orderMapper = {
 		});
 	},
 
-calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null, discountAmount = 0) {
+	calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null, discountAmount = 0) {
 		const subtotal = cartDetails.reduce(
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
 		const shipping = calculatedShipping !== null ? calculatedShipping : null;
-  const total = Math.max(0, subtotal + shipping - discountAmount);
+		const total = Math.max(0, subtotal + shipping - discountAmount);
 		const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
 		const depositRatio = Number(depositSettings.depositRatio || 0);
+		const depositType = depositSettings.depositType || "percentage";
+		const fixedDepositAmount = Number(depositSettings.fixedDepositAmount || 2000000);
+
 		const requiresDeposit =
 			orderValueExceeds > 0 &&
-			depositRatio > 0 &&
 			subtotal >= orderValueExceeds;
-		const depositAmount = requiresDeposit
-			? Math.round((subtotal * depositRatio) / 100)
-			: 0;
-		const remainingAmount = requiresDeposit
-			? Math.max(total - depositAmount, 0)
-			: 0;
-  const payableNow = requiresDeposit ? Math.max(0, depositAmount - discountAmount) : total;
+
+		let depositAmount = 0;
+		let displayRatio = depositRatio;
+
+		if (requiresDeposit) {
+			if (depositType === "fixed") {
+				let vehicleCount = 0;
+				(cartDetails || []).forEach(item => {
+					if (item.managementType === "vin_number") {
+						vehicleCount += item.quantity;
+					}
+				});
+				if (vehicleCount > 0) {
+					depositAmount = fixedDepositAmount * vehicleCount;
+					if (subtotal > 0) {
+						displayRatio = Math.round((depositAmount / subtotal) * 100);
+					} else {
+						displayRatio = 0;
+					}
+				} else {
+					depositAmount = 0;
+					displayRatio = 0;
+				}
+			} else {
+				depositAmount = Math.round((subtotal * depositRatio) / 100);
+			}
+		}
+		
+		const remainingAmount = requiresDeposit ? Math.max(total - depositAmount, 0) : 0;
+		const payableNow = requiresDeposit ? Math.max(0, depositAmount - discountAmount) : total;
+		
 		return {
 			subtotal,
 			shipping,
 			total,
 			requiresDeposit,
-			depositRatio,
+			depositType,
+			depositRatio: displayRatio,
+			fixedDepositAmount,
 			depositAmount,
 			remainingAmount,
 			payableNow,
