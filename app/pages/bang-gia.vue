@@ -9,8 +9,7 @@ const fetchPriceList = async () => {
     try {
         const res = await productStore.getProducts({ categoryIds: "8", pageSize: 100 });
         products.value = res.items || [];
-    } catch (e) {
-        console.error(e);
+    } catch {
     } finally {
         isLoading.value = false;
     }

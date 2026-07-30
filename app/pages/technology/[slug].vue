@@ -121,6 +121,8 @@ const copyLink = () => {
 								</button>
 							</div>
 						</div>
+						
+						<CommonCommentSection article-type="technology" :article-slug="route.params.slug" />
 					</article>
 				</div>
 			</main>

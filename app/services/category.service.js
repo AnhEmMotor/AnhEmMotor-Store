@@ -9,9 +9,7 @@ export const categoryService = {
 	async getApiCategories(params = {}) {
 		try {
 			return await categoryRepository.getCategories(params);
-		} catch (error) {
-			 
-			console.error("categoryService.getApiCategories", { error: error.message });
+		} catch {
 			return [];
 		}
 	},

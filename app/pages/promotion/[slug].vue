@@ -131,6 +131,8 @@ watch(
 					description="Mọi thông tin liên quan đến Chương trình khuyến mại, khách hàng vui lòng liên hệ theo thông tin sau để được hướng dẫn, giải đáp:"
 					closing-text="Xin trân trọng cảm ơn!"
 				/>
+				
+				<CommonCommentSection article-type="promotion" :article-slug="route.params.slug" />
 			</div>
 		</main>
 

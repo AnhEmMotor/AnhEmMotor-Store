@@ -65,8 +65,7 @@ const fetchComparisonData = async () => {
 				}
 			}
 		});
-	} catch (error) {
-		console.error("Lỗi lấy chi tiết so sánh", error);
+	} catch {
 	} finally {
 		isLoadingComparison.value = false;
 	}

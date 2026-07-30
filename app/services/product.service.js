@@ -16,8 +16,7 @@ export const productService = {
 		try {
 			const data = await productRepository.getProductDetail(slug);
 			return data || null;
-		} catch (error) {
-			console.error("[SSR Fetch Error getProductDetail]:", error);
+		} catch {
 			return null;
 		}
 	},
