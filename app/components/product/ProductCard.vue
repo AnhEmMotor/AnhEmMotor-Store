@@ -219,7 +219,7 @@ const toggleCompare = (e) => {
   if (isCompared.value) {
     compareStore.removeProduct(props.product.id);
   } else {
-    compareStore.addProduct({
+    const result = compareStore.addProduct({
       id: props.product.id,
       name: props.product.name,
       slug: props.product.slug,
@@ -227,6 +227,9 @@ const toggleCompare = (e) => {
       image: useAssetUrl(currentImage.value),
       price: selectedVariant.value?.price,
     });
+    if (result && !result.success) {
+      toast.warning(result.error);
+    }
   }
 };
 </script>

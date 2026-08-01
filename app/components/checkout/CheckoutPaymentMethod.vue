@@ -26,7 +26,7 @@ const requiresDeposit = computed(() => {
 	const orderValueExceeds = Number(
 		orderStore.settings.Order_value_exceeds || 0,
 	);
-	return orderValueExceeds > 0 && subtotal.value >= orderValueExceeds;
+	return orderValueExceeds > 0 && subtotal.value > orderValueExceeds;
 });
 
 const paymentMethods = [

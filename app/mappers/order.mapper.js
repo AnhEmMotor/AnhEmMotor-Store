@@ -146,7 +146,7 @@ const orderMapper = {
 
 		const requiresDeposit =
 			orderValueExceeds > 0 &&
-			subtotal >= orderValueExceeds;
+			subtotal > orderValueExceeds;
 
 		let depositAmount = 0;
 		let displayRatio = depositRatio;
