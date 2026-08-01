@@ -1,18 +1,121 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeUnmount, nextTick, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { useLayoutStore } from "../../stores/layout.store";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
-const layoutStore = useLayoutStore();
-const { floatingButtons } = storeToRefs(layoutStore);
+const authStore = useAuthStore();
+const { accessToken } = storeToRefs(authStore);
+const config = useRuntimeConfig();
 
 const isVisible = ref(true);
-const isContactOpen = ref(false);
 const isAiOpen = ref(false);
 
-const scrollToTop = () => {
-	window.scrollTo({ top: 0, behavior: "smooth" });
+const VISITOR_KEY_STORAGE = "store_chat_visitor_key";
+
+const visitorKey = ref("");
+const sessionId = ref(null);
+const messages = ref([]);
+const messageText = ref("");
+const isSending = ref(false);
+const messagesContainer = ref(null);
+
+let connection = null;
+
+const getOrCreateVisitorKey = () => {
+	let key = localStorage.getItem(VISITOR_KEY_STORAGE);
+	if (!key) {
+		key = crypto.randomUUID();
+		localStorage.setItem(VISITOR_KEY_STORAGE, key);
+	}
+	return key;
 };
+
+const scrollMessagesToBottom = () => {
+	nextTick(() => {
+		if (messagesContainer.value) {
+			messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
+		}
+	});
+};
+
+const formatTime = (isoString) => {
+	if (!isoString) return "";
+	return new Date(isoString).toLocaleTimeString([], {
+		hour: "2-digit",
+		minute: "2-digit",
+	});
+};
+
+const connectHub = async () => {
+	const baseUrl = config.public.apiUrlForBrowserClient;
+	connection = new HubConnectionBuilder()
+		.withUrl(
+			`${baseUrl}/hubs/store-chat?visitorKey=${encodeURIComponent(visitorKey.value)}`,
+		)
+		.withAutomaticReconnect()
+		.build();
+
+	connection.on("ReceiveMessage", (message) => {
+		messages.value.push(message);
+		scrollMessagesToBottom();
+	});
+
+	await connection.start();
+	await connection.invoke("JoinSession", sessionId.value);
+};
+
+const initChat = async () => {
+	visitorKey.value = getOrCreateVisitorKey();
+
+	const session = await storeChatRepository.createOrRestoreSession(
+		visitorKey.value,
+	);
+	sessionId.value = session.id;
+
+	messages.value = await storeChatRepository.getHistory(session.id);
+	scrollMessagesToBottom();
+
+	await connectHub();
+};
+
+const sendMessage = async () => {
+	const text = messageText.value.trim();
+	if (!text || isSending.value || !connection) return;
+
+	isSending.value = true;
+	try {
+		await connection.invoke("SendMessage", sessionId.value, text);
+		messageText.value = "";
+	} catch {
+		// Lỗi kết nối/rate limit — giữ nguyên nội dung input để người dùng gửi lại.
+	} finally {
+		isSending.value = false;
+	}
+};
+
+// Chỉ tạo phiên/kết nối Hub khi khách thực sự mở khung chat — tránh tốn quota
+// rate-limit và mở WebSocket cho khách chỉ ghé trang mà không bấm vào chat.
+let isInitialized = false;
+watch(isAiOpen, (open) => {
+	if (open && !isInitialized) {
+		isInitialized = true;
+		initChat();
+	}
+});
+
+onBeforeUnmount(() => {
+	connection?.stop();
+});
+
+watch(accessToken, async (newToken, oldToken) => {
+	if (newToken && !oldToken && sessionId.value) {
+		try {
+			await storeChatRepository.linkToCustomer(sessionId.value);
+		} catch {
+			// Không chặn luồng đăng nhập nếu gắn phiên chat thất bại.
+		}
+	}
+});
 </script>
 
 <template>
@@ -58,58 +161,46 @@ const scrollToTop = () => {
 					</button>
 				</div>
 
-				<div class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50">
-					<div class="flex gap-2.5 max-w-[90%] sm:max-w-[85%]">
-						<div
-							class="w-7 h-7 rounded-full bg-slate-900 shrink-0 flex items-center justify-center text-white"
-						>
-							<Icon name="fa6-solid:robot" class="text-[9px] sm:text-[10px]" />
-						</div>
-						<div
-							class="bg-white border border-gray-100 p-3 sm:p-4 rounded-2xl rounded-tl-none shadow-sm"
-						>
-							<p
-								class="text-[11px] sm:text-xs text-gray-800 leading-relaxed font-medium"
-							>
-								Chào mừng bạn đến với **AnhEm Motor**! Tôi là trợ lý AI có thể
-								hỗ trợ bạn tìm kiếm mẫu xe, bảng giá và tư vấn thủ tục trả góp.
-								Bạn cần tôi giúp gì không?
-							</p>
-							<span
-								class="text-[8px] text-gray-400 mt-1.5 block font-bold uppercase"
-								>14:07</span
-							>
-						</div>
-					</div>
-
+				<div
+					ref="messagesContainer"
+					class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50"
+				>
 					<div
-						class="flex flex-row-reverse gap-2.5 max-w-[90%] sm:max-w-[85%] ml-auto"
+						v-for="msg in messages"
+						:key="msg.id"
+						class="flex max-w-[90%] sm:max-w-[85%]"
+						:class="
+							msg.sender === 'Visitor'
+								? 'flex-row-reverse gap-2.5 ml-auto'
+								: 'gap-2.5'
+						"
 					>
 						<div
-							class="bg-primary text-white p-3 sm:p-4 rounded-2xl rounded-tr-none shadow-lg shadow-primary/20"
-						>
-							<p class="text-[11px] sm:text-xs leading-relaxed font-bold">
-								Tôi muốn xem bảng giá xe Honda SH 2024
-							</p>
-						</div>
-					</div>
-
-					<div class="flex gap-2.5 items-center opacity-50">
-						<div
+							v-if="msg.sender !== 'Visitor'"
 							class="w-7 h-7 rounded-full bg-slate-900 shrink-0 flex items-center justify-center text-white"
 						>
 							<Icon name="fa6-solid:robot" class="text-[9px] sm:text-[10px]" />
 						</div>
-						<div class="flex gap-1">
+						<div
+							:class="
+								msg.sender === 'Visitor'
+									? 'bg-primary text-white p-3 sm:p-4 rounded-2xl rounded-tr-none shadow-lg shadow-primary/20'
+									: 'bg-white border border-gray-100 p-3 sm:p-4 rounded-2xl rounded-tl-none shadow-sm'
+							"
+						>
+							<p
+								class="text-[11px] sm:text-xs leading-relaxed font-bold"
+								:class="msg.sender !== 'Visitor' && 'text-gray-800 font-medium'"
+							>
+								{{ msg.content }}
+							</p>
 							<span
-								class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"
-							/>
-							<span
-								class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"
-							/>
-							<span
-								class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
-							/>
+								class="text-[8px] mt-1.5 block font-bold uppercase"
+								:class="
+									msg.sender === 'Visitor' ? 'text-white/60' : 'text-gray-400'
+								"
+								>{{ formatTime(msg.createdAt) }}</span
+							>
 						</div>
 					</div>
 				</div>
@@ -117,12 +208,16 @@ const scrollToTop = () => {
 				<div class="p-4 bg-white border-t border-gray-100 shrink-0">
 					<div class="relative flex items-center">
 						<input
+							v-model="messageText"
 							type="text"
 							placeholder="Nhập nội dung cần hỗ trợ..."
 							class="w-full h-10 bg-gray-100/50 border border-transparent rounded-xl pl-4 pr-11 text-[11px] sm:text-xs font-bold focus:bg-white focus:border-primary/20 focus:ring-3 focus:ring-primary/5 transition-all outline-none"
+							@keyup.enter="sendMessage"
 						>
 						<button
-							class="floating-icon-button absolute right-2 w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+							class="floating-icon-button absolute right-2 w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-40"
+							:disabled="isSending || !messageText.trim()"
+							@click="sendMessage"
 						>
 							<Icon name="fa6-solid:paper-plane" class="text-xs" />
 						</button>
@@ -136,56 +231,18 @@ const scrollToTop = () => {
 			</div>
 		</Transition>
 
-		<TransitionGroup
-			name="slide-fade"
-			tag="div"
-			class="flex flex-col gap-2.5 mb-2"
-		>
-			<template v-if="isContactOpen">
-				<a
-					v-for="(btn, idx) in floatingButtons"
-					:key="btn.label"
-					:href="btn.action"
-					target="_blank"
-					:style="{ transitionDelay: `${idx * 50}ms` }"
-					:class="['flex items-center gap-2.5 p-3 sm:p-4 rounded-3xl transition-all hover:scale-105 active:scale-95 shadow-2xl border border-white/10 text-white',
-						btn.color,
-					]"
-				>
-					<span
-						class="text-[9px] sm:text-[10px] font-black uppercase tracking-tighter whitespace-nowrap px-2"
-					>
-						{{ btn.label }}
-					</span>
-					<Icon :name="btn.icon" class="text-lg sm:text-xl" />
-				</a>
-			</template>
-
-			<button
-				v-if="isContactOpen"
-				class="flex items-center gap-2.5 p-3 sm:p-4 rounded-3xl transition-all hover:scale-105 active:scale-95 shadow-2xl border border-white/10 text-white bg-slate-900"
-				style="transition-delay: 200ms"
-				@click="scrollToTop"
-			>
-				<span
-					class="text-[9px] sm:text-[10px] font-black uppercase tracking-tighter whitespace-nowrap px-2"
-				>
-					Lên đầu trang
-				</span>
-				<Icon name="fa6-solid:arrow-up" class="text-lg sm:text-xl" />
-			</button>
-		</TransitionGroup>
-
 		<button
-			class="floating-icon-button floating-chatbot-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl border-4 border-white/20 hover:scale-110 active:scale-95 text-white animate-bounce-subtle group relative"
-			:class="isAiOpen ?'bg-primary border-primary/20 rotate-180' : 'bg-slate-900'
-			"
+			class="floating-icon-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl relative z-101 border-4 border-white/20 overflow-hidden text-white group"
+			:class="isAiOpen ? 'bg-slate-800 rotate-180 scale-90' : 'bg-red-600 hover:scale-110'"
 			@click="isAiOpen = !isAiOpen"
 		>
 			<Icon
-				:key="isAiOpen ? 'chatbot-close' : 'chatbot-robot'"
-				:name="isAiOpen ? 'fa6-solid:xmark' : 'ph:robot-fill'"
-				class="floating-chatbot-icon transition-all"
+				:name="isAiOpen ? 'fa6-solid:xmark' : 'fa6-solid:comment-dots'"
+				class="floating-contact-icon"
+			/>
+			<span
+				v-if="!isAiOpen"
+				class="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-20"
 			/>
 			<div
 				v-if="!isAiOpen"
@@ -194,58 +251,13 @@ const scrollToTop = () => {
 				AI Support (Beta)
 			</div>
 		</button>
-
-		<button
-			:class="['floating-icon-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl relative z-101 border-4 border-white/20 overflow-hidden text-white',
-				isContactOpen
-					? 'bg-slate-800 rotate-180 scale-90'
-					: 'bg-red-600 hover:scale-110',
-			]"
-			@click="isContactOpen = !isContactOpen"
-		>
-			<Icon
-				:name="isContactOpen ? 'fa6-solid:xmark' : 'fa6-solid:comment-dots'"
-				class="floating-contact-icon"
-			/>
-			<span
-				v-if="!isContactOpen"
-				class="absolute inset-0 rounded-full bg-red-600 animate-ping opacity-20"
-			/>
-		</button>
 	</div>
 </template>
 
 <style scoped>
-@keyframes bounce-subtle {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-	50% {
-		transform: translateY(-5px);
-	}
-}
-
-.animate-bounce-subtle {
-	animation: bounce-subtle 2s infinite ease-in-out;
-}
-
 .floating-icon-button {
 	padding: 0 !important;
 	flex-shrink: 0;
-}
-
-.floating-chatbot-button {
-	isolation: isolate;
-}
-
-.floating-chatbot-icon {
-	display: block;
-	width: 1.75rem;
-	height: 1.75rem;
-	color: currentColor;
-	flex-shrink: 0;
-	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
 }
 
 .floating-contact-icon {
@@ -257,22 +269,10 @@ const scrollToTop = () => {
 }
 
 @media (min-width: 640px) {
-	.floating-chatbot-icon,
 	.floating-contact-icon {
 		width: 2rem;
 		height: 2rem;
 	}
-}
-
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-	transition: all 0.3s ease;
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-	transform: translateY(20px) scale(0.5);
-	opacity: 0;
 }
 
 .chat-slide-enter-active,
