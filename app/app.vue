@@ -2,7 +2,7 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-  <VueQueryDevtools />
+  <VueQueryDevtools button-position="bottom-left" />
 </template>
 
 <script setup>

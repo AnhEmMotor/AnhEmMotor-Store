@@ -42,6 +42,7 @@ export default defineNuxtConfig({
 		optimizeDeps: {
 			include: [
 				"@microsoft/fetch-event-source",
+				"@microsoft/signalr",
 				"@tanstack/vue-query",
 				"@tanstack/vue-query-devtools",
 				"@unhead/schema-org/vue",

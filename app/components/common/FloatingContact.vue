@@ -46,6 +46,18 @@ const formatTime = (isoString) => {
 	});
 };
 
+// Bong bóng AI đang build dần khi stream — -1 khi không có lượt trả lời nào đang chạy.
+// Luôn đọc/ghi qua messages.value[streamingIdx] (không giữ reference object rời) vì mutate
+// thẳng lên object đã push ra ngoài mảng reactive không đi qua proxy nên Vue không re-render.
+let streamingIdx = -1;
+const newStreamingMsg = () => ({
+	id: "streaming",
+	sender: "Ai",
+	content: "",
+	createdAt: new Date().toISOString(),
+	cardsJson: null,
+});
+
 const connectHub = async () => {
 	const baseUrl = config.public.apiUrlForBrowserClient;
 	connection = new HubConnectionBuilder()
@@ -56,7 +68,24 @@ const connectHub = async () => {
 		.build();
 
 	connection.on("ReceiveMessage", (message) => {
+		if (message.sender !== "Visitor" && streamingIdx !== -1) {
+			messages.value.splice(streamingIdx, 1);
+			streamingIdx = -1;
+		}
 		messages.value.push(message);
+		scrollMessagesToBottom();
+	});
+
+	connection.on("AiTyping", () => {
+		streamingIdx = messages.value.push(newStreamingMsg()) - 1;
+		scrollMessagesToBottom();
+	});
+
+	connection.on("ReceiveMessageChunk", (delta) => {
+		if (streamingIdx === -1) {
+			streamingIdx = messages.value.push(newStreamingMsg()) - 1;
+		}
+		messages.value[streamingIdx].content += delta;
 		scrollMessagesToBottom();
 	});
 
@@ -82,15 +111,31 @@ const sendMessage = async () => {
 	const text = messageText.value.trim();
 	if (!text || isSending.value || !connection) return;
 
+	messageText.value = "";
 	isSending.value = true;
 	try {
 		await connection.invoke("SendMessage", sessionId.value, text);
-		messageText.value = "";
 	} catch {
-		// Lỗi kết nối/rate limit — giữ nguyên nội dung input để người dùng gửi lại.
+		// Lỗi kết nối/rate limit — input đã xoá theo yêu cầu, không khôi phục lại nội dung cũ.
 	} finally {
 		isSending.value = false;
 	}
+};
+
+// Parse cardsJson (mảng block "product-cards"/"variant-cards") — bỏ qua nếu BE trả JSON hỏng, không crash UI
+const parseCards = (cardsJson) => {
+	if (!cardsJson) return [];
+	try {
+		return JSON.parse(cardsJson);
+	} catch {
+		return [];
+	}
+};
+
+// Bấm card sản phẩm → gửi tin nhắn tự nhiên qua Hub có sẵn để AI gọi lại get_product_detail
+const onViewVariants = (productId, name) => {
+	messageText.value = `Cho tôi xem các biến thể màu của xe ${name} (mã sản phẩm ${productId})`;
+	sendMessage();
 };
 
 // Chỉ tạo phiên/kết nối Hub khi khách thực sự mở khung chat — tránh tốn quota
@@ -188,12 +233,37 @@ watch(accessToken, async (newToken, oldToken) => {
 									: 'bg-white border border-gray-100 p-3 sm:p-4 rounded-2xl rounded-tl-none shadow-sm'
 							"
 						>
+							<div
+								v-if="msg.sender !== 'Visitor' && !msg.content"
+								class="flex items-center gap-2"
+							>
+								<Icon name="fa6-solid:spinner" class="animate-spin text-gray-400 text-xs" />
+								<span class="text-[11px] text-gray-400 font-bold">Đang suy nghĩ...</span>
+							</div>
 							<p
+								v-else
 								class="text-[11px] sm:text-xs leading-relaxed font-bold"
 								:class="msg.sender !== 'Visitor' && 'text-gray-800 font-medium'"
 							>
 								{{ msg.content }}
 							</p>
+							<template v-for="block in parseCards(msg.cardsJson)" :key="block.kind + '-' + (block.productId ?? '')">
+								<div v-if="block.kind === 'product-cards'" class="flex flex-col gap-2 mt-2">
+									<CommonStoreChatProductCard
+										v-for="item in block.items"
+										:key="item.productId"
+										v-bind="item"
+										@view-variants="onViewVariants"
+									/>
+								</div>
+								<div v-else-if="block.kind === 'variant-cards'" class="flex flex-col gap-2 mt-2">
+									<CommonStoreChatVariantCard
+										v-for="item in block.items"
+										:key="item.variantId"
+										v-bind="item"
+									/>
+								</div>
+							</template>
 							<span
 								class="text-[8px] mt-1.5 block font-bold uppercase"
 								:class="
