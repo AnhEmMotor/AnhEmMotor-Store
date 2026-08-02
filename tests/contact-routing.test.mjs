@@ -15,7 +15,9 @@ const calls = [];
 globalThis.useAxios = () => ({
   post: async (url, payload) => {
     calls.push({ url, payload });
-    return { data: 123 };
+    return url === "/api/v1/Contacts/support-request"
+      ? { data: { id: 123, trackingToken: "tracking-token-123" } }
+      : { data: 123 };
   },
 });
 
@@ -48,6 +50,7 @@ test("support form submits to the Management support-request inbox contract", as
   assert.deepEqual(result, {
     success: true,
     id: 123,
+    trackingToken: "tracking-token-123",
     message: "Gửi yêu cầu hỗ trợ thành công.",
   });
 });
