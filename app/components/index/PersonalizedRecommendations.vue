@@ -5,7 +5,8 @@ const productStore = useProductStore();
 
 const { data: products, isPending } = useQuery({
 	queryKey: ["personalized-recommendations"],
-	queryFn: () => productStore.getProducts({ pageSize: 4, categoryIds: "8" }),
+	queryFn: () =>
+		productStore.getRecommendations({ pageSize: 4, visitorKey: getOrCreateVisitorKey() }),
 	select: (res) => res.items,
 });
 

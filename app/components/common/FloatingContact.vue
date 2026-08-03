@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeUnmount, nextTick, watch } from "vue";
+import { ref, computed, onBeforeUnmount, nextTick, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
@@ -10,25 +10,27 @@ const config = useRuntimeConfig();
 const isVisible = ref(true);
 const isAiOpen = ref(false);
 
-const VISITOR_KEY_STORAGE = "store_chat_visitor_key";
-
 const visitorKey = ref("");
 const sessionId = ref(null);
 const messages = ref([]);
 const messageText = ref("");
 const isSending = ref(false);
 const messagesContainer = ref(null);
+const sessionMode = ref("Ai");
+const assignedStaffName = ref(null);
+
+// Khách vãng lai (chưa đăng nhập) phải điền Tên/SĐT trước khi chat được — phiên đã có sẵn 2 field
+// này (quay lại lần sau) thì bỏ qua form luôn.
+const needsContactInfo = ref(false);
+// true cho tới khi initChat() xác định xong needsContactInfo — tránh nháy màn hình chat bình thường
+// rồi mới chuyển sang form (needsContactInfo mặc định false trong lúc chờ API phản hồi).
+const isCheckingSession = ref(true);
+const contactNameInput = ref("");
+const contactPhoneInput = ref("");
+const contactInfoError = ref("");
+const isSubmittingContactInfo = ref(false);
 
 let connection = null;
-
-const getOrCreateVisitorKey = () => {
-	let key = localStorage.getItem(VISITOR_KEY_STORAGE);
-	if (!key) {
-		key = crypto.randomUUID();
-		localStorage.setItem(VISITOR_KEY_STORAGE, key);
-	}
-	return key;
-};
 
 const scrollMessagesToBottom = () => {
 	nextTick(() => {
@@ -37,6 +39,21 @@ const scrollMessagesToBottom = () => {
 		}
 	});
 };
+
+// Card/icon bên trong bong bóng có thể load lệch nhịp (icon fa6 nạp qua API, ảnh sản phẩm), làm
+// scrollHeight đổi SAU lần scroll đầu — quan sát mutation trong khung chat để luôn kéo lại đáy thay vì
+// chỉ scroll đúng 1 lần tại các điểm gọi thủ công bên dưới.
+let scrollObserver = null;
+watch(messagesContainer, (el) => {
+	scrollObserver?.disconnect();
+	if (!el) return;
+	scrollObserver = new MutationObserver(() => scrollMessagesToBottom());
+	scrollObserver.observe(el, {
+		childList: true,
+		subtree: true,
+		characterData: true,
+	});
+});
 
 const formatTime = (isoString) => {
 	if (!isoString) return "";
@@ -89,6 +106,11 @@ const connectHub = async () => {
 		scrollMessagesToBottom();
 	});
 
+	connection.on("ModeChanged", (payload) => {
+		sessionMode.value = payload.mode;
+		assignedStaffName.value = payload.staffName || null;
+	});
+
 	await connection.start();
 	await connection.invoke("JoinSession", sessionId.value);
 };
@@ -100,11 +122,68 @@ const initChat = async () => {
 		visitorKey.value,
 	);
 	sessionId.value = session.id;
+	sessionMode.value = session.mode;
+	assignedStaffName.value = session.assignedStaffName || null;
+	needsContactInfo.value = !accessToken.value && !session.contactName;
+	isCheckingSession.value = false;
+
+	// Khách đã đăng nhập TRƯỚC khi mở khung chat (trường hợp phổ biến nhất) — watch(accessToken)
+	// bên dưới chỉ bắt được lúc đăng nhập giữa chừng trong khi đang chat, không bắt được trường hợp
+	// này vì token không đổi giá trị. Gắn ngay ở đây để Manager không hiện nhầm "Khách vãng lai".
+	if (accessToken.value) {
+		try {
+			await storeChatRepository.linkToCustomer(session.id);
+		} catch {
+			// Không chặn luồng mở chat nếu gắn phiên thất bại.
+		}
+	}
 
 	messages.value = await storeChatRepository.getHistory(session.id);
 	scrollMessagesToBottom();
 
 	await connectHub();
+};
+
+const submitContactInfo = async () => {
+	const name = contactNameInput.value.trim();
+	const phone = contactPhoneInput.value.trim();
+	if (!name || !phone) return;
+
+	contactInfoError.value = "";
+	isSubmittingContactInfo.value = true;
+	try {
+		await storeChatRepository.setContactInfo(sessionId.value, name, phone);
+		needsContactInfo.value = false;
+	} catch {
+		contactInfoError.value = "Số điện thoại không hợp lệ, vui lòng kiểm tra lại.";
+	} finally {
+		isSubmittingContactInfo.value = false;
+	}
+};
+
+// "Xoá cuộc trò chuyện" = kết thúc phiên hiện tại, tạo phiên mới (VisitorKey mới) — phiên cũ giữ
+// nguyên toàn bộ lịch sử cho quản trị, không nhận tin mới nữa vì khách không còn tham chiếu tới nó.
+// Giữ Tên/SĐT đã điền (BE tự copy sang phiên mới) nên không phải hỏi lại.
+const clearChat = async () => {
+	if (!sessionId.value) return;
+
+	const previousSessionId = sessionId.value;
+	try {
+		const newVisitorKey = resetVisitorKey();
+		const session = await storeChatRepository.createOrRestoreSession(newVisitorKey, previousSessionId);
+
+		connection?.stop();
+		streamingIdx = -1;
+		visitorKey.value = newVisitorKey;
+		sessionId.value = session.id;
+		sessionMode.value = session.mode;
+		assignedStaffName.value = session.assignedStaffName || null;
+		messages.value = [];
+
+		await connectHub();
+	} catch {
+		// Lỗi mạng — giữ nguyên phiên cũ, khách có thể bấm lại.
+	}
 };
 
 const sendMessage = async () => {
@@ -121,6 +200,33 @@ const sendMessage = async () => {
 		isSending.value = false;
 	}
 };
+
+// Tên/SĐT đã có sẵn từ bước điền trước khi chat (khách vãng lai) hoặc từ tài khoản (khách đã đăng
+// nhập) — không cần form riêng ở bước này nữa.
+const requestHandoff = async () => {
+	if (sessionMode.value !== "Ai" || !sessionId.value) return;
+	await storeChatRepository.requestHandoff(sessionId.value);
+	sessionMode.value = "Waiting";
+};
+
+// Trạng thái hiển thị dưới tiêu đề "Chat Support" — 1 dòng nhỏ, gọn, thay cho nút bị disable trước đây.
+const statusText = computed(() => {
+	if (sessionMode.value === "Waiting") return "Đang chờ nhân viên...";
+	if (sessionMode.value === "Human") return "Đang chat với người thật";
+	return "Trợ lý AI đang hỗ trợ";
+});
+
+const statusDotClass = computed(() => {
+	if (sessionMode.value === "Waiting") return "bg-amber-400 animate-pulse";
+	if (sessionMode.value === "Human") return "bg-emerald-400";
+	return "bg-white/40";
+});
+
+// Tin nhắn Staff soạn bằng rich-text editor (WangEditor) ở Manager — nội dung là HTML đã qua editor
+// sanitize sẵn, KHÔNG phải markdown thô như Ai/Visitor. Escape+markdown-parse như renderChatMarkdown
+// sẽ biến các thẻ <p>/<strong> thành chữ hiển thị nguyên văn — render thẳng v-html cho riêng Staff.
+const renderMessageContent = (msg) =>
+	msg.sender === "Staff" ? msg.content : renderChatMarkdown(msg.content);
 
 // Parse cardsJson (mảng block "product-cards"/"variant-cards") — bỏ qua nếu BE trả JSON hỏng, không crash UI
 const parseCards = (cardsJson) => {
@@ -150,6 +256,7 @@ watch(isAiOpen, (open) => {
 
 onBeforeUnmount(() => {
 	connection?.stop();
+	scrollObserver?.disconnect();
 });
 
 watch(accessToken, async (newToken, oldToken) => {
@@ -174,45 +281,105 @@ watch(accessToken, async (newToken, oldToken) => {
 				class="absolute bottom-16 sm:bottom-20 right-0 w-[calc(100vw-2rem)] sm:w-95 h-[60vh] sm:h-137.5 bg-white shadow-[0_30px_90px_-15px_rgba(0,0,0,0.3)] border border-gray-100 rounded-4xl sm:rounded-[2.5rem] flex flex-col overflow-hidden z-1000 origin-bottom-right"
 			>
 				<div
-					class="p-4 bg-slate-900 text-white flex items-center justify-between shrink-0"
+					class="p-4 bg-slate-900 text-white flex items-center justify-between gap-2 shrink-0"
 				>
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-2 min-w-0">
 						<div
-							class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center border border-white/20"
+							class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0"
 						>
 							<Icon name="fa6-solid:robot" class="w-5 h-5 sm:w-5.5 sm:h-5.5" />
 						</div>
-						<div class="flex flex-col">
+						<div class="flex flex-col min-w-0">
 							<span
 								class="text-[10px] sm:text-[11px] font-black uppercase tracking-widest"
-								>AnhEm AI Support</span
+								>Chat Support</span
 							>
-							<div class="flex items-center gap-1">
-								<span
-									class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"
-								/>
-								<span
-									class="text-[8px] text-white/50 font-bold uppercase tracking-wider"
-									>Đang trực tuyến</span
-								>
-							</div>
+							<span
+								v-if="!isCheckingSession && !needsContactInfo"
+								class="flex items-center gap-1.5 text-[9px] sm:text-[10px] font-bold text-white/70 mt-0.5"
+							>
+								<span class="w-1.5 h-1.5 rounded-full shrink-0" :class="statusDotClass" />
+								<span class="truncate">{{ statusText }}</span>
+							</span>
 						</div>
 					</div>
-					<button
-						class="floating-icon-button w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all"
-						@click="isAiOpen = false"
+					<div class="flex items-center gap-1.5 shrink-0">
+						<button
+							v-if="!isCheckingSession && !needsContactInfo && sessionMode === 'Ai'"
+							class="px-2.5 h-7 rounded-full bg-white/10 hover:bg-white/20 text-[9px] font-bold whitespace-nowrap transition-all"
+							@click="requestHandoff"
+						>
+							Gặp nhân viên
+						</button>
+						<button
+							v-if="!isCheckingSession && !needsContactInfo"
+							class="floating-icon-button w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all"
+							title="Xoá cuộc trò chuyện"
+							@click="clearChat"
+						>
+							<Icon name="fa6-solid:broom" class="text-xs" />
+						</button>
+						<button
+							class="floating-icon-button w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all"
+							@click="isAiOpen = false"
+						>
+							<Icon name="fa6-solid:xmark" class="text-sm" />
+						</button>
+					</div>
+				</div>
+
+				<div
+					v-if="isCheckingSession"
+					class="flex-1 flex items-center justify-center"
+				>
+					<Icon name="fa6-solid:spinner" class="animate-spin text-gray-300 text-2xl" />
+				</div>
+				<div
+					v-else-if="needsContactInfo"
+					class="flex-1 flex flex-col justify-center p-5 gap-3"
+				>
+					<p class="text-[11px] font-bold text-gray-700 text-center">
+						Vui lòng để lại Tên và SĐT trước khi bắt đầu chat, để nhân viên tiện hỗ trợ và liên hệ lại khi cần:
+					</p>
+					<input
+						v-model="contactNameInput"
+						type="text"
+						placeholder="Tên của bạn"
+						class="w-full h-10 bg-gray-100/50 border border-transparent rounded-xl px-4 text-[11px] sm:text-xs font-bold outline-none focus:bg-white focus:border-primary/20"
 					>
-						<Icon name="fa6-solid:xmark" class="text-sm" />
+					<input
+						v-model="contactPhoneInput"
+						type="tel"
+						placeholder="Số điện thoại"
+						class="w-full h-10 bg-gray-100/50 border border-transparent rounded-xl px-4 text-[11px] sm:text-xs font-bold outline-none focus:bg-white focus:border-primary/20"
+						@keyup.enter="submitContactInfo"
+					>
+					<p v-if="contactInfoError" class="text-[10px] font-bold text-red-500 text-center">
+						{{ contactInfoError }}
+					</p>
+					<button
+						class="h-10 rounded-xl bg-primary text-white text-[11px] font-black uppercase tracking-wider disabled:opacity-50"
+						:disabled="isSubmittingContactInfo || !contactNameInput.trim() || !contactPhoneInput.trim()"
+						@click="submitContactInfo"
+					>
+						Bắt đầu chat
 					</button>
 				</div>
 
+				<template v-else>
 				<div
 					ref="messagesContainer"
 					class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50"
 				>
+					<template v-for="msg in messages" :key="msg.id">
 					<div
-						v-for="msg in messages"
-						:key="msg.id"
+						v-if="msg.sender === 'System'"
+						class="text-center text-[10px] text-gray-400 font-bold py-1"
+					>
+						{{ msg.content }}
+					</div>
+					<div
+						v-else
 						class="flex max-w-[90%] sm:max-w-[85%]"
 						:class="
 							msg.sender === 'Visitor'
@@ -224,7 +391,10 @@ watch(accessToken, async (newToken, oldToken) => {
 							v-if="msg.sender !== 'Visitor'"
 							class="w-7 h-7 rounded-full bg-slate-900 shrink-0 flex items-center justify-center text-white"
 						>
-							<Icon name="fa6-solid:robot" class="text-[9px] sm:text-[10px]" />
+							<Icon
+								:name="msg.sender === 'Staff' ? 'fa6-solid:user' : 'fa6-solid:robot'"
+								class="text-[9px] sm:text-[10px]"
+							/>
 						</div>
 						<div
 							:class="
@@ -234,21 +404,37 @@ watch(accessToken, async (newToken, oldToken) => {
 							"
 						>
 							<div
-								v-if="msg.sender !== 'Visitor' && !msg.content"
+								v-if="msg.sender === 'Staff' && assignedStaffName"
+								class="text-[9px] font-black text-primary uppercase tracking-wide mb-1"
+							>
+								{{ assignedStaffName }}
+							</div>
+							<div
+								v-if="msg.id === 'streaming' && !msg.content"
 								class="flex items-center gap-2"
 							>
-								<Icon name="fa6-solid:spinner" class="animate-spin text-gray-400 text-xs" />
-								<span class="text-[11px] text-gray-400 font-bold">Đang suy nghĩ...</span>
+								<Icon
+									name="fa6-solid:spinner"
+									class="animate-spin text-gray-400 text-xs"
+								/>
+								<span class="text-[11px] text-gray-400 font-bold"
+									>Đang suy nghĩ...</span
+								>
 							</div>
-							<p
+							<div
 								v-else
-								class="text-[11px] sm:text-xs leading-relaxed font-bold"
+								class="prose prose-sm max-w-none text-[11px] sm:text-xs leading-relaxed font-bold [&_ul]:my-1 [&_li]:my-0 [&_p]:my-1 [&_strong]:font-black !text-inherit [&_*]:!text-inherit"
 								:class="msg.sender !== 'Visitor' && 'text-gray-800 font-medium'"
+								v-html="renderMessageContent(msg)"
+							/>
+							<template
+								v-for="block in parseCards(msg.cardsJson)"
+								:key="block.kind + '-' + (block.productId ?? '')"
 							>
-								{{ msg.content }}
-							</p>
-							<template v-for="block in parseCards(msg.cardsJson)" :key="block.kind + '-' + (block.productId ?? '')">
-								<div v-if="block.kind === 'product-cards'" class="flex flex-col gap-2 mt-2">
+								<div
+									v-if="block.kind === 'product-cards'"
+									class="flex flex-col gap-2 mt-2"
+								>
 									<CommonStoreChatProductCard
 										v-for="item in block.items"
 										:key="item.productId"
@@ -256,7 +442,10 @@ watch(accessToken, async (newToken, oldToken) => {
 										@view-variants="onViewVariants"
 									/>
 								</div>
-								<div v-else-if="block.kind === 'variant-cards'" class="flex flex-col gap-2 mt-2">
+								<div
+									v-else-if="block.kind === 'variant-cards'"
+									class="flex flex-col gap-2 mt-2"
+								>
 									<CommonStoreChatVariantCard
 										v-for="item in block.items"
 										:key="item.variantId"
@@ -273,6 +462,7 @@ watch(accessToken, async (newToken, oldToken) => {
 							>
 						</div>
 					</div>
+					</template>
 				</div>
 
 				<div class="p-4 bg-white border-t border-gray-100 shrink-0">
@@ -292,18 +482,18 @@ watch(accessToken, async (newToken, oldToken) => {
 							<Icon name="fa6-solid:paper-plane" class="text-xs" />
 						</button>
 					</div>
-					<p
-						class="text-[8px] text-center text-gray-400 mt-2 font-bold uppercase tracking-widest"
-					>
-						Powered by AnhEm AI Agent
-					</p>
 				</div>
+				</template>
 			</div>
 		</Transition>
 
 		<button
 			class="floating-icon-button w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all shadow-2xl relative z-101 border-4 border-white/20 overflow-hidden text-white group"
-			:class="isAiOpen ? 'bg-slate-800 rotate-180 scale-90' : 'bg-red-600 hover:scale-110'"
+			:class="
+				isAiOpen
+					? 'bg-slate-800 rotate-180 scale-90'
+					: 'bg-red-600 hover:scale-110'
+			"
 			@click="isAiOpen = !isAiOpen"
 		>
 			<Icon

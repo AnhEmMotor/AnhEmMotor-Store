@@ -167,6 +167,7 @@ const copyLink = () => {
 										:src="product.imageUrl"
 										:alt="product.variantName"
 										class="w-20 h-20 object-cover rounded-xl bg-gray-50 group-hover:scale-105 transition-transform"
+										@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 									>
 									<div>
 										<h4

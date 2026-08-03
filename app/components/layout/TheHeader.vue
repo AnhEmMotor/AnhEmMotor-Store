@@ -295,11 +295,12 @@
 										class="w-9 h-9 rounded-full bg-white overflow-hidden border-2 border-primary/10 shadow-sm flex items-center justify-center"
 									>
 										<img
-											v-if="authStore.user?.avatarUrl"
+											v-if="authStore.user?.avatarUrl && !avatarError"
 											:src="authStore.user.avatarUrl"
 											alt="Avatar"
 											class="w-full h-full object-cover"
 											referrerpolicy="no-referrer"
+											@error="avatarError = true"
 										>
 										<Icon
 											v-else
@@ -386,11 +387,12 @@
 								class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white overflow-hidden border border-gray-200 shadow-sm flex items-center justify-center"
 							>
 								<img
-									v-if="authStore.user?.avatarUrl"
+									v-if="authStore.user?.avatarUrl && !avatarError"
 									:src="authStore.user.avatarUrl"
 									alt="Avatar"
 									class="w-full h-full object-cover"
 									referrerpolicy="no-referrer"
+									@error="avatarError = true"
 								>
 								<div
 									v-else
@@ -535,6 +537,9 @@ import ContactForm from "../contact/ContactForm.vue";
 const authStore = useAuthStore();
 const contactStore = useContactStore();
 const route = useRoute();
+
+const avatarError = ref(false);
+watch(() => authStore.user?.avatarUrl, () => { avatarError.value = false; });
 
 const isScrolled = ref(false);
 const mobileNavActive = ref(false);

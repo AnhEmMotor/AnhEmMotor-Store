@@ -35,7 +35,7 @@ const compareStore = useCompareStore();
 						<div
 							class="w-12 h-12 bg-white rounded-xl overflow-hidden shadow-lg p-1"
 						>
-							<img :src="p.image" class="w-full h-full object-contain" >
+							<img :src="p.image" class="w-full h-full object-contain" @error="$event.target.src = '/assets/image/placeholder-product.webp'">
 						</div>
 						<div class="space-y-0.5">
 							<h4

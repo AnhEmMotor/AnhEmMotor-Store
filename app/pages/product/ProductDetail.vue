@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import ProductBookingModal from "~/components/product/BookingModal.vue";
 definePageMeta({
 	path: "/product/:slug",
@@ -8,6 +8,7 @@ definePageMeta({
 const route = useRoute();
 const slug = computed(() => route.params.slug);
 const productStore = useProductStore();
+const nuxtApp = useNuxtApp();
 
 const {
 	data: detail,
@@ -20,6 +21,63 @@ const {
 		watch: [slug],
 	},
 );
+
+// Theo dõi thời gian xem (dwell time) để phục vụ gợi ý cá nhân hóa ở trang chủ. onMounted/
+// onBeforeUnmount chỉ chạy 1 lần cho cả phiên mở trang chi tiết (component được TÁI DÙNG khi slug
+// đổi trong SPA, xem ghi chú watch(requestedVariantId,...) bên dưới), nên phần chuyển sản phẩm dựa
+// vào watch(detail.product.id) chứ không phải onMounted.
+let viewStartAt = null;
+let trackedProductId = null;
+
+const flushProductView = () => {
+	if (!trackedProductId || !viewStartAt) return;
+	const dwellTimeMs = Date.now() - viewStartAt;
+	const productId = trackedProductId;
+	trackedProductId = null;
+	viewStartAt = null;
+	// runWithContext: hàm này chạy từ watch (sau khi useAsyncData resolve xong) hoặc từ event
+	// listener DOM thuần (visibilitychange/beforeunload) — cả 2 đều nằm ngoài Nuxt async context,
+	// nên gọi thẳng productStore.trackView() (dùng useRuntimeConfig/useAuthStore bên trong) sẽ
+	// thất bại lặng lẽ nếu không bọc lại context, giống pattern ở product.store.js.
+	nuxtApp.runWithContext(() =>
+		productStore.trackView(productId, dwellTimeMs, getOrCreateVisitorKey()),
+	);
+};
+
+const startTrackingCurrentProduct = () => {
+	const productId = detail.value?.product?.id;
+	if (!productId) return;
+	trackedProductId = productId;
+	viewStartAt = Date.now();
+};
+
+const handleVisibilityChange = () => {
+	if (document.hidden) {
+		flushProductView();
+	} else {
+		startTrackingCurrentProduct();
+	}
+};
+
+watch(
+	() => detail.value?.product?.id,
+	() => {
+		flushProductView();
+		startTrackingCurrentProduct();
+	},
+);
+
+onMounted(() => {
+	startTrackingCurrentProduct();
+	document.addEventListener("visibilitychange", handleVisibilityChange);
+	window.addEventListener("beforeunload", flushProductView);
+});
+
+onBeforeUnmount(() => {
+	flushProductView();
+	document.removeEventListener("visibilitychange", handleVisibilityChange);
+	window.removeEventListener("beforeunload", flushProductView);
+});
 
 const currentVariant = computed(() => detail.value?.currentVariant);
 const selectedColorIndex = ref(0);
@@ -198,11 +256,31 @@ const variantGroups = computed(() => {
 	return groups;
 });
 
+// Deep-link biến thể (?variant=<variantId>): tìm nhóm chứa variantId trên URL trong
+// variantGroups.value. Dùng watch(..., {immediate:true}) thay vì onMounted đơn thuần — Nuxt TÁI
+// DÙNG component này khi slug đổi trong SPA (xem useAsyncData watch:[slug] và watch(slug,...) dưới
+// đây), nên onMounted sẽ không chạy lại khi khách bấm 1 card biến thể khác trong lúc trang đang mở
+// sẵn. watch cả variantGroups để tự chạy lại khi data của slug mới tải xong (fetch là async).
+const requestedVariantId = computed(() =>
+	route.query.variant ? Number(route.query.variant) : null,
+);
+const findVariantGroupContaining = (variantId, groups) =>
+	Object.entries(groups).find(([, variants]) =>
+		variants.some((v) => Number(v.id) === variantId),
+	)?.[0];
+
 const selectedVariantGroup = ref("");
-onMounted(() => {
-	selectedVariantGroup.value =
-		variantName.value || Object.keys(variantGroups.value)[0] || "";
-});
+watch(
+	[requestedVariantId, variantGroups],
+	([variantId, groups]) => {
+		const fallback = variantName.value || Object.keys(groups)[0] || "";
+		const requestedGroup = variantId
+			? findVariantGroupContaining(variantId, groups)
+			: null;
+		selectedVariantGroup.value = requestedGroup || fallback;
+	},
+	{ immediate: true },
+);
 
 const currentGroupVariants = computed(() => {
 	return variantGroups.value[selectedVariantGroup.value] || [];
@@ -221,9 +299,22 @@ watch(selectedVariantGroup, (newGroup) => {
 	}
 });
 
-// Reset color index when product changes
+const requestedColorId = computed(() =>
+	route.query.color ? Number(route.query.color) : null,
+);
+watch(
+	[requestedColorId, currentVariant],
+	([colorId, variant]) => {
+		const colors = variant?.colors || [];
+		const requestedIndex = colorId
+			? colors.findIndex((c) => Number(c.id) === colorId)
+			: -1;
+		selectedColorIndex.value = requestedIndex >= 0 ? requestedIndex : 0;
+	},
+	{ immediate: true },
+);
+
 watch(slug, () => {
-	selectedColorIndex.value = 0;
 	selectedImage.value = null;
 });
 
@@ -373,6 +464,7 @@ const bookTestDrive = () => {
 									class="w-full h-full transition-transform duration-1000 group-hover:scale-105"
 									:class="isPlaceholderImage ?'object-contain p-8' : 'object-cover'"
 									loading="eager"
+									@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 								>
 							</div>
 							<!-- Reflection -->
@@ -401,6 +493,7 @@ const bookTestDrive = () => {
 									:src="color.image || color.coverImageUrl || currentVariant.image || '/assets/image/placeholder-product.webp'"
 									class="w-full h-full object-contain p-2"
 									loading="lazy"
+									@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 								>
 							</button>
 						</div>
@@ -1070,6 +1163,7 @@ const bookTestDrive = () => {
 								:src="mainImage"
 								:alt="detail.product.name"
 								class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
+								@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 							>
 							<!-- Reflection Shadow -->
 							<div

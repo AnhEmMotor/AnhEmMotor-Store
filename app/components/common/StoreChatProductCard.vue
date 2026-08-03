@@ -28,6 +28,7 @@ const priceLabel = computed(() => {
 			:alt="name"
 			class="w-14 h-14 rounded-xl object-cover shrink-0 bg-gray-50"
 			loading="lazy"
+			@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 		>
 		<div class="min-w-0 flex-1">
 			<p class="text-[11px] font-black text-gray-900 truncate">{{ name }}</p>

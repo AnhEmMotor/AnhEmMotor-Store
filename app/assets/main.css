@@ -201,12 +201,12 @@ body {
 	}
 }
 
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
 /* Improve touch scrolling on mobile */
 @media (max-width: 1024px) {
-	* {
-		-webkit-tap-highlight-color: transparent;
-	}
-
 	/* Smooth scrolling for mobile */
 	html {
 		-webkit-overflow-scrolling: touch;

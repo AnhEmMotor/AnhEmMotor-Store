@@ -49,6 +49,7 @@ export default defineNuxtConfig({
 				"@vue/devtools-core",
 				"@vue/devtools-kit",
 				"axios",
+				"marked",
 				"vue3-toastify",
 			],
 		},

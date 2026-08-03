@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUserStore } from "@/stores/user.store";
 
@@ -19,6 +19,8 @@ const userStore = useUserStore();
 const user = computed(() => authStore.user);
 const isUploadingAvatar = computed(() => userStore.isUploadingAvatar);
 const fileInput = ref(null);
+const avatarError = ref(false);
+watch(() => user.value?.avatarUrl, () => { avatarError.value = false; });
 
 function triggerAvatarUpload() {
 	if (fileInput.value) fileInput.value.click();
@@ -61,11 +63,12 @@ function setActiveTab(tab) {
 				@click="triggerAvatarUpload"
 			>
 				<img
-					v-if="user?.avatarUrl"
+					v-if="user?.avatarUrl && !avatarError"
 					:src="user.avatarUrl"
 					alt="Avatar"
 					referrerpolicy="no-referrer"
 					class="w-full h-full object-cover pointer-events-none"
+					@error="avatarError = true"
 				>
 				<ClientOnly v-else>
 					<Icon name="fa6-solid:user" class="text-red-500 text-4xl" />
