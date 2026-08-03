@@ -42,8 +42,26 @@ export const contactRepository = {
     );
     return {
       success: true,
-      id: response.data,
+      id: response.data.id,
+      trackingToken: response.data.trackingToken,
       message: "Gửi yêu cầu hỗ trợ thành công.",
     };
+  },
+  async getSupportTracking(id, trackingToken) {
+    const axios = useAxios();
+    const response = await axios.get(
+      `/api/v1/Contacts/support-request/${id}/tracking`,
+      { params: { token: trackingToken } },
+    );
+    return response.data;
+  },
+  async rateSupportEmployee(id, trackingToken, rating, comment) {
+    const axios = useAxios();
+    await axios.post(`/api/v1/Contacts/support-request/${id}/customer-rating`, {
+      trackingToken,
+      rating,
+      comment,
+    });
+    return true;
   },
 };
