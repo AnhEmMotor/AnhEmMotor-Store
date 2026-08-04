@@ -145,6 +145,25 @@ const selectedOptions = computed({
 	},
 });
 
+const compareStore = useCompareStore();
+watch(
+	[() => compareStore.lockedType, optionsData],
+	([newLockedType, options]) => {
+		if (newLockedType && newLockedType !== "Khác" && options) {
+			const vehicleTypeOption = options.find(opt => opt.name === "VehicleType");
+			if (vehicleTypeOption) {
+				const targetVal = vehicleTypeOption.values.find(v => v.name === newLockedType);
+				if (targetVal) {
+					if (!selectedOptions.value.includes(targetVal.id)) {
+						selectedOptions.value = [...selectedOptions.value, targetVal.id];
+					}
+				}
+			}
+		}
+	},
+	{ immediate: true }
+);
+
 const search = computed({
 	get: () => props.modelValue.search || "",
 	set: (val) => {

@@ -2,14 +2,32 @@
 import { storeToRefs } from "pinia";
 import { ref, computed, onMounted } from "vue";
 
+import { getVehicleType } from "~/utils/vehicleType";
+
 const compareStore = useCompareStore();
 const productStore = useProductStore();
 const { products: compareProducts } = storeToRefs(compareStore);
 
 // State
-const isComparing = ref(false);
+const isComparing = ref(false); // Step 2
 const isModalOpen = ref(false);
 const searchQuery = ref("");
+const selectedVehicleType = ref(null); // Step 1
+
+// If compare store already has a locked type, use it
+watch(
+	() => compareStore.lockedType,
+	(newVal) => {
+		if (newVal) {
+			selectedVehicleType.value = newVal;
+		} else if (compareProducts.value.length === 0) {
+			// If all cleared, go back to step 0
+			selectedVehicleType.value = null;
+			isComparing.value = false;
+		}
+	},
+	{ immediate: true }
+);
 
 // All products for selection
 const allProducts = ref([]);
@@ -24,6 +42,18 @@ if (data.value && data.value.items) {
 		return cat.includes("xe máy") || cat.includes("motor");
 	});
 }
+
+const vehicleTypes = [
+	{ id: 'Xe ga', label: 'Xe tay ga' },
+	{ id: 'Xe số', label: 'Xe số' },
+	{ id: 'Xe côn tay', label: 'Xe côn tay' },
+	{ id: 'Moto phân khối lớn', label: 'Xe phân khối lớn' },
+];
+
+const getRepresentativeImage = (typeId) => {
+	const prod = allProducts.value.find(p => getVehicleType(p.name) === typeId);
+	return prod ? getBasicProductImage(prod) : "/assets/image/placeholder-product.webp";
+};
 
 // Comparison details
 const detailedProducts = ref([null, null, null]);
@@ -57,14 +87,20 @@ const fetchComparisonData = async () => {
 		});
 		const results = await Promise.all(promises);
 		
-		results.forEach(res => {
-			if (res) {
-				const emptySlot = detailedProducts.value.findIndex(item => item === null);
-				if (emptySlot !== -1) {
-					detailedProducts.value[emptySlot] = res;
+		const validResults = results.filter(Boolean);
+		if (validResults.length === 1 && detailedProducts.value.filter(Boolean).length === 0) {
+			// If exactly 1 new product and currently empty, put in the middle
+			detailedProducts.value = [null, validResults[0], null];
+		} else {
+			results.forEach(res => {
+				if (res) {
+					const emptySlot = detailedProducts.value.findIndex(item => item === null);
+					if (emptySlot !== -1) {
+						detailedProducts.value[emptySlot] = res;
+					}
 				}
-			}
-		});
+			});
+		}
 	} catch {
 	} finally {
 		isLoadingComparison.value = false;
@@ -221,14 +257,24 @@ const toggleSelect = (product) => {
 		}
 	} else {
 		if (compareProducts.value.length < 3) {
-			compareStore.addProduct(product);
+			const res = compareStore.addProduct(product);
+			if (res && !res.success) {
+				toast.warning(res.error);
+				return;
+			}
+			
+			if (filteredProducts.value.length === 1) {
+				handleCompare();
+				return;
+			}
+
 			if (isComparing.value) {
-				productStore.fetchFullProductDetail(product.slug).then(res => {
-					if (res && res.product) {
-						res.product.id = product.id;
+				productStore.fetchFullProductDetail(product.slug).then(detailRes => {
+					if (detailRes && detailRes.product) {
+						detailRes.product.id = product.id;
 						const emptySlot = detailedProducts.value.findIndex(item => item === null);
 						if (emptySlot !== -1) {
-							detailedProducts.value[emptySlot] = res;
+							detailedProducts.value[emptySlot] = detailRes;
 						}
 					}
 				});
@@ -238,7 +284,7 @@ const toggleSelect = (product) => {
 };
 
 const handleCompare = async () => {
-	if (compareProducts.value.length >= 2) {
+	if (compareProducts.value.length >= 1) {
 		const currentCount = detailedProducts.value.filter(Boolean).length;
 		if (currentCount !== compareProducts.value.length) {
 			await fetchComparisonData();
@@ -247,10 +293,14 @@ const handleCompare = async () => {
 	}
 };
 
-// Modal Filter
+// List Filtering
 const filteredProducts = computed(() => {
-	if (!searchQuery.value) return allProducts.value;
-	return allProducts.value.filter(p => p.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+	let list = allProducts.value;
+	if (selectedVehicleType.value) {
+		list = list.filter(p => getVehicleType(p.name) === selectedVehicleType.value);
+	}
+	if (!searchQuery.value) return list;
+	return list.filter(p => p.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 </script>
 
@@ -262,16 +312,16 @@ const filteredProducts = computed(() => {
 			<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
 				<div class="flex flex-col">
 					<button
-						v-if="isComparing"
+						v-if="isComparing || (selectedVehicleType && compareProducts.length === 0)"
 						class="flex items-center text-sm font-bold text-gray-900 hover:text-[#CC0000] transition-colors mb-4"
-						@click="isComparing = false"
+						@click="isComparing ? isComparing = false : selectedVehicleType = null"
 					>
-						<Icon name="fa6-solid:chevron-left" class="mr-2 text-xs" /> Quay về bộ sưu tập sản phẩm
+						<Icon name="fa6-solid:chevron-left" class="mr-2 text-xs" /> {{ isComparing ? 'Quay về danh sách xe' : 'Quay lại chọn loại xe' }}
 					</button>
 					
 					<div v-if="!isComparing">
 						<h1 class="text-3xl font-black text-gray-900 uppercase tracking-tighter leading-none">
-							SO SÁNH THÔNG SỐ XE
+							SO SÁNH THÔNG SỐ XE <span v-if="selectedVehicleType" class="text-[#CC0000]">- {{ selectedVehicleType }}</span>
 						</h1>
 					</div>
 					<h1 v-else class="text-3xl font-black text-[#CC0000] uppercase tracking-tighter leading-none italic mt-4">
@@ -280,7 +330,7 @@ const filteredProducts = computed(() => {
 				</div>
 
 				<div class="flex items-center gap-4">
-					<span v-if="!isComparing" class="text-sm font-bold text-gray-400">{{ compareProducts.length }}/3 mẫu xe</span>
+					<span v-if="!isComparing && selectedVehicleType" class="text-sm font-bold text-gray-400">{{ compareProducts.length }}/3 mẫu xe</span>
 					
 					<button
 						v-if="compareProducts.length > 0 && !isComparing"
@@ -291,7 +341,7 @@ const filteredProducts = computed(() => {
 					</button>
 					
 					<button
-						v-if="!isComparing"
+						v-if="!isComparing && selectedVehicleType"
 						:disabled="compareProducts.length < 2"
 						:class="compareProducts.length >= 2 ? 'bg-black text-white hover:bg-[#CC0000] cursor-pointer active:scale-95' : 'bg-black text-white cursor-not-allowed opacity-50'"
 						class="px-8 py-3 rounded-none font-black uppercase tracking-widest text-[10px] transition-all"
@@ -302,14 +352,32 @@ const filteredProducts = computed(() => {
 				</div>
 			</div>
 
+			<!-- Bước 0: Màn hình Chọn Loại Xe -->
+			<div v-if="!selectedVehicleType && !isComparing" class="bg-gray-50/30 p-8 lg:p-12 border border-gray-100 min-h-[400px]">
+				<div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+					<div
+						v-for="vt in vehicleTypes"
+						:key="vt.id"
+						class="group cursor-pointer bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#CC0000] hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-center text-center relative overflow-hidden"
+						@click="selectedVehicleType = vt.id"
+					>
+						<div class="aspect-[4/3] w-full mb-6 relative z-10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+							<img :src="getRepresentativeImage(vt.id)" :alt="vt.label" class="max-w-full max-h-full object-contain mix-blend-multiply drop-shadow-xl" @error="$event.target.src = '/assets/image/placeholder-product.webp'">
+						</div>
+						<h3 class="text-sm lg:text-base font-black text-gray-900 group-hover:text-[#CC0000] uppercase tracking-widest relative z-10">{{ vt.label }}</h3>
+						<div class="absolute inset-0 bg-gradient-to-t from-red-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+					</div>
+				</div>
+			</div>
+
 			<!-- Bước 1: Màn hình Danh sách Sản phẩm (Selection Mode) -->
-			<div v-if="!isComparing" class="bg-gray-50/30 p-8 lg:p-12 border border-gray-100">
+			<div v-else-if="selectedVehicleType && !isComparing" class="bg-gray-50/30 p-8 lg:p-12 border border-gray-100">
 				<div v-if="isLoadingProducts" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-pulse">
 					<div v-for="i in 8" :key="i" class="aspect-square bg-gray-100" />
 				</div>
 				<div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
 					<div
-						v-for="product in allProducts"
+						v-for="product in filteredProducts"
 						:key="product.id"
 						class="relative group cursor-pointer transition-all duration-300 flex flex-col justify-between"
 						@click="toggleSelect(product)"
