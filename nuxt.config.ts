@@ -61,7 +61,11 @@ export default defineNuxtConfig({
 			sourcemap: false,
 			rollupOptions: {
 				onwarn(warning, warn) {
-					const silentCodes = ["SOURCEMAP_BROKEN", "UNUSED_EXTERNAL_IMPORT"];
+					const silentCodes = [
+						"SOURCEMAP_BROKEN",
+						"UNUSED_EXTERNAL_IMPORT",
+						"INVALID_ANNOTATION",
+					];
 					const silentMessages = [
 						"cache-driver.js",
 						"virtual:#nitro-internal-virtual/storage",

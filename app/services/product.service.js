@@ -16,8 +16,7 @@ export const productService = {
 		try {
 			const data = await productRepository.getProductDetail(slug);
 			return data || null;
-		} catch (error) {
-			console.error("[product.service] getProductDetail failed:", error);
+		} catch {
 			return null;
 		}
 	},
