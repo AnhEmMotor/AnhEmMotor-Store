@@ -1,6 +1,6 @@
 export const useAssetUrl = (path) => { 
     if (!path) return ''; 
-    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) return path; 
+    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:') || path.startsWith('/assets/')) return path; 
     
     let config;
     try {

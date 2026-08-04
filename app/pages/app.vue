@@ -4,7 +4,7 @@ import { ref, onMounted } from "vue";
 definePageMeta({
 	transition: {
 		name: "page",
-		mode: "out-in",
+		mode: "default",
 	},
 });
 

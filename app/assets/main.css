@@ -118,12 +118,18 @@ body {
 /* PAGE TRANSITIONS */
 .page-enter-active,
 .page-leave-active {
-  transition: all 0.4s;
+  transition: opacity 0.15s ease;
+}
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 .page-enter-from,
-.page-leave-to {
+.page-leave-to,
+.fade-slide-enter-from,
+.fade-slide-leave-to {
   opacity: 0;
-  filter: blur(1rem);
+  transform: translateY(6px);
 }
 
 /* REVEAL ON SCROLL UTILITIES */
