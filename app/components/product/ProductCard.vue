@@ -107,6 +107,9 @@ const currentImage = computed(() => {
     selectedVariant.value?.coverImageUrl ||
     selectedVariant.value?.cover_image_url ||
     selectedVariant.value?.image ||
+    selectedVariant.value?.colors?.[0]?.image ||
+    selectedVariant.value?.colors?.[0]?.coverImageUrl ||
+    selectedVariant.value?.colors?.[0]?.cover_image_url ||
     props.product?.coverImageUrl ||
     props.product?.image ||
     "/assets/image/placeholder-product.webp"
