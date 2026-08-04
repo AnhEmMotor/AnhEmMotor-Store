@@ -332,27 +332,13 @@ const clearAppliedVoucher = () => {
 
 	const fetchProvinces = async () => {
 		const axios = useAxios();
-		const response = await axios.get("/api/shipping-location/provinces");
-		const data = response.data?.data || response.data;
-		if (Array.isArray(data)) {
-			return data.map(p => ({
-				provinceId: p.ProvinceID || p.provinceId || p._id || p.id,
-				provinceName: p.ProvinceName || p.provinceName || p.name
-			}));
-		}
+		const response = await axios.get("/api/v1/SalesOrders/provinces");
 		return Array.isArray(response.data) ? response.data : [];
 	};
 
 	const fetchWards = async (provinceId) => {
 		const axios = useAxios();
-		const response = await axios.get(`/api/shipping-location/wards/${provinceId}`);
-		const data = response.data?.data || response.data;
-		if (Array.isArray(data)) {
-			return data.map(w => ({
-				wardCode: w.WardCode || w.wardCode || w._id || w.code || w.id,
-				wardName: w.WardName || w.wardName || w.name
-			}));
-		}
+		const response = await axios.get(`/api/v1/SalesOrders/wards/${provinceId}`);
 		return Array.isArray(response.data) ? response.data : [];
 	};
 
