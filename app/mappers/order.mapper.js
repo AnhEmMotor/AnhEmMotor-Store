@@ -132,17 +132,51 @@ const orderMapper = {
 		});
 	},
 
-	calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null, discountAmount = 0) {
+	calculateSummary(cartDetails, rawSettings = {}, calculatedShipping = null, discountAmount = 0) {
 		const subtotal = cartDetails.reduce(
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
 		const shipping = calculatedShipping !== null ? calculatedShipping : null;
 		const total = Math.max(0, subtotal + shipping - discountAmount);
-		const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
-		const depositRatio = Number(depositSettings.depositRatio || 0);
-		const depositType = depositSettings.depositType || "percentage";
-		const fixedDepositAmount = Number(depositSettings.fixedDepositAmount || 2000000);
+
+		let hasVehicle = false;
+		let hasPart = false;
+		let hasAccessory = false;
+
+		cartDetails.forEach((item) => {
+			const catName = item.categoryName || "";
+			if (item.managementType === "vin_number" || catName.toLowerCase().includes("xe")) {
+				hasVehicle = true;
+			} else if (catName.toLowerCase().includes("phụ kiện")) {
+				hasAccessory = true;
+			} else {
+				hasPart = true;
+			}
+		});
+
+		let orderType = "Xe máy";
+		if (hasVehicle && (hasPart || hasAccessory)) {
+			orderType = "Phụ tùng & xe máy";
+		} else if (hasVehicle) {
+			orderType = "Xe máy";
+		} else if (hasPart) {
+			orderType = "Chỉ có phụ tùng";
+		} else if (hasAccessory) {
+			orderType = "Chỉ có phụ kiện";
+		}
+
+		const getSetting = (key, defaultVal) => {
+			const found = Object.keys(rawSettings || {}).find(
+				(k) => k.toLowerCase() === key.toLowerCase()
+			);
+			return found ? rawSettings[found] : defaultVal;
+		};
+
+		const orderValueExceeds = Number(getSetting(`Deposit_${orderType}_Threshold`, 100000000));
+		const depositRatio = Number(getSetting(`Deposit_${orderType}_Ratio`, 0));
+		const depositType = "percentage";
+		const fixedDepositAmount = 0;
 
 		const requiresDeposit =
 			orderValueExceeds > 0 &&

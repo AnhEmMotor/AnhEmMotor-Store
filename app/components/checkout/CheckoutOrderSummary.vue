@@ -44,12 +44,7 @@ watch(
 const orderSummary = computed(() =>
   orderMapper.calculateSummary(
     cartDetails.value,
-    {
-      orderValueExceeds: orderStore.settings.Order_value_exceeds,
-      depositRatio: orderStore.settings.Deposit_ratio,
-      depositType: orderStore.settings.Deposit_type,
-      fixedDepositAmount: orderStore.settings.Fixed_deposit_amount,
-    },
+    orderStore.settings,
     orderStore.calculatedShippingFee,
     voucherDiscountAmount.value
   )
