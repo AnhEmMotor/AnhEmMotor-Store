@@ -261,6 +261,7 @@ onBeforeUnmount(() => {
 
 watch(accessToken, async (newToken, oldToken) => {
 	if (newToken && !oldToken && sessionId.value) {
+		needsContactInfo.value = false;
 		try {
 			await storeChatRepository.linkToCustomer(sessionId.value);
 		} catch {
