@@ -24,3 +24,7 @@ assert.match(tracker, /Đã phân công/);
 assert.match(tracker, /Đang hỗ trợ/);
 assert.match(tracker, /Hoàn tất/);
 assert.match(tracker, /Đánh giá nhân viên hỗ trợ/);
+assert.match(tracker, /Lịch sử đánh giá/);
+assert.match(tracker, /customerRatedAt/);
+assert.doesNotMatch(tracker, /<textarea/);
+assert.doesNotMatch(tracker, /const comment = ref/);
