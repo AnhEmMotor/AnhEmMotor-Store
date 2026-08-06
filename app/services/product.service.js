@@ -37,6 +37,23 @@ export const productService = {
 			return [];
 		}
 	},
+
+	async getRecommendations(params) {
+		try {
+			const data = await productRepository.getRecommendations(params);
+			return { items: data.items || [], totalCount: data.totalCount };
+		} catch {
+			return { items: [], totalCount: 0 };
+		}
+	},
+
+	async trackView(productId, dwellTimeMs, visitorKey) {
+		try {
+			await productRepository.trackView(productId, dwellTimeMs, visitorKey);
+		} catch {
+			// Best-effort — mất 1 lượt tracking không nên ảnh hưởng trải nghiệm xem sản phẩm.
+		}
+	},
 };
 
 export default productService;

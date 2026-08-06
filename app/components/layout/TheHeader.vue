@@ -1,7 +1,7 @@
 <template>
 	<header
 		class="fixed top-0 w-full z-1000 bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
-		:class="[isScrolled ? 'shadow-lg' : '']"
+		:class="[isScrolled ?'shadow-lg' : '']"
 	>
 		<!-- TẦNG 1: TOP BAR (MINIMAL & COHESIVE) -->
 		<div
@@ -49,14 +49,12 @@
 						:key="item.name"
 						:to="item.path"
 						class="text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all duration-300 relative group/top flex items-center gap-1"
-						:class="{ 'text-primary font-black': isRouteActive(item.path) }"
+						:class="{'text-primary font-black': isRouteActive(item.path) }"
 					>
 						{{ item.name }}
 						<span
 							class="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[1.5px] bg-primary transition-all duration-300"
-							:class="
-								isRouteActive(item.path)
-									? 'w-full'
+							:class="isRouteActive(item.path) ?'w-full'
 									: 'w-0 group-hover/top:w-full'
 							"
 						/>
@@ -68,14 +66,12 @@
 		<!-- TẦNG 2: MAIN HEADER (PREMIUM & INTEGRATED) -->
 		<div
 			class="py-2 sm:py-3 bg-white/70 backdrop-blur-xl transition-all duration-500 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)]"
-			:class="[
-				isScrolled
-					? 'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]'
+			:class="[ isScrolled ?'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]'
 					: '',
 			]"
 		>
 			<div
-				class="max-w-360 mx-auto px-3 sm:px-4 lg:px-10 flex items-center gap-2 sm:gap-6"
+				class="max-w-[1600px] mx-auto px-2 sm:px-4 lg:px-4 xl:px-6 flex items-center gap-2 sm:gap-4"
 			>
 				<!-- Mobile Menu Toggle (Moved to Left) -->
 				<button
@@ -116,7 +112,7 @@
 					>
 						<div class="relative overflow-hidden pr-2">
 							<span
-								class="text-[18px] sm:text-[22px] font-[1000] text-gray-950 uppercase tracking-[-0.04em] italic block"
+								class="text-[18px] sm:text-[22px] font-[1000] text-gray-950 uppercase tracking-[-0.04em] block"
 								>AnhEm</span
 							>
 							<!-- Subtle sweep effect on hover -->
@@ -133,8 +129,8 @@
 				</NuxtLink>
 
 				<!-- NAVIGATION (DYNAMIC & FLOATING) -->
-				<nav class="hidden xl:block mx-auto flex-1 px-4">
-					<ul class="flex items-center justify-center gap-3 xl:gap-5 2xl:gap-8">
+				<nav class="hidden xl:block mx-auto flex-1 px-2">
+					<ul class="flex items-center justify-center gap-2 xl:gap-3 2xl:gap-5">
 						<li>
 							<NuxtLink
 								:to="xeMayLink"
@@ -159,13 +155,13 @@
 						</li>
 						<li>
 							<NuxtLink
-								to="/products"
+								to="/bang-gia"
 								class="nav-link-refined"
-								:class="{ active: false }"
+								:class="{ active: isRouteActive('/bang-gia') }"
 								>BẢNG GIÁ
 								<span
 									class="nav-dot-floating"
-									:class="{ active: false }"
+									:class="{ active: isRouteActive('/bang-gia') }"
 							/></NuxtLink>
 						</li>
 
@@ -222,7 +218,7 @@
 					<div class="relative">
 						<button
 							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
-							:class="{ 'text-primary bg-primary/5': isSearchOpen }"
+							:class="{'text-primary bg-primary/5': isSearchOpen }"
 							@click="isSearchOpen = !isSearchOpen"
 						>
 							<Icon
@@ -250,6 +246,24 @@
 								>
 							</form>
 						</div>
+					</div>
+
+					<!-- Cart Button -->
+					<div class="relative">
+						<button
+							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
+							:class="{'text-primary bg-primary/5': isCartOpen }"
+							aria-label="Giỏ hàng"
+							@click="isCartOpen = !isCartOpen"
+						>
+							<Icon name="fa6-solid:cart-shopping" class="w-5 h-5" />
+							<span
+								v-if="cartDetails.length > 0"
+								class="absolute -top-0.5 -right-0.5 w-5 h-5 bg-primary text-white text-[9px] font-black rounded-full flex items-center justify-center"
+							>
+								{{ cartDetails.length }}
+							</span>
+						</button>
 					</div>
 
 					<!-- PREMIUM CTA GROUP (Hidden on mobile for better space) -->
@@ -281,11 +295,12 @@
 										class="w-9 h-9 rounded-full bg-white overflow-hidden border-2 border-primary/10 shadow-sm flex items-center justify-center"
 									>
 										<img
-											v-if="authStore.user?.avatarUrl"
+											v-if="authStore.user?.avatarUrl && !avatarError"
 											:src="authStore.user.avatarUrl"
 											alt="Avatar"
 											class="w-full h-full object-cover"
 											referrerpolicy="no-referrer"
+											@error="avatarError = true"
 										>
 										<Icon
 											v-else
@@ -340,7 +355,7 @@
 						<template v-else>
 							<NuxtLink
 								to="/login"
-								class="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-gray-900 text-white font-black text-xs sm:text-[11px] uppercase tracking-widest hover:bg-primary hover:shadow-lg hover:shadow-primary/20 transition-all"
+								class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gray-900 text-white font-black text-xs sm:text-[11px] uppercase tracking-widest hover:bg-primary hover:shadow-lg hover:shadow-primary/20 transition-all whitespace-nowrap"
 							>
 								<Icon name="ph:sign-in-fill" class="text-sm" />
 								Đăng nhập
@@ -362,7 +377,7 @@
 				/>
 				<nav
 					class="fixed top-0 bottom-0 left-0 w-[85%] max-w-sm bg-white z-2100 transform transition-transform duration-500 ease-in-out shadow-2xl"
-					:class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'"
+					:class="mobileNavActive ?'translate-x-0' : '-translate-x-full'"
 				>
 					<div
 						class="p-4 sm:p-8 border-b flex justify-between items-center bg-gray-50/50"
@@ -372,11 +387,12 @@
 								class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white overflow-hidden border border-gray-200 shadow-sm flex items-center justify-center"
 							>
 								<img
-									v-if="authStore.user?.avatarUrl"
+									v-if="authStore.user?.avatarUrl && !avatarError"
 									:src="authStore.user.avatarUrl"
 									alt="Avatar"
 									class="w-full h-full object-cover"
 									referrerpolicy="no-referrer"
+									@error="avatarError = true"
 								>
 								<div
 									v-else
@@ -522,6 +538,9 @@ const authStore = useAuthStore();
 const contactStore = useContactStore();
 const route = useRoute();
 
+const avatarError = ref(false);
+watch(() => authStore.user?.avatarUrl, () => { avatarError.value = false; });
+
 const isScrolled = ref(false);
 const mobileNavActive = ref(false);
 const isSearchOpen = ref(false);
@@ -605,7 +624,7 @@ const navItemsMobile = computed(() => [
 	{ name: "TRANG CHỦ", path: "/" },
 	{ name: "XE MÁY", path: xeMayLink.value },
 	{ name: "PHỤ TÙNG & PHỤ KIỆN", path: phuTungLink.value },
-	{ name: "BẢNG GIÁ", path: "/products" },
+	{ name: "BẢNG GIÁ", path: "/bang-gia" },
 	{ name: "KHUYẾN MÃI", path: "/promotion" },
 	{ name: "DỊCH VỤ", path: "/service" },
 	{ name: "SO SÁNH XE", path: "/compare" },

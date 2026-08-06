@@ -272,7 +272,7 @@ onMounted(() => {
 									</h2>
 
 									<p
-										class="text-gray-500 text-base md:text-lg font-medium leading-relaxed italic border-l-4 border-red-600/30 pl-6 md:pl-10"
+										class="text-gray-500 text-base md:text-lg font-medium leading-relaxed border-l-4 border-red-600/30 pl-6 md:pl-10"
 									>
 										"{{
 											featuredNews.shortDescription ||
@@ -290,7 +290,7 @@ onMounted(() => {
 												>Category</span
 											>
 											<span
-												class="text-2xl font-black text-red-600 uppercase tracking-tighter italic"
+												class="text-2xl font-black text-red-600 uppercase tracking-tighter"
 											>
 												{{
 													featuredNews.category?.name ||
@@ -352,8 +352,8 @@ onMounted(() => {
 						<template v-else>
 							<div
 								v-if="filteredNewsList.length > 0"
-								class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 transition-opacity duration-300"
-								:class="{ 'opacity-50 pointer-events-none': isFetching }"
+								class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-300"
+								:class="{'opacity-50 pointer-events-none': isFetching }"
 							>
 								<div
 									v-for="news in filteredNewsList"
@@ -438,7 +438,7 @@ onMounted(() => {
 				<h2
 					class="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-tight"
 				>
-					Đừng bỏ lỡ <br ><span class="text-red-600 italic"
+					Đừng bỏ lỡ <br ><span class="text-red-600"
 						>mọi chuyển động</span
 					>
 				</h2>

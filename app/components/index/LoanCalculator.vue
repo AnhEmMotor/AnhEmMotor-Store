@@ -57,9 +57,7 @@ const sendToZalo = () => {
 						v-for="month in [6, 12, 18, 24]"
 						:key="month"
 						class="py-2.5 sm:py-3 rounded-xl font-bold transition-all border-2 text-[13px] sm:text-sm whitespace-nowrap"
-						:class="
-							loanTermMonths === month
-								? 'border-primary bg-primary/5 text-primary'
+						:class="loanTermMonths === month ?'border-primary bg-primary/5 text-primary'
 								: 'border-slate-50 bg-slate-50 text-slate-400 hover:border-slate-200 hover:bg-slate-100'
 						"
 						@click="loanTermMonths = month"

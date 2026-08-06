@@ -50,7 +50,7 @@
 							/></span>
 						</h2>
 						<p
-							class="text-gray-400 text-sm sm:text-base leading-relaxed italic"
+							class="text-gray-400 text-sm sm:text-base leading-relaxed"
 						>
 							"Chiếc xe của bạn giờ đây hiện diện trên mọi thiết bị. Từ
 							Smartphone, Smartwatch đến Dashboard tích hợp - tất cả đều đồng bộ

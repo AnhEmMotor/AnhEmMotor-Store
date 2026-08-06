@@ -41,6 +41,7 @@ function formatPrice(price) {
 						:src="item.image"
 						:alt="item.name"
 						class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+						@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 					>
 					<div
 						v-else

@@ -85,9 +85,7 @@ const handleViewDetail = (product) => {
 					v-for="tab in tabs"
 					:key="tab.id"
 					class="px-6 py-3 rounded-full font-bold transition-all"
-					:class="
-						activeTab === tab.id
-							? 'bg-primary text-white shadow-lg shadow-primary/20'
+					:class="activeTab === tab.id ?'bg-primary text-white shadow-lg shadow-primary/20'
 							: 'bg-slate-50 text-slate-500 hover:bg-slate-100'
 					"
 					@click="activeTab = tab.id"

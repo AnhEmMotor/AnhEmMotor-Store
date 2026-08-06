@@ -204,31 +204,37 @@ const productMapper = {
 
 		const labels = { ...defaultLabels, ...(attributeLabels || {}) };
 
-		let specifications = [];
-		if (product.specifications) {
-			if (Array.isArray(product.specifications)) {
-				specifications = product.specifications.map((s) => ({
-					key: s.key || s.Key || "",
-					label: labels[s.key || s.Key] || s.label || s.Label || "",
-					value: s.value || s.Value || "",
-				}));
-			}
-			// Handle flat object { weight: 122, ... }
-			else {
-				specifications = Object.entries(product.specifications)
-					.filter(
-						([key, value]) =>
-							labels[key] &&
-							value !== null &&
-							value !== undefined &&
-							value !== "",
-					)
-					.map(([key, value]) => ({
-						key,
-						label: labels[key],
+		let specifications;
+		const specObj = { ...product, ...currentVariant, ...(product.specifications || {}) };
+		
+		// Tổng hợp kích thước nếu có
+		if (specObj.length && specObj.width && specObj.height && !specObj.dimensions) {
+			specObj.dimensions = `${specObj.length} x ${specObj.width} x ${specObj.height} mm`;
+		}
+		if (specObj.Length && specObj.Width && specObj.Height && !specObj.Dimensions) {
+			specObj.dimensions = `${specObj.Length} x ${specObj.Width} x ${specObj.Height} mm`;
+		}
+
+		if (product.specifications && Array.isArray(product.specifications)) {
+			specifications = product.specifications.map((s) => ({
+				key: s.key || s.Key || "",
+				label: labels[s.key || s.Key] || s.label || s.Label || "",
+				value: s.value || s.Value || "",
+			}));
+		} else {
+			specifications = Object.entries(specObj)
+				.filter(([key, value]) => {
+					const snakeKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+					return (labels[key] || labels[snakeKey]) && value !== null && value !== undefined && value !== "";
+				})
+				.map(([key, value]) => {
+					const snakeKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+					return {
+						key: snakeKey, // chuẩn hóa key về snake_case để compare.vue tìm đúng
+						label: labels[key] || labels[snakeKey],
 						value: value,
-					}));
-			}
+					};
+				});
 		}
 
 		let highlights = [];
@@ -286,8 +292,8 @@ const productMapper = {
 
 		return {
 			product: {
-				id: product.id,
-				name: product.name,
+				id: validId(product.id, product.Id, product.productId),
+				name: product.name || product.Name,
 				description: product.description,
 				shortDescription: product.short_description,
 				brand: product.brand,

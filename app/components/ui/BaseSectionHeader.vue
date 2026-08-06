@@ -33,8 +33,7 @@ defineProps({
 
 <template>
 	<div
-		:class="[
-			'flex flex-col gap-10 mb-16',
+		:class="['flex flex-col gap-10 mb-16',
 			center
 				? 'items-center text-center'
 				: 'md:flex-row justify-between items-end',

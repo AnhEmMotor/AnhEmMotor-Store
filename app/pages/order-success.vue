@@ -256,6 +256,12 @@ const submitInvoiceRequest = async () => {
                   Cảm ơn bạn đã đặt cọc. Đơn hàng của bạn đang được nhân viên
                   xác nhận và chuẩn bị.
                 </p>
+                <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl max-w-md mx-auto">
+                  <p class="text-red-600 text-sm font-bold flex items-start gap-2 text-left">
+                    <Icon name="fa6-solid:triangle-exclamation" class="text-lg shrink-0 mt-0.5" />
+                    <span>Lưu ý quan trọng: Quý khách vui lòng đến trực tiếp cửa hàng để thanh toán phần còn lại và nhận xe trong vòng 7 ngày tới. Nếu quá thời hạn này, đơn hàng sẽ tự động bị hủy và tiền cọc sẽ không được hoàn lại.</span>
+                  </p>
+                </div>
               </div>
               <div
                 v-else-if="order.statusId === 'paid_processing'"
@@ -320,7 +326,7 @@ const submitInvoiceRequest = async () => {
                         Địa chỉ
                       </p>
                       <p
-                        class="text-sm font-medium text-gray-600 leading-relaxed italic"
+                        class="text-sm font-medium text-gray-600 leading-relaxed"
                       >
                         {{ order.customer?.address }}
                       </p>

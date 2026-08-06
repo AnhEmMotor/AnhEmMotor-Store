@@ -1,17 +1,14 @@
 <template>
 	<div
 		ref="rowRef"
-		:class="[
-			'flex flex-col lg:flex-row items-center gap-8 lg:gap-16 py-16 border-b border-gray-100 last:border-0 group transition-all duration-1000',
+		:class="['flex flex-col lg:flex-row items-center gap-8 lg:gap-16 py-16 border-b border-gray-100 last:border-0 group transition-all duration-1000',
 			isReversed ? 'lg:flex-row-reverse' : '',
 			isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20',
 		]"
 	>
 		<div
 			class="w-full lg:w-1/2 relative transition-all duration-1000 delay-300"
-			:class="
-				isVisible
-					? 'opacity-100 translate-x-0'
+			:class="isVisible ?'opacity-100 translate-x-0'
 					: isReversed
 						? 'opacity-0 translate-x-20'
 						: 'opacity-0 -translate-x-20'
@@ -42,8 +39,7 @@
 			</div>
 
 			<div
-				:class="[
-					'absolute -top-10 -bottom-10 w-2/3 bg-primary/5 rounded-[4rem] blur-3xl -z-10 animate-pulse-slow',
+				:class="['absolute -top-10 -bottom-10 w-2/3 bg-primary/5 rounded-[4rem] blur-3xl -z-10 animate-pulse-slow',
 					isReversed ? '-left-10' : '-right-10',
 				]"
 			/>
@@ -51,9 +47,7 @@
 
 		<div
 			class="w-full lg:w-1/2 space-y-8 transition-all duration-1000 delay-500"
-			:class="
-				isVisible
-					? 'opacity-100 translate-x-0'
+			:class="isVisible ?'opacity-100 translate-x-0'
 					: isReversed
 						? 'opacity-0 -translate-x-20'
 						: 'opacity-0 translate-x-20'

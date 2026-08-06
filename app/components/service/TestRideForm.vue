@@ -1,7 +1,7 @@
 <template>
 	<div class="test-ride-form-container">
 		<div class="mb-10 text-center">
-			<h2 class="text-2xl font-black text-gray-900 uppercase italic mb-2">
+			<h2 class="text-2xl font-black text-gray-900 uppercase mb-2">
 				Đăng ký lái thử
 			</h2>
 			<div class="h-1 w-12 bg-red-600 rounded-full mx-auto" />
@@ -175,7 +175,7 @@
 			>
 				<Icon name="fa6-solid:check" class="text-3xl" />
 			</div>
-			<h2 class="text-2xl font-black text-gray-900 uppercase italic">
+			<h2 class="text-2xl font-black text-gray-900 uppercase">
 				Thành công!
 			</h2>
 			<p

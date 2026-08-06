@@ -107,6 +107,9 @@ const currentImage = computed(() => {
     selectedVariant.value?.coverImageUrl ||
     selectedVariant.value?.cover_image_url ||
     selectedVariant.value?.image ||
+    selectedVariant.value?.colors?.[0]?.image ||
+    selectedVariant.value?.colors?.[0]?.coverImageUrl ||
+    selectedVariant.value?.colors?.[0]?.cover_image_url ||
     props.product?.coverImageUrl ||
     props.product?.image ||
     "/assets/image/placeholder-product.webp"
@@ -219,7 +222,7 @@ const toggleCompare = (e) => {
   if (isCompared.value) {
     compareStore.removeProduct(props.product.id);
   } else {
-    compareStore.addProduct({
+    const result = compareStore.addProduct({
       id: props.product.id,
       name: props.product.name,
       slug: props.product.slug,
@@ -227,6 +230,9 @@ const toggleCompare = (e) => {
       image: useAssetUrl(currentImage.value),
       price: selectedVariant.value?.price,
     });
+    if (result && !result.success) {
+      toast.warning(result.error);
+    }
   }
 };
 </script>
@@ -238,20 +244,21 @@ const toggleCompare = (e) => {
   >
     <div
       class="relative h-48 sm:h-52 lg:h-60 overflow-hidden"
-      :class="isPlaceholderImage ? 'bg-slate-900' : 'bg-slate-50'"
+      :class="isPlaceholderImage ?'bg-slate-900' : 'bg-slate-50'"
     >
       <img
         :src="useAssetUrl(currentImage)"
         :alt="product.name"
         class="w-full h-full transition-transform duration-700"
-        :class="isPlaceholderImage ? 'object-contain' : 'object-cover group-hover:scale-110'"
+        :class="isPlaceholderImage ?'object-contain' : 'object-cover group-hover:scale-110'"
+        @error="$event.target.src = '/assets/image/placeholder-product.webp'"
       >
 
       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
       <button
         class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10 backdrop-blur-md border"
-        :class="isCompared ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30' : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'"
+        :class="isCompared ?'bg-primary border-primary text-white shadow-lg shadow-primary/30' : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'"
         :title="isCompared ? 'Xóa khỏi danh sách so sánh' : 'Thêm vào so sánh'"
         @click="toggleCompare"
       >
@@ -273,7 +280,7 @@ const toggleCompare = (e) => {
       <div
         v-if="hasVariantControls"
         class="variant-selector mb-3"
-        :class="{ 'variant-selector--single': chipVariants.length === 0 || selectedVariantColors.length === 0 }"
+        :class="{'variant-selector--single': chipVariants.length === 0 || selectedVariantColors.length === 0 }"
       >
         <div v-if="chipVariants.length > 0" class="variant-section">
           <div class="variant-section__label">
@@ -294,7 +301,7 @@ const toggleCompare = (e) => {
         <div
           v-if="selectedVariantColors.length > 0"
           class="variant-section"
-          :class="{ 'variant-section--separated': chipVariants.length > 0 }"
+          :class="{'variant-section--separated': chipVariants.length > 0 }"
         >
           <div class="variant-section__label">
             <span>Màu sắc</span>

@@ -5,4 +5,6 @@ export const PRODUCT_ENDPOINTS = {
 	CATEGORIES: "/api/v1/ProductCategory",
 	BRANDS: "/api/v1/Brand",
 	OPTIONS: "/api/v1/option",
+	RECOMMENDATIONS: "/api/v1/product/recommendations",
+	TRACK_VIEW: (id) => `/api/v1/product/${id}/track-view`,
 };

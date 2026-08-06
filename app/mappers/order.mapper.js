@@ -1,3 +1,5 @@
+import { getImageUrl } from "~/utils/image";
+
 const orderMapper = {
 	normalizePaymentMethod(method) {
 		const map = {
@@ -8,9 +10,10 @@ const orderMapper = {
 		return map[String(method || "cod").toLowerCase()] || "COD";
 	},
 
-	mapOrderPayload(shippingInfo, cartItems, userId, paymentMethod = "cod") {
+	mapOrderPayload(shippingInfo, cartItems, userId, paymentMethod = "cod", voucherCode = null) {
 		return {
 			buyerId: userId,
+            voucherCode: voucherCode,
 			notes: shippingInfo.notes,
 			customerName: shippingInfo.fullName,
 			customerAddress: shippingInfo.address,
@@ -88,7 +91,7 @@ const orderMapper = {
 					name: item.productName || item.name,
 					quantity: item.count || item.quantity,
 					price: item.price,
-					image: item.coverImageUrl || item.image,
+					image: getImageUrl(item.coverImageUrl || item.image),
 				}),
 			),
 		};
@@ -129,32 +132,94 @@ const orderMapper = {
 		});
 	},
 
-	calculateSummary(cartDetails, depositSettings = {}, calculatedShipping = null) {
+	calculateSummary(cartDetails, rawSettings = {}, calculatedShipping = null, discountAmount = 0) {
 		const subtotal = cartDetails.reduce(
 			(sum, item) => sum + item.price * item.quantity,
 			0,
 		);
 		const shipping = calculatedShipping !== null ? calculatedShipping : null;
-		const total = subtotal + shipping;
-		const orderValueExceeds = Number(depositSettings.orderValueExceeds || 0);
-		const depositRatio = Number(depositSettings.depositRatio || 0);
+		const total = Math.max(0, subtotal + shipping - discountAmount);
+
+		let hasVehicle = false;
+		let hasPart = false;
+		let hasAccessory = false;
+
+		cartDetails.forEach((item) => {
+			const catName = item.categoryName || "";
+			if (item.managementType === "vin_number" || catName.toLowerCase().includes("xe")) {
+				hasVehicle = true;
+			} else if (catName.toLowerCase().includes("phụ kiện")) {
+				hasAccessory = true;
+			} else {
+				hasPart = true;
+			}
+		});
+
+		let orderType = "Xe máy";
+		if (hasVehicle && (hasPart || hasAccessory)) {
+			orderType = "Phụ tùng & xe máy";
+		} else if (hasVehicle) {
+			orderType = "Xe máy";
+		} else if (hasPart) {
+			orderType = "Chỉ có phụ tùng";
+		} else if (hasAccessory) {
+			orderType = "Chỉ có phụ kiện";
+		}
+
+		const getSetting = (key, defaultVal) => {
+			const found = Object.keys(rawSettings || {}).find(
+				(k) => k.toLowerCase() === key.toLowerCase()
+			);
+			return found ? rawSettings[found] : defaultVal;
+		};
+
+		const orderValueExceeds = Number(getSetting(`Deposit_${orderType}_Threshold`, 100000000));
+		const depositRatio = Number(getSetting(`Deposit_${orderType}_Ratio`, 0));
+		const depositType = "percentage";
+		const fixedDepositAmount = 0;
+
 		const requiresDeposit =
 			orderValueExceeds > 0 &&
-			depositRatio > 0 &&
-			subtotal >= orderValueExceeds;
-		const depositAmount = requiresDeposit
-			? Math.round((subtotal * depositRatio) / 100)
-			: 0;
-		const remainingAmount = requiresDeposit
-			? Math.max(total - depositAmount, 0)
-			: 0;
-		const payableNow = requiresDeposit ? depositAmount : total;
+			subtotal > orderValueExceeds;
+
+		let depositAmount = 0;
+		let displayRatio = depositRatio;
+
+		if (requiresDeposit) {
+			if (depositType === "fixed") {
+				let vehicleCount = 0;
+				(cartDetails || []).forEach(item => {
+					if (item.managementType === "vin_number") {
+						vehicleCount += item.quantity;
+					}
+				});
+				if (vehicleCount > 0) {
+					depositAmount = fixedDepositAmount * vehicleCount;
+					if (subtotal > 0) {
+						displayRatio = Math.round((depositAmount / subtotal) * 100);
+					} else {
+						displayRatio = 0;
+					}
+				} else {
+					depositAmount = 0;
+					displayRatio = 0;
+				}
+			} else {
+				depositAmount = Math.round((subtotal * depositRatio) / 100);
+			}
+		}
+		
+		const remainingAmount = requiresDeposit ? Math.max(total - depositAmount, 0) : 0;
+		const payableNow = requiresDeposit ? Math.max(0, depositAmount - discountAmount) : total;
+		
 		return {
 			subtotal,
 			shipping,
 			total,
 			requiresDeposit,
-			depositRatio,
+			depositType,
+			depositRatio: displayRatio,
+			fixedDepositAmount,
 			depositAmount,
 			remainingAmount,
 			payableNow,

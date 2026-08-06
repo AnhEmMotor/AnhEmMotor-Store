@@ -245,7 +245,7 @@ const formatVND = (value) => {
 			<div class="flex flex-col lg:flex-row gap-12">
 				<aside class="hidden lg:block w-80 flex-shrink-0">
 					<div
-						class="sticky top-24 border border-gray-100 rounded-3xl shadow-sm overflow-hidden"
+						class="sticky top-[120px] border border-gray-100 rounded-3xl shadow-sm overflow-hidden flex flex-col max-h-[calc(100vh-140px)]"
 					>
 						<ProductFilterSidebar v-model="filters" />
 					</div>
@@ -257,7 +257,7 @@ const formatVND = (value) => {
 					>
 						<div>
 							<h1
-								class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 italic uppercase tracking-tighter"
+								class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 uppercase tracking-tighter"
 							>
 								{{ pageConfig.heading }}
 							</h1>
@@ -379,6 +379,7 @@ const formatVND = (value) => {
 				</div>
 			</div>
 		</div>
+		<ProductCompareBar />
 	</div>
 </template>
 

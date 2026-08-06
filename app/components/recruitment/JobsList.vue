@@ -12,7 +12,7 @@
 					>
 				</div>
 				<h2
-					class="text-3xl md:text-4xl font-black text-gray-900 mb-4 italic uppercase tracking-tighter"
+					class="text-3xl md:text-4xl font-black text-gray-900 mb-4 uppercase tracking-tighter"
 				>
 					Vị trí <span class="text-primary">Tuyển dụng</span>
 				</h2>
@@ -50,13 +50,13 @@
 					</div>
 
 					<h3
-						class="text-2xl font-black text-gray-900 mb-3 group-hover:text-primary transition-colors italic uppercase tracking-tight leading-tight"
+						class="text-2xl font-black text-gray-900 mb-3 group-hover:text-primary transition-colors uppercase tracking-tight leading-tight"
 					>
 						{{ job.title }}
 					</h3>
 
 					<div
-						class="flex items-center gap-2 text-primary font-black text-xl mb-8 italic"
+						class="flex items-center gap-2 text-primary font-black text-xl mb-8"
 					>
 						{{ job.salary }}
 					</div>
@@ -141,12 +141,12 @@
 									</div>
 									<div class="pt-10">
 										<h2
-											class="text-3xl font-black text-gray-900 italic uppercase tracking-tighter leading-tight"
+											class="text-3xl font-black text-gray-900 uppercase tracking-tighter leading-tight"
 										>
 											{{ selectedJob.title }}
 										</h2>
 										<div class="flex items-center gap-4 mt-2">
-											<span class="text-primary font-black italic">{{
+											<span class="text-primary font-black">{{
 												selectedJob.salary
 											}}</span>
 											<span class="text-gray-200">|</span>
@@ -174,7 +174,7 @@
 									class="space-y-6"
 								>
 									<h3
-										class="text-xl font-black text-gray-900 italic uppercase tracking-tight flex items-center gap-4"
+										class="text-xl font-black text-gray-900 uppercase tracking-tight flex items-center gap-4"
 									>
 										<span class="w-10 h-[2px] bg-primary rounded-full" />
 										{{ section.title }}

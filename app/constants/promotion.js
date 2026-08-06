@@ -18,8 +18,19 @@ export const promotionData = [
 			"/featured_vario_160_promotion_marketing_1778828577524.webp"
 		],
 		content: `
-      <p class="font-semibold italic">Chào hè rực rỡ, AnhEm Motor mang tới chương trình ưu đãi cực kỳ hấp dẫn cho các dòng xe máy mới nhất.</p>
-      <p>Mùa hè là thời điểm lý tưởng để khởi động những hành trình mới. Hãy để chúng tôi đồng hành cùng bạn.</p>
+      <p class="font-semibold italic text-xl mb-6">Chào hè rực rỡ, AnhEm Motor mang tới chương trình ưu đãi cực kỳ hấp dẫn cho các dòng xe máy mới nhất.</p>
+      <p class="mb-4">Mùa hè là thời điểm lý tưởng để khởi động những hành trình mới. Hãy để chúng tôi đồng hành cùng bạn bằng những chiếc xe máy chất lượng và các ưu đãi không thể bỏ lỡ.</p>
+      <h3 class="text-2xl font-bold mt-8 mb-4">Chi tiết chương trình ưu đãi</h3>
+      <p class="mb-4">Khách hàng khi mua các dòng xe tay ga tại AnhEm Motor sẽ được hưởng trọn bộ ưu đãi sau:</p>
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li>Tặng ngay <strong>Voucher giảm giá 2.000.000 VNĐ</strong> áp dụng trực tiếp vào giá bán xe.</li>
+        <li>Miễn phí 100% công bảo dưỡng và kiểm tra định kỳ trong suốt 1 năm đầu sử dụng.</li>
+        <li>Tặng bộ quà tặng cao cấp bao gồm: Mũ bảo hiểm 3/4 chính hãng, áo mưa thời trang và móc khóa độc quyền AnhEm Motor.</li>
+        <li>Hỗ trợ thủ tục đăng ký biển số nhanh chóng, giao xe tận nhà miễn phí trong bán kính 20km.</li>
+      </ul>
+      <h3 class="text-2xl font-bold mt-8 mb-4">Điều kiện áp dụng</h3>
+      <p class="mb-4">Chương trình áp dụng cho tất cả khách hàng cá nhân và doanh nghiệp khi mua xe tại các showroom trực thuộc hệ thống AnhEm Motor. Ưu đãi áp dụng trên toàn quốc và không có giá trị quy đổi thành tiền mặt.</p>
+      <p class="mb-4">Số lượng quà tặng có hạn, chương trình có thể kết thúc sớm hơn dự kiến khi hết quà. Vui lòng liên hệ ngay với chúng tôi để được tư vấn và đặt cọc giữ ưu đãi.</p>
     `,
 		benefits: [
 			{ title: "Voucher 2 triệu", desc: "Dành cho Honda Vario 160", icon: "ph:ticket-fill" },
@@ -64,7 +75,20 @@ export const promotionData = [
 		duration: "Áp dụng đến hết năm 2025",
 		remainingSlots: 58,
 		carouselImages: [],
-		content: `<p>Chương trình hỗ trợ tài chính đặc biệt giúp bạn dễ dàng sở hữu chiếc xe mơ ước.</p>`,
+		content: `
+      <p class="font-semibold italic text-xl mb-6">Chương trình hỗ trợ tài chính đặc biệt giúp bạn dễ dàng sở hữu chiếc xe mơ ước mà không lo áp lực tài chính.</p>
+      <p class="mb-4">Thấu hiểu nhu cầu của khách hàng trong thời kỳ kinh tế khó khăn, AnhEm Motor phối hợp cùng các đối tác tài chính lớn mang đến gói vay mua xe với lãi suất 0% cực kỳ ưu đãi.</p>
+      <h3 class="text-2xl font-bold mt-8 mb-4">Lợi ích khi tham gia trả góp 0%</h3>
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li><strong>Không phát sinh lãi suất:</strong> Trả góp với lãi suất 0% trong 6 tháng đầu tiên, giúp bạn tiết kiệm chi phí tối đa.</li>
+        <li><strong>Thủ tục đơn giản:</strong> Chỉ cần CCCD gắn chip, không cần chứng minh thu nhập hay thế chấp tài sản phức tạp.</li>
+        <li><strong>Duyệt hồ sơ siêu tốc:</strong> Thời gian xét duyệt chỉ từ 15 - 30 phút, nhận xe ngay trong ngày.</li>
+        <li><strong>Linh hoạt kỳ hạn:</strong> Có thể chọn các kỳ hạn 9, 12, 18 hoặc 24 tháng phù hợp với khả năng thanh toán.</li>
+      </ul>
+      <h3 class="text-2xl font-bold mt-8 mb-4">Cách thức tham gia</h3>
+      <p class="mb-4">Khách hàng chỉ cần đến bất kỳ showroom nào của AnhEm Motor, lựa chọn mẫu xe ưng ý, nhân viên tư vấn của chúng tôi sẽ hướng dẫn bạn hoàn thiện hồ sơ đăng ký trả góp. Sau khi hồ sơ được duyệt, bạn chỉ việc thanh toán khoản trả trước (từ 20% - 50% giá trị xe) và dắt xe về nhà.</p>
+      <p class="mb-4 italic text-gray-500">Lưu ý: Chương trình chỉ áp dụng cho một số dòng xe nhất định, vui lòng liên hệ tổng đài để biết thêm chi tiết.</p>
+    `,
 		benefits: [
 			{ title: "Lãi suất 0%", desc: "Áp dụng kỳ hạn 6 tháng đầu", icon: "ph:percent-fill" },
 			{ title: "Duyệt nhanh", desc: "Phản hồi hồ sơ trong 15 phút", icon: "ph:timer-fill" }
@@ -101,7 +125,20 @@ export const promotionData = [
 		duration: "Tháng 08/2025",
 		remainingSlots: 32,
 		carouselImages: [],
-		content: `<p>Dịch vụ thu mua xe cũ chuyên nghiệp, định giá minh bạch và trợ giá tốt nhất thị trường.</p>`,
+		content: `
+      <p class="font-semibold italic text-xl mb-6">Dịch vụ thu mua xe cũ chuyên nghiệp, định giá minh bạch và trợ giá tốt nhất thị trường giúp bạn dễ dàng nâng cấp "xế yêu".</p>
+      <p class="mb-4">Bạn đang muốn đổi một chiếc xe mới nhưng chưa biết xử lý chiếc xe cũ thế nào? Bạn e ngại việc bị ép giá khi bán xe ra bên ngoài? Hãy để AnhEm Motor giải quyết mọi lo âu của bạn với chương trình "Thu Cũ Đổi Mới".</p>
+      <h3 class="text-2xl font-bold mt-8 mb-4">Quyền lợi đặc quyền khi tham gia</h3>
+      <ul class="list-disc pl-6 mb-6 space-y-2">
+        <li><strong>Định giá cao hơn thị trường:</strong> Chúng tôi cam kết thu mua xe cũ của bạn với mức giá tốt nhất, sát với giá trị thực tế sau khi kiểm tra bằng hệ thống máy móc chuyên dụng.</li>
+        <li><strong>Trợ giá thêm 1 Triệu VNĐ:</strong> Tặng ngay 1.000.000 VNĐ trừ trực tiếp vào giá bán của xe mới khi bạn thực hiện đổi xe tại hệ thống.</li>
+        <li><strong>Không giới hạn thương hiệu:</strong> Thu mua mọi dòng xe từ Honda, Yamaha, Piaggio đến Suzuki, SYM... miễn là xe hợp pháp và có giấy tờ rõ ràng.</li>
+        <li><strong>Thủ tục nhanh gọn:</strong> Hỗ trợ lo toàn bộ thủ tục sang tên đổi chủ, rút hồ sơ gốc nhanh chóng.</li>
+      </ul>
+      <h3 class="text-2xl font-bold mt-8 mb-4">Quy trình định giá xe</h3>
+      <p class="mb-4">Quy trình định giá được thực hiện công khai ngay trước mặt khách hàng bởi các kỹ thuật viên dày dặn kinh nghiệm, kiểm tra qua 35 hạng mục từ động cơ, khung sườn đến hệ thống điện và dàn áo.</p>
+      <p class="mb-4">Chỉ mất 30 phút, bạn sẽ nhận được báo giá cuối cùng. Mọi quyết định đều nằm ở bạn, hoàn toàn không có sự ép buộc.</p>
+    `,
 		benefits: [
 			{ title: "Định giá miễn phí", desc: "Kiểm tra xe trực tiếp tại showroom", icon: "ph:clipboard-text-fill" },
 			{ title: "Trợ giá thêm", desc: "Hỗ trợ nâng cấp lên xe mới", icon: "ph:arrows-left-right-fill" }

@@ -90,7 +90,7 @@ html,
 body {
 	margin: 0;
 	padding: 0;
-	overflow-x: hidden;
+	overflow-x: clip;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-family: 'Manrope', sans-serif;
@@ -118,12 +118,18 @@ body {
 /* PAGE TRANSITIONS */
 .page-enter-active,
 .page-leave-active {
-  transition: all 0.4s;
+  transition: opacity 0.15s ease;
+}
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 .page-enter-from,
-.page-leave-to {
+.page-leave-to,
+.fade-slide-enter-from,
+.fade-slide-leave-to {
   opacity: 0;
-  filter: blur(1rem);
+  transform: translateY(6px);
 }
 
 /* REVEAL ON SCROLL UTILITIES */
@@ -147,7 +153,7 @@ body {
 @media (max-width: 640px) {
 	/* Prevent horizontal scroll */
 	body {
-		overflow-x: hidden;
+		overflow-x: clip;
 		max-width: 100vw;
 	}
 
@@ -201,12 +207,12 @@ body {
 	}
 }
 
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
 /* Improve touch scrolling on mobile */
 @media (max-width: 1024px) {
-	* {
-		-webkit-tap-highlight-color: transparent;
-	}
-
 	/* Smooth scrolling for mobile */
 	html {
 		-webkit-overflow-scrolling: touch;

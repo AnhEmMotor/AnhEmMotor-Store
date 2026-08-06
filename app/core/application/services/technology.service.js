@@ -27,6 +27,11 @@ export const technologyService = {
     return data.map((item) => new InteractionCard(item));
   },
 
+  async getInteractionCardBySlug(slug) {
+    const data = await technologyRepository.getInteractionCardBySlug(slug);
+    return new InteractionCard(data);
+  },
+
   async getManagementFeatures() {
     const data = await technologyRepository.getManagementFeatures();
     return data.map((item) => new ManagementFeature(item));

@@ -94,8 +94,7 @@ const timeRemaining = computed(() => {
 			<div class="flex items-center gap-3">
 				<span
 					class="px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider"
-					:class="{
-						'bg-yellow-50 text-yellow-600':
+					:class="{'bg-yellow-50 text-yellow-600':
 							order.statusId === 'pending' ||
 							order.statusId === 'waiting_deposit',
 						'bg-blue-50 text-blue-600':
@@ -212,7 +211,7 @@ const timeRemaining = computed(() => {
 								class="text-[10px] text-gray-400 mt-1"
 							/>
 							<span
-								class="text-sm font-medium text-gray-600 leading-relaxed italic"
+								class="text-sm font-medium text-gray-600 leading-relaxed"
 								>{{ [order.customer?.address, order.customer?.wardName, order.customer?.provinceName].filter(Boolean).join(", ") || "Chưa có địa chỉ" }}</span
 							>
 						</div>
@@ -270,7 +269,7 @@ const timeRemaining = computed(() => {
 					</p>
 					<p
 class="text-sm font-black bg-red-50 px-3 py-1 rounded-full mt-1 shadow-sm border border-red-100"
-					   :class="timeRemaining === 'Đã hết hạn' ? 'text-gray-500 bg-gray-50 border-gray-200' : 'text-red-600'">
+					   :class="timeRemaining ==='Đã hết hạn' ? 'text-gray-500 bg-gray-50 border-gray-200' : 'text-red-600'">
 						{{ timeRemaining }}
 					</p>
 				</div>

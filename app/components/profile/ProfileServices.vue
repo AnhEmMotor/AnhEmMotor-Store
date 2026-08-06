@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 const services = ref([
 	{
@@ -35,9 +35,59 @@ const services = ref([
 		cost: 0,
 		icon: "ph:lightning-fill",
 	},
+	{
+		id: 4,
+		serviceName: "Thay nhớt máy và nhớt hộp số",
+		date: "2024-04-12",
+		time: "08:30",
+		status: "Completed",
+		location: "AnhEm Motor - Quận 3",
+		technician: "Lê Văn C",
+		cost: 350000,
+		icon: "ph:drop-fill",
+	},
+	{
+		id: 5,
+		serviceName: "Bảo dưỡng nồi tay ga",
+		date: "2024-03-20",
+		time: "13:00",
+		status: "Completed",
+		location: "AnhEm Motor - Quận 1",
+		technician: "Phạm Văn D",
+		cost: 450000,
+		icon: "ph:gear-fill",
+	},
+	{
+		id: 6,
+		serviceName: "Sơn dặm vết xước",
+		date: "2024-02-15",
+		time: "15:00",
+		status: "Completed",
+		location: "AnhEm Motor - Quận 7",
+		technician: "Hoàng Văn E",
+		cost: 800000,
+		icon: "ph:paint-brush-fill",
+	},
+	{
+		id: 7,
+		serviceName: "Thay bugi và lọc gió",
+		date: "2024-01-10",
+		time: "14:00",
+		status: "Completed",
+		location: "AnhEm Motor - Quận 1",
+		technician: "Trần Văn F",
+		cost: 250000,
+		icon: "ph:engine-fill",
+	},
 ]);
 
 const activeFilter = ref("All");
+const currentPage = ref(1);
+const itemsPerPage = 3;
+
+watch(activeFilter, () => {
+	currentPage.value = 1;
+});
 
 const filters = [
 	{ id: "All", label: "Tất cả dịch vụ", icon: "ph:layout-fill" },
@@ -53,6 +103,16 @@ const filters = [
 const filteredServices = computed(() => {
 	if (activeFilter.value === "All") return services.value;
 	return services.value.filter((s) => s.status === activeFilter.value);
+});
+
+const totalPages = computed(() => {
+	return Math.ceil(filteredServices.value.length / itemsPerPage);
+});
+
+const paginatedServices = computed(() => {
+	if (activeFilter.value !== "All") return filteredServices.value;
+	const start = (currentPage.value - 1) * itemsPerPage;
+	return filteredServices.value.slice(start, start + itemsPerPage);
 });
 
 const getStatusColor = (status) => {
@@ -118,8 +178,7 @@ const formatPrice = (price) => {
 			<button
 				v-for="filter in filters"
 				:key="filter.id"
-				:class="[
-					'flex items-center gap-2 px-5 py-3 rounded-md text-[11px] font-black transition-all whitespace-nowrap border shrink-0',
+				:class="['flex items-center gap-2 px-5 py-3 rounded-md text-[11px] font-black transition-all whitespace-nowrap border shrink-0',
 					activeFilter === filter.id
 						? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
 						: 'bg-white text-gray-500 border-gray-100 hover:border-primary/30 hover:bg-gray-50',
@@ -134,7 +193,7 @@ const formatPrice = (price) => {
 		<!-- Services List -->
 		<div v-if="filteredServices.length > 0" class="grid grid-cols-1 gap-4">
 			<div
-				v-for="service in filteredServices"
+				v-for="service in paginatedServices"
 				:key="service.id"
 				class="bg-white rounded-lg p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all group"
 			>
@@ -212,161 +271,41 @@ const formatPrice = (price) => {
 					</button>
 				</div>
 			</div>
+
+            <!-- Pagination Controls -->
+            <div
+                v-if="activeFilter === 'All' && totalPages > 1"
+                class="flex justify-center items-center gap-2 mt-4 pt-2"
+            >
+                <button
+                    class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                    :disabled="currentPage === 1"
+                    @click="currentPage--"
+                >
+                    <Icon name="ph:caret-left-bold" />
+                </button>
+                <button
+                    v-for="page in totalPages"
+                    :key="page"
+                    class="w-8 h-8 flex items-center justify-center rounded-md text-xs font-bold transition-colors"
+                    :class="currentPage === page ?'bg-primary text-white shadow-md border-primary'
+                            : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                    "
+                    @click="currentPage = page"
+                >
+                    {{ page }}
+                </button>
+                <button
+                    class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+                    :disabled="currentPage === totalPages"
+                    @click="currentPage++"
+                >
+                    <Icon name="ph:caret-right-bold" />
+                </button>
+            </div>
 		</div>
 
 		<!-- Empty State -->
-		<div
-			v-else
-			class="bg-white rounded-lg p-12 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center"
-		>
-			<div
-				class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6"
-			>
-				<Icon name="ph:wrench-duotone" class="text-4xl text-gray-200" />
-			</div>
-			<h3
-				class="text-lg font-black text-gray-900 uppercase tracking-tight mb-2"
-			>
-				Không tìm thấy dịch vụ
-			</h3>
-			<p class="text-sm text-gray-400 font-medium max-w-xs mb-8">
-				{{
-					activeFilter === "All"
-						? "Bạn chưa có bản ghi dịch vụ nào trong hệ thống."
-						: "Bạn không có dịch vụ nào ở trạng thái này."
-				}}
-			</p>
-			<NuxtLink
-				v-if="activeFilter === 'All'"
-				to="/service"
-				class="px-8 py-3 bg-primary text-white text-[11px] font-black rounded-md hover:shadow-lg hover:shadow-primary/20 transition-all"
-			>
-				Đặt lịch dịch vụ ngay
-			</NuxtLink>
-			<button
-				v-else
-				class="px-8 py-3 bg-gray-900 text-white text-[11px] font-black rounded-md hover:shadow-lg transition-all"
-				@click="activeFilter = 'All'"
-			>
-				Xem tất cả dịch vụ
-			</button>
-		</div>
-	</div>
-	<div class="space-y-5">
-		<div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
-			<div class="flex items-center justify-between mb-2">
-				<h2 class="text-xl font-black text-gray-900 uppercase tracking-tight">
-					Dịch vụ sử dụng
-				</h2>
-				<span
-					class="text-xs font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-full border border-gray-100"
-				>
-					{{ filteredServices.length }} bản ghi
-				</span>
-			</div>
-			<p class="text-xs text-gray-500 font-medium">
-				Theo dõi lịch sử bảo dưỡng và sửa chữa xe của bạn.
-			</p>
-		</div>
-
-		<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
-			<button
-				v-for="filter in filters"
-				:key="filter.id"
-				:class="[
-					'flex items-center gap-2 px-5 py-3 rounded-md text-[11px] font-black transition-all whitespace-nowrap border shrink-0',
-					activeFilter === filter.id
-						? 'bg-primary text-white border-primary shadow-lg shadow-primary/20'
-						: 'bg-white text-gray-500 border-gray-100 hover:border-primary/30 hover:bg-gray-50',
-				]"
-				@click="activeFilter = filter.id"
-			>
-				<Icon :name="filter.icon" class="text-sm" />
-				{{ filter.label }}
-			</button>
-		</div>
-
-		<div v-if="filteredServices.length > 0" class="grid grid-cols-1 gap-4">
-			<div
-				v-for="service in filteredServices"
-				:key="service.id"
-				class="bg-white rounded-lg p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all group"
-			>
-				<div
-					class="flex flex-col md:flex-row md:items-center justify-between gap-6"
-				>
-					<div class="flex items-start gap-4">
-						<div
-							class="w-14 h-14 rounded-md bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors"
-						>
-							<Icon
-								:name="service.icon"
-								class="text-2xl text-primary group-hover:text-white"
-							/>
-						</div>
-						<div class="space-y-1">
-							<h3
-								class="font-black text-gray-900 group-hover:text-primary transition-colors"
-							>
-								{{ service.serviceName }}
-							</h3>
-							<div
-								class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-gray-500 font-bold"
-							>
-								<div class="flex items-center gap-1.5">
-									<Icon name="ph:calendar-blank-fill" class="text-primary/60" />
-									{{ service.date }}
-								</div>
-								<div class="flex items-center gap-1.5">
-									<Icon name="ph:clock-fill" class="text-primary/60" />
-									{{ service.time }}
-								</div>
-								<div class="flex items-center gap-1.5">
-									<Icon name="ph:map-pin-fill" class="text-primary/60" />
-									{{ service.location }}
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div
-						class="flex items-center justify-between md:flex-col md:items-end gap-2 border-t md:border-t-0 pt-4 md:pt-0 border-gray-50"
-					>
-						<div
-							class="px-3 py-1 rounded-full text-[10px] font-black border"
-							:class="getStatusColor(service.status)"
-						>
-							{{ getStatusLabel(service.status) }}
-						</div>
-						<div class="text-lg font-black text-gray-900">
-							{{ formatPrice(service.cost) }}
-						</div>
-					</div>
-				</div>
-
-				<div
-					class="mt-5 pt-4 border-t border-gray-50 flex items-center justify-between"
-				>
-					<div class="flex items-center gap-2">
-						<div
-							class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center"
-						>
-							<Icon name="ph:user-fill" class="text-xs text-gray-400" />
-						</div>
-						<span class="text-[10px] font-bold text-gray-500"
-							>Kỹ thuật viên: {{ service.technician }}</span
-						>
-					</div>
-					<button
-						class="text-[10px] font-black text-primary hover:underline flex items-center gap-1"
-					>
-						Xem chi tiết
-						<Icon name="ph:arrow-right-bold" />
-					</button>
-				</div>
-			</div>
-		</div>
-
 		<div
 			v-else
 			class="bg-white rounded-lg p-12 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center"

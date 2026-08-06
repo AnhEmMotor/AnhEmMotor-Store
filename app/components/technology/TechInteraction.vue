@@ -2,14 +2,15 @@
   <section class="py-12 sm:py-16 px-3 sm:px-4 bg-black relative z-10">
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-10 sm:mb-16 reveal reveal-up">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4 uppercase tracking-tight">Trải nghiệm tương tác <span class="text-red-600 font-black">SỐ</span></h2>
-        <p class="text-gray-500 text-sm sm:text-base max-w-xl mx-auto">"Khám phá thế giới xe máy qua lăng kính công nghệ hiện đại nhất."</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4 uppercase tracking-tight">Dịch Vụ & <span class="text-red-600 font-black">KINH DOANH</span></h2>
+        <p class="text-gray-500 text-sm sm:text-base max-w-xl mx-auto">"Đa dạng dịch vụ, đáp ứng mọi nhu cầu về xe máy của bạn."</p>
       </div>
       
       <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 sm:p-6">
-        <div
-v-for="(card, index) in cards" :key="card.title" 
-             class="group bg-[#111] rounded-2xl overflow-hidden border border-white/5 hover:border-red-600/40 transition-all duration-500 hover:-translate-y-2 shadow-xl reveal reveal-up"
+        <NuxtLink
+             v-for="(card, index) in cards" :key="card.title" 
+             :to="`/technology/${card.slug}`"
+             class="block group bg-[#111] rounded-2xl overflow-hidden border border-white/5 hover:border-red-600/40 transition-all duration-500 hover:-translate-y-2 shadow-xl reveal reveal-up"
              :style="`transition-delay: ${index * 150}ms`"
         >
           <div class="h-36 sm:h-40 overflow-hidden relative">
@@ -25,11 +26,11 @@ v-for="(card, index) in cards" :key="card.title"
             </div>
             <h3 class="text-base sm:text-base font-bold mb-2 sm:mb-3 group-hover:text-red-500 transition-colors uppercase tracking-tight">{{ card.title }}</h3>
             <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-5 h-16 overflow-hidden">{{ card.description }}</p>
-            <button class="text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all opacity-40 group-hover:opacity-100 group-hover:text-red-500">
+            <div class="text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all opacity-40 group-hover:opacity-100 group-hover:text-red-500">
               Tìm hiểu thêm <Icon name="lucide:arrow-right" />
-            </button>
+            </div>
           </div>
-        </div>
+        </NuxtLink>
       </div>
     </div>
   </section>

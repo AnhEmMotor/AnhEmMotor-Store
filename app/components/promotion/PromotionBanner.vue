@@ -98,7 +98,7 @@ const scrollToOffers = () => {
 							class="absolute top-10 right-10 w-24 h-24 bg-red-600 rounded-full flex flex-col items-center justify-center text-white shadow-2xl rotate-12 group-hover:rotate-0 transition-transform duration-700 border-4 border-white/20"
 						>
 							<span class="text-[10px] font-black uppercase">Giảm tới</span>
-							<span class="text-xl font-black italic">10Tr</span>
+							<span class="text-xl font-black">10Tr</span>
 						</div>
 
 						<div
@@ -113,7 +113,7 @@ const scrollToOffers = () => {
 								<h3
 									class="text-3xl font-black text-white uppercase tracking-tighter"
 								>
-									HONDA SH <span class="text-red-500 italic">NEW 2025</span>
+									HONDA SH <span class="text-red-500">NEW 2025</span>
 								</h3>
 								<div class="flex items-center gap-4 pt-4">
 									<div

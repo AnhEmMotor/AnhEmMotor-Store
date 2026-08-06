@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUserStore } from "@/stores/user.store";
 
@@ -19,6 +19,8 @@ const userStore = useUserStore();
 const user = computed(() => authStore.user);
 const isUploadingAvatar = computed(() => userStore.isUploadingAvatar);
 const fileInput = ref(null);
+const avatarError = ref(false);
+watch(() => user.value?.avatarUrl, () => { avatarError.value = false; });
 
 function triggerAvatarUpload() {
 	if (fileInput.value) fileInput.value.click();
@@ -51,21 +53,22 @@ function setActiveTab(tab) {
 </script>
 
 <template>
-	<div class="lg:w-1/3 xl:w-1/4 flex flex-col gap-5">
+	<div class="lg:w-1/3 xl:w-1/4 flex flex-col gap-5 lg:sticky lg:top-24 lg:h-max">
 		<div
 			class="bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex flex-col items-center"
 		>
 			<div
 				class="w-28 h-28 rounded-full bg-red-50 flex items-center justify-center overflow-hidden ring-4 ring-white shadow-sm transition-all relative group cursor-pointer"
-				:class="{ 'opacity-50 blur-[2px]': isUploadingAvatar }"
+				:class="{'opacity-50 blur-[2px]': isUploadingAvatar }"
 				@click="triggerAvatarUpload"
 			>
 				<img
-					v-if="user?.avatarUrl"
+					v-if="user?.avatarUrl && !avatarError"
 					:src="user.avatarUrl"
 					alt="Avatar"
 					referrerpolicy="no-referrer"
 					class="w-full h-full object-cover pointer-events-none"
+					@error="avatarError = true"
 				>
 				<ClientOnly v-else>
 					<Icon name="fa6-solid:user" class="text-red-500 text-4xl" />
@@ -133,8 +136,7 @@ function setActiveTab(tab) {
 		>
 			<nav class="flex flex-col">
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'profile'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -142,8 +144,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('profile')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'profile'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -157,8 +158,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'security'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -166,8 +166,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('security')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'security'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -181,8 +180,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'notifications'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -190,8 +188,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('notifications')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'notifications'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -205,8 +202,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'orders'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -214,8 +210,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('orders')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'orders'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',
@@ -229,8 +224,7 @@ function setActiveTab(tab) {
 				<div class="h-px bg-gray-100 mx-4" />
 
 				<button
-					:class="[
-						'flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
+					:class="['flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-all text-left border-l-4',
 						modelValue === 'services'
 							? 'border-primary bg-primary/5 text-primary'
 							: 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900',
@@ -238,8 +232,7 @@ function setActiveTab(tab) {
 					@click="setActiveTab('services')"
 				>
 					<div
-						:class="[
-							'w-8 h-8 rounded-md flex items-center justify-center transition-colors',
+						:class="['w-8 h-8 rounded-md flex items-center justify-center transition-colors',
 							modelValue === 'services'
 								? 'bg-primary/10 text-primary'
 								: 'bg-gray-100 text-gray-500',

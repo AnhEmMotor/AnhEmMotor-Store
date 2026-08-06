@@ -40,9 +40,7 @@
 						]"
 						:key="cat"
 						class="px-6 py-2.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest transition-all"
-						:class="
-							activeCategory === cat
-								? 'bg-red-600 text-white shadow-lg shadow-red-600/10'
+						:class="activeCategory === cat ?'bg-red-600 text-white shadow-lg shadow-red-600/10'
 								: 'bg-white text-gray-400 border border-gray-100 hover:border-red-600/30'
 						"
 						@click="activeCategory = cat"
@@ -57,8 +55,7 @@
 					v-for="(faq, idx) in filteredFaqs"
 					:key="idx"
 					class="bg-white rounded-xl border border-gray-100 overflow-hidden transition-all duration-500"
-					:class="{
-						'shadow-xl shadow-red-600/5 border-red-600/20': activeIdx === idx,
+					:class="{'shadow-xl shadow-red-600/5 border-red-600/20': activeIdx === idx,
 					}"
 				>
 					<button
@@ -71,7 +68,7 @@
 						>
 						<div
 							class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-red-700 group-hover:text-white transition-all duration-500"
-							:class="{ 'bg-red-700 text-white rotate-180': activeIdx === idx }"
+							:class="{'bg-red-700 text-white rotate-180': activeIdx === idx }"
 						>
 							<Icon name="fa6-solid:chevron-down" class="text-[9px]" />
 						</div>

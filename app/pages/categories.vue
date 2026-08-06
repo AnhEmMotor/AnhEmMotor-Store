@@ -16,7 +16,7 @@ useSeoMeta({
     <div class="bg-white min-h-screen py-20">
         <div class="max-w-[1440px] mx-auto px-10">
             <div class="mb-16">
-                <h1 class="text-5xl font-black text-gray-900 mb-4 italic uppercase tracking-tighter">
+                <h1 class="text-5xl font-black text-gray-900 mb-4 uppercase tracking-tighter">
                     Danh Mục <span class="text-primary">Sản Phẩm</span>
                 </h1>
                 <p class="text-gray-400 font-medium text-lg max-w-2xl">

@@ -150,6 +150,7 @@ export function useCart() {
 				productVariantId: variantId,
 				productVariantColorId: colorId || null,
 				effectiveMax: resolveEffectiveMax(item),
+				managementType: detail?.managementType || null,
 			};
 		}),
 	);

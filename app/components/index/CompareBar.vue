@@ -35,7 +35,7 @@ const compareStore = useCompareStore();
 						<div
 							class="w-12 h-12 bg-white rounded-xl overflow-hidden shadow-lg p-1"
 						>
-							<img :src="p.image" class="w-full h-full object-contain" >
+							<img :src="p.image" class="w-full h-full object-contain" @error="$event.target.src = '/assets/image/placeholder-product.webp'">
 						</div>
 						<div class="space-y-0.5">
 							<h4
@@ -65,7 +65,7 @@ const compareStore = useCompareStore();
 							<Icon name="fa6-solid:plus" class="text-xs" />
 						</div>
 						<span
-							class="text-[10px] font-black uppercase tracking-widest italic"
+							class="text-[10px] font-black uppercase tracking-widest"
 							>Chọn thêm xe...</span
 						>
 					</div>

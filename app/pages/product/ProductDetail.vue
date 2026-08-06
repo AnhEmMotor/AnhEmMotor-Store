@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import ProductBookingModal from "~/components/product/BookingModal.vue";
 definePageMeta({
 	path: "/product/:slug",
@@ -8,6 +8,7 @@ definePageMeta({
 const route = useRoute();
 const slug = computed(() => route.params.slug);
 const productStore = useProductStore();
+const nuxtApp = useNuxtApp();
 
 const {
 	data: detail,
@@ -20,6 +21,63 @@ const {
 		watch: [slug],
 	},
 );
+
+// Theo dõi thời gian xem (dwell time) để phục vụ gợi ý cá nhân hóa ở trang chủ. onMounted/
+// onBeforeUnmount chỉ chạy 1 lần cho cả phiên mở trang chi tiết (component được TÁI DÙNG khi slug
+// đổi trong SPA, xem ghi chú watch(requestedVariantId,...) bên dưới), nên phần chuyển sản phẩm dựa
+// vào watch(detail.product.id) chứ không phải onMounted.
+let viewStartAt = null;
+let trackedProductId = null;
+
+const flushProductView = () => {
+	if (!trackedProductId || !viewStartAt) return;
+	const dwellTimeMs = Date.now() - viewStartAt;
+	const productId = trackedProductId;
+	trackedProductId = null;
+	viewStartAt = null;
+	// runWithContext: hàm này chạy từ watch (sau khi useAsyncData resolve xong) hoặc từ event
+	// listener DOM thuần (visibilitychange/beforeunload) — cả 2 đều nằm ngoài Nuxt async context,
+	// nên gọi thẳng productStore.trackView() (dùng useRuntimeConfig/useAuthStore bên trong) sẽ
+	// thất bại lặng lẽ nếu không bọc lại context, giống pattern ở product.store.js.
+	nuxtApp.runWithContext(() =>
+		productStore.trackView(productId, dwellTimeMs, getOrCreateVisitorKey()),
+	);
+};
+
+const startTrackingCurrentProduct = () => {
+	const productId = detail.value?.product?.id;
+	if (!productId) return;
+	trackedProductId = productId;
+	viewStartAt = Date.now();
+};
+
+const handleVisibilityChange = () => {
+	if (document.hidden) {
+		flushProductView();
+	} else {
+		startTrackingCurrentProduct();
+	}
+};
+
+watch(
+	() => detail.value?.product?.id,
+	() => {
+		flushProductView();
+		startTrackingCurrentProduct();
+	},
+);
+
+onMounted(() => {
+	startTrackingCurrentProduct();
+	document.addEventListener("visibilitychange", handleVisibilityChange);
+	window.addEventListener("beforeunload", flushProductView);
+});
+
+onBeforeUnmount(() => {
+	flushProductView();
+	document.removeEventListener("visibilitychange", handleVisibilityChange);
+	window.removeEventListener("beforeunload", flushProductView);
+});
 
 const currentVariant = computed(() => detail.value?.currentVariant);
 const selectedColorIndex = ref(0);
@@ -35,6 +93,7 @@ const mainImage = computed({
 		return (
 			detail.value?.currentVariant?.photos?.[0] ||
 			detail.value?.currentVariant?.image ||
+			detail.value?.currentVariant?.coverImageUrl ||
 			detail.value?.currentVariant?.cover_image_url ||
 			"/assets/image/placeholder-product.webp"
 		);
@@ -197,11 +256,31 @@ const variantGroups = computed(() => {
 	return groups;
 });
 
+// Deep-link biến thể (?variant=<variantId>): tìm nhóm chứa variantId trên URL trong
+// variantGroups.value. Dùng watch(..., {immediate:true}) thay vì onMounted đơn thuần — Nuxt TÁI
+// DÙNG component này khi slug đổi trong SPA (xem useAsyncData watch:[slug] và watch(slug,...) dưới
+// đây), nên onMounted sẽ không chạy lại khi khách bấm 1 card biến thể khác trong lúc trang đang mở
+// sẵn. watch cả variantGroups để tự chạy lại khi data của slug mới tải xong (fetch là async).
+const requestedVariantId = computed(() =>
+	route.query.variant ? Number(route.query.variant) : null,
+);
+const findVariantGroupContaining = (variantId, groups) =>
+	Object.entries(groups).find(([, variants]) =>
+		variants.some((v) => Number(v.id) === variantId),
+	)?.[0];
+
 const selectedVariantGroup = ref("");
-onMounted(() => {
-	selectedVariantGroup.value =
-		variantName.value || Object.keys(variantGroups.value)[0] || "";
-});
+watch(
+	[requestedVariantId, variantGroups],
+	([variantId, groups]) => {
+		const fallback = variantName.value || Object.keys(groups)[0] || "";
+		const requestedGroup = variantId
+			? findVariantGroupContaining(variantId, groups)
+			: null;
+		selectedVariantGroup.value = requestedGroup || fallback;
+	},
+	{ immediate: true },
+);
 
 const currentGroupVariants = computed(() => {
 	return variantGroups.value[selectedVariantGroup.value] || [];
@@ -220,9 +299,22 @@ watch(selectedVariantGroup, (newGroup) => {
 	}
 });
 
-// Reset color index when product changes
+const requestedColorId = computed(() =>
+	route.query.color ? Number(route.query.color) : null,
+);
+watch(
+	[requestedColorId, currentVariant],
+	([colorId, variant]) => {
+		const colors = variant?.colors || [];
+		const requestedIndex = colorId
+			? colors.findIndex((c) => Number(c.id) === colorId)
+			: -1;
+		selectedColorIndex.value = requestedIndex >= 0 ? requestedIndex : 0;
+	},
+	{ immediate: true },
+);
+
 watch(slug, () => {
-	selectedColorIndex.value = 0;
 	selectedImage.value = null;
 });
 
@@ -302,7 +394,7 @@ const bookTestDrive = () => {
 				</ol>
 			</nav>
 
-			<div v-if="error" class="text-center py-32 bg-gray-50 rounded-[3rem]">
+			<div v-if="error || (!isLoading && !detail)" class="text-center py-32 bg-gray-50 rounded-[3rem]">
 				<div
 					class="inline-flex items-center justify-center w-24 h-24 bg-red-50 rounded-full mb-8"
 				>
@@ -353,7 +445,7 @@ const bookTestDrive = () => {
 						<div class="relative">
 							<div
 								class="relative aspect-[16/10] rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 group z-10"
-								:class="isPlaceholderImage ? 'bg-gray-50' : 'bg-white'"
+								:class="isPlaceholderImage ?'bg-gray-50' : 'bg-white'"
 							>
 								<div class="absolute top-6 left-6 z-20 flex flex-col gap-2">
 									<span
@@ -370,8 +462,9 @@ const bookTestDrive = () => {
 									:src="mainImage"
 									:alt="detail.product.name"
 									class="w-full h-full transition-transform duration-1000 group-hover:scale-105"
-									:class="isPlaceholderImage ? 'object-contain p-8' : 'object-cover'"
+									:class="isPlaceholderImage ?'object-contain p-8' : 'object-cover'"
 									loading="eager"
+									@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 								>
 							</div>
 							<!-- Reflection -->
@@ -388,9 +481,7 @@ const bookTestDrive = () => {
 								v-for="(color, index) in currentVariant.colors"
 								:key="index"
 								class="relative w-20 h-20 rounded-[1.5rem] overflow-hidden flex-shrink-0 transition-all duration-500 border-2"
-								:class="
-									selectedColorIndex === index
-										? 'border-primary ring-4 ring-primary/5 scale-105 shadow-xl bg-slate-900'
+								:class="selectedColorIndex === index ?'border-primary ring-4 ring-primary/5 scale-105 shadow-xl bg-slate-900'
 										: 'border-transparent hover:border-gray-200 shadow-sm opacity-50 hover:opacity-100 bg-slate-900/80'
 								"
 								@click="
@@ -402,6 +493,7 @@ const bookTestDrive = () => {
 									:src="color.image || color.coverImageUrl || currentVariant.image || '/assets/image/placeholder-product.webp'"
 									class="w-full h-full object-contain p-2"
 									loading="lazy"
+									@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 								>
 							</button>
 						</div>
@@ -412,7 +504,7 @@ const bookTestDrive = () => {
 								class="md:col-span-7 space-y-4 border-l-2 border-primary/20 pl-6"
 							>
 								<div
-									class="text-primary font-black uppercase tracking-[0.3em] text-xs italic"
+									class="text-primary font-black uppercase tracking-[0.3em] text-xs"
 								>
 									⚡ ĐỘT PHÁ CÔNG NGHỆ
 								</div>
@@ -464,7 +556,7 @@ const bookTestDrive = () => {
 									>
 								</div>
 								<h1
-									class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase italic reveal-up"
+									class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase reveal-up"
 								>
 									{{ detail.product.name }}
 								</h1>
@@ -483,7 +575,7 @@ const bookTestDrive = () => {
 									</div>
 								</div>
 								<div
-									class="text-2xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter italic"
+									class="text-2xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tighter"
 								>
 									{{ formattedPrice }}
 								</div>
@@ -550,9 +642,7 @@ const bookTestDrive = () => {
 													<button
 														v-else
 														class="block w-8 h-8 rounded-full border-2 transition-all p-0.5 focus:outline-none scale-110"
-														:class="
-															selectedColorIndex === cIdx
-																? 'border-primary shadow-md ring-2 ring-primary/10'
+														:class="selectedColorIndex === cIdx ?'border-primary shadow-md ring-2 ring-primary/10'
 																: 'border-white shadow-sm hover:scale-110'
 														"
 														@click="
@@ -588,7 +678,7 @@ const bookTestDrive = () => {
 												/>
 											</div>
 											<span
-												class="text-[7px] opacity-70 normal-case tracking-normal font-bold italic"
+												class="text-[7px] opacity-70 normal-case tracking-normal font-bold"
 												>Báo giá lăn bánh & Thủ tục trả góp</span
 											>
 										</button>
@@ -604,7 +694,7 @@ const bookTestDrive = () => {
 												ĐĂNG KÝ LÁI THỬ
 											</div>
 											<span
-												class="text-[7px] text-gray-400 normal-case tracking-normal font-bold italic"
+												class="text-[7px] text-gray-400 normal-case tracking-normal font-bold"
 												>Trải nghiệm thực tế tại cửa hàng AnhEm Motor</span
 											>
 										</button>
@@ -643,7 +733,7 @@ const bookTestDrive = () => {
 						<div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 rounded-full">
 							<span class="text-[8px] font-black text-primary uppercase tracking-[0.3em]">Chi tiết</span>
 						</div>
-						<h2 class="text-3xl lg:text-5xl font-black text-gray-900 uppercase tracking-tight italic leading-[1.1]">
+						<h2 class="text-3xl lg:text-5xl font-black text-gray-900 uppercase tracking-tight leading-[1.1]">
 							Nội dung <span class="text-primary">Sản phẩm</span>
 						</h2>
 					</div>
@@ -673,7 +763,7 @@ const bookTestDrive = () => {
 							>
 						</div>
 						<h2
-							class="text-4xl lg:text-6xl font-black text-gray-900 uppercase tracking-tight italic leading-[1.1]"
+							class="text-4xl lg:text-6xl font-black text-gray-900 uppercase tracking-tight leading-[1.1]"
 						>
 							Đột phá <span class="text-primary">Kỹ thuật</span>
 						</h2>
@@ -685,8 +775,7 @@ const bookTestDrive = () => {
 						class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-center reveal-up px-4 lg:px-12"
 					>
 						<div
-							:class="[
-								'lg:col-span-7 relative group',
+							:class="['lg:col-span-7 relative group',
 								idx % 2 !== 0 ? 'lg:order-2' : '',
 							]"
 						>
@@ -702,14 +791,13 @@ const bookTestDrive = () => {
 							</div>
 						</div>
 						<div
-							:class="[
-								'lg:col-span-5 space-y-6',
+							:class="['lg:col-span-5 space-y-6',
 								idx % 2 !== 0 ? 'lg:text-right' : '',
 							]"
 						>
 							<div class="space-y-3">
 								<h3
-									class="text-3xl lg:text-4xl font-black text-gray-900 leading-[1.15] uppercase italic tracking-tight"
+									class="text-3xl lg:text-4xl font-black text-gray-900 leading-[1.15] uppercase tracking-tight"
 								>
 									{{ hl.title }}
 								</h3>
@@ -740,7 +828,7 @@ const bookTestDrive = () => {
 							</span>
 						</div>
 						<h2
-							class="text-5xl lg:text-7xl font-black text-gray-900 uppercase tracking-tighter italic leading-none"
+							class="text-5xl lg:text-7xl font-black text-gray-900 uppercase tracking-tighter leading-none"
 						>
 							Đẳng cấp <span class="text-primary">Khác biệt</span>
 						</h2>
@@ -768,7 +856,7 @@ const bookTestDrive = () => {
 							<div class="lg:col-span-4 p-8 lg:p-12 space-y-8 bg-gray-50/50">
 								<div class="space-y-2 pt-4">
 									<h3
-										class="text-2xl font-black text-gray-900 uppercase italic tracking-tighter"
+										class="text-2xl font-black text-gray-900 uppercase tracking-tighter"
 									>
 										ĐẶC QUYỀN <span class="text-primary">SỞ HỮU</span>
 									</h3>
@@ -815,7 +903,7 @@ const bookTestDrive = () => {
 											Recommended
 										</div>
 										<div
-											class="text-2xl font-black text-white uppercase italic tracking-tighter"
+											class="text-2xl font-black text-white uppercase tracking-tighter"
 										>
 											ANHEM MOTOR
 										</div>
@@ -862,7 +950,7 @@ const bookTestDrive = () => {
 							>
 								<div class="space-y-2 pt-4 opacity-50">
 									<h3
-										class="text-2xl font-black text-gray-400 uppercase italic tracking-tighter"
+										class="text-2xl font-black text-gray-400 uppercase tracking-tighter"
 									>
 										PHỔ THÔNG
 									</h3>
@@ -914,7 +1002,7 @@ const bookTestDrive = () => {
 							/>
 						</div>
 						<h2
-							class="text-4xl lg:text-6xl font-black text-gray-900 uppercase tracking-tighter italic leading-none"
+							class="text-4xl lg:text-6xl font-black text-gray-900 uppercase tracking-tighter leading-none"
 						>
 							CỘNG ĐỒNG <span class="text-primary">ANHEM MOTOR</span>
 						</h2>
@@ -965,7 +1053,7 @@ const bookTestDrive = () => {
 								</div>
 							</div>
 							<p
-								class="text-gray-600 italic font-bold leading-relaxed text-base"
+								class="text-gray-600 font-bold leading-relaxed text-base"
 							>
 								"{{ rv.c }}"
 							</p>
@@ -973,7 +1061,7 @@ const bookTestDrive = () => {
 								class="flex items-center justify-between pt-4 border-t border-gray-50"
 							>
 								<div
-									class="text-[9px] font-black text-primary uppercase tracking-[0.2em] italic"
+									class="text-[9px] font-black text-primary uppercase tracking-[0.2em]"
 								>
 									{{ rv.t }}
 								</div>
@@ -1018,7 +1106,7 @@ const bookTestDrive = () => {
 								>
 							</div>
 							<h2
-								class="text-5xl lg:text-7xl font-black text-white leading-[1.1] uppercase italic tracking-tight"
+								class="text-5xl lg:text-7xl font-black text-white leading-[1.1] uppercase tracking-tight"
 							>
 								Đừng bỏ lỡ<br ><span class="text-primary drop-shadow-lg"
 									>Chiến mã</span
@@ -1075,6 +1163,7 @@ const bookTestDrive = () => {
 								:src="mainImage"
 								:alt="detail.product.name"
 								class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
+								@error="$event.target.src = '/assets/image/placeholder-product.webp'"
 							>
 							<!-- Reflection Shadow -->
 							<div
@@ -1095,7 +1184,7 @@ const bookTestDrive = () => {
 								>Technical Sheet</span
 							>
 							<h2
-								class="text-4xl lg:text-5xl font-black text-gray-900 uppercase tracking-tighter italic leading-none"
+								class="text-4xl lg:text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none"
 							>
 								Thông số <span class="text-primary">Kỹ thuật</span>
 							</h2>
@@ -1118,9 +1207,7 @@ const bookTestDrive = () => {
 							v-for="group in specGroups"
 							:key="group.title"
 							class="premium-card rounded-[2.5rem] bg-white/50 backdrop-blur-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
-							:class="[
-								isGroupExpanded(group.title)
-									? 'shadow-xl border-primary/20'
+							:class="[ isGroupExpanded(group.title) ?'shadow-xl border-primary/20'
 									: 'hover:border-primary/10',
 							]"
 						>
@@ -1132,9 +1219,7 @@ const bookTestDrive = () => {
 								<div class="flex items-center gap-5">
 									<div
 										class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center text-primary text-2xl shadow-xl transition-transform duration-500 group-hover/header:scale-110"
-										:class="[
-											isGroupExpanded(group.title)
-												? 'scale-110 ring-4 ring-primary/10'
+										:class="[ isGroupExpanded(group.title) ?'scale-110 ring-4 ring-primary/10'
 												: '',
 										]"
 									>
@@ -1142,22 +1227,20 @@ const bookTestDrive = () => {
 									</div>
 									<div class="space-y-1">
 										<h3
-											class="font-black text-gray-900 text-lg uppercase tracking-tight italic"
+											class="font-black text-gray-900 text-lg uppercase tracking-tight"
 										>
 											{{ group.title }}
 										</h3>
 										<div
 											class="h-1 bg-primary/20 rounded-full transition-all duration-500"
-											:class="[isGroupExpanded(group.title) ? 'w-16' : 'w-8']"
+											:class="[isGroupExpanded(group.title) ?'w-16' : 'w-8']"
 										/>
 									</div>
 								</div>
 								<Icon
 									name="fa6-solid:chevron-down"
 									class="text-gray-300 text-sm transition-transform duration-500"
-									:class="[
-										isGroupExpanded(group.title)
-											? 'rotate-180 text-primary'
+									:class="[ isGroupExpanded(group.title) ?'rotate-180 text-primary'
 											: '',
 									]"
 								/>
@@ -1166,9 +1249,7 @@ const bookTestDrive = () => {
 							<!-- Accordion Content -->
 							<div
 								class="grid transition-all duration-500 ease-in-out px-8"
-								:class="[
-									isGroupExpanded(group.title)
-										? 'grid-rows-[1fr] opacity-100 pb-10'
+								:class="[ isGroupExpanded(group.title) ?'grid-rows-[1fr] opacity-100 pb-10'
 										: 'grid-rows-[0fr] opacity-0 pb-0',
 								]"
 							>

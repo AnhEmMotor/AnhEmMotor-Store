@@ -8,7 +8,7 @@
 				<div class="space-y-6 sm:space-y-8 reveal reveal-left">
 					<div>
 						<div
-							class="text-red-500 font-black tracking-widest text-[9px] sm:text-[10px] uppercase mb-3 italic underline decoration-1 underline-offset-8"
+							class="text-red-500 font-black tracking-widest text-[9px] sm:text-[10px] uppercase mb-3 underline decoration-1 underline-offset-8"
 						>
 							Guardian Technology
 						</div>

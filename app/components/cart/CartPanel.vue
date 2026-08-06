@@ -1,8 +1,7 @@
 <template>
 	<teleport to="body">
 		<div
-			:class="[
-				'fixed inset-0 bg-black/40',
+			:class="['fixed inset-0 bg-black/40',
 				isOpen
 					? 'opacity-100 pointer-events-auto z-[3000]'
 					: shouldRender
@@ -13,8 +12,7 @@
 		/>
 
 		<div
-			:class="[
-				'fixed inset-y-0 right-0 w-full md:w-96 bg-white transform flex flex-col overflow-hidden shadow-2xl',
+			:class="['fixed inset-y-0 right-0 w-full md:w-96 bg-white transform flex flex-col overflow-hidden shadow-2xl',
 				isOpen ? 'translate-x-0' : 'translate-x-full',
 				isOpen || shouldRender ? 'z-[3000]' : '-z-10',
 			]"
@@ -54,7 +52,7 @@
 						v-for="(item, index) in cartItems"
 						:key="item.id"
 						class="flex items-center gap-3 mb-4 pb-4 border-b last:border-b-0 transition-opacity duration-300"
-						:class="{ 'opacity-60': item.loading }"
+						:class="{'opacity-60': item.loading }"
 					>
 						<div class="relative">
 							<img
@@ -133,7 +131,6 @@
 				<BaseButton
 					v-if="!auth.isLoggedIn"
 					id="checkout-button"
-					:to="{ path: '/login', query: { redirect: '/process-order' } }"
 					:disabled="cartItems.length === 0"
 					aria-label="Đăng nhập để tiếp tục thanh toán"
 					class="!w-full"
@@ -193,6 +190,7 @@ watch(
 
 function onCheckout() {
 	emit("close");
+	navigateTo({ path: "/login", query: { redirect: "/process-order" } });
 }
 
 function handleCheckout() {

@@ -38,7 +38,8 @@ if (import.meta.server) {
 	const event = useRequestEvent();
 	authStore.setSsrEvent(event);
 }
-await Promise.all([authStore.initAuth(), layoutStore.fetchLayoutData()]);
+authStore.initAuth();
+layoutStore.fetchLayoutData();
 
 const handleError = () => clearError({ redirect: "/" });
 

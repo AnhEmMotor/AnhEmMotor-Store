@@ -238,7 +238,7 @@ useHead({ title: "Đóng góp ý kiến | AnhEm Motor" });
 						v-for="(stat, index) in stats"
 						:key="stat.label"
 						class="fb-stat-item"
-						:class="{ 'fb-stat-divider': index < stats.length - 1 }"
+						:class="{'fb-stat-divider': index < stats.length - 1 }"
 					>
 						<p class="fb-stat-value">{{ stat.value }}</p>
 						<p class="fb-stat-label">{{ stat.label }}</p>

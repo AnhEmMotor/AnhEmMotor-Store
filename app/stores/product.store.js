@@ -30,12 +30,25 @@ export const useProductStore = defineStore("product", () => {
 	};
 
 	const getProducts = async (params) => {
+		const nuxtApp = useNuxtApp();
 		const res = await service.getProducts(params);
-		return {
+		return nuxtApp.runWithContext(() => ({
 			...res,
 			items: productMapper.mapProductList(res.items),
-		};
+		}));
 	};
+
+	const getRecommendations = async (params) => {
+		const nuxtApp = useNuxtApp();
+		const res = await service.getRecommendations(params);
+		return nuxtApp.runWithContext(() => ({
+			...res,
+			items: productMapper.mapProductList(res.items),
+		}));
+	};
+
+	const trackView = (productId, dwellTimeMs, visitorKey) =>
+		service.trackView(productId, dwellTimeMs, visitorKey);
 
 	const getBrands = async () => {
 		const res = await service.getBrands();
@@ -43,8 +56,9 @@ export const useProductStore = defineStore("product", () => {
 	};
 
 	const getProductStoreDetailBySlug = async (slug, attributeLabels = null) => {
+		const nuxtApp = useNuxtApp();
 		const res = await service.getProductDetail(slug);
-		return productMapper.mapProductDetail(res, attributeLabels);
+		return nuxtApp.runWithContext(() => productMapper.mapProductDetail(res, attributeLabels));
 	};
 
 	const getProductAttributeLabels = async () => {
@@ -59,8 +73,12 @@ export const useProductStore = defineStore("product", () => {
 	};
 
 	const fetchFullProductDetail = async (slug) => {
-		const labels = await fetchAttributeLabels();
-		return await getProductStoreDetailBySlug(slug, labels);
+		const nuxtApp = useNuxtApp();
+		const [labels, res] = await Promise.all([
+			fetchAttributeLabels(),
+			service.getProductDetail(slug),
+		]);
+		return nuxtApp.runWithContext(() => productMapper.mapProductDetail(res, labels));
 	};
 
 	return {
@@ -70,6 +88,8 @@ export const useProductStore = defineStore("product", () => {
 		fetchOptions,
 		getOptions,
 		getProducts,
+		getRecommendations,
+		trackView,
 		getBrands,
 		getProductStoreDetailBySlug,
 		getProductAttributeLabels,

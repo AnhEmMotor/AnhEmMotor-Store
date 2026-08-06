@@ -24,8 +24,8 @@ const handleSearch = async () => {
 			return;
 		}
 	} catch (error) {
-		// eslint-disable-next-line no-console
-		console.error("Lỗi tìm kiếm AI, chuyển về tìm kiếm mặc định", error);
+		 
+		logError("QuickSearch.aiSearch", { error: error.message });
 	} finally {
 		isLoading.value = false;
 	}

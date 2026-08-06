@@ -50,18 +50,7 @@ export const useOrderStore = defineStore("order", () => {
 		},
 	});
 
-	const settings = computed(() => ({
-		Order_value_exceeds: Number(
-			storeSettings.value?.Order_value_exceeds ||
-				storeSettings.value?.order_value_exceeds ||
-				100000000,
-		),
-		Deposit_ratio: Number(
-			storeSettings.value?.Deposit_ratio ||
-				storeSettings.value?.deposit_ratio ||
-				50,
-		),
-	}));
+	const settings = computed(() => storeSettings.value || {});
 
 	const calculatedShippingFee = ref(null);
 	const isCalculatingShipping = ref(false);
@@ -223,6 +212,29 @@ export const useOrderStore = defineStore("order", () => {
 		return isValid;
 	};
 
+const appliedVoucherId = ref(null);
+const appliedVoucherCode = ref(null);
+const appliedVoucherDiscount = ref(0);
+
+ 
+const setAppliedVoucher = (appliedVoucher) => {
+  if (appliedVoucher?.discountAmount > 0) {
+    appliedVoucherId.value = appliedVoucher.id || appliedVoucher.voucherId;
+    appliedVoucherCode.value = appliedVoucher.code;
+    appliedVoucherDiscount.value = appliedVoucher.discountAmount;
+  } else {
+    appliedVoucherId.value = null;
+    appliedVoucherCode.value = null;
+    appliedVoucherDiscount.value = 0;
+  }
+};
+
+const clearAppliedVoucher = () => {
+  appliedVoucherId.value = null;
+  appliedVoucherCode.value = null;
+  appliedVoucherDiscount.value = 0;
+};
+
 	const createOrder = async (cartItems) => {
 		isLoading.value = true;
 		error.value = null;
@@ -235,7 +247,12 @@ export const useOrderStore = defineStore("order", () => {
 				cartItems,
 				userId,
 				shippingInfo.value.paymentMethod,
+                appliedVoucherCode.value
 			);
+    if (appliedVoucherId.value) {
+      payload.voucherId = appliedVoucherId.value;
+      payload.discountAmount = appliedVoucherDiscount.value;
+    }
 			const res = await service.createOrder(payload);
 			lastCreatedOrderId.value = res.id || res.Id;
 			currentOrder.value = orderMapper.mapOrderResponse(res);
@@ -291,27 +308,13 @@ export const useOrderStore = defineStore("order", () => {
 
 	const fetchProvinces = async () => {
 		const axios = useAxios();
-		const response = await axios.get("/api/shipping-location/provinces");
-		const data = response.data?.data || response.data;
-		if (Array.isArray(data)) {
-			return data.map(p => ({
-				provinceId: p.ProvinceID || p.provinceId || p._id || p.id,
-				provinceName: p.ProvinceName || p.provinceName || p.name
-			}));
-		}
+		const response = await axios.get("/api/v1/SalesOrders/provinces");
 		return Array.isArray(response.data) ? response.data : [];
 	};
 
 	const fetchWards = async (provinceId) => {
 		const axios = useAxios();
-		const response = await axios.get(`/api/shipping-location/wards/${provinceId}`);
-		const data = response.data?.data || response.data;
-		if (Array.isArray(data)) {
-			return data.map(w => ({
-				wardCode: w.WardCode || w.wardCode || w._id || w.code || w.id,
-				wardName: w.WardName || w.wardName || w.name
-			}));
-		}
+		const response = await axios.get(`/api/v1/SalesOrders/wards/${provinceId}`);
 		return Array.isArray(response.data) ? response.data : [];
 	};
 
@@ -399,6 +402,7 @@ export const useOrderStore = defineStore("order", () => {
 		errors.value = { fullName: "", phone: "", address: "" };
 		shippingInfo.value.isCompanyInvoice = false;
 		clearPayment();
+  clearAppliedVoucher();
 	};
 
 	return {
@@ -434,6 +438,8 @@ export const useOrderStore = defineStore("order", () => {
 		calculatedShippingFee,
 		isCalculatingShipping,
 		calculateShippingFee,
+		setAppliedVoucher,
+		clearAppliedVoucher,
 	};
 });
 

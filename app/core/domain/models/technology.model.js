@@ -16,7 +16,9 @@ export class EngineTech {
 export class InteractionCard {
 	constructor(data = {}) {
 		this.title = data.title || "";
+		this.slug = data.slug || "";
 		this.description = data.description || "";
+		this.content = data.content || "";
 		this.image = data.image || "";
 		this.icon = data.icon || "lucide:box";
 	}
