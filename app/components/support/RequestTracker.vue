@@ -51,37 +51,71 @@
         </div>
       </div>
 
-      <div v-if="request.canCustomerRate" class="support-tracker__rating">
-        <p>Đánh giá nhân viên hỗ trợ</p>
-        <div
-          class="support-tracker__stars"
-          aria-label="Điểm đánh giá từ 1 đến 5"
-        >
-          <button
-            v-for="star in 5"
-            :key="star"
-            type="button"
-            :class="{ 'is-active': star <= rating }"
-            @click="rating = star"
-          >
-            <Icon name="ph:star-fill" />
-          </button>
+      <section v-if="request.status === 'Closed'" class="rating-history">
+        <div class="rating-history__heading">
+          <div>
+            <span>Đánh giá dịch vụ</span>
+            <h4>Lịch sử đánh giá</h4>
+          </div>
+          <Icon name="ph:star-fill" />
         </div>
-        <textarea
-          v-model="comment"
-          rows="3"
-          maxlength="1000"
-          placeholder="Chia sẻ trải nghiệm hỗ trợ của bạn"
-        />
-        <button
-          type="button"
-          class="support-tracker__submit"
-          :disabled="rating === 0 || ratingSubmitting"
-          @click="$emit('rate', rating, comment.trim())"
+
+        <article
+          v-if="request.customerRatingOfEmployee != null"
+          class="rating-history__item"
         >
-          {{ ratingSubmitting ? "Đang gửi..." : "Gửi đánh giá" }}
-        </button>
-      </div>
+          <div>
+            <strong>Đánh giá nhân viên hỗ trợ</strong>
+            <span>{{ formatTime(request.customerRatedAt) }}</span>
+          </div>
+          <div class="rating-history__score">
+            <div class="rating-history__stars" aria-label="Số sao đã đánh giá">
+              <Icon
+                v-for="star in 5"
+                :key="star"
+                name="ph:star-fill"
+                :class="{
+                  'is-active': star <= request.customerRatingOfEmployee,
+                }"
+              />
+            </div>
+            <b>{{ request.customerRatingOfEmployee }}/5 sao</b>
+          </div>
+        </article>
+
+        <div v-else-if="request.canCustomerRate" class="rating-history__action">
+          <div>
+            <strong>Đánh giá nhân viên hỗ trợ</strong>
+            <span>Chọn số sao cho trải nghiệm hỗ trợ của bạn.</span>
+          </div>
+          <div class="rating-history__action-controls">
+            <div
+              class="rating-history__stars rating-history__stars--editable"
+              aria-label="Điểm đánh giá từ 1 đến 5"
+            >
+              <button
+                v-for="star in 5"
+                :key="star"
+                type="button"
+                :class="{ 'is-active': star <= rating }"
+                @click="rating = star"
+              >
+                <Icon name="ph:star-fill" />
+              </button>
+            </div>
+            <button
+              type="button"
+              class="rating-history__submit"
+              :disabled="rating === 0 || ratingSubmitting"
+              @click="$emit('rate', rating, '')"
+            >
+              {{ ratingSubmitting ? "Đang gửi..." : "Lưu số sao" }}
+            </button>
+          </div>
+        </div>
+
+        <p v-else class="rating-history__empty">Chưa có lượt đánh giá nào.</p>
+      </section>
     </template>
   </section>
 </template>
@@ -96,13 +130,11 @@ const props = defineProps({
 defineEmits(["refresh", "rate"]);
 
 const rating = ref(0);
-const comment = ref("");
 
 watch(
   () => props.request?.customerRatingOfEmployee,
   (value) => {
     rating.value = value || 0;
-    comment.value = props.request?.customerRatingComment || "";
   },
   { immediate: true },
 );
@@ -139,7 +171,7 @@ const steps = computed(() => [
 ]);
 
 const formatTime = (value) => {
-  if (!value) return "Chưa đến bước này";
+  if (!value) return "Chưa ghi nhận thời gian";
   return new Intl.DateTimeFormat("vi-VN", {
     dateStyle: "short",
     timeStyle: "short",
@@ -168,17 +200,19 @@ const formatTime = (value) => {
 }
 .support-tracker__header p,
 .support-tracker__header h3,
-.support-tracker__rating p {
+.rating-history__heading h4 {
   margin: 0;
 }
-.support-tracker__header p {
+.support-tracker__header p,
+.rating-history__heading span {
   color: rgb(220 38 38);
   font-size: 0.625rem;
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.support-tracker__header h3 {
+.support-tracker__header h3,
+.rating-history__heading h4 {
   color: rgb(17 24 39);
   font-size: 1rem;
   font-weight: 900;
@@ -201,17 +235,26 @@ const formatTime = (value) => {
   border-radius: 1rem;
   background: rgb(254 242 242);
 }
-.support-tracker__employee div {
+.support-tracker__employee div,
+.support-tracker__step > div:last-child,
+.rating-history__item > div:first-child,
+.rating-history__action > div:first-child {
   display: flex;
+  min-width: 0;
   flex-direction: column;
 }
 .support-tracker__employee span,
-.support-tracker__step span {
+.support-tracker__step span,
+.rating-history__item span,
+.rating-history__action span,
+.rating-history__empty {
   color: rgb(107 114 128);
   font-size: 0.65rem;
 }
 .support-tracker__employee strong,
-.support-tracker__step strong {
+.support-tracker__step strong,
+.rating-history__item strong,
+.rating-history__action strong {
   color: rgb(31 41 55);
   font-size: 0.75rem;
 }
@@ -227,11 +270,6 @@ const formatTime = (value) => {
   border: 1px solid rgb(243 244 246);
   border-radius: 1rem;
   background: rgb(249 250 251);
-}
-.support-tracker__step > div:last-child {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
 }
 .support-tracker__marker {
   display: grid;
@@ -255,58 +293,85 @@ const formatTime = (value) => {
   color: white;
   background: rgb(22 163 74);
 }
-.support-tracker__rating {
+.rating-history {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(229 231 235);
+}
+.rating-history__heading,
+.rating-history__item,
+.rating-history__action,
+.rating-history__score,
+.rating-history__action-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.rating-history__heading {
+  margin-bottom: 0.75rem;
+  color: rgb(245 158 11);
+}
+.rating-history__heading > div {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  padding: 1rem;
+}
+.rating-history__item,
+.rating-history__action,
+.rating-history__empty {
+  padding: 0.9rem;
+  border: 1px solid rgb(243 244 246);
   border-radius: 1rem;
   background: rgb(249 250 251);
 }
-.support-tracker__rating p {
-  color: rgb(17 24 39);
-  font-size: 0.8rem;
-  font-weight: 900;
-}
-.support-tracker__stars {
+.rating-history__stars {
   display: flex;
-  gap: 0.35rem;
-}
-.support-tracker__stars button {
+  gap: 0.22rem;
   color: rgb(209 213 219);
-  font-size: 1.4rem;
 }
-.support-tracker__stars button.is-active {
+.rating-history__stars .is-active,
+.rating-history__stars button.is-active {
   color: rgb(245 158 11);
 }
-.support-tracker__rating textarea {
-  padding: 0.75rem;
-  border: 1px solid rgb(229 231 235);
-  border-radius: 0.75rem;
-  background: white;
-  font-size: 0.75rem;
-  resize: vertical;
+.rating-history__stars--editable button {
+  font-size: 1.35rem;
 }
-.support-tracker__submit {
-  padding: 0.75rem 1rem;
-  color: white;
-  border-radius: 0.75rem;
-  background: rgb(220 38 38);
+.rating-history__score b {
+  color: rgb(31 41 55);
   font-size: 0.7rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  white-space: nowrap;
 }
-.support-tracker__submit:disabled {
+.rating-history__submit {
+  padding: 0.65rem 0.85rem;
+  color: white;
+  border-radius: 0.7rem;
+  background: rgb(220 38 38);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+.rating-history__submit:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+.rating-history__empty {
+  margin: 0;
+  text-align: center;
 }
 .support-tracker__empty {
   padding: 1.5rem;
   color: rgb(107 114 128);
   font-size: 0.75rem;
   text-align: center;
+}
+@media (max-width: 639px) {
+  .rating-history__item,
+  .rating-history__action {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .rating-history__action-controls {
+    width: 100%;
+  }
 }
 @media (min-width: 640px) {
   .support-tracker {
