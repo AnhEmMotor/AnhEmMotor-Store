@@ -333,7 +333,12 @@ const productMapper = {
 				price: v.price || v.Price,
 				effectiveMax:
 					v.effectiveMax ?? v.product_limit ?? product.product_limit ?? null,
+				image: getImageUrl(v.cover_image_url),
+				cover_image_url: getImageUrl(v.cover_image_url),
 				colors: mapColors(v),
+				photos: v.photo_collection?.map((url) => getImageUrl(url)) || [
+					getImageUrl(v.cover_image_url),
+				],
 			})),
 			specifications,
 		};

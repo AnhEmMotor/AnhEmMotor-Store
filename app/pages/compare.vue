@@ -388,10 +388,10 @@ const filteredProducts = computed(() => {
 							<span class="inline-block px-2 py-0.5 bg-red-500 text-white text-[8px] font-black uppercase mb-2">MỚI</span>
 							
 							<div class="aspect-[4/3] mb-4 relative p-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-								<img :src="getBasicProductImage(product)" :alt="product.name" class="max-w-full max-h-full object-contain mix-blend-multiply" >
+								<img :src="getBasicProductImage(product)" :alt="product.name" class="max-w-full max-h-full object-contain mix-blend-multiply" @error="$event.target.src = '/assets/image/placeholder-product.webp'" >
 							</div>
 						</div>
-						
+
 						<div class="flex items-center justify-between mt-4">
 							<p class="text-xs font-medium text-gray-500">Giá từ: <span class="text-gray-900 font-black text-xs">{{ formatPrice(product.price) }}</span></p>
 							<!-- Checkbox -->
@@ -515,7 +515,7 @@ const filteredProducts = computed(() => {
 			</div>
 
 			<!-- Modal CHỌN THÊM SẢN PHẨM -->
-			<div v-if="isModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+			<div v-if="isModalOpen" class="fixed inset-0 z-[2200] flex items-center justify-center p-4">
 				<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="isModalOpen = false" />
 				<div class="relative w-full max-w-5xl bg-white rounded-none shadow-2xl flex flex-col h-[85vh] animate-in fade-in zoom-in-95 duration-200">
 					

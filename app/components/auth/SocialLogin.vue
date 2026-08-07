@@ -11,6 +11,7 @@ useHead({
 
 const authStore = useAuthStore();
 const instance = useNuxtApp();
+const route = useRoute();
 
 const props = defineProps({
 	mode: {
@@ -33,7 +34,7 @@ const handleGoogleLogin = (response) => {
 			emit("loading", true);
 			const { error } = await authStore.loginWithGoogle(response.credential);
 			if (!error) {
-				await navigateTo("/");
+				await navigateTo(route.query.redirect || "/");
 			} else {
 				instance.$toast.error(`${modeText.value} Google thất bại!`);
 			}
@@ -63,7 +64,7 @@ const handleFacebookLogin = () => {
 							response.authResponse.accessToken,
 						);
 						if (!error) {
-							await navigateTo("/");
+							await navigateTo(route.query.redirect || "/");
 						} else {
 							instance.$toast.error(`${modeText.value} Facebook thất bại!`);
 						}

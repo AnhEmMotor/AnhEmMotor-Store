@@ -10,13 +10,13 @@ import CheckoutPaymentMethod from "@/components/checkout/CheckoutPaymentMethod.v
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary.vue";
 
 useSeoMeta({
-	title: "Thanh Toan",
-	description: "Hoan tat don hang cua ban tai AnhEm Motor.",
-	ogTitle: "Thanh Toan",
-	ogDescription: "Hoan tat don hang cua ban tai AnhEm Motor.",
+	title: "Thanh Toán",
+	description: "Hoàn tất đơn hàng của bạn tại AnhEmMotor.",
+	ogTitle: "Thanh Toán",
+	ogDescription: "Hoàn tất đơn hàng của bạn tại AnhEmMotor.",
 	ogImage: "/assets/image/index/index-banner-bg.webp",
-	twitterTitle: "Thanh Toan",
-	twitterDescription: "Hoan tat don hang cua ban tai AnhEm Motor.",
+	twitterTitle: "Thanh Toán",
+	twitterDescription: "Hoàn tất đơn hàng của bạn tại AnhEmMotor.",
 	twitterImage: "/assets/image/index/index-banner-bg.webp",
 });
 
@@ -40,7 +40,7 @@ watch(
 			orderStore.calculateShippingFee(cartDetails.value);
 		}
 	},
-	{ deep: true }
+	{ deep: true },
 );
 
 const handleCheckout = async () => {
@@ -140,4 +140,3 @@ const handleCheckout = async () => {
 <style scoped>
 @reference "../assets/main.css";
 </style>
-

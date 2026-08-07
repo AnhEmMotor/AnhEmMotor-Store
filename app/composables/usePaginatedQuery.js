@@ -92,6 +92,14 @@ export function usePaginatedQuery(config) {
 		...buildCleanFilters(),
 	}));
 
+	function getNonDebouncedSnapshot() {
+		const filtersObj = unref(rawFilters);
+		if (!filtersObj) return [];
+		return Object.keys(filtersObj)
+			.filter((key) => !debouncedFields.includes(key))
+			.map((key) => filtersObj[key]);
+	}
+
 	if (!useLocalPagination && import.meta.client) {
 		watch(
 			() => ({ ...debouncedValues }),
@@ -100,18 +108,19 @@ export function usePaginatedQuery(config) {
 			},
 		);
 
+		// `rawFilters` (e.g. the sidebar's v-model) is replaced wholesale on every edit,
+		// including edits to debounced fields like "search" — so this must diff the actual
+		// non-debounced values, not just react to the ref being reassigned, or every
+		// keystroke in a debounced field would also re-sync the URL with stale debounced
+		// values and stomp what the user just typed.
+		let previousNonDebouncedSnapshot = JSON.stringify(getNonDebouncedSnapshot());
 		watch(
-			() => {
-				const filtersObj = unref(rawFilters);
-				if (!filtersObj) return [];
-				return Object.keys(filtersObj)
-					.filter((key) => !debouncedFields.includes(key))
-					.map((key) => filtersObj[key]);
-			},
-			() => {
-				if (!useLocalPagination && import.meta.client) {
-					syncFiltersToUrl();
-				}
+			getNonDebouncedSnapshot,
+			(newVal) => {
+				const snapshot = JSON.stringify(newVal);
+				if (snapshot === previousNonDebouncedSnapshot) return;
+				previousNonDebouncedSnapshot = snapshot;
+				syncFiltersToUrl();
 			},
 			{ deep: true },
 		);

@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { STATIC_CATEGORIES } from "~/constants/categories";
 
 const route = useRoute();
 const router = useRouter();
@@ -316,7 +317,7 @@ const formatVND = (value) => {
 							@click="filters.category_ids = filters.category_ids.filter(id => id !== catId)"
 						>
 							<Icon name="fa6-solid:folder-open" class="text-xs" />
-							<span>Danh mục: {{ categoryStore.categories.find(c => c.id === catId)?.name || catId }}</span>
+							<span>Danh mục: {{ categoryStore.categories.find(c => c.id === catId)?.name || STATIC_CATEGORIES.find(c => c.id === catId)?.name || catId }}</span>
 							<Icon
 								name="fa6-solid:xmark"
 								class="ml-1 opacity-50 group-hover:opacity-100"

@@ -64,7 +64,7 @@ const footerData = computed(() => layoutStore.footerData);
 
 			<div class="text-center pt-8 border-t border-white/10 text-white/60">
 				<p>
-					© 2025 AnhEm Motor. Mọi quyền được bảo lưu. | Thiết kế bởi AnhEm Team
+					© 2026 AnhEm Motor. Mọi quyền được bảo lưu. | Thiết kế bởi AnhEm Team
 				</p>
 			</div>
 		</div>

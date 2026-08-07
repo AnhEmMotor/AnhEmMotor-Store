@@ -5,16 +5,7 @@ export const getImageUrl = (path) => {
 		path = path.split(",")[0].trim();
 	}
 
-	if (path.startsWith("http") || path.startsWith("data:")) return path;
-
-	if (
-		typeof path === "string" &&
-		path.startsWith("/") &&
-		!path.startsWith("/uploads") &&
-		!path.startsWith("/api")
-	) {
-		return path;
-	}
+	if (path.startsWith("http") || path.startsWith("data:") || path.startsWith("/assets/")) return path;
 
 	const config = useRuntimeConfig();
 	const baseURL = config.public.apiUrlForBrowserClient || "";

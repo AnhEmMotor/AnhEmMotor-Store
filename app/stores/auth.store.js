@@ -465,6 +465,11 @@ export const useAuthStore = defineStore("auth", () => {
 		} catch {
 			// ignore error on logout API
 		} finally {
+			user.value = null;
+			accessToken.value = null;
+			expiresAt.value = null;
+			status.value = "unauthenticated";
+
 			if (import.meta.client && queryClient) {
 				queryClient.cancelQueries();
 				queryClient.removeQueries();
