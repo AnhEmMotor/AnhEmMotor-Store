@@ -29,12 +29,15 @@ export const productService = {
 		return await productRepository.getAttributeLabels();
 	},
 
-	async getBrands() {
+	async getBrands(params) {
 		try {
-			const data = await productRepository.getBrands();
-			return data?.items || data || [];
+			const data = await productRepository.getBrands(params);
+			return {
+				items: data?.items || (Array.isArray(data) ? data : []),
+				totalPages: data?.totalPages ?? 1,
+			};
 		} catch {
-			return [];
+			return { items: [], totalPages: 1 };
 		}
 	},
 

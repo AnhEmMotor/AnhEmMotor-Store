@@ -95,9 +95,13 @@ const handleCheckout = async () => {
 
 <template>
 	<main class="min-h-screen bg-gray-50 py-12">
+		<CommonFullLoading
+			:show="orderStore.isLoading || orderStore.isRedirecting"
+			text="Đang xử lý đơn hàng..."
+		/>
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<ClientOnly>
-				<CheckoutCartEmpty v-if="cartItems.length === 0" />
+				<CheckoutCartEmpty v-if="cartItems.length === 0 && !orderStore.isRedirecting" />
 
 				<div v-else class="flex flex-col lg:flex-row gap-8">
 					<div class="flex-1 space-y-6">

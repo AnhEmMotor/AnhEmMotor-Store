@@ -26,9 +26,9 @@ export const productRepository = {
 		return response.data;
 	},
 
-	async getBrands() {
+	async getBrands(params) {
 		const axios = useAxios();
-		const response = await axios.get(PRODUCT_ENDPOINTS.BRANDS);
+		const response = await axios.get(PRODUCT_ENDPOINTS.BRANDS, { params });
 		return response.data;
 	},
 

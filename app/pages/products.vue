@@ -89,6 +89,7 @@ const filters = ref({
 	maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : null,
 	versions: parseStringArrayQuery(route.query.versions),
 	colors: parseStringArrayQuery(route.query.colors),
+	sortBy: route.query.sortBy || "",
 });
 
 const {
@@ -129,6 +130,10 @@ const {
 			sieveParams.minPrice = Math.round(filters.value.minPrice);
 		if (filters.value.maxPrice !== null)
 			sieveParams.maxPrice = Math.round(filters.value.maxPrice);
+
+		delete sieveParams.sortBy;
+		if (filters.value.sortBy === "price_asc") sieveParams.sorts = "price";
+		else if (filters.value.sortBy === "price_desc") sieveParams.sorts = "-price";
 
 		return productStore.getProducts(sieveParams);
 	},
@@ -194,6 +199,11 @@ watch(
 		const newColors = parseStringArrayQuery(newQuery.colors);
 		if (JSON.stringify(filters.value.colors) !== JSON.stringify(newColors)) {
 			filters.value.colors = newColors;
+		}
+
+		const newSortBy = newQuery.sortBy || "";
+		if (filters.value.sortBy !== newSortBy) {
+			filters.value.sortBy = newSortBy;
 		}
 	},
 	{ immediate: true, deep: true },
@@ -268,6 +278,21 @@ const formatVND = (value) => {
 						</div>
 
 						<div class="flex items-center gap-3">
+							<div class="relative">
+								<select
+									v-model="filters.sortBy"
+									aria-label="Sắp xếp sản phẩm"
+									class="h-12 pl-4 pr-9 bg-white border border-gray-200 rounded-xl outline-none appearance-none font-bold text-gray-900 cursor-pointer focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm shadow-sm"
+								>
+									<option value="">Sắp xếp: Mặc định</option>
+									<option value="price_asc">Giá: Thấp đến cao</option>
+									<option value="price_desc">Giá: Cao đến thấp</option>
+								</select>
+								<Icon
+									name="ph:caret-down-bold"
+									class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"
+								/>
+							</div>
 							<button
 								class="lg:hidden flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"
 								aria-label="Mở bộ lọc sản phẩm"
@@ -357,6 +382,7 @@ const formatVND = (value) => {
 								filters.maxPrice = null;
 								filters.versions = [];
 								filters.colors = [];
+								filters.sortBy = '';
 							"
 						>
 							Xóa tất cả

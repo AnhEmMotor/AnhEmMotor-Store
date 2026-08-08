@@ -50,8 +50,8 @@ export const useProductStore = defineStore("product", () => {
 	const trackView = (productId, dwellTimeMs, visitorKey) =>
 		service.trackView(productId, dwellTimeMs, visitorKey);
 
-	const getBrands = async () => {
-		const res = await service.getBrands();
+	const getBrands = async (params) => {
+		const res = await service.getBrands(params);
 		return res;
 	};
 
