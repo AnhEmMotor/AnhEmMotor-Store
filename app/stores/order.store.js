@@ -119,7 +119,7 @@ export const useOrderStore = defineStore("order", () => {
 		companyTaxCode: "",
 		companyEmail: "",
 		budgetCode: "",
-		provinceId: null,
+		provinceId: "",
 		wardCode: "",
 	});
 

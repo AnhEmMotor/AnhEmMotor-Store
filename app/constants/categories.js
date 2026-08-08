@@ -1,7 +1,7 @@
 export const STATIC_CATEGORIES = [
 	{
 		id: 8,
-		name: "Xe",
+		name: "Xe Máy",
 		slug: "xe",
 		image: "/assets/image/categories/xe.webp",
 		query: "page=1&category_ids=8",

@@ -1,6 +1,7 @@
 <script setup>
-import { computed } from "vue";
-import { useQuery } from "@tanstack/vue-query";
+import { computed, onServerPrefetch } from "vue";
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { STATIC_CATEGORIES } from "~/constants/categories";
 
 
 const props = defineProps({
@@ -18,8 +19,6 @@ const MAX_PRICE = 60000000;
 
 const {
 	data: filterFacetsData,
-	isLoading: isLoadingFilterFacets,
-	isError: isFilterFacetsError,
 } = useQuery({
 	queryKey: computed(() => ["product-filter-facets", props.modelValue.category_ids]),
 	queryFn: async () => {
@@ -72,26 +71,56 @@ const {
 	placeholderData: (prev) => prev,
 });
 
+const queryClient = useQueryClient();
+const brandsQueryKey = ["product-brands"];
+
+async function fetchBrands() {
+	const pageSize = 100;
+	let page = 1;
+	let totalPages = 1;
+	const items = [];
+	do {
+		const res = await productStore.getBrands({ page, pageSize });
+		items.push(...(res.items || []));
+		totalPages = res.totalPages || 1;
+		page++;
+	} while (page <= totalPages);
+	return items;
+}
+
+if (import.meta.server) {
+	onServerPrefetch(async () => {
+		await queryClient.prefetchQuery({
+			queryKey: brandsQueryKey,
+			queryFn: fetchBrands,
+			staleTime: 1000 * 60 * 60,
+		});
+	});
+}
+
 const {
 	data: brandsData,
 } = useQuery({
-	queryKey: ["product-brands"],
-	queryFn: () => productStore.getBrands(),
+	queryKey: brandsQueryKey,
+	queryFn: fetchBrands,
 	staleTime: 1000 * 60 * 60,
 });
 
+// Brand data has genuine duplicate rows sharing the same name (same name, different ids).
+// Group them by name so the picker shows each name once, and selecting it filters by every id sharing that name.
 const brands = computed(() => {
-	const items = brandsData.value?.items || brandsData.value || [];
-	return [...items].sort((a, b) => (a.name || "").localeCompare(b.name || "", "vi"));
+	const items = brandsData.value || [];
+	const byName = new Map();
+	for (const b of items) {
+		const key = (b.name || "").trim();
+		if (!key) continue;
+		if (!byName.has(key)) byName.set(key, { name: key, ids: [] });
+		byName.get(key).ids.push(b.id);
+	}
+	return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name, "vi"));
 });
 const versions = computed(() => filterFacetsData.value?.versions || []);
 const colors = computed(() => filterFacetsData.value?.colors || []);
-
-const staticCategories = [
-	{ id: 13, name: "Phụ tùng" },
-	{ id: 8, name: "Xe máy" },
-	{ id: 12, name: "Phụ kiện" },
-];
 
 const isCategorySelected = (catId) => {
 	return (props.modelValue.category_ids || []).includes(catId);
@@ -108,14 +137,10 @@ const toggleCategory = (catId) => {
 	emit("update:modelValue", { ...props.modelValue, category_ids: current });
 };
 
-const selectedBrandId = computed({
-	get: () => {
-		const ids = props.modelValue.brand_ids || [];
-		return ids.length > 0 ? ids[0] : "";
-	},
+const selectedBrandIds = computed({
+	get: () => props.modelValue.brand_ids || [],
 	set: (val) => {
-		const ids = val ? [Number(val)] : [];
-		emit("update:modelValue", { ...props.modelValue, brand_ids: ids });
+		emit("update:modelValue", { ...props.modelValue, brand_ids: val || [] });
 	},
 });
 
@@ -225,6 +250,7 @@ const resetFilters = () => {
 		maxPrice: null,
 		versions: [],
 		colors: [],
+		sortBy: "",
 	});
 };
 
@@ -317,32 +343,21 @@ const searchArticle = (_event) => {
 						>Thương Hiệu</label
 					>
 				</div>
-				<ClientOnly>
-					<div v-if="isLoadingFilterFacets" class="py-4 flex justify-center">
-						<div class="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"/>
-					</div>
-					<p
-						v-else-if="isFilterFacetsError"
-						class="rounded-xl border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-600"
+				<div class="relative">
+					<select
+						v-model="selectedBrandIds"
+						class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl outline-none appearance-none font-semibold text-gray-800 cursor-pointer focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm"
 					>
-						Không thể tải danh sách thương hiệu.
-					</p>
-					<div v-else class="relative">
-						<select
-							v-model="selectedBrandId"
-							class="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl outline-none appearance-none font-semibold text-gray-800 cursor-pointer focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm"
-						>
-							<option value="">Chọn tất cả</option>
-							<option v-for="brand in brands" :key="brand.id" :value="brand.id">
-								{{ brand.name }}
-							</option>
-						</select>
-						<Icon
-							name="ph:caret-down-bold"
-							class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"
-						/>
-					</div>
-				</ClientOnly>
+						<option :value="[]">Chọn tất cả</option>
+						<option v-for="brand in brands" :key="brand.name" :value="brand.ids">
+							{{ brand.name }}
+						</option>
+					</select>
+					<Icon
+						name="ph:caret-down-bold"
+						class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"
+					/>
+				</div>
 			</div>
 
 			<!-- Categories (Danh mục) -->
@@ -353,7 +368,7 @@ const searchArticle = (_event) => {
 				</div>
 				<div class="grid grid-cols-2 gap-2">
 					<button
-						v-for="cat in staticCategories"
+						v-for="cat in STATIC_CATEGORIES"
 						:key="cat.id"
 						class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
 						:class="[ isCategorySelected(cat.id) ?'bg-primary border-primary text-white shadow-lg shadow-primary/20'

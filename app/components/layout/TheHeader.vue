@@ -1,7 +1,7 @@
 <template>
 	<header
 		class="fixed top-0 w-full z-1000 bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
-		:class="[isScrolled ?'shadow-lg' : '']"
+		:class="[isScrolled ? 'shadow-lg' : '']"
 	>
 		<!-- TẦNG 1: TOP BAR (MINIMAL & COHESIVE) -->
 		<div
@@ -49,12 +49,14 @@
 						:key="item.name"
 						:to="item.path"
 						class="text-[9px] font-black uppercase tracking-widest text-gray-400 hover:text-primary transition-all duration-300 relative group/top flex items-center gap-1"
-						:class="{'text-primary font-black': isRouteActive(item.path) }"
+						:class="{ 'text-primary font-black': isRouteActive(item.path) }"
 					>
 						{{ item.name }}
 						<span
 							class="absolute -bottom-1 left-1/2 -translate-x-1/2 h-[1.5px] bg-primary transition-all duration-300"
-							:class="isRouteActive(item.path) ?'w-full'
+							:class="
+								isRouteActive(item.path)
+									? 'w-full'
 									: 'w-0 group-hover/top:w-full'
 							"
 						/>
@@ -66,7 +68,9 @@
 		<!-- TẦNG 2: MAIN HEADER (PREMIUM & INTEGRATED) -->
 		<div
 			class="py-2 sm:py-3 bg-white/70 backdrop-blur-xl transition-all duration-500 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)]"
-			:class="[ isScrolled ?'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]'
+			:class="[
+				isScrolled
+					? 'py-1.5 sm:py-2 bg-white/90 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)]'
 					: '',
 			]"
 		>
@@ -103,7 +107,7 @@
 							src="/assets/image/logo.webp"
 							alt="Logo"
 							class="w-full h-full object-cover rounded-full"
-						>
+						/>
 					</div>
 
 					<!-- Text Branding (Always visible on mobile now) -->
@@ -146,11 +150,15 @@
 							<NuxtLink
 								:to="phuTungLink"
 								class="nav-link-refined"
-								:class="{ active: isRouteActive('/products?type=phu-tung-phu-kien') }"
+								:class="{
+									active: isRouteActive('/products?type=phu-tung-phu-kien'),
+								}"
 								>PHỤ TÙNG & PHỤ KIỆN
 								<span
 									class="nav-dot-floating"
-									:class="{ active: isRouteActive('/products?type=phu-tung-phu-kien') }"
+									:class="{
+										active: isRouteActive('/products?type=phu-tung-phu-kien'),
+									}"
 							/></NuxtLink>
 						</li>
 						<li>
@@ -218,7 +226,7 @@
 					<div class="relative">
 						<button
 							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
-							:class="{'text-primary bg-primary/5': isSearchOpen }"
+							:class="{ 'text-primary bg-primary/5': isSearchOpen }"
 							@click="isSearchOpen = !isSearchOpen"
 						>
 							<Icon
@@ -243,7 +251,7 @@
 									placeholder="Tìm mẫu xe, phụ tùng..."
 									class="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl pl-11 pr-4 text-xs font-bold focus:bg-white focus:border-primary/30 focus:ring-4 focus:ring-primary/5 transition-all outline-none"
 									autofocus
-								>
+								/>
 							</form>
 						</div>
 					</div>
@@ -252,7 +260,7 @@
 					<div class="relative">
 						<button
 							class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
-							:class="{'text-primary bg-primary/5': isCartOpen }"
+							:class="{ 'text-primary bg-primary/5': isCartOpen }"
 							aria-label="Giỏ hàng"
 							@click="isCartOpen = !isCartOpen"
 						>
@@ -301,7 +309,7 @@
 											class="w-full h-full object-cover"
 											referrerpolicy="no-referrer"
 											@error="avatarError = true"
-										>
+										/>
 										<Icon
 											v-else
 											name="ph:user-fill"
@@ -355,10 +363,11 @@
 						<template v-else>
 							<NuxtLink
 								to="/login"
-								class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gray-900 text-white font-black text-xs sm:text-[11px] uppercase tracking-widest hover:bg-primary hover:shadow-lg hover:shadow-primary/20 transition-all whitespace-nowrap"
+								class="flex items-center justify-center gap-2 w-10 h-10 sm:w-auto sm:px-4 sm:py-2 rounded-full sm:rounded-xl bg-gray-900 text-white font-black text-xs sm:text-[11px] uppercase tracking-widest hover:bg-primary hover:shadow-lg hover:shadow-primary/20 transition-all whitespace-nowrap shrink-0"
+								aria-label="Đăng nhập"
 							>
 								<Icon name="ph:sign-in-fill" class="text-sm" />
-								Đăng nhập
+								<span class="hidden sm:inline">Đăng nhập</span>
 							</NuxtLink>
 						</template>
 					</div>
@@ -377,7 +386,7 @@
 				/>
 				<nav
 					class="fixed top-0 bottom-0 left-0 w-[85%] max-w-sm bg-white z-2100 transform transition-transform duration-500 ease-in-out shadow-2xl"
-					:class="mobileNavActive ?'translate-x-0' : '-translate-x-full'"
+					:class="mobileNavActive ? 'translate-x-0' : '-translate-x-full'"
 				>
 					<div
 						class="p-4 sm:p-8 border-b flex justify-between items-center bg-gray-50/50"
@@ -393,7 +402,7 @@
 									class="w-full h-full object-cover"
 									referrerpolicy="no-referrer"
 									@error="avatarError = true"
-								>
+								/>
 								<div
 									v-else
 									class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400"
@@ -437,28 +446,6 @@
 								>MOTOR</span
 							>
 						</div>
-						<button
-							class="w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center hover:bg-red-50 transition-all border border-gray-100 group active:scale-95"
-							aria-label="Đóng menu"
-							@click="closeMobileNav"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="#000000"
-								stroke-width="3"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								style="width: 20px; height: 20px"
-								class="group-hover:stroke-red-600 transition-colors"
-							>
-								<line x1="18" y1="6" x2="6" y2="18" />
-								<line x1="6" y1="6" x2="18" y2="18" />
-							</svg>
-						</button>
 					</div>
 					<div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
 						<!-- Auth Buttons for Mobile -->
@@ -522,7 +509,6 @@
 				/>
 			</QuickActionModal>
 		</ClientOnly>
-	
 	</header>
 </template>
 
@@ -539,7 +525,12 @@ const contactStore = useContactStore();
 const route = useRoute();
 
 const avatarError = ref(false);
-watch(() => authStore.user?.avatarUrl, () => { avatarError.value = false; });
+watch(
+	() => authStore.user?.avatarUrl,
+	() => {
+		avatarError.value = false;
+	},
+);
 
 const isScrolled = ref(false);
 const mobileNavActive = ref(false);
@@ -569,11 +560,18 @@ const isRouteActive = (targetPath) => {
 
 	if (route.path === "/products") {
 		const catIdsStr = route.query.category_ids || "";
-		const catIdsList = catIdsStr ? String(catIdsStr).split(",").map(Number) : [];
+		const catIdsList = catIdsStr
+			? String(catIdsStr).split(",").map(Number)
+			: [];
 		const type = route.query.type || "";
 
-		const isXeMay = type === "xe-may" || (catIdsList.includes(8) && catIdsList.length === 1);
-		const isPhuTungPhuKien = type === "phu-tung-phu-kien" || (catIdsList.includes(12) && catIdsList.includes(13) && catIdsList.length === 2);
+		const isXeMay =
+			type === "xe-may" || (catIdsList.includes(8) && catIdsList.length === 1);
+		const isPhuTungPhuKien =
+			type === "phu-tung-phu-kien" ||
+			(catIdsList.includes(12) &&
+				catIdsList.includes(13) &&
+				catIdsList.length === 2);
 
 		if (targetPath.includes("type=xe-may")) {
 			return isXeMay;
@@ -605,19 +603,22 @@ const handleContactSubmit = async (data) => {
 
 const categoryStore = useCategoryStore();
 
-
- 
 const xeMayLink = computed(() => {
 	const categories = categoryStore.categories || [];
-	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
+	const xeMayCat = categories.find(
+		(c) => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe",
+	);
 	return `/products?category_ids=${xeMayCat ? xeMayCat.id : 8}`;
 });
 
- 
 const phuTungLink = computed(() => {
 	const categories = categoryStore.categories || [];
-	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
-	return `/products?category_ids=${phuTungCats.length > 0 ? phuTungCats.map(c => c.id).join(",") : "12,13"}`;
+	const phuTungCats = categories.filter(
+		(c) =>
+			c.name?.toLowerCase() === "phụ tùng" ||
+			c.name?.toLowerCase() === "phụ kiện",
+	);
+	return `/products?category_ids=${phuTungCats.length > 0 ? phuTungCats.map((c) => c.id).join(",") : "12,13"}`;
 });
 
 const navItemsMobile = computed(() => [
@@ -642,7 +643,13 @@ const closeMobileNav = () => {
 	document.body.style.overflow = "";
 };
 
-const { cartDetails, cartTotal, removeItem, updateQuantity, isCartPanelOpen: isCartOpen } = useCart();
+const {
+	cartDetails,
+	cartTotal,
+	removeItem,
+	updateQuantity,
+	isCartPanelOpen: isCartOpen,
+} = useCart();
 const toggleCart = () => {
 	isCartOpen.value = !isCartOpen.value;
 };

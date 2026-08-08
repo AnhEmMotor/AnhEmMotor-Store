@@ -90,8 +90,12 @@ watch(
 					<select
 						v-model="orderStore.shippingInfo.provinceId"
 						class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm appearance-none cursor-pointer"
-						:class="{'!border-red-500 !bg-red-50': orderStore.errors.provinceId }"
+						style="font-family: 'Manrope', sans-serif;"
+						:class="{'!border-red-500 !bg-red-50': orderStore.errors.provinceId,
+						'!text-gray-400': !orderStore.shippingInfo.provinceId,
+						}"
 						:disabled="isLoadingProvinces"
+						@focus="orderStore.errors.provinceId = ''"
 						@change="orderStore.errors.provinceId = ''"
 					>
 						<option value="" disabled>{{ isLoadingProvinces ? 'Đang tải...' : 'Chọn Tỉnh/Thành phố' }}</option>
@@ -110,9 +114,13 @@ watch(
 				<div class="relative">
 					<select
 						v-model="orderStore.shippingInfo.wardCode"
-						class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-						:class="{'!border-red-500 !bg-red-50': orderStore.errors.wardCode }"
+						class="w-full px-5 py-3.5 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm appearance-none cursor-pointer disabled:cursor-not-allowed"
+						style="font-family: 'Manrope', sans-serif;"
+						:class="{'!border-red-500 !bg-red-50': orderStore.errors.wardCode,
+						'!text-gray-400': !orderStore.shippingInfo.wardCode,
+						}"
 						:disabled="!orderStore.shippingInfo.provinceId || isLoadingWards"
+						@focus="orderStore.errors.wardCode = ''"
 						@change="orderStore.errors.wardCode = ''"
 					>
 						<option value="" disabled>{{ isLoadingWards ? 'Đang tải...' : 'Chọn Quận/Huyện/Phường/Xã' }}</option>
