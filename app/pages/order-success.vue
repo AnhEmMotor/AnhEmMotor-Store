@@ -1,19 +1,18 @@
 <script setup>
-import { computed, onMounted, ref, reactive } from "vue";
-import { useRoute } from "vue-router";
-import { useOrderStore } from "~/stores/order.store";
-import { formatCurrency } from "~/utils/currency";
-import { toast } from "vue3-toastify";
+import { computed, onMounted, ref, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { useOrderStore } from '~/stores/order.store';
+import { formatCurrency } from '~/utils/currency';
+import { toast } from 'vue3-toastify';
 
 const route = useRoute();
 const orderStore = useOrderStore();
-// const { depositSettings } = useStoreSettings();
 const orderId = computed(() => route.query.id);
 
 if (import.meta.server) {
   throw createError({
     statusCode: 404,
-    statusMessage: "Page Not Found",
+    statusMessage: 'Page Not Found',
     fatal: true,
   });
 }
@@ -25,120 +24,105 @@ const { data: order, pending: isLoading } = await useAsyncData(
     const fetched = await orderStore.fetchOrderDetail(orderId.value);
     return fetched;
   },
-  { watch: [orderId], server: false },
+  { watch: [orderId], server: false }
 );
 
 const isOnlinePayment = computed(
   () =>
-    order.value &&
-    order.value.paymentMethod &&
-    order.value.paymentMethod.toLowerCase() !== "cod",
+    order.value && order.value.paymentMethod && order.value.paymentMethod.toLowerCase() !== 'cod'
 );
 
 onMounted(() => {
   if (!order.value) return;
   const status = order.value.statusId || order.value.status;
-  if (
-    isOnlinePayment.value &&
-    ["pending", "waiting_deposit"].includes(status)
-  ) {
+  if (isOnlinePayment.value && ['pending', 'waiting_deposit'].includes(status)) {
     navigateTo({
-      path: "/payment-unavailable",
+      path: '/payment-unavailable',
       query: {
         id: order.value.id,
         method: order.value.paymentMethod,
-        reason: "unpaid",
+        reason: 'unpaid',
       },
       replace: true,
     });
   }
 });
 
-
-
 const totalAmount = computed(() => Number(order.value?.totalAmount || 0));
-const depositRatio = computed(() =>
-  Number(order.value?.depositRatio || 0),
-);
+const depositRatio = computed(() => Number(order.value?.depositRatio || 0));
 
-const requiresDeposit = computed(
-  () => (order.value?.depositAmount || 0) > 0
-);
+const requiresDeposit = computed(() => (order.value?.depositAmount || 0) > 0);
 
 const payableNow = computed(() =>
-  requiresDeposit.value
-    ? order.value?.depositAmount || 0
-    : totalAmount.value,
+  requiresDeposit.value ? order.value?.depositAmount || 0 : totalAmount.value
 );
 
-const remainingAmount = computed(() =>
-  order.value?.remainingAmount || 0
-);
+const remainingAmount = computed(() => order.value?.remainingAmount || 0);
 
 useSeoMeta({
-  title: "Đặt hàng thành công",
-  description: "Cảm ơn bạn đã mua hàng tại AnhEm Motor.",
+  title: 'Đặt hàng thành công',
+  description: 'Cảm ơn bạn đã mua hàng tại AnhEm Motor.',
 });
 
 const printInvoice = () => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     window.print();
   }
 };
 
 const formatDate = (dateStr) => {
-  if (!dateStr) return "";
+  if (!dateStr) return '';
   const d = new Date(dateStr);
-  return d.toLocaleDateString("vi-VN", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
+  return d.toLocaleDateString('vi-VN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 };
 
-// VAT invoice request states
 const showInvoiceForm = ref(false);
 const isSubmittingInvoice = ref(false);
 const invoiceForm = reactive({
-  companyName: "",
-  companyAddress: "",
-  companyTaxCode: "",
-  companyEmail: "",
-  budgetCode: "",
+  companyName: '',
+  companyAddress: '',
+  companyTaxCode: '',
+  companyEmail: '',
+  budgetCode: '',
 });
 const invoiceErrors = reactive({
-  companyName: "",
-  companyAddress: "",
-  companyTaxCode: "",
-  companyEmail: "",
-  budgetCode: "",
+  companyName: '',
+  companyAddress: '',
+  companyTaxCode: '',
+  companyEmail: '',
+  budgetCode: '',
 });
 
 const validateInvoiceForm = () => {
   let isValid = true;
-  invoiceErrors.companyName = "";
-  invoiceErrors.companyAddress = "";
-  invoiceErrors.companyTaxCode = "";
-  invoiceErrors.companyEmail = "";
-  invoiceErrors.budgetCode = "";
+  invoiceErrors.companyName = '';
+  invoiceErrors.companyAddress = '';
+  invoiceErrors.companyTaxCode = '';
+  invoiceErrors.companyEmail = '';
+  invoiceErrors.budgetCode = '';
 
   if (!invoiceForm.companyName.trim()) {
-    invoiceErrors.companyName = "Tên công ty không được để trống.";
+    invoiceErrors.companyName = 'Tên công ty không được để trống.';
     isValid = false;
   }
   if (!invoiceForm.companyAddress.trim()) {
-    invoiceErrors.companyAddress = "Địa chỉ công ty không được để trống.";
+    invoiceErrors.companyAddress = 'Địa chỉ công ty không được để trống.';
     isValid = false;
   }
   if (!invoiceForm.companyTaxCode.trim()) {
-    invoiceErrors.companyTaxCode = "Mã số thuế không được để trống.";
+    invoiceErrors.companyTaxCode = 'Mã số thuế không được để trống.';
     isValid = false;
   } else {
     const taxRegex = /^\d{3}$|^\d{10}$|^\d{13}$|^\d{10}-\d{3}$/;
     if (!taxRegex.test(invoiceForm.companyTaxCode.trim())) {
-      invoiceErrors.companyTaxCode = "Mã số thuế không hợp lệ. Nhập đúng 3 chữ số hoặc MST chuẩn (10/13 số).";
+      invoiceErrors.companyTaxCode =
+        'Mã số thuế không hợp lệ. Nhập đúng 3 chữ số hoặc MST chuẩn (10/13 số).';
       isValid = false;
     }
   }
@@ -146,7 +130,7 @@ const validateInvoiceForm = () => {
   if (invoiceForm.companyEmail.trim()) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(invoiceForm.companyEmail.trim())) {
-      invoiceErrors.companyEmail = "Email không đúng định dạng.";
+      invoiceErrors.companyEmail = 'Email không đúng định dạng.';
       isValid = false;
     }
   }
@@ -154,7 +138,6 @@ const validateInvoiceForm = () => {
   return isValid;
 };
 
- 
 const submitInvoiceRequest = async () => {
   if (!validateInvoiceForm()) return;
   isSubmittingInvoice.value = true;
@@ -168,10 +151,10 @@ const submitInvoiceRequest = async () => {
     };
     await orderStore.updateOrderCompanyInvoice(order.value.id, payload);
     await orderStore.fetchOrderDetail(order.value.id);
-    toast.success("Gửi yêu cầu xuất hóa đơn công ty thành công!");
+    toast.success('Gửi yêu cầu xuất hóa đơn công ty thành công!');
     showInvoiceForm.value = false;
   } catch (err) {
-    const msg = err.response?.data?.message || err.message || "Đã có lỗi xảy ra, vui lòng thử lại.";
+    const msg = err.response?.data?.message || err.message || 'Đã có lỗi xảy ra, vui lòng thử lại.';
     toast.error(msg);
   } finally {
     isSubmittingInvoice.value = false;
@@ -184,12 +167,8 @@ const submitInvoiceRequest = async () => {
     <div class="max-w-3xl mx-auto px-4">
       <ClientOnly>
         <div v-if="isLoading" class="text-center py-20">
-          <div
-            class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto"
-          />
-          <p
-            class="mt-4 text-gray-500 font-bold uppercase tracking-widest text-xs"
-          >
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto" />
+          <p class="mt-4 text-gray-500 font-bold uppercase tracking-widest text-xs">
             Đang tải thông tin đơn hàng...
           </p>
         </div>
@@ -199,17 +178,28 @@ const submitInvoiceRequest = async () => {
             id="printable-receipt"
             class="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-gray-100 text-center space-y-8"
           >
-            <!-- Header Hóa Đơn (Chỉ hiển thị khi in ra giấy/PDF) -->
-            <div class="hidden print:flex items-center justify-between border-b-2 border-gray-100 pb-6 mb-6 text-left">
+            <div
+              class="hidden print:flex items-center justify-between border-b-2 border-gray-100 pb-6 mb-6 text-left"
+            >
               <div>
-                <h2 class="text-xl font-black text-red-600 uppercase tracking-widest">AnhEm Motor</h2>
-                <p class="text-[10px] text-gray-500 font-bold uppercase mt-1">Hệ thống xe máy chính hãng</p>
-                <p class="text-[9px] text-gray-400 font-medium mt-0.5">Hotline: 090 123 4567 | Website: anhemmotor.com</p>
+                <h2 class="text-xl font-black text-red-600 uppercase tracking-widest">
+                  AnhEm Motor
+                </h2>
+                <p class="text-[10px] text-gray-500 font-bold uppercase mt-1">
+                  Hệ thống xe máy chính hãng
+                </p>
+                <p class="text-[9px] text-gray-400 font-medium mt-0.5">
+                  Hotline: 090 123 4567 | Website: anhemmotor.com
+                </p>
               </div>
               <div class="text-right">
                 <h3 class="text-base font-black text-gray-900 uppercase">Hóa đơn đặt hàng</h3>
-                <p class="text-[10px] text-gray-500 font-bold mt-1">Mã đơn: #{{ order.orderCode || order.id }}</p>
-                <p class="text-[9px] text-gray-400 font-medium mt-0.5">Ngày tạo: {{ formatDate(order.createdAt) }}</p>
+                <p class="text-[10px] text-gray-500 font-bold mt-1">
+                  Mã đơn: #{{ order.orderCode || order.id }}
+                </p>
+                <p class="text-[9px] text-gray-400 font-medium mt-0.5">
+                  Ngày tạo: {{ formatDate(order.createdAt) }}
+                </p>
               </div>
             </div>
 
@@ -220,68 +210,55 @@ const submitInvoiceRequest = async () => {
             </div>
 
             <div class="space-y-3 print:hidden">
-              <h1
-                class="text-3xl md:text-4xl font-black text-gray-900 uppercase"
-              >
+              <h1 class="text-3xl md:text-4xl font-black text-gray-900 uppercase">
                 Đặt hàng thành công!
               </h1>
-              <div
-                v-if="order.statusId === 'waiting_deposit'"
-                class="space-y-2"
-              >
+              <div v-if="order.statusId === 'waiting_deposit'" class="space-y-2">
                 <p class="text-blue-600 font-bold max-w-md mx-auto">
                   Đơn hàng
-                  <span class="text-red-600">#{{ order.orderCode }}</span> cần
-                  được đặt cọc để xác nhận.
+                  <span class="text-red-600">#{{ order.orderCode }}</span> cần được đặt cọc để xác
+                  nhận.
                 </p>
                 <p class="text-gray-500 text-sm max-w-sm mx-auto">
-                  Vui lòng liên hệ hotline hoặc thanh toán ngay qua cổng online
-                  để thực hiện đặt cọc
-                  <span class="font-bold text-gray-900"
-                    >{{ order.depositRatio }}%</span
-                  >
+                  Vui lòng liên hệ hotline hoặc thanh toán ngay qua cổng online để thực hiện đặt cọc
+                  <span class="font-bold text-gray-900">{{ order.depositRatio }}%</span>
                   giá trị đơn.
                 </p>
               </div>
-              <div
-                v-else-if="order.statusId === 'deposit_paid'"
-                class="space-y-2"
-              >
+              <div v-else-if="order.statusId === 'deposit_paid'" class="space-y-2">
                 <p class="text-green-600 font-bold max-w-md mx-auto">
                   Đã nhận tiền đặt cọc cho đơn hàng
                   <span class="text-red-600">#{{ order.orderCode }}</span
                   >!
                 </p>
                 <p class="text-gray-500 text-sm max-w-sm mx-auto">
-                  Cảm ơn bạn đã đặt cọc. Đơn hàng của bạn đang được nhân viên
-                  xác nhận và chuẩn bị.
+                  Cảm ơn bạn đã đặt cọc. Đơn hàng của bạn đang được nhân viên xác nhận và chuẩn bị.
                 </p>
                 <div class="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl max-w-md mx-auto">
                   <p class="text-red-600 text-sm font-bold flex items-start gap-2 text-left">
                     <Icon name="fa6-solid:triangle-exclamation" class="text-lg shrink-0 mt-0.5" />
-                    <span>Lưu ý quan trọng: Quý khách vui lòng đến trực tiếp cửa hàng để thanh toán phần còn lại và nhận xe trong vòng 7 ngày tới. Nếu quá thời hạn này, đơn hàng sẽ tự động bị hủy và tiền cọc sẽ không được hoàn lại.</span>
+                    <span
+                      >Lưu ý quan trọng: Quý khách vui lòng đến trực tiếp cửa hàng để thanh toán
+                      phần còn lại và nhận xe trong vòng 7 ngày tới. Nếu quá thời hạn này, đơn hàng
+                      sẽ tự động bị hủy và tiền cọc sẽ không được hoàn lại.</span
+                    >
                   </p>
                 </div>
               </div>
-              <div
-                v-else-if="order.statusId === 'paid_processing'"
-                class="space-y-2"
-              >
+              <div v-else-if="order.statusId === 'paid_processing'" class="space-y-2">
                 <p class="text-green-600 font-bold max-w-md mx-auto">
                   Thanh toán thành công đơn hàng
                   <span class="text-red-600">#{{ order.orderCode }}</span
                   >!
                 </p>
                 <p class="text-gray-500 text-sm max-w-sm mx-auto">
-                  Hệ thống đã ghi nhận thanh toán toàn bộ. Đơn hàng của bạn đang
-                  được xử lý nhanh nhất có thể.
+                  Hệ thống đã ghi nhận thanh toán toàn bộ. Đơn hàng của bạn đang được xử lý nhanh
+                  nhất có thể.
                 </p>
               </div>
               <p v-else class="text-gray-500 font-medium max-w-md mx-auto">
                 Chúc mừng! Đơn hàng
-                <span class="text-red-600 font-black"
-                  >#{{ order.orderCode }}</span
-                >
+                <span class="text-red-600 font-black">#{{ order.orderCode }}</span>
                 của bạn đã được tiếp nhận và đang chờ xử lý.
               </p>
             </div>
@@ -300,9 +277,7 @@ const submitInvoiceRequest = async () => {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div class="space-y-4">
                     <div class="space-y-1">
-                      <p
-                        class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
-                      >
+                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
                         Người nhận
                       </p>
                       <p class="text-sm font-bold text-gray-900">
@@ -310,9 +285,7 @@ const submitInvoiceRequest = async () => {
                       </p>
                     </div>
                     <div class="space-y-1">
-                      <p
-                        class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
-                      >
+                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
                         Số điện thoại
                       </p>
                       <p class="text-sm font-bold text-gray-900">
@@ -320,14 +293,10 @@ const submitInvoiceRequest = async () => {
                       </p>
                     </div>
                     <div class="space-y-1">
-                      <p
-                        class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
-                      >
+                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
                         Địa chỉ
                       </p>
-                      <p
-                        class="text-sm font-medium text-gray-600 leading-relaxed"
-                      >
+                      <p class="text-sm font-medium text-gray-600 leading-relaxed">
                         {{ order.customer?.address }}
                       </p>
                     </div>
@@ -335,19 +304,15 @@ const submitInvoiceRequest = async () => {
 
                   <div class="space-y-4">
                     <div class="space-y-1">
-                      <p
-                        class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
-                      >
+                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
                         Thanh toán
                       </p>
                       <p class="text-sm font-bold text-gray-900">
-                        {{ order.paymentMethod || "COD" }}
+                        {{ order.paymentMethod || 'COD' }}
                       </p>
                     </div>
                     <div class="space-y-1">
-                      <p
-                        class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
-                      >
+                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
                         Tổng tiền
                       </p>
                       <p class="text-xl font-black text-red-600">
@@ -355,26 +320,19 @@ const submitInvoiceRequest = async () => {
                       </p>
                     </div>
                     <div class="space-y-1">
-                      <p
-                        class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
-                      >
+                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
                         Số tiền cần thanh toán
                       </p>
                       <p class="text-lg font-black text-red-600">
                         {{ formatCurrency(payableNow) }}
-                        <span
-                          v-if="requiresDeposit"
-                          class="text-xs text-gray-400 font-bold"
-                        >
+                        <span v-if="requiresDeposit" class="text-xs text-gray-400 font-bold">
                           ({{ depositRatio }}%)
                         </span>
                       </p>
                     </div>
                     <template v-if="requiresDeposit">
                       <div class="space-y-1">
-                        <p
-                          class="text-[10px] font-black text-gray-400 uppercase tracking-tighter"
-                        >
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">
                           Còn lại
                         </p>
                         <p class="text-sm font-bold text-gray-900">
@@ -385,16 +343,24 @@ const submitInvoiceRequest = async () => {
                   </div>
                 </div>
 
-                <!-- Danh sách sản phẩm -->
-                <div v-if="order.items && order.items.length" class="border-t border-gray-200/60 pt-6 mt-6">
-                  <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-4">
+                <div
+                  v-if="order.items && order.items.length"
+                  class="border-t border-gray-200/60 pt-6 mt-6"
+                >
+                  <h4
+                    class="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-4"
+                  >
                     <Icon name="fa6-solid:cubes" class="text-red-500 text-sm" />
                     Danh sách sản phẩm
                   </h4>
                   <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs font-medium text-gray-700 border-collapse">
+                    <table
+                      class="w-full text-left text-xs font-medium text-gray-700 border-collapse"
+                    >
                       <thead>
-                        <tr class="border-b border-gray-200 text-[10px] font-black text-gray-400 uppercase tracking-wider">
+                        <tr
+                          class="border-b border-gray-200 text-[10px] font-black text-gray-400 uppercase tracking-wider"
+                        >
                           <th class="py-2.5">Sản phẩm</th>
                           <th class="py-2.5 text-center w-20">Số lượng</th>
                           <th class="py-2.5 text-right w-28">Đơn giá</th>
@@ -402,7 +368,11 @@ const submitInvoiceRequest = async () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="item in order.items" :key="item.id" class="border-b border-gray-100 last:border-0">
+                        <tr
+                          v-for="item in order.items"
+                          :key="item.id"
+                          class="border-b border-gray-100 last:border-0"
+                        >
                           <td class="py-3">
                             <div class="font-bold text-gray-900">{{ item.name }}</div>
                             <div class="text-[10px] text-gray-500 font-semibold mt-0.5">
@@ -410,9 +380,15 @@ const submitInvoiceRequest = async () => {
                               <span v-if="item.colorName"> - Màu: {{ item.colorName }}</span>
                             </div>
                           </td>
-                          <td class="py-3 text-center font-bold text-gray-900 text-sm">{{ item.quantity }}</td>
-                          <td class="py-3 text-right text-gray-600 text-sm">{{ formatCurrency(item.price) }}</td>
-                          <td class="py-3 text-right font-bold text-gray-900 text-sm">{{ formatCurrency(item.price * item.quantity) }}</td>
+                          <td class="py-3 text-center font-bold text-gray-900 text-sm">
+                            {{ item.quantity }}
+                          </td>
+                          <td class="py-3 text-right text-gray-600 text-sm">
+                            {{ formatCurrency(item.price) }}
+                          </td>
+                          <td class="py-3 text-right font-bold text-gray-900 text-sm">
+                            {{ formatCurrency(item.price * item.quantity) }}
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -420,24 +396,50 @@ const submitInvoiceRequest = async () => {
                 </div>
               </div>
 
-              <!-- Yêu cầu xuất hóa đơn công ty (VAT) -->
-              <div v-if="order.isCompanyInvoice && order.companyName" class="border-t border-gray-100 pt-6 mt-6">
+              <div
+                v-if="order.isCompanyInvoice && order.companyName"
+                class="border-t border-gray-100 pt-6 mt-6"
+              >
                 <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 text-left space-y-4">
                   <div class="flex items-center gap-2 text-blue-700 font-bold text-sm uppercase">
                     <Icon name="fa6-solid:circle-info" class="text-blue-500 shrink-0" />
                     Đã ghi nhận yêu cầu xuất hóa đơn công ty
                   </div>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-xs text-blue-800 font-medium">
-                    <div><span class="text-blue-500 font-bold uppercase tracking-wider">Tên công ty:</span> <span class="font-bold text-gray-900">{{ order.companyName }}</span></div>
-                    <div><span class="text-blue-500 font-bold uppercase tracking-wider">Mã số thuế:</span> <span class="font-bold text-gray-900">{{ order.companyTaxCode }}</span></div>
-                    <div class="md:col-span-2"><span class="text-blue-500 font-bold uppercase tracking-wider">Địa chỉ:</span> <span class="font-bold text-gray-900">{{ order.companyAddress }}</span></div>
-                    <div v-if="order.companyEmail"><span class="text-blue-500 font-bold uppercase tracking-wider">Email nhận HĐ:</span> <span class="font-bold text-gray-900">{{ order.companyEmail }}</span></div>
-                    <div v-if="order.budgetCode"><span class="text-blue-500 font-bold uppercase tracking-wider">Mã ngân sách:</span> <span class="font-bold text-gray-900">{{ order.budgetCode }}</span></div>
+                  <div
+                    class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-xs text-blue-800 font-medium"
+                  >
+                    <div>
+                      <span class="text-blue-500 font-bold uppercase tracking-wider"
+                        >Tên công ty:</span
+                      >
+                      <span class="font-bold text-gray-900">{{ order.companyName }}</span>
+                    </div>
+                    <div>
+                      <span class="text-blue-500 font-bold uppercase tracking-wider"
+                        >Mã số thuế:</span
+                      >
+                      <span class="font-bold text-gray-900">{{ order.companyTaxCode }}</span>
+                    </div>
+                    <div class="md:col-span-2">
+                      <span class="text-blue-500 font-bold uppercase tracking-wider">Địa chỉ:</span>
+                      <span class="font-bold text-gray-900">{{ order.companyAddress }}</span>
+                    </div>
+                    <div v-if="order.companyEmail">
+                      <span class="text-blue-500 font-bold uppercase tracking-wider"
+                        >Email nhận HĐ:</span
+                      >
+                      <span class="font-bold text-gray-900">{{ order.companyEmail }}</span>
+                    </div>
+                    <div v-if="order.budgetCode">
+                      <span class="text-blue-500 font-bold uppercase tracking-wider"
+                        >Mã ngân sách:</span
+                      >
+                      <span class="font-bold text-gray-900">{{ order.budgetCode }}</span>
+                    </div>
                   </div>
 
-                  <!-- Nút in hóa đơn PDF -->
                   <div class="pt-3 border-t border-blue-100/50 flex justify-end">
-                    <button 
+                    <button
                       class="print-hide inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all text-xs uppercase tracking-wider cursor-pointer shadow-md shadow-blue-600/10"
                       @click="printInvoice"
                     >
@@ -448,75 +450,137 @@ const submitInvoiceRequest = async () => {
                 </div>
               </div>
               <div v-else class="border-t border-gray-100 pt-6 mt-6 print-hide">
-                <div v-if="!showInvoiceForm" class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                <div
+                  v-if="!showInvoiceForm"
+                  class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-200"
+                >
                   <div class="text-left">
                     <p class="text-sm font-bold text-gray-900">Bạn cần xuất hóa đơn công ty?</p>
-                    <p class="text-xs text-gray-500 mt-1">Cung cấp thông tin doanh nghiệp để nhận hóa đơn điện tử (VAT).</p>
+                    <p class="text-xs text-gray-500 mt-1">
+                      Cung cấp thông tin doanh nghiệp để nhận hóa đơn điện tử (VAT).
+                    </p>
                   </div>
-                  <button 
+                  <button
                     class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition-all text-xs uppercase tracking-wider whitespace-nowrap"
                     @click="showInvoiceForm = true"
                   >
                     Yêu cầu xuất HĐ
                   </button>
                 </div>
-                
+
                 <div v-else class="bg-white border border-gray-200 rounded-2xl p-6 text-left">
                   <div class="flex items-center justify-between mb-4">
-                    <h5 class="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                    <h5
+                      class="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-2"
+                    >
                       <Icon name="fa6-solid:building" class="text-gray-400" />
                       Thông tin xuất hóa đơn
                     </h5>
-                    <button 
+                    <button
                       class="text-gray-400 hover:text-gray-600"
                       @click="showInvoiceForm = false"
                     >
                       <Icon name="fa6-solid:xmark" class="text-lg" />
                     </button>
                   </div>
-                  
+
                   <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div class="space-y-1">
-                        <label class="text-xs font-bold text-gray-700">Tên công ty <span class="text-red-500">*</span></label>
-                        <input v-model="invoiceForm.companyName" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập tên công ty">
-                        <p v-if="invoiceErrors.companyName" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyName }}</p>
+                        <label class="text-xs font-bold text-gray-700"
+                          >Tên công ty <span class="text-red-500">*</span></label
+                        >
+                        <input
+                          v-model="invoiceForm.companyName"
+                          type="text"
+                          class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
+                          placeholder="Nhập tên công ty"
+                        />
+                        <p
+                          v-if="invoiceErrors.companyName"
+                          class="text-[10px] text-red-500 mt-1 font-medium"
+                        >
+                          {{ invoiceErrors.companyName }}
+                        </p>
                       </div>
                       <div class="space-y-1">
-                        <label class="text-xs font-bold text-gray-700">Mã số thuế <span class="text-red-500">*</span></label>
-                        <input v-model="invoiceForm.companyTaxCode" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập mã số thuế">
-                        <p v-if="invoiceErrors.companyTaxCode" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyTaxCode }}</p>
+                        <label class="text-xs font-bold text-gray-700"
+                          >Mã số thuế <span class="text-red-500">*</span></label
+                        >
+                        <input
+                          v-model="invoiceForm.companyTaxCode"
+                          type="text"
+                          class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
+                          placeholder="Nhập mã số thuế"
+                        />
+                        <p
+                          v-if="invoiceErrors.companyTaxCode"
+                          class="text-[10px] text-red-500 mt-1 font-medium"
+                        >
+                          {{ invoiceErrors.companyTaxCode }}
+                        </p>
                       </div>
                       <div class="space-y-1 md:col-span-2">
-                        <label class="text-xs font-bold text-gray-700">Địa chỉ công ty <span class="text-red-500">*</span></label>
-                        <input v-model="invoiceForm.companyAddress" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Nhập địa chỉ công ty">
-                        <p v-if="invoiceErrors.companyAddress" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyAddress }}</p>
+                        <label class="text-xs font-bold text-gray-700"
+                          >Địa chỉ công ty <span class="text-red-500">*</span></label
+                        >
+                        <input
+                          v-model="invoiceForm.companyAddress"
+                          type="text"
+                          class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
+                          placeholder="Nhập địa chỉ công ty"
+                        />
+                        <p
+                          v-if="invoiceErrors.companyAddress"
+                          class="text-[10px] text-red-500 mt-1 font-medium"
+                        >
+                          {{ invoiceErrors.companyAddress }}
+                        </p>
                       </div>
                       <div class="space-y-1">
                         <label class="text-xs font-bold text-gray-700">Email nhận hóa đơn</label>
-                        <input v-model="invoiceForm.companyEmail" type="email" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="email@congty.com">
-                        <p v-if="invoiceErrors.companyEmail" class="text-[10px] text-red-500 mt-1 font-medium">{{ invoiceErrors.companyEmail }}</p>
+                        <input
+                          v-model="invoiceForm.companyEmail"
+                          type="email"
+                          class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
+                          placeholder="email@congty.com"
+                        />
+                        <p
+                          v-if="invoiceErrors.companyEmail"
+                          class="text-[10px] text-red-500 mt-1 font-medium"
+                        >
+                          {{ invoiceErrors.companyEmail }}
+                        </p>
                       </div>
                       <div class="space-y-1">
                         <label class="text-xs font-bold text-gray-700">Mã ngân sách (nếu có)</label>
-                        <input v-model="invoiceForm.budgetCode" type="text" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Mã ngân sách">
+                        <input
+                          v-model="invoiceForm.budgetCode"
+                          type="text"
+                          class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
+                          placeholder="Mã ngân sách"
+                        />
                       </div>
                     </div>
-                    
+
                     <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
-                      <button 
+                      <button
                         class="px-5 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-all text-xs uppercase tracking-wider"
                         :disabled="isSubmittingInvoice"
                         @click="showInvoiceForm = false"
                       >
                         Hủy
                       </button>
-                      <button 
+                      <button
                         class="px-6 py-2.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all text-xs uppercase tracking-wider flex items-center gap-2 shadow-md shadow-red-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
                         :disabled="isSubmittingInvoice"
                         @click="submitInvoiceRequest"
                       >
-                        <Icon v-if="isSubmittingInvoice" name="fa6-solid:circle-notch" class="animate-spin" />
+                        <Icon
+                          v-if="isSubmittingInvoice"
+                          name="fa6-solid:circle-notch"
+                          class="animate-spin"
+                        />
                         Gửi yêu cầu
                       </button>
                     </div>
@@ -542,11 +606,8 @@ const submitInvoiceRequest = async () => {
           </div>
 
           <p class="text-center text-gray-400 text-xs font-medium print-hide">
-            Một email xác nhận đã được gửi đến bạn. Nếu có thắc mắc, vui lòng
-            liên hệ hotline
-            <a href="tel:0901234567" class="text-red-500 font-bold"
-              >090 123 4567</a
-            >.
+            Một email xác nhận đã được gửi đến bạn. Nếu có thắc mắc, vui lòng liên hệ hotline
+            <a href="tel:0901234567" class="text-red-500 font-bold">090 123 4567</a>.
           </p>
         </div>
 
@@ -559,12 +620,9 @@ const submitInvoiceRequest = async () => {
           >
             <Icon name="fa6-solid:box-open" class="text-4xl text-gray-300" />
           </div>
-          <h2 class="text-2xl font-black text-gray-900 mb-2 uppercase">
-            Không tìm thấy đơn hàng
-          </h2>
+          <h2 class="text-2xl font-black text-gray-900 mb-2 uppercase">Không tìm thấy đơn hàng</h2>
           <p class="text-gray-500 font-medium mb-8 max-w-sm mx-auto">
-            Rất tiếc, chúng tôi không thể tìm thấy thông tin chi tiết cho đơn
-            hàng #{{ orderId }}.
+            Rất tiếc, chúng tôi không thể tìm thấy thông tin chi tiết cho đơn hàng #{{ orderId }}.
           </p>
           <NuxtLink
             to="/products"
@@ -584,19 +642,20 @@ const submitInvoiceRequest = async () => {
     margin: 5mm !important;
   }
 
-  html, body {
+  html,
+  body {
     width: 210mm !important;
     height: 297mm !important;
   }
 
-  /* Force override global visibility restrictions */
   #printable-receipt,
   #printable-receipt * {
     visibility: visible !important;
   }
 
-  /* Force override animations, transitions, and opacities so they don't hide print content */
-  *, *:before, *:after {
+  *,
+  *:before,
+  *:after {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -605,8 +664,13 @@ const submitInvoiceRequest = async () => {
     text-shadow: none !important;
   }
 
-  /* Reset layout constraints (flex columns, min-heights, overflows) which collapse under print engines */
-  html, body, #__nuxt, #__layout, .flex, .min-h-screen, main {
+  html,
+  body,
+  #__nuxt,
+  #__layout,
+  .flex,
+  .min-h-screen,
+  main {
     display: block !important;
     height: auto !important;
     min-height: auto !important;
@@ -615,11 +679,17 @@ const submitInvoiceRequest = async () => {
     background: white !important;
   }
 
-  /* Hide headers, footers, navigation, floating widgets, and print-hide elements */
-  header, footer, nav, aside, .print-hide, .CommonFloatingContact, .LayoutTheHeader, .LayoutTheFooter {
+  header,
+  footer,
+  nav,
+  aside,
+  .print-hide,
+  .CommonFloatingContact,
+  .LayoutTheHeader,
+  .LayoutTheFooter {
     display: none !important;
   }
-  
+
   body {
     background-color: white !important;
     color: black !important;
@@ -630,7 +700,6 @@ const submitInvoiceRequest = async () => {
     background-color: white !important;
   }
 
-  /* Make sure the receipt container spans full page without shadows/borders */
   #printable-receipt {
     border: none !important;
     box-shadow: none !important;
@@ -642,14 +711,12 @@ const submitInvoiceRequest = async () => {
     font-size: 14px !important;
   }
 
-  /* Force 2 columns grid on print to save vertical space */
   #printable-receipt .grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 1.5rem !important;
   }
 
-  /* Scale font size and adjust line height for perfect readability */
   #printable-receipt p,
   #printable-receipt span,
   #printable-receipt td,
@@ -671,7 +738,6 @@ const submitInvoiceRequest = async () => {
     font-size: 16px !important;
   }
 
-  /* Tighten paddings/margins to fit exactly in one A4 portrait page */
   #printable-receipt .p-6,
   #printable-receipt .p-8,
   #printable-receipt .p-12 {

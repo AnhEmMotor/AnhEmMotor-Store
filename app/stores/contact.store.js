@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useContactStore = defineStore("contact", {
+export const useContactStore = defineStore('contact', {
   state: () => ({
     isSubmitting: false,
-    statusMessage: "",
-    statusType: "",
+    statusMessage: '',
+    statusType: '',
     trackingAccess: null,
     trackingRequest: null,
     trackingLoading: false,
@@ -16,49 +16,44 @@ export const useContactStore = defineStore("contact", {
       const service = contactService;
 
       this.isSubmitting = true;
-      this.statusMessage = "";
+      this.statusMessage = '';
 
       try {
         const data = await service.submitContact(formData);
 
         if (data.success) {
-          this.statusType = "success";
-          this.statusMessage =
-            "🎉 Gửi liên hệ thành công! Chúng tôi sẽ sớm liên hệ với bạn.";
+          this.statusType = 'success';
+          this.statusMessage = '🎉 Gửi liên hệ thành công! Chúng tôi sẽ sớm liên hệ với bạn.';
           this.trackingAccess = {
             id: data.id,
             trackingToken: data.trackingToken,
           };
           if (import.meta.client) {
-            localStorage.setItem(
-              "anhem-support-tracking",
-              JSON.stringify(this.trackingAccess),
-            );
+            localStorage.setItem('anhem-support-tracking', JSON.stringify(this.trackingAccess));
           }
           await this.fetchTracking();
           return data;
         } else {
-          this.statusType = "error";
-          this.statusMessage = data.message || "Có lỗi xảy ra khi gửi liên hệ.";
+          this.statusType = 'error';
+          this.statusMessage = data.message || 'Có lỗi xảy ra khi gửi liên hệ.';
           return null;
         }
       } catch {
-        this.statusType = "error";
-        this.statusMessage =
-          "Không thể kết nối tới máy chủ. Vui lòng thử lại sau!";
+        this.statusType = 'error';
+        this.statusMessage = 'Không thể kết nối tới máy chủ. Vui lòng thử lại sau!';
         return null;
       } finally {
         this.isSubmitting = false;
-        if (this.statusType === "success") {
+        if (this.statusType === 'success') {
           setTimeout(() => {
-            this.statusMessage = "";
+            this.statusMessage = '';
           }, 5000);
         }
       }
     },
     restoreTracking() {
       if (!import.meta.client) return;
-      const stored = localStorage.getItem("anhem-support-tracking");
+      const stored = localStorage.getItem('anhem-support-tracking');
       if (!stored) return;
       try {
         const parsed = JSON.parse(stored);
@@ -67,7 +62,7 @@ export const useContactStore = defineStore("contact", {
           this.fetchTracking();
         }
       } catch {
-        localStorage.removeItem("anhem-support-tracking");
+        localStorage.removeItem('anhem-support-tracking');
       }
     },
     async fetchTracking() {
@@ -76,7 +71,7 @@ export const useContactStore = defineStore("contact", {
       try {
         this.trackingRequest = await contactService.getSupportTracking(
           this.trackingAccess.id,
-          this.trackingAccess.trackingToken,
+          this.trackingAccess.trackingToken
         );
         return this.trackingRequest;
       } catch {
@@ -94,15 +89,15 @@ export const useContactStore = defineStore("contact", {
           this.trackingAccess.id,
           this.trackingAccess.trackingToken,
           rating,
-          comment,
+          comment
         );
         await this.fetchTracking();
-        this.statusType = "success";
-        this.statusMessage = "Cảm ơn bạn đã đánh giá nhân viên hỗ trợ.";
+        this.statusType = 'success';
+        this.statusMessage = 'Cảm ơn bạn đã đánh giá nhân viên hỗ trợ.';
         return true;
       } catch {
-        this.statusType = "error";
-        this.statusMessage = "Không thể gửi đánh giá. Vui lòng thử lại.";
+        this.statusType = 'error';
+        this.statusMessage = 'Không thể gửi đánh giá. Vui lòng thử lại.';
         return false;
       } finally {
         this.ratingSubmitting = false;

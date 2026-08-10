@@ -1,78 +1,77 @@
 export const technologyRepository = {
-	async getConnectivityFeatures() {
-		return [
-			{
-				title: "Dự báo bảo dưỡng thông minh",
-				description:
-					"Không chỉ nhắc lịch, hệ thống phân tích dữ liệu thực tế để dự báo chính xác thời điểm cần thay thế linh kiện, giúp xe luôn trong trạng thái hoàn hảo.",
-				icon: "ph:cpu-fill",
-			},
-			{
-				title: "Nhật ký hành trình & Hành vi",
-				description:
-					"Phân tích thói quen lái xe, quãng đường và mức tiêu thụ nhiên liệu để tối ưu hóa chi phí vận hành cho người dùng.",
-				icon: "ph:chart-line-up-fill",
-			},
-			{
-				title: "Cứu hộ khẩn cấp 24/7",
-				description:
-					"Yên tâm tuyệt đối với mạng lưới cứu hộ phủ rộng toàn quốc. Chỉ với một chạm trên ứng dụng, đội ngũ kỹ thuật chuyên nghiệp sẽ có mặt hỗ trợ bạn mọi lúc, mọi nơi.",
-				icon: "ph:first-aid-kit-fill",
-			},
-		];
-	},
+  async getConnectivityFeatures() {
+    return [
+      {
+        title: 'Dự báo bảo dưỡng thông minh',
+        description:
+          'Không chỉ nhắc lịch, hệ thống phân tích dữ liệu thực tế để dự báo chính xác thời điểm cần thay thế linh kiện, giúp xe luôn trong trạng thái hoàn hảo.',
+        icon: 'ph:cpu-fill',
+      },
+      {
+        title: 'Nhật ký hành trình & Hành vi',
+        description:
+          'Phân tích thói quen lái xe, quãng đường và mức tiêu thụ nhiên liệu để tối ưu hóa chi phí vận hành cho người dùng.',
+        icon: 'ph:chart-line-up-fill',
+      },
+      {
+        title: 'Cứu hộ khẩn cấp 24/7',
+        description:
+          'Yên tâm tuyệt đối với mạng lưới cứu hộ phủ rộng toàn quốc. Chỉ với một chạm trên ứng dụng, đội ngũ kỹ thuật chuyên nghiệp sẽ có mặt hỗ trợ bạn mọi lúc, mọi nơi.',
+        icon: 'ph:first-aid-kit-fill',
+      },
+    ];
+  },
 
-	async getEngineTechs() {
-		return [
-			{
-				name: "eSP+",
-				detail:
-					"Thế hệ động cơ mới tăng công suất, giảm ma sát tối đa và siêu tiết kiệm nhiên liệu.",
-			},
-			{
-				name: "Blue Core",
-				detail:
-					"Tối ưu hóa hiệu suất đốt cháy và làm mát, mang lại sự vận hành êm ái vượt trội.",
-			},
-			{
-				name: "PFI System",
-				detail:
-					"Hệ thống phun xăng điện tử chính xác đến từng micro-giây, tối ưu hóa mọi giọt nhiên liệu.",
-			},
-		];
-	},
+  async getEngineTechs() {
+    return [
+      {
+        name: 'eSP+',
+        detail:
+          'Thế hệ động cơ mới tăng công suất, giảm ma sát tối đa và siêu tiết kiệm nhiên liệu.',
+      },
+      {
+        name: 'Blue Core',
+        detail: 'Tối ưu hóa hiệu suất đốt cháy và làm mát, mang lại sự vận hành êm ái vượt trội.',
+      },
+      {
+        name: 'PFI System',
+        detail:
+          'Hệ thống phun xăng điện tử chính xác đến từng micro-giây, tối ưu hóa mọi giọt nhiên liệu.',
+      },
+    ];
+  },
 
-	async getSafetyFeatures() {
-		return [
-			{
-				title: "Phanh ABS vs CBS",
-				description:
-					"ABS chống bó cứng phanh khi phanh gấp; CBS phân bổ lực phanh đều giữa hai bánh. Cả hai phối hợp bảo vệ bạn tối đa.",
-				icon: "ph:shield-check-fill",
-			},
-			{
-				title: "Kiểm soát lực kéo (HSTC)",
-				description:
-					"Hệ thống kiểm soát mô-men xoắn giúp ngăn chặn tình trạng trượt bánh khi tăng tốc trên đường trơn trượt.",
-				icon: "ph:lightning-fill",
-			},
-			{
-				title: "Hỗ trợ đỗ xe (Parking Assist)",
-				description:
-					"Cảm biến và hệ thống trợ lực giúp việc dừng đỗ xe trong không gian hẹp trở nên dễ dàng và an toàn hơn.",
-				icon: "ph:park-fill",
-			},
-		];
-	},
+  async getSafetyFeatures() {
+    return [
+      {
+        title: 'Phanh ABS vs CBS',
+        description:
+          'ABS chống bó cứng phanh khi phanh gấp; CBS phân bổ lực phanh đều giữa hai bánh. Cả hai phối hợp bảo vệ bạn tối đa.',
+        icon: 'ph:shield-check-fill',
+      },
+      {
+        title: 'Kiểm soát lực kéo (HSTC)',
+        description:
+          'Hệ thống kiểm soát mô-men xoắn giúp ngăn chặn tình trạng trượt bánh khi tăng tốc trên đường trơn trượt.',
+        icon: 'ph:lightning-fill',
+      },
+      {
+        title: 'Hỗ trợ đỗ xe (Parking Assist)',
+        description:
+          'Cảm biến và hệ thống trợ lực giúp việc dừng đỗ xe trong không gian hẹp trở nên dễ dàng và an toàn hơn.',
+        icon: 'ph:park-fill',
+      },
+    ];
+  },
 
-	async getInteractionCards() {
-		const interactionCardsData = [
-			{
-				title: "Phân phối xe máy chính hãng",
-				slug: "phan-phoi-xe-may",
-				description:
-					"Cung cấp đa dạng các dòng xe máy mới nhất từ các thương hiệu hàng đầu như Honda, Yamaha, Suzuki với giá cả cạnh tranh.",
-				content: `
+  async getInteractionCards() {
+    const interactionCardsData = [
+      {
+        title: 'Phân phối xe máy chính hãng',
+        slug: 'phan-phoi-xe-may',
+        description:
+          'Cung cấp đa dạng các dòng xe máy mới nhất từ các thương hiệu hàng đầu như Honda, Yamaha, Suzuki với giá cả cạnh tranh.',
+        content: `
 					<p class="lead" style="font-size: 1.25rem; font-style: italic; color: #a1a1aa; margin-bottom: 2rem;">AnhEm Motor tự hào là đại lý phân phối chính thức của các thương hiệu xe máy hàng đầu, mang đến cho khách hàng sự đa dạng trong lựa chọn và sự an tâm tuyệt đối về chất lượng.</p>
 					
 					<h3 style="color: white; margin-top: 2rem; font-size: 1.5rem;">Đa dạng dòng xe, đáp ứng mọi nhu cầu</h3>
@@ -88,16 +87,15 @@ export const technologyRepository = {
 					
 					<p>Đến với AnhEm Motor, việc sở hữu một chiếc xe máy mới chưa bao giờ dễ dàng và an tâm đến thế.</p>
 				`,
-				image:
-					"https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=600",
-				icon: "ph:motorcycle-fill",
-			},
-			{
-				title: "Phụ tùng & Đồ chơi xe",
-				slug: "phu-tung-do-choi-xe",
-				description:
-					"Chuyên cung cấp sỉ và lẻ các loại phụ tùng, đồ chơi xe máy, dầu nhớt và phụ kiện chính hãng chất lượng cao.",
-				content: `
+        image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=600',
+        icon: 'ph:motorcycle-fill',
+      },
+      {
+        title: 'Phụ tùng & Đồ chơi xe',
+        slug: 'phu-tung-do-choi-xe',
+        description:
+          'Chuyên cung cấp sỉ và lẻ các loại phụ tùng, đồ chơi xe máy, dầu nhớt và phụ kiện chính hãng chất lượng cao.',
+        content: `
 					<p class="lead" style="font-size: 1.25rem; font-style: italic; color: #a1a1aa; margin-bottom: 2rem;">Bên cạnh việc phân phối xe máy, AnhEm Motor còn là điểm đến tin cậy cho những ai đang tìm kiếm phụ tùng thay thế và phụ kiện nâng cấp cho "xế cưng" của mình.</p>
 					
 					<h3 style="color: white; margin-top: 2rem; font-size: 1.5rem;">Kho phụ tùng phong phú, chính hãng</h3>
@@ -113,15 +111,15 @@ export const technologyRepository = {
 					
 					<p>AnhEm Motor cam kết mang đến những sản phẩm phụ trợ tốt nhất, giúp tối ưu hoá trải nghiệm lái xe của bạn trên mọi hành trình.</p>
 				`,
-				image: "/images/technology/engine_xray.webp",
-				icon: "ph:gear-fill",
-			},
-			{
-				title: "Bảo dưỡng & Sửa chữa",
-				slug: "bao-duong-sua-chua",
-				description:
-					"Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, mang đến dịch vụ chăm sóc, bảo dưỡng xe chuyên nghiệp.",
-				content: `
+        image: '/images/technology/engine_xray.webp',
+        icon: 'ph:gear-fill',
+      },
+      {
+        title: 'Bảo dưỡng & Sửa chữa',
+        slug: 'bao-duong-sua-chua',
+        description:
+          'Đội ngũ kỹ thuật viên giàu kinh nghiệm cùng trang thiết bị hiện đại, mang đến dịch vụ chăm sóc, bảo dưỡng xe chuyên nghiệp.',
+        content: `
 					<p class="lead" style="font-size: 1.25rem; font-style: italic; color: #a1a1aa; margin-bottom: 2rem;">Trung tâm Dịch vụ AnhEm Motor sở hữu đội ngũ kỹ thuật viên tay nghề cao và hệ thống máy móc chuẩn quốc tế, cam kết mang lại sự chăm sóc tốt nhất cho chiếc xe của bạn.</p>
 					
 					<h3 style="color: white; margin-top: 2rem; font-size: 1.5rem;">Dịch vụ chuyên nghiệp, tận tâm</h3>
@@ -137,15 +135,15 @@ export const technologyRepository = {
 					
 					<p>Với tiêu chí "Chất lượng làm nên thương hiệu", dịch vụ hậu mãi của AnhEm Motor luôn sẵn sàng phục vụ và đồng hành cùng bạn dài lâu.</p>
 				`,
-				image: "/images/technology/safety_blueprint.webp",
-				icon: "ph:wrench-fill",
-			},
-			{
-				title: "Trả góp & Tài chính",
-				slug: "tra-gop-tai-chinh",
-				description:
-					"Mua xe dễ dàng với các gói hỗ trợ tài chính linh hoạt, lãi suất thấp và thủ tục phê duyệt siêu tốc.",
-				content: `
+        image: '/images/technology/safety_blueprint.webp',
+        icon: 'ph:wrench-fill',
+      },
+      {
+        title: 'Trả góp & Tài chính',
+        slug: 'tra-gop-tai-chinh',
+        description:
+          'Mua xe dễ dàng với các gói hỗ trợ tài chính linh hoạt, lãi suất thấp và thủ tục phê duyệt siêu tốc.',
+        content: `
 					<p class="lead" style="font-size: 1.25rem; font-style: italic; color: #a1a1aa; margin-bottom: 2rem;">Thấu hiểu nhu cầu sở hữu xe sớm của khách hàng, AnhEm Motor hợp tác cùng các đối tác tài chính hàng đầu để mang đến giải pháp trả góp linh hoạt, tiết kiệm.</p>
 					
 					<h3 style="color: white; margin-top: 2rem; font-size: 1.5rem;">Sở hữu xe ngay, trả tiền từ từ</h3>
@@ -161,42 +159,42 @@ export const technologyRepository = {
 					
 					<p>Hãy để vấn đề tài chính không còn là rào cản ngăn bạn chạm tay vào chiếc xe mơ ước. Trải nghiệm dịch vụ trả góp thông minh cùng AnhEm Motor!</p>
 				`,
-				image: "https://images.unsplash.com/photo-1580048915913-4f8f5cb481c4?q=80&w=600",
-				icon: "ph:wallet-fill",
-			},
-		];
-		return interactionCardsData;
-	},
+        image: 'https://images.unsplash.com/photo-1580048915913-4f8f5cb481c4?q=80&w=600',
+        icon: 'ph:wallet-fill',
+      },
+    ];
+    return interactionCardsData;
+  },
 
-	async getInteractionCardBySlug(slug) {
-		const cards = await this.getInteractionCards();
-		const card = cards.find((c) => c.slug === slug);
-		if (!card) throw new Error("Interaction card not found");
-		return card;
-	},
+  async getInteractionCardBySlug(slug) {
+    const cards = await this.getInteractionCards();
+    const card = cards.find((c) => c.slug === slug);
+    if (!card) throw new Error('Interaction card not found');
+    return card;
+  },
 
-	async getManagementFeatures() {
-		return [
-			{
-				title: "Quản lý Đơn hàng & Kho xe",
-				desc: "Theo dõi tồn kho thực tế, quy trình xử lý đơn hàng tự động hóa hoàn toàn.",
-				icon: "ph:package-fill",
-			},
-			{
-				title: "Báo cáo Tài chính Tự động",
-				desc: "Hệ thống tự động tổng hợp doanh thu, chi phí và lợi nhuận theo thời gian thực.",
-				icon: "ph:chart-pie-slice-fill",
-			},
-			{
-				title: "CRM thông minh",
-				desc: "Quản lý và chăm sóc khách hàng dựa trên lịch sử mua sắm và thói quen sử dụng dịch vụ.",
-				icon: "ph:user-gear-fill",
-			},
-			{
-				title: "Thanh toán App Mobile",
-				desc: "Tích hợp thanh toán dịch vụ, phụ tùng trực tiếp qua App vô cùng tiện lợi.",
-				icon: "ph:credit-card-fill",
-			},
-		];
-	},
+  async getManagementFeatures() {
+    return [
+      {
+        title: 'Quản lý Đơn hàng & Kho xe',
+        desc: 'Theo dõi tồn kho thực tế, quy trình xử lý đơn hàng tự động hóa hoàn toàn.',
+        icon: 'ph:package-fill',
+      },
+      {
+        title: 'Báo cáo Tài chính Tự động',
+        desc: 'Hệ thống tự động tổng hợp doanh thu, chi phí và lợi nhuận theo thời gian thực.',
+        icon: 'ph:chart-pie-slice-fill',
+      },
+      {
+        title: 'CRM thông minh',
+        desc: 'Quản lý và chăm sóc khách hàng dựa trên lịch sử mua sắm và thói quen sử dụng dịch vụ.',
+        icon: 'ph:user-gear-fill',
+      },
+      {
+        title: 'Thanh toán App Mobile',
+        desc: 'Tích hợp thanh toán dịch vụ, phụ tùng trực tiếp qua App vô cùng tiện lợi.',
+        icon: 'ph:credit-card-fill',
+      },
+    ];
+  },
 };

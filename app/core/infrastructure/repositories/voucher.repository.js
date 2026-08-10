@@ -6,7 +6,7 @@ export const voucherRepository = {
   },
   async validate(voucherId, outputId, orderTotal) {
     const axios = useAxios();
-    const response = await axios.post("/api/v1/voucher/validate", {
+    const response = await axios.post('/api/v1/voucher/validate', {
       voucherId,
       outputId,
       orderTotal,
@@ -15,7 +15,7 @@ export const voucherRepository = {
   },
   async apply(voucherId, outputId) {
     const axios = useAxios();
-    const response = await axios.post("/api/v1/voucher/apply", {
+    const response = await axios.post('/api/v1/voucher/apply', {
       voucherId,
       outputId,
     });

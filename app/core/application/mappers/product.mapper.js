@@ -1,1 +1,1 @@
-export { default } from "../../../mappers/product.mapper";
+export { default } from '../../../mappers/product.mapper';

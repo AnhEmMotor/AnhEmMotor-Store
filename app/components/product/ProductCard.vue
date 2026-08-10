@@ -1,10 +1,10 @@
 <script setup>
-import { ref, computed, watch } from "vue";
-import { toast } from "vue3-toastify";
-import { useCart } from "~/composables/useCart";
-import { useAssetUrl } from "~/composables/useAssetUrl";
+import { ref, computed, watch } from 'vue';
+import { toast } from 'vue3-toastify';
+import { useCart } from '~/composables/useCart';
+import { useAssetUrl } from '~/composables/useAssetUrl';
 
-import ProductColorChip from "./ProductColorChip.vue";
+import ProductColorChip from './ProductColorChip.vue';
 
 const props = defineProps({
   product: {
@@ -24,15 +24,16 @@ const route = useRoute();
 
 const colorKey = (color, index) => color?.id ?? `index:${index}`;
 const normalizeText = (value) =>
-  String(value ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("vi-VN")
+  String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('vi-VN')
     .trim();
 
 const isVehicle = computed(() => {
-  const catName = props.product?.categoryName || props.product?.category || props.product?.category_name || "";
-  return catName.toLowerCase().includes("xe");
+  const catName =
+    props.product?.categoryName || props.product?.category || props.product?.category_name || '';
+  return catName.toLowerCase().includes('xe');
 });
 
 watch(
@@ -44,23 +45,31 @@ watch(
       return;
     }
 
-    const versionsList = urlVersions ? String(urlVersions).split(",").map(v => v.trim().toLowerCase()) : [];
-    const colorsList = urlColors ? String(urlColors).split(",").map(c => c.trim().toLowerCase()) : [];
+    const versionsList = urlVersions
+      ? String(urlVersions)
+          .split(',')
+          .map((v) => v.trim().toLowerCase())
+      : [];
+    const colorsList = urlColors
+      ? String(urlColors)
+          .split(',')
+          .map((c) => c.trim().toLowerCase())
+      : [];
 
     let matchedVariant = null;
     let matchedColor = null;
     let matchedColorIndex = -1;
 
     for (const v of newProd.variants || []) {
-      const fullVName = (v.option_values_text || v.variantName || v.name || "").trim();
-      const cleanVName = fullVName.split(" - ")[0].trim().toLowerCase();
+      const fullVName = (v.option_values_text || v.variantName || v.name || '').trim();
+      const cleanVName = fullVName.split(' - ')[0].trim().toLowerCase();
       const matchesVersion = versionsList.length === 0 || versionsList.includes(cleanVName);
 
       if (matchesVersion) {
         if (colorsList.length > 0) {
           const colors = v.colors || [];
           for (let i = 0; i < colors.length; i++) {
-            const cName = (colors[i].name || colors[i].colorName || "").trim().toLowerCase();
+            const cName = (colors[i].name || colors[i].colorName || '').trim().toLowerCase();
             if (colorsList.includes(cName)) {
               matchedVariant = v;
               matchedColor = colors[i];
@@ -77,14 +86,14 @@ watch(
     }
 
     selectedVariant.value = matchedVariant || newProd.variants?.[0] || null;
-    
+
     if (matchedColor) {
       selectedColorKey.value = colorKey(matchedColor, matchedColorIndex);
     } else {
       selectedColorKey.value = null;
     }
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 const selectedVariantColors = computed(() => selectedVariant.value?.colors ?? []);
@@ -97,10 +106,10 @@ const selectedColor = computed(() => {
 
 const currentPrice = computed(() => {
   const price = selectedVariant.value?.price ?? props.product.price;
-  if (!price) return "N/A";
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
+  if (!price) return 'N/A';
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
   }).format(price);
 });
 
@@ -117,13 +126,11 @@ const currentImage = computed(() => {
     selectedVariant.value?.colors?.[0]?.cover_image_url ||
     props.product?.coverImageUrl ||
     props.product?.image ||
-    "/assets/image/placeholder-product.webp"
+    '/assets/image/placeholder-product.webp'
   );
 });
 
-const isPlaceholderImage = computed(() =>
-  currentImage.value.includes("dummyimage.com"),
-);
+const isPlaceholderImage = computed(() => currentImage.value.includes('dummyimage.com'));
 
 const currentUrl = computed(() => {
   const slug =
@@ -131,18 +138,16 @@ const currentUrl = computed(() => {
     selectedVariant.value?.url_slug ||
     selectedVariant.value?.urlSlug ||
     props.product?.slug;
-  return slug ? `/product/${slug}` : "#";
+  return slug ? `/product/${slug}` : '#';
 });
 
 const chipVariants = computed(() => {
   const list = props.product?.variants ?? [];
   const variants = list
-    .filter(
-      (v) => (v.option_values_text ?? v.variant_name ?? "").trim().length > 0,
-    )
+    .filter((v) => (v.option_values_text ?? v.variant_name ?? '').trim().length > 0)
     .map((v) => {
-      const fullLabel = (v.option_values_text ?? v.variant_name ?? "").trim();
-      const label = fullLabel.includes(" - ") ? fullLabel.split(" - ")[0].trim() : fullLabel;
+      const fullLabel = (v.option_values_text ?? v.variant_name ?? '').trim();
+      const label = fullLabel.includes(' - ') ? fullLabel.split(' - ')[0].trim() : fullLabel;
       return {
         variant: v,
         label: label,
@@ -152,13 +157,11 @@ const chipVariants = computed(() => {
   if (variants.length !== 1) return variants;
 
   const searchTerm = normalizeText(route.query.search);
-  return searchTerm && normalizeText(variants[0].label).includes(searchTerm)
-    ? variants
-    : [];
+  return searchTerm && normalizeText(variants[0].label).includes(searchTerm) ? variants : [];
 });
 
 const hasVariantControls = computed(
-  () => chipVariants.value.length > 0 || selectedVariantColors.value.length > 0,
+  () => chipVariants.value.length > 0 || selectedVariantColors.value.length > 0
 );
 
 const applyVariant = (variant) => {
@@ -178,7 +181,7 @@ const handleAddToCart = () => {
   if (!variant) return;
 
   if (selectedVariantColors.value.length > 0 && !selectedColor.value) {
-    toast.warning("Vui lòng chọn màu sản phẩm.");
+    toast.warning('Vui lòng chọn màu sản phẩm.');
     return;
   }
 
@@ -186,13 +189,9 @@ const handleAddToCart = () => {
     selectedColor.value?.id && Number(selectedColor.value.id) > 0
       ? Number(selectedColor.value.id)
       : null;
-  const variantLabel = variant.option_values_text || variant.variant_name || "";
-  const selectedColorLabel = selectedColor.value
-    ? colorLabel(selectedColor.value, 0)
-    : "";
-  const name = [props.product.name, variantLabel, selectedColorLabel]
-    .filter(Boolean)
-    .join(" - ");
+  const variantLabel = variant.option_values_text || variant.variant_name || '';
+  const selectedColorLabel = selectedColor.value ? colorLabel(selectedColor.value, 0) : '';
+  const name = [props.product.name, variantLabel, selectedColorLabel].filter(Boolean).join(' - ');
 
   addItem(
     {
@@ -212,14 +211,12 @@ const handleAddToCart = () => {
         props.product.productLimit ??
         null,
     },
-    1,
+    1
   );
 };
 
 const compareStore = useCompareStore();
-const isCompared = computed(() =>
-  compareStore.products.some((p) => p.id === props.product.id),
-);
+const isCompared = computed(() => compareStore.products.some((p) => p.id === props.product.id));
 
 const toggleCompare = (e) => {
   e.preventDefault();
@@ -249,28 +246,37 @@ const toggleCompare = (e) => {
   >
     <div
       class="relative h-48 sm:h-52 lg:h-60 overflow-hidden"
-      :class="isPlaceholderImage ?'bg-slate-900' : 'bg-slate-50'"
+      :class="isPlaceholderImage ? 'bg-slate-900' : 'bg-slate-50'"
     >
       <img
         :src="useAssetUrl(currentImage)"
         :alt="product.name"
         class="w-full h-full transition-transform duration-700"
-        :class="isPlaceholderImage ?'object-contain' : 'object-cover group-hover:scale-110'"
+        :class="isPlaceholderImage ? 'object-contain' : 'object-cover group-hover:scale-110'"
         @error="$event.target.src = '/assets/image/placeholder-product.webp'"
-      >
+      />
 
-      <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+      />
 
       <button
         class="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 z-10 backdrop-blur-md border"
-        :class="isCompared ?'bg-primary border-primary text-white shadow-lg shadow-primary/30' : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'"
+        :class="
+          isCompared
+            ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30'
+            : 'bg-white/80 border-slate-100 text-slate-400 hover:text-primary hover:bg-white'
+        "
         :title="isCompared ? 'Xóa khỏi danh sách so sánh' : 'Thêm vào so sánh'"
         @click="toggleCompare"
       >
         <Icon :name="isCompared ? 'ph:check-bold' : 'ph:git-diff-bold'" class="text-lg" />
       </button>
 
-      <div v-if="product.brand" class="absolute bottom-4 left-4 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
+      <div
+        v-if="product.brand"
+        class="absolute bottom-4 left-4 px-3 py-1 bg-black/40 backdrop-blur-md rounded-full text-[10px] font-bold text-white uppercase tracking-wider"
+      >
         {{ product.brand }}
       </div>
     </div>
@@ -285,7 +291,10 @@ const toggleCompare = (e) => {
       <div
         v-if="hasVariantControls"
         class="variant-selector mb-3"
-        :class="{'variant-selector--single': chipVariants.length === 0 || selectedVariantColors.length === 0 }"
+        :class="{
+          'variant-selector--single':
+            chipVariants.length === 0 || selectedVariantColors.length === 0,
+        }"
       >
         <div v-if="chipVariants.length > 0" class="variant-section">
           <div class="variant-section__label">
@@ -303,11 +312,7 @@ const toggleCompare = (e) => {
           </div>
         </div>
 
-        <div
-          v-if="selectedVariantColors.length > 0"
-          class="variant-section"
-          :class="{'variant-section--separated': chipVariants.length > 0 }"
-        >
+        <div v-if="selectedVariantColors.length > 0" class="variant-section">
           <div class="variant-section__label">
             <span>Màu sắc</span>
           </div>
@@ -326,7 +331,9 @@ const toggleCompare = (e) => {
 
       <div class="mt-auto flex flex-col gap-0.5 mb-3">
         <span class="text-xs text-slate-400 font-medium">Giá từ</span>
-        <span class="text-primary font-bold text-xl sm:text-2xl tracking-tight">{{ currentPrice }}</span>
+        <span class="text-primary font-bold text-xl sm:text-2xl tracking-tight">{{
+          currentPrice
+        }}</span>
       </div>
 
       <div class="pt-3 border-t border-slate-50 flex items-center gap-2">
@@ -371,15 +378,15 @@ const toggleCompare = (e) => {
 .variant-selector {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.625rem;
   min-height: 8.25rem;
-  max-height: 12rem;
+  max-height: 16rem;
   overflow: hidden;
 }
 
 .variant-selector--single {
   min-height: 5.5rem;
-  max-height: 5.5rem;
+  max-height: 6.25rem;
 }
 
 .variant-section {
@@ -391,17 +398,7 @@ const toggleCompare = (e) => {
 
 .variant-selector:not(.variant-selector--single) .variant-section:first-child {
   flex: 1 1 auto;
-  max-height: 5.125rem;
-}
-
-.variant-selector:not(.variant-selector--single) .variant-section--separated {
-  flex: 0 0 5rem;
-  max-height: 5rem;
-}
-
-.variant-section--separated {
-  padding-top: 0.25rem;
-  border-top: 1px solid #f1f5f9;
+  max-height: 8rem;
 }
 
 .variant-section__label {
@@ -415,19 +412,13 @@ const toggleCompare = (e) => {
   color: #94a3b8;
   text-transform: none;
   font-variant-caps: normal;
-}
-
-.variant-section__label::after {
-  flex: 1;
-  height: 1px;
-  content: "";
-  background: #f1f5f9;
+  margin-bottom: 8px;
 }
 
 .variant-section__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.375rem;
+  gap: 0.5rem;
   align-content: flex-start;
   min-height: 0;
   overflow-y: auto;
