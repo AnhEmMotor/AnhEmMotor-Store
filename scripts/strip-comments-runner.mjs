@@ -89,13 +89,13 @@ files.forEach((file) => {
       }
       stripped = stripped.replace(/<script([^>]*)>([\s\S]*?)<\/script>/g, (match, attrs, scriptContent) => {
         try { 
-            return `<script${attrs}>${decomment(scriptContent)}<\/script>`; 
+            return `<script${attrs}>${decomment(scriptContent)}</script>`; 
         } catch(e) { 
-            try { return `<script${attrs}>${stripComments(scriptContent)}<\/script>`; } catch (e2) { return match; }
+            try { return `<script${attrs}>${stripComments(scriptContent)}</script>`; } catch (e2) { return match; }
         }
       });
       stripped = stripped.replace(/<style([^>]*)>([\s\S]*?)<\/style>/g, (match, attrs, styleContent) => {
-        try { return `<style${attrs}>${decomment.text(styleContent)}<\/style>`; } catch(e) { return match; }
+        try { return `<style${attrs}>${decomment.text(styleContent)}</style>`; } catch(e) { return match; }
       });
     } else if (file.endsWith('.html')) {
       try { stripped = decomment.html(stripped); } catch (e) { stripped = stripComments(stripped); }
