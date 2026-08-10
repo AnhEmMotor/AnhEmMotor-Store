@@ -7,5 +7,5 @@ export const INewsRepository = {
   },
   getNewsDetail: async () => {
     throw new Error('INewsRepository.getNewsDetail not implemented');
-  }
+  },
 };

@@ -1,0 +1,64 @@
+import process from 'process';
+import fs from 'fs';
+import path from 'path';
+import decomment from 'decomment';
+
+function getAllFiles(dir, fileList = []) {
+    if (!fs.existsSync(dir)) return fileList;
+    const files = fs.readdirSync(dir);
+    for (const file of files) {
+        if (
+            file === 'node_modules' || 
+            file === '.git' || 
+            file === '.nuxt' ||
+            file === '.output' ||
+            file === '.expo' ||
+            file === 'android' ||
+            file === 'ios' ||
+            file === 'dist' ||
+            file === 'dist-web' ||
+            file === 'build'
+        ) {
+            continue;
+        }
+        
+        const filePath = path.join(dir, file);
+        if (fs.statSync(filePath).isDirectory()) {
+            getAllFiles(filePath, fileList);
+        } else if (filePath.endsWith('.js') || filePath.endsWith('.jsx') || filePath.endsWith('.ts') || filePath.endsWith('.tsx')) {
+            fileList.push(filePath);
+        }
+    }
+    return fileList;
+}
+
+const args = process.argv.slice(2);
+let files = [];
+if (args.length > 0) {
+    files = args.filter(f => f.endsWith('.js') || f.endsWith('.jsx') || f.endsWith('.ts') || f.endsWith('.tsx'));
+} else {
+    files = getAllFiles(process.cwd());
+}
+
+files.forEach(file => {
+    if (file.includes('config') || file.includes('.eslintrc') || file.includes('scripts')) {
+        return;
+    }
+
+    try {
+        const content = fs.readFileSync(file, 'utf8');
+        const lines = content.split('\n');
+        const eslintComments = lines.filter(l => l.includes('eslint-disable') || l.includes('eslint-enable'));
+        let stripped = decomment(content);
+        if (eslintComments.length > 0) {
+            stripped = eslintComments.join('\n') + '\n' + stripped;
+        }
+        
+        if (content !== stripped) {
+            fs.writeFileSync(file, stripped, 'utf8');
+        }
+    } catch (e) {
+        console.error('Failed to strip comments from ' + file + ':', e.message);
+    }
+});
+console.log('Comments stripped successfully.');

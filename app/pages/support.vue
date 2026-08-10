@@ -1,16 +1,16 @@
 <script setup>
 useSeoMeta({
-  title: "Hỗ trợ khách hàng | AnhEm Motor",
+  title: 'Hỗ trợ khách hàng | AnhEm Motor',
   description:
-    "Trung tâm hỗ trợ khách hàng AnhEm Motor - Giải đáp thắc mắc về mua xe, trả góp và bảo dưỡng định kỳ.",
+    'Trung tâm hỗ trợ khách hàng AnhEm Motor - Giải đáp thắc mắc về mua xe, trả góp và bảo dưỡng định kỳ.',
 });
 
 const contactStore = useContactStore();
 
 const indicators = [
-  "Phản hồi trong 15 phút",
-  "Hỗ trợ nhanh trong giờ hoạt động",
-  "Tư vấn miễn phí toàn hệ thống",
+  'Phản hồi trong 15 phút',
+  'Hỗ trợ nhanh trong giờ hoạt động',
+  'Tư vấn miễn phí toàn hệ thống',
 ];
 
 const handleContactSubmit = async (data) => {
@@ -26,14 +26,14 @@ onMounted(() => {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("reveal-visible");
+          entry.target.classList.add('reveal-visible');
         }
       });
     },
-    { threshold: 0.1 },
+    { threshold: 0.1 }
   );
 
-  document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 });
 </script>
 
@@ -61,30 +61,27 @@ onMounted(() => {
                   class="inline-flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-full shadow-sm border border-gray-100"
                 >
                   <span class="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
-                  <span
-                    class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-500"
+                  <span class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-500"
                     >Kết nối trực tiếp</span
                   >
                 </div>
                 <h2
                   class="text-4xl lg:text-6xl font-extrabold text-gray-900 uppercase tracking-tighter leading-[1]"
                 >
-                  Trung tâm <br>
+                  Trung tâm <br />
                   <span class="text-red-600">Hỗ trợ tận tâm</span>
                 </h2>
 
                 <p
                   class="text-gray-500 text-lg font-medium leading-relaxed max-w-md border-l-4 border-red-600/30 pl-6"
                 >
-                  "Chúng tôi lắng nghe để thấu hiểu, phản hồi để sẻ chia. Mọi
-                  thắc mắc của bạn là cơ hội để AnhEm Motor hoàn thiện hơn."
+                  "Chúng tôi lắng nghe để thấu hiểu, phản hồi để sẻ chia. Mọi thắc mắc của bạn là cơ
+                  hội để AnhEm Motor hoàn thiện hơn."
                 </p>
               </div>
             </div>
 
-            <div
-              class="space-y-5 pt-12 border-t border-gray-100 max-w-sm mt-12"
-            >
+            <div class="space-y-5 pt-12 border-t border-gray-100 max-w-sm mt-12">
               <div
                 v-for="(indicator, idx) in indicators"
                 :key="idx"
@@ -93,10 +90,7 @@ onMounted(() => {
                 <div
                   class="w-8 h-8 rounded-xl bg-primary/5 flex items-center justify-center group-hover:bg-primary transition-all duration-500 group-hover:rotate-12"
                 >
-                  <Icon
-                    name="ph:check-bold"
-                    class="text-xs text-primary group-hover:text-white"
-                  />
+                  <Icon name="ph:check-bold" class="text-xs text-primary group-hover:text-white" />
                 </div>
                 <span
                   class="text-xs font-black text-gray-400 uppercase tracking-widest group-hover:text-gray-900 transition-colors"
@@ -114,9 +108,7 @@ onMounted(() => {
                   name="ph:phone-call-fill"
                   class="text-4xl text-primary group-hover:scale-110 transition-transform mb-6"
                 />
-                <h4
-                  class="text-[10px] font-black uppercase tracking-[0.2em] mb-1 text-gray-400"
-                >
+                <h4 class="text-[10px] font-black uppercase tracking-[0.2em] mb-1 text-gray-400">
                   Hotline 24/7
                 </h4>
                 <p class="text-lg font-black text-gray-900">1900.xxxx</p>
@@ -129,9 +121,7 @@ onMounted(() => {
                   name="ph:chat-circle-dots-fill"
                   class="text-4xl text-primary group-hover:scale-110 transition-transform mb-6"
                 />
-                <h4
-                  class="text-[10px] font-black uppercase tracking-[0.2em] mb-1 text-gray-400"
-                >
+                <h4 class="text-[10px] font-black uppercase tracking-[0.2em] mb-1 text-gray-400">
                   Zalo Tư vấn
                 </h4>
                 <p class="text-lg font-black text-gray-900">Phản hồi ngay</p>
@@ -151,16 +141,12 @@ onMounted(() => {
                   />
                 </div>
                 <div>
-                  <h4
-                    class="text-sm font-black text-gray-900 uppercase tracking-widest mb-2"
-                  >
+                  <h4 class="text-sm font-black text-gray-900 uppercase tracking-widest mb-2">
                     Cam kết bảo mật
                   </h4>
-                  <p
-                    class="text-[11px] text-gray-500 font-medium leading-relaxed"
-                  >
-                    Thông tin của bạn được bảo mật tuyệt đối và chỉ sử dụng cho
-                    mục đích tư vấn hỗ trợ từ AnhEm Motor.
+                  <p class="text-[11px] text-gray-500 font-medium leading-relaxed">
+                    Thông tin của bạn được bảo mật tuyệt đối và chỉ sử dụng cho mục đích tư vấn hỗ
+                    trợ từ AnhEm Motor.
                   </p>
                 </div>
               </div>
@@ -176,16 +162,12 @@ onMounted(() => {
                   />
                 </div>
                 <div>
-                  <h4
-                    class="text-sm font-black text-gray-900 uppercase tracking-widest mb-2"
-                  >
+                  <h4 class="text-sm font-black text-gray-900 uppercase tracking-widest mb-2">
                     Phản hồi thần tốc
                   </h4>
-                  <p
-                    class="text-[11px] text-gray-500 font-medium leading-relaxed"
-                  >
-                    Đội ngũ của chúng tôi cam kết liên hệ lại trong vòng tối đa
-                    30 phút trong giờ làm việc.
+                  <p class="text-[11px] text-gray-500 font-medium leading-relaxed">
+                    Đội ngũ của chúng tôi cam kết liên hệ lại trong vòng tối đa 30 phút trong giờ
+                    làm việc.
                   </p>
                 </div>
               </div>
@@ -196,14 +178,10 @@ onMounted(() => {
             class="bg-white rounded-[3rem] shadow-2xl shadow-gray-200/80 border border-gray-50 overflow-hidden reveal reveal-right transform hover:scale-[1.01] transition-transform duration-700"
           >
             <div class="bg-primary/5 p-8 border-b border-gray-50">
-              <h3
-                class="text-xl font-black text-gray-900 uppercase tracking-wider"
-              >
+              <h3 class="text-xl font-black text-gray-900 uppercase tracking-wider">
                 Gửi yêu cầu hỗ trợ
               </h3>
-              <p
-                class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1"
-              >
+              <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">
                 Thông tin của bạn sẽ được xử lý bảo mật
               </p>
             </div>
@@ -223,9 +201,7 @@ onMounted(() => {
               @rate="contactStore.rateEmployee"
             />
 
-            <div
-              class="px-6 sm:px-10 pb-12 border-t border-gray-50 bg-gray-50/50"
-            >
+            <div class="px-6 sm:px-10 pb-12 border-t border-gray-50 bg-gray-50/50">
               <SupportTimeline />
             </div>
           </div>

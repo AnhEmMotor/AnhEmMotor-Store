@@ -1,4 +1,3 @@
- 
 /**
  * About Repository Interface (Domain Layer)
  */
@@ -8,5 +7,5 @@ export const IAboutRepository = {
   },
   getLocations: async () => {
     throw new Error('IAboutRepository.getLocations not implemented');
-  }
+  },
 };

@@ -1,4 +1,3 @@
- 
 /**
  * Technology Repository Interface (Domain Layer)
  */
@@ -17,5 +16,5 @@ export const ITechnologyRepository = {
   },
   getManagementFeatures: async () => {
     throw new Error('ITechnologyRepository.getManagementFeatures not implemented');
-  }
+  },
 };

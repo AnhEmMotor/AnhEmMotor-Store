@@ -3,29 +3,22 @@
     <div class="support-tracker__header">
       <div>
         <p>Theo dõi yêu cầu #{{ request?.id }}</p>
-        <h3>{{ request?.subject || "Yêu cầu hỗ trợ của bạn" }}</h3>
+        <h3>{{ request?.subject || 'Yêu cầu hỗ trợ của bạn' }}</h3>
       </div>
       <button type="button" :disabled="loading" @click="$emit('refresh')">
-        <Icon
-          name="ph:arrows-clockwise-bold"
-          :class="{ 'animate-spin': loading }"
-        />
+        <Icon name="ph:arrows-clockwise-bold" :class="{ 'animate-spin': loading }" />
         Cập nhật
       </button>
     </div>
 
-    <div v-if="loading && !request" class="support-tracker__empty">
-      Đang tải tiến độ hỗ trợ...
-    </div>
+    <div v-if="loading && !request" class="support-tracker__empty">Đang tải tiến độ hỗ trợ...</div>
 
     <template v-else-if="request">
       <div class="support-tracker__employee">
         <Icon name="ph:headset-fill" />
         <div>
           <span>Nhân viên phụ trách</span>
-          <strong>{{
-            request.assignedUserName || "Đang chờ phân công"
-          }}</strong>
+          <strong>{{ request.assignedUserName || 'Đang chờ phân công' }}</strong>
         </div>
       </div>
 
@@ -40,9 +33,7 @@
           }"
         >
           <div class="support-tracker__marker">
-            <Icon
-              :name="index < currentStepIndex ? 'ph:check-bold' : step.icon"
-            />
+            <Icon :name="index < currentStepIndex ? 'ph:check-bold' : step.icon" />
           </div>
           <div>
             <strong>{{ step.label }}</strong>
@@ -60,10 +51,7 @@
           <Icon name="ph:star-fill" />
         </div>
 
-        <article
-          v-if="request.customerRatingOfEmployee != null"
-          class="rating-history__item"
-        >
+        <article v-if="request.customerRatingOfEmployee != null" class="rating-history__item">
           <div>
             <strong>Đánh giá nhân viên hỗ trợ</strong>
             <span>{{ formatTime(request.customerRatedAt) }}</span>
@@ -109,7 +97,7 @@
               :disabled="rating === 0 || ratingSubmitting"
               @click="$emit('rate', rating, '')"
             >
-              {{ ratingSubmitting ? "Đang gửi..." : "Lưu số sao" }}
+              {{ ratingSubmitting ? 'Đang gửi...' : 'Lưu số sao' }}
             </button>
           </div>
         </div>
@@ -127,7 +115,7 @@ const props = defineProps({
   ratingSubmitting: { type: Boolean, default: false },
 });
 
-defineEmits(["refresh", "rate"]);
+defineEmits(['refresh', 'rate']);
 
 const rating = ref(0);
 
@@ -136,45 +124,43 @@ watch(
   (value) => {
     rating.value = value || 0;
   },
-  { immediate: true },
+  { immediate: true }
 );
 
-const statusOrder = ["New", "Assigned", "InProgress", "Closed"];
-const currentStepIndex = computed(() =>
-  Math.max(0, statusOrder.indexOf(props.request?.status)),
-);
+const statusOrder = ['New', 'Assigned', 'InProgress', 'Closed'];
+const currentStepIndex = computed(() => Math.max(0, statusOrder.indexOf(props.request?.status)));
 const steps = computed(() => [
   {
-    status: "New",
-    label: "Đã tiếp nhận",
-    icon: "ph:inbox-bold",
+    status: 'New',
+    label: 'Đã tiếp nhận',
+    icon: 'ph:inbox-bold',
     value: props.request?.createdAt,
   },
   {
-    status: "Assigned",
-    label: "Đã phân công",
-    icon: "ph:user-circle-check-bold",
+    status: 'Assigned',
+    label: 'Đã phân công',
+    icon: 'ph:user-circle-check-bold',
     value: props.request?.assignedAt,
   },
   {
-    status: "InProgress",
-    label: "Đang hỗ trợ",
-    icon: "ph:headset-bold",
+    status: 'InProgress',
+    label: 'Đang hỗ trợ',
+    icon: 'ph:headset-bold',
     value: props.request?.startedAt,
   },
   {
-    status: "Closed",
-    label: "Hoàn tất",
-    icon: "ph:seal-check-bold",
+    status: 'Closed',
+    label: 'Hoàn tất',
+    icon: 'ph:seal-check-bold',
     value: props.request?.closedAt,
   },
 ]);
 
 const formatTime = (value) => {
-  if (!value) return "Chưa ghi nhận thời gian";
-  return new Intl.DateTimeFormat("vi-VN", {
-    dateStyle: "short",
-    timeStyle: "short",
+  if (!value) return 'Chưa ghi nhận thời gian';
+  return new Intl.DateTimeFormat('vi-VN', {
+    dateStyle: 'short',
+    timeStyle: 'short',
   }).format(new Date(value));
 };
 </script>

@@ -1,4 +1,3 @@
- 
 /**
  * Layout Repository Interface (Domain Layer)
  */
@@ -8,5 +7,5 @@ export const ILayoutRepository = {
   },
   getFooterData: async () => {
     throw new Error('ILayoutRepository.getFooterData not implemented');
-  }
+  },
 };

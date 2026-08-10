@@ -10,5 +10,5 @@ export const IRecruitmentRepository = {
   },
   submitApplication: async () => {
     throw new Error('IRecruitmentRepository.submitApplication not implemented');
-  }
+  },
 };

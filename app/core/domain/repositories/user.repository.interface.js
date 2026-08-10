@@ -13,5 +13,5 @@ export const IUserRepository = {
   },
   updateAvatar: async () => {
     throw new Error('IUserRepository.updateAvatar not implemented');
-  }
+  },
 };

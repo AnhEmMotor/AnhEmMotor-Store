@@ -35,5 +35,5 @@ export const IProductRepository = {
    */
   getAttributeLabels: async () => {
     throw new Error('IProductRepository.getAttributeLabels not implemented');
-  }
+  },
 };
