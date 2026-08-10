@@ -1,7 +1,4 @@
 <script setup>
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const emit = defineEmits(['select']);
-
 defineProps({
   label: { type: String, required: true },
   selected: { type: Boolean, default: false },
