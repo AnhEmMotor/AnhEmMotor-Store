@@ -255,7 +255,7 @@ const formatVND = (value) => {
       <div class="flex flex-col lg:flex-row gap-12">
         <aside class="hidden lg:block w-80 flex-shrink-0">
           <div
-            class="sticky top-[120px] border border-gray-100 rounded-3xl shadow-sm overflow-hidden flex flex-col max-h-[calc(100vh-140px)]"
+            class="sticky top-[120px] border border-gray-100 rounded-3xl shadow-sm overflow-y-auto flex flex-col max-h-[calc(100vh-140px)] custom-scrollbar"
           >
             <ProductFilterSidebar v-model="filters" />
           </div>
