@@ -82,7 +82,6 @@ const featuredNews = computed(() => {
 
 const activeTab = ref('all');
 
-// Filter news based on tab selection
 const filteredNewsList = computed(() => {
   if (!allNews.value) return [];
   if (activeTab.value === 'all') return allNews.value;
@@ -101,7 +100,6 @@ const filteredNewsList = computed(() => {
   });
 });
 
-// Watch for page changes to smoothly scroll directly to the news grid section
 watch(
   () => pagination.currentPage,
   () => {
@@ -116,7 +114,6 @@ watch(
   }
 );
 
-// Scroll Reveal Logic
 onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -135,10 +132,8 @@ onMounted(() => {
 
 <template>
   <div class="bg-white min-h-screen font-['Manrope']">
-    <!-- [1] HERO SECTION -->
     <NewsBanner />
 
-    <!-- [2] STICKY SUB-NAVIGATION -->
     <div
       id="news-content"
       class="bg-white border-b border-gray-100 sticky top-[72px] z-50 scroll-mt-[72px]"
@@ -148,11 +143,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- [3] MAIN CONTENT SECTION -->
     <main class="py-8 md:py-20 bg-gray-50/20">
       <div class="container mx-auto px-4 md:px-8">
         <div v-if="newsStore.featuredNews.length > 0" class="space-y-12 md:space-y-24">
-          <!-- [4] FEATURED NEWS (Premium 60/40 Design) -->
           <section
             v-if="activeTab === 'all' && pagination.currentPage === 1 && featuredNews"
             class="transition-all duration-700"
@@ -170,7 +163,6 @@ onMounted(() => {
               :to="`/news/${featuredNews.slug}`"
               class="group relative flex flex-col lg:flex-row bg-white rounded-[2rem] md:rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-30px_rgba(0,0,0,0.07)] border border-gray-100 hover:shadow-red-600/10 transition-all duration-1000"
             >
-              <!-- Image - 60% Width -->
               <div class="lg:w-[60%] relative overflow-hidden aspect-video lg:min-h-[600px]">
                 <img
                   :src="featuredNews.image"
@@ -181,7 +173,6 @@ onMounted(() => {
                   class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/60 via-transparent to-transparent"
                 />
 
-                <!-- Glassmorphism Date Badge -->
                 <div
                   class="absolute bottom-6 md:bottom-12 left-6 md:left-12 p-4 md:p-8 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-2xl md:rounded-[2.5rem] shadow-2xl"
                 >
@@ -219,7 +210,6 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- Content - 40% Width -->
               <div
                 class="lg:w-[40%] p-8 md:p-16 lg:p-20 flex flex-col justify-center bg-white relative"
               >
@@ -280,7 +270,6 @@ onMounted(() => {
             </NuxtLink>
           </section>
 
-          <!-- [5] NEWS GRID -->
           <section id="news-grid-section" class="space-y-16">
             <div class="flex items-end justify-between border-b border-gray-100 pb-10">
               <div class="space-y-3">
@@ -323,7 +312,6 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- EMPTY GRID STATE -->
               <div
                 v-else
                 class="text-center py-24 bg-white rounded-[3rem] border border-dashed border-gray-100"
@@ -349,7 +337,6 @@ onMounted(() => {
           </section>
         </div>
 
-        <!-- [6] MAIN EMPTY STATE -->
         <div
           v-else
           class="text-center py-48 bg-white rounded-[4rem] border-2 border-dashed border-gray-100"
@@ -375,7 +362,6 @@ onMounted(() => {
       </div>
     </main>
 
-    <!-- [7] CALL TO ACTION - DARK MYSTERY -->
     <section class="py-20 md:py-32 bg-gray-950 relative overflow-hidden">
       <div
         class="absolute inset-0 opacity-40 bg-[url('/final_cta_rider_adventure_1778828626734.webp')] bg-cover bg-center scale-110"

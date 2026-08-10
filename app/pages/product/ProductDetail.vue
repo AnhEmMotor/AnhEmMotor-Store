@@ -22,10 +22,6 @@ const {
   }
 );
 
-// Theo dõi thời gian xem (dwell time) để phục vụ gợi ý cá nhân hóa ở trang chủ. onMounted/
-// onBeforeUnmount chỉ chạy 1 lần cho cả phiên mở trang chi tiết (component được TÁI DÙNG khi slug
-// đổi trong SPA, xem ghi chú watch(requestedVariantId,...) bên dưới), nên phần chuyển sản phẩm dựa
-// vào watch(detail.product.id) chứ không phải onMounted.
 let viewStartAt = null;
 let trackedProductId = null;
 
@@ -35,10 +31,6 @@ const flushProductView = () => {
   const productId = trackedProductId;
   trackedProductId = null;
   viewStartAt = null;
-  // runWithContext: hàm này chạy từ watch (sau khi useAsyncData resolve xong) hoặc từ event
-  // listener DOM thuần (visibilitychange/beforeunload) — cả 2 đều nằm ngoài Nuxt async context,
-  // nên gọi thẳng productStore.trackView() (dùng useRuntimeConfig/useAuthStore bên trong) sẽ
-  // thất bại lặng lẽ nếu không bọc lại context, giống pattern ở product.store.js.
   nuxtApp.runWithContext(() =>
     productStore.trackView(productId, dwellTimeMs, getOrCreateVisitorKey())
   );
@@ -219,7 +211,6 @@ const specGroups = computed(() => {
 });
 const highlights = computed(() => detail.value?.product?.highlights || []);
 
-// Accordion logic for specs
 const expandedGroups = ref([]);
 const toggleGroup = (title) => {
   const index = expandedGroups.value.indexOf(title);
@@ -231,7 +222,6 @@ const toggleGroup = (title) => {
 };
 const isGroupExpanded = (title) => expandedGroups.value.includes(title);
 
-// Variant Grouping Logic
 const variantGroups = computed(() => {
   if (!detail.value?.otherVariants) return {};
   const groups = {};
@@ -251,11 +241,6 @@ const variantGroups = computed(() => {
   return groups;
 });
 
-// Deep-link biến thể (?variant=<variantId>): tìm nhóm chứa variantId trên URL trong
-// variantGroups.value. Dùng watch(..., {immediate:true}) thay vì onMounted đơn thuần — Nuxt TÁI
-// DÙNG component này khi slug đổi trong SPA (xem useAsyncData watch:[slug] và watch(slug,...) dưới
-// đây), nên onMounted sẽ không chạy lại khi khách bấm 1 card biến thể khác trong lúc trang đang mở
-// sẵn. watch cả variantGroups để tự chạy lại khi data của slug mới tải xong (fetch là async).
 const requestedVariantId = computed(() =>
   route.query.variant ? Number(route.query.variant) : null
 );
@@ -279,14 +264,11 @@ const currentGroupVariants = computed(() => {
   return variantGroups.value[selectedVariantGroup.value] || [];
 });
 
-// Auto-select first variant in group when group changes
 watch(selectedVariantGroup, (newGroup) => {
   const groupVariants = variantGroups.value[newGroup] || [];
   if (groupVariants.length > 0) {
-    // Find if current variant is in this group
     const exists = groupVariants.find((v) => v.slug === slug.value);
     if (!exists) {
-      // Navigate to the first variant of the new group
       navigateTo(`/product/${groupVariants[0].slug}`);
     }
   }
@@ -330,7 +312,6 @@ const isMotorbike = computed(() => {
 });
 
 const openConsultation = () => {
-  // Placeholder for consultation logic (e.g., open a modal or navigate to contact)
   window.open('https://zalo.me/your-zalo-id', '_blank');
 };
 
@@ -343,7 +324,6 @@ const bookTestDrive = () => {
 <template>
   <div class="min-h-screen bg-white">
     <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-12 py-6">
-      <!-- Breadcrumb -->
       <nav
         v-if="detail?.product"
         class="flex mb-10 text-[10px] font-black uppercase tracking-[0.2em]"
@@ -403,12 +383,9 @@ const bookTestDrive = () => {
       </div>
 
       <div v-else class="space-y-16 lg:space-y-24">
-        <!-- Hero Section -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 relative">
-          <!-- Spotlight Effect -->
           <div class="absolute -top-12 left-0 w-full h-full spotlight pointer-events-none" />
 
-          <!-- Image Gallery -->
           <div class="lg:col-span-7 space-y-8">
             <div class="relative">
               <div
@@ -435,7 +412,6 @@ const bookTestDrive = () => {
                   @error="$event.target.src = '/assets/image/placeholder-product.webp'"
                 />
               </div>
-              <!-- Reflection -->
               <div
                 class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-20 reflection opacity-30 z-0"
               />
@@ -473,7 +449,6 @@ const bookTestDrive = () => {
               </button>
             </div>
 
-            <!-- Moved Description & Trust Badges here for balance -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-4">
               <div class="md:col-span-7 space-y-4 border-l-2 border-primary/20 pl-6">
                 <div class="text-primary font-black uppercase tracking-[0.3em] text-xs">
@@ -511,7 +486,6 @@ const bookTestDrive = () => {
             </div>
           </div>
 
-          <!-- Info Column -->
           <div class="lg:col-span-5">
             <div class="sticky top-28 space-y-8">
               <div class="space-y-4">
@@ -556,7 +530,6 @@ const bookTestDrive = () => {
                 </div>
               </div>
 
-              <!-- Variant & Color Selection -->
               <div v-if="Object.keys(variantGroups).length > 0" class="space-y-4">
                 <div class="space-y-3">
                   <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest"
@@ -615,7 +588,6 @@ const bookTestDrive = () => {
                 </div>
               </div>
 
-              <!-- Actions -->
               <div class="space-y-4 pt-2">
                 <div class="grid grid-cols-1 gap-3">
                   <template v-if="isMotorbike">
@@ -669,7 +641,6 @@ const bookTestDrive = () => {
           </div>
         </div>
 
-        <!-- Product Description Section -->
         <div v-if="detail.product.description" class="space-y-8 relative py-12">
           <div class="text-center space-y-4 reveal-up">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 rounded-full">
@@ -691,7 +662,6 @@ const bookTestDrive = () => {
           </div>
         </div>
 
-        <!-- Highlights Section -->
         <div v-if="highlights.length > 0" class="space-y-24 lg:space-y-32 relative">
           <div
             class="absolute inset-0 bg-gradient-to-b from-gray-50/30 via-white to-gray-50/30 -z-10 rounded-[3rem]"
@@ -750,9 +720,7 @@ const bookTestDrive = () => {
           </div>
         </div>
 
-        <!-- Comparison Section -->
         <div class="space-y-20 relative">
-          <!-- Section Header -->
           <div class="text-center space-y-6 reveal-up">
             <div class="flex justify-center">
               <span
@@ -773,7 +741,6 @@ const bookTestDrive = () => {
           </div>
 
           <div class="max-w-6xl mx-auto relative px-4">
-            <!-- Background Glows -->
             <div
               class="absolute -top-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10 animate-pulse"
             />
@@ -784,7 +751,6 @@ const bookTestDrive = () => {
             <div
               class="grid grid-cols-1 lg:grid-cols-12 gap-0 rounded-[3.5rem] overflow-hidden border border-gray-100 shadow-2xl bg-white/50 backdrop-blur-xl"
             >
-              <!-- Left: Features -->
               <div class="lg:col-span-4 p-8 lg:p-12 space-y-8 bg-gray-50/50">
                 <div class="space-y-2 pt-4">
                   <h3 class="text-2xl font-black text-gray-900 uppercase tracking-tighter">
@@ -811,11 +777,9 @@ const bookTestDrive = () => {
                 </div>
               </div>
 
-              <!-- Middle: AnhEm Motor (The Premium One) -->
               <div
                 class="lg:col-span-4 bg-dark-900 p-8 lg:p-12 relative overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.3)] z-10 scale-105 lg:-my-6 lg:rounded-[3rem]"
               >
-                <!-- Premium Accents -->
                 <div
                   class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] group-hover:bg-primary/20 transition-all duration-700"
                 />
@@ -864,7 +828,6 @@ const bookTestDrive = () => {
                 </div>
               </div>
 
-              <!-- Right: Competitors -->
               <div class="lg:col-span-4 p-8 lg:p-12 space-y-8 bg-white/30 text-center">
                 <div class="space-y-2 pt-4 opacity-50">
                   <h3 class="text-2xl font-black text-gray-400 uppercase tracking-tighter">
@@ -900,7 +863,6 @@ const bookTestDrive = () => {
           </div>
         </div>
 
-        <!-- Social Proof -->
         <div class="space-y-16">
           <div class="text-center space-y-4">
             <div class="flex justify-center items-center gap-1 text-yellow-400">
@@ -966,11 +928,9 @@ const bookTestDrive = () => {
           </div>
         </div>
 
-        <!-- Final CTA Section -->
         <div
           class="relative rounded-[3.5rem] overflow-hidden bg-dark-900 py-16 lg:py-24 shadow-2xl mx-4 lg:mx-0 group border border-white/5"
         >
-          <!-- Dynamic Background Accents -->
           <div
             class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"
           />
@@ -1033,7 +993,6 @@ const bookTestDrive = () => {
               </div>
             </div>
 
-            <!-- Product Cutout Image -->
             <div class="relative lg:h-[400px] flex items-center justify-center reveal-up delay-200">
               <div
                 class="absolute inset-0 bg-primary/5 rounded-full blur-3xl scale-150 animate-pulse"
@@ -1044,7 +1003,6 @@ const bookTestDrive = () => {
                 class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
                 @error="$event.target.src = '/assets/image/placeholder-product.webp'"
               />
-              <!-- Reflection Shadow -->
               <div
                 class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[80%] h-12 bg-black/40 blur-2xl rounded-full"
               />
@@ -1052,7 +1010,6 @@ const bookTestDrive = () => {
           </div>
         </div>
 
-        <!-- Specifications -->
         <div v-if="specifications.length > 0" class="space-y-16">
           <div
             class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-gray-100 pb-10"
@@ -1089,7 +1046,6 @@ const bookTestDrive = () => {
                   : 'hover:border-primary/10',
               ]"
             >
-              <!-- Accordion Header -->
               <button
                 class="flex items-center justify-between gap-5 p-8 w-full text-left group/header"
                 @click="toggleGroup(group.title)"
@@ -1120,7 +1076,6 @@ const bookTestDrive = () => {
                 />
               </button>
 
-              <!-- Accordion Content -->
               <div
                 class="grid transition-all duration-500 ease-in-out px-8"
                 :class="[
@@ -1158,7 +1113,6 @@ const bookTestDrive = () => {
       </div>
     </div>
 
-    <!-- Booking Modal -->
     <ProductBookingModal
       :is-open="isBookingModalOpen"
       :product="detail?.product"
@@ -1208,7 +1162,6 @@ const bookTestDrive = () => {
   background-color: #e31837;
 }
 
-/* Premium Gradients */
 .bg-gradient-premium {
   background: linear-gradient(135deg, #e31837 0%, #9b1025 100%);
 }
@@ -1219,7 +1172,6 @@ const bookTestDrive = () => {
   background-color: #1a1a1a;
 }
 
-/* Spotlight & Reflection */
 .spotlight {
   background: radial-gradient(circle at 50% 50%, rgba(227, 24, 55, 0.08) 0%, transparent 70%);
 }
@@ -1237,7 +1189,6 @@ const bookTestDrive = () => {
   scrollbar-width: none;
 }
 
-/* Custom Animations */
 @keyframes pulse-glow {
   0%,
   100% {
@@ -1265,7 +1216,6 @@ const bookTestDrive = () => {
   animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Typography */
 .tracking-tighter {
   letter-spacing: -0.06em;
 }
@@ -1273,7 +1223,6 @@ const bookTestDrive = () => {
   letter-spacing: 0.15em;
 }
 
-/* Card styles */
 .premium-card {
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.05);

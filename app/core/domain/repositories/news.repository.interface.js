@@ -1,6 +1,3 @@
-/**
- * News Repository Interface (Domain Layer)
- */
 export const INewsRepository = {
   getNews: async () => {
     throw new Error('INewsRepository.getNews not implemented');

@@ -13,7 +13,6 @@ let modelIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
 
-// Banner sliding logic
 const currentBannerIndex = ref(0);
 const slideDirection = ref('next');
 let bannerTimer = null;

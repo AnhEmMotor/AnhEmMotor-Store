@@ -445,7 +445,6 @@ export const useAuthStore = defineStore('auth', () => {
         await axiosClient.post('/api/v1/auth/logout');
       }
     } catch {
-      // ignore error on logout API
     } finally {
       user.value = null;
       accessToken.value = null;
@@ -458,7 +457,6 @@ export const useAuthStore = defineStore('auth', () => {
         queryClient.clear();
       }
 
-      // Đóng SSE một lần nữa để chắc chắn
       closeSSE();
 
       if (shouldRedirect && import.meta.client) {

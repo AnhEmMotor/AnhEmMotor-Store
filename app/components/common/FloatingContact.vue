@@ -19,11 +19,7 @@ const messagesContainer = ref(null);
 const sessionMode = ref('Ai');
 const assignedStaffName = ref(null);
 
-// Khách vãng lai (chưa đăng nhập) phải điền Tên/SĐT trước khi chat được — phiên đã có sẵn 2 field
-// này (quay lại lần sau) thì bỏ qua form luôn.
 const needsContactInfo = ref(false);
-// true cho tới khi initChat() xác định xong needsContactInfo — tránh nháy màn hình chat bình thường
-// rồi mới chuyển sang form (needsContactInfo mặc định false trong lúc chờ API phản hồi).
 const isCheckingSession = ref(true);
 const contactNameInput = ref('');
 const contactPhoneInput = ref('');
@@ -40,9 +36,6 @@ const scrollMessagesToBottom = () => {
   });
 };
 
-// Card/icon bên trong bong bóng có thể load lệch nhịp (icon fa6 nạp qua API, ảnh sản phẩm), làm
-// scrollHeight đổi SAU lần scroll đầu — quan sát mutation trong khung chat để luôn kéo lại đáy thay vì
-// chỉ scroll đúng 1 lần tại các điểm gọi thủ công bên dưới.
 let scrollObserver = null;
 watch(messagesContainer, (el) => {
   scrollObserver?.disconnect();
@@ -63,9 +56,6 @@ const formatTime = (isoString) => {
   });
 };
 
-// Bong bóng AI đang build dần khi stream — -1 khi không có lượt trả lời nào đang chạy.
-// Luôn đọc/ghi qua messages.value[streamingIdx] (không giữ reference object rời) vì mutate
-// thẳng lên object đã push ra ngoài mảng reactive không đi qua proxy nên Vue không re-render.
 let streamingIdx = -1;
 const newStreamingMsg = () => ({
   id: 'streaming',
@@ -123,14 +113,10 @@ const initChat = async () => {
   needsContactInfo.value = !accessToken.value && !session.contactName;
   isCheckingSession.value = false;
 
-  // Khách đã đăng nhập TRƯỚC khi mở khung chat (trường hợp phổ biến nhất) — watch(accessToken)
-  // bên dưới chỉ bắt được lúc đăng nhập giữa chừng trong khi đang chat, không bắt được trường hợp
-  // này vì token không đổi giá trị. Gắn ngay ở đây để Manager không hiện nhầm "Khách vãng lai".
   if (accessToken.value) {
     try {
       await storeChatRepository.linkToCustomer(session.id);
     } catch {
-      // Không chặn luồng mở chat nếu gắn phiên thất bại.
     }
   }
 
@@ -157,9 +143,6 @@ const submitContactInfo = async () => {
   }
 };
 
-// "Xoá cuộc trò chuyện" = kết thúc phiên hiện tại, tạo phiên mới (VisitorKey mới) — phiên cũ giữ
-// nguyên toàn bộ lịch sử cho quản trị, không nhận tin mới nữa vì khách không còn tham chiếu tới nó.
-// Giữ Tên/SĐT đã điền (BE tự copy sang phiên mới) nên không phải hỏi lại.
 const clearChat = async () => {
   if (!sessionId.value) return;
 
@@ -181,7 +164,6 @@ const clearChat = async () => {
 
     await connectHub();
   } catch {
-    // Lỗi mạng — giữ nguyên phiên cũ, khách có thể bấm lại.
   }
 };
 
@@ -194,21 +176,17 @@ const sendMessage = async () => {
   try {
     await connection.invoke('SendMessage', sessionId.value, text);
   } catch {
-    // Lỗi kết nối/rate limit — input đã xoá theo yêu cầu, không khôi phục lại nội dung cũ.
   } finally {
     isSending.value = false;
   }
 };
 
-// Tên/SĐT đã có sẵn từ bước điền trước khi chat (khách vãng lai) hoặc từ tài khoản (khách đã đăng
-// nhập) — không cần form riêng ở bước này nữa.
 const requestHandoff = async () => {
   if (sessionMode.value !== 'Ai' || !sessionId.value) return;
   await storeChatRepository.requestHandoff(sessionId.value);
   sessionMode.value = 'Waiting';
 };
 
-// Trạng thái hiển thị dưới tiêu đề "Chat Support" — 1 dòng nhỏ, gọn, thay cho nút bị disable trước đây.
 const statusText = computed(() => {
   if (sessionMode.value === 'Waiting') return 'Đang chờ nhân viên...';
   if (sessionMode.value === 'Human') return 'Đang chat với người thật';
@@ -221,13 +199,9 @@ const statusDotClass = computed(() => {
   return 'bg-white/40';
 });
 
-// Tin nhắn Staff soạn bằng rich-text editor (WangEditor) ở Manager — nội dung là HTML đã qua editor
-// sanitize sẵn, KHÔNG phải markdown thô như Ai/Visitor. Escape+markdown-parse như renderChatMarkdown
-// sẽ biến các thẻ <p>/<strong> thành chữ hiển thị nguyên văn — render thẳng v-html cho riêng Staff.
 const renderMessageContent = (msg) =>
   msg.sender === 'Staff' ? msg.content : renderChatMarkdown(msg.content);
 
-// Parse cardsJson (mảng block "product-cards"/"variant-cards") — bỏ qua nếu BE trả JSON hỏng, không crash UI
 const parseCards = (cardsJson) => {
   if (!cardsJson) return [];
   try {
@@ -237,14 +211,11 @@ const parseCards = (cardsJson) => {
   }
 };
 
-// Bấm card sản phẩm → gửi tin nhắn tự nhiên qua Hub có sẵn để AI gọi lại get_product_detail
 const onViewVariants = (productId, name) => {
   messageText.value = `Cho tôi xem các biến thể màu của xe ${name} (mã sản phẩm ${productId})`;
   sendMessage();
 };
 
-// Chỉ tạo phiên/kết nối Hub khi khách thực sự mở khung chat — tránh tốn quota
-// rate-limit và mở WebSocket cho khách chỉ ghé trang mà không bấm vào chat.
 let isInitialized = false;
 watch(isAiOpen, (open) => {
   if (open && !isInitialized) {
@@ -264,7 +235,6 @@ watch(accessToken, async (newToken, oldToken) => {
     try {
       await storeChatRepository.linkToCustomer(sessionId.value);
     } catch {
-      // Không chặn luồng đăng nhập nếu gắn phiên chat thất bại.
     }
   }
 });

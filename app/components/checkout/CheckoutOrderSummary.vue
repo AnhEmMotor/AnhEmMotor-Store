@@ -84,7 +84,7 @@ async function handleApplyVoucher() {
     appliedVoucher.value = {
       ...voucher,
       discountAmount: validation.discountAmount || 0,
-      orderVoucherId: null, // Will be generated on the backend upon order creation
+      orderVoucherId: null, 
     };
     orderStore.setAppliedVoucher(appliedVoucher.value);
   } catch (e) {
@@ -205,7 +205,6 @@ const emit = defineEmits(['place-order']);
     </div>
 
     <div class="space-y-6">
-      <!-- Voucher input -->
       <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
         <h3
           class="text-lg font-black text-gray-900 mb-4 uppercase tracking-wider flex items-center gap-2"
@@ -274,7 +273,6 @@ const emit = defineEmits(['place-order']);
         </p>
       </div>
 
-      <!-- Summary with discount -->
       <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
         <div class="space-y-4">
           <div class="flex justify-between text-sm">
@@ -345,7 +343,6 @@ const emit = defineEmits(['place-order']);
         </div>
       </div>
 
-      <!-- Place order button -->
       <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
         <button
           class="w-full py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-sm"

@@ -37,7 +37,6 @@
           </div>
         </div>
 
-        <!-- Phone Number -->
         <div class="space-y-2">
           <label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
             >Số điện thoại</label
@@ -60,7 +59,6 @@
         </div>
       </div>
 
-      <!-- Email -->
       <div class="space-y-2">
         <label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
           >Email</label
@@ -82,7 +80,6 @@
         </div>
       </div>
 
-      <!-- Subject -->
       <div class="space-y-2">
         <label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
           >Chủ đề cần hỗ trợ</label
@@ -110,7 +107,6 @@
         </div>
       </div>
 
-      <!-- Message -->
       <div class="space-y-2">
         <label class="text-xs font-extrabold text-gray-400 uppercase tracking-widest ml-1"
           >Nội dung chi tiết</label
@@ -124,7 +120,6 @@
         />
       </div>
 
-      <!-- Status Message -->
       <Transition name="fade">
         <div
           v-if="statusMessage"
@@ -143,7 +138,6 @@
         </div>
       </Transition>
 
-      <!-- Submit Button -->
       <button
         type="submit"
         :disabled="isSubmitting"

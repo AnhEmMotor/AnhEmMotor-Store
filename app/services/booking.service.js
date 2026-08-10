@@ -1,12 +1,4 @@
-/**
- * Application Layer - Booking Service
- */
 
-/**
- * Factory function to create booking service with dependency injection
- * @param {IBookingRepository} repository
- * @returns {IBookingRepository}
- */
 export const createBookingService = (repository) => ({
   async createBooking(bookingData) {
     return await repository.createBooking({

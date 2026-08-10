@@ -3,12 +3,10 @@
     class="fixed top-0 w-full z-1000 bg-white transition-all duration-300 shadow-[0_2px_10px_rgba(0,0,0,0.05)]"
     :class="[isScrolled ? 'shadow-lg' : '']"
   >
-    <!-- TẦNG 1: TOP BAR (MINIMAL & COHESIVE) -->
     <div
       class="h-9 bg-gray-50/50 backdrop-blur-sm border-b border-gray-100 hidden lg:block overflow-hidden"
     >
       <div class="max-w-360 mx-auto px-10 h-full flex items-center justify-between">
-        <!-- LEFT: PROMO / BRAND SLOGAN -->
         <div class="flex items-center gap-2">
           <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
           <p class="text-[9px] font-black text-gray-400 uppercase tracking-[0.25em]">
@@ -16,9 +14,7 @@
           </p>
         </div>
 
-        <!-- RIGHT: QUICK LINKS -->
         <div class="flex items-center gap-6 h-full">
-          <!-- PREMIUM GLOWING APP LINK -->
           <NuxtLink
             to="/app"
             class="text-[9px] font-[1000] uppercase tracking-widest text-white px-3 py-1 bg-linear-to-r from-red-600 to-red-800 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 relative z-10 shrink-0 font-sans"
@@ -32,7 +28,6 @@
             </span>
           </NuxtLink>
 
-          <!-- OTHER QUICK LINKS -->
           <NuxtLink
             v-for="item in [
               { name: 'Về AnhEm Motor', path: '/about' },
@@ -55,7 +50,6 @@
       </div>
     </div>
 
-    <!-- TẦNG 2: MAIN HEADER (PREMIUM & INTEGRATED) -->
     <div
       class="py-2 sm:py-3 bg-white/70 backdrop-blur-xl transition-all duration-500 border-b border-white/10 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)]"
       :class="[
@@ -65,7 +59,6 @@
       <div
         class="max-w-[1600px] mx-auto px-2 sm:px-4 lg:px-4 xl:px-6 flex items-center gap-2 sm:gap-4"
       >
-        <!-- Mobile Menu Toggle (Moved to Left) -->
         <button
           class="xl:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-full text-gray-900 hover:bg-gray-100 transition-all shrink-0 group"
           aria-label="Mở menu"
@@ -76,9 +69,7 @@
           <span class="w-6 h-0.5 bg-gray-950 rounded-full transition-all group-hover:bg-primary" />
         </button>
 
-        <!-- LOGO (ENHANCED BRANDING) -->
         <NuxtLink to="/" class="flex items-center gap-2 sm:gap-3 shrink-0 group relative">
-          <!-- Logo Icon with Premium Glow -->
           <div
             class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center p-0.5 bg-white rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 group-hover:shadow-[0_0_25px_rgba(230,0,35,0.2)] group-hover:scale-110 group-hover:border-primary/20 transition-all duration-500 z-10"
           >
@@ -89,7 +80,6 @@
             />
           </div>
 
-          <!-- Text Branding (Always visible on mobile now) -->
           <div
             class="flex flex-col leading-[0.8] transition-transform duration-500 group-hover:translate-x-1 header-text-brand"
           >
@@ -98,7 +88,6 @@
                 class="text-[18px] sm:text-[22px] font-[1000] text-gray-950 uppercase tracking-[-0.04em] block"
                 >AnhEm</span
               >
-              <!-- Subtle sweep effect on hover -->
               <div
                 class="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-sweep"
               />
@@ -111,7 +100,6 @@
           </div>
         </NuxtLink>
 
-        <!-- NAVIGATION (DYNAMIC & FLOATING) -->
         <nav class="hidden xl:block mx-auto flex-1 px-2">
           <ul class="flex items-center justify-center gap-2 xl:gap-3 2xl:gap-5">
             <li>
@@ -189,9 +177,7 @@
           </ul>
         </nav>
 
-        <!-- ACTIONS & MOBILE MENU -->
         <div class="flex items-center gap-2 sm:gap-4 ml-auto">
-          <!-- Search Toggle -->
           <div class="relative">
             <button
               class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
@@ -201,7 +187,6 @@
               <Icon :name="isSearchOpen ? 'lucide:x' : 'lucide:search'" class="w-5 h-5" />
             </button>
 
-            <!-- Search Dropdown (Refined) -->
             <div
               v-if="isSearchOpen"
               class="absolute top-full right-0 mt-4 w-[300px] sm:w-87.5 bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] border border-gray-100 rounded-2xl p-4 z-1100 animate-megaSlideIn"
@@ -222,7 +207,6 @@
             </div>
           </div>
 
-          <!-- Cart Button -->
           <div class="relative">
             <button
               class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
@@ -240,7 +224,6 @@
             </button>
           </div>
 
-          <!-- PREMIUM CTA GROUP (Hidden on mobile for better space) -->
           <div
             class="hidden lg:flex items-center gap-2 p-1.5 bg-gray-100/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-inner shrink-0"
           >
@@ -258,7 +241,6 @@
             </NuxtLink>
           </div>
 
-          <!-- Auth -->
           <div class="pl-2 sm:pl-4 border-l border-gray-100">
             <template v-if="authStore.isLoggedIn">
               <div class="relative group">
@@ -284,7 +266,6 @@
                   />
                 </button>
 
-                <!-- Dropdown -->
                 <div
                   class="absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-1100"
                 >
@@ -333,7 +314,6 @@
       </div>
     </div>
 
-    <!-- MOBILE MENU -->
 
     <ClientOnly>
       <Teleport to="body">
@@ -402,7 +382,6 @@
             </div>
           </div>
           <div class="p-4 sm:p-8 space-y-4 sm:space-y-6">
-            <!-- Auth Buttons for Mobile -->
             <div v-if="!authStore.isLoggedIn" class="grid grid-cols-2 gap-3 mb-8">
               <NuxtLink
                 to="/login"
@@ -602,7 +581,6 @@ if (import.meta.client) {
   onMounted(async () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    // Fetch all categories from API for the mega menu
     const data = await categoryStore.getProductCategories();
     categoryStore.categories = categoryMapper.toUIList(data?.items || []);
   });

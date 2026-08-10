@@ -1,6 +1,3 @@
-/**
- * Recruitment Repository Interface (Domain Layer)
- */
 export const IRecruitmentRepository = {
   getJobs: async () => {
     throw new Error('IRecruitmentRepository.getJobs not implemented');

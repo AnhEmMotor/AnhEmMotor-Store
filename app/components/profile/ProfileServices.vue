@@ -156,7 +156,6 @@ const formatPrice = (price) => {
 
 <template>
   <div class="space-y-5">
-    <!-- Header -->
     <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
       <div class="flex items-center justify-between mb-2">
         <h2 class="text-xl font-black text-gray-900 uppercase tracking-tight">Dịch vụ sử dụng</h2>
@@ -171,7 +170,6 @@ const formatPrice = (price) => {
       </p>
     </div>
 
-    <!-- Filters -->
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
       <button
         v-for="filter in filters"
@@ -189,7 +187,6 @@ const formatPrice = (price) => {
       </button>
     </div>
 
-    <!-- Services List -->
     <div v-if="filteredServices.length > 0" class="grid grid-cols-1 gap-4">
       <div
         v-for="service in paginatedServices"
@@ -241,7 +238,6 @@ const formatPrice = (price) => {
           </div>
         </div>
 
-        <!-- Footer/Actions -->
         <div class="mt-5 pt-4 border-t border-gray-50 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <div class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
@@ -260,7 +256,6 @@ const formatPrice = (price) => {
         </div>
       </div>
 
-      <!-- Pagination Controls -->
       <div
         v-if="activeFilter === 'All' && totalPages > 1"
         class="flex justify-center items-center gap-2 mt-4 pt-2"
@@ -295,7 +290,6 @@ const formatPrice = (price) => {
       </div>
     </div>
 
-    <!-- Empty State -->
     <div
       v-else
       class="bg-white rounded-lg p-12 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center"

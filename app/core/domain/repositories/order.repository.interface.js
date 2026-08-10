@@ -1,7 +1,3 @@
-/**
- * Order Repository Interface (Domain Layer)
- * Contract for order data access operations.
- */
 export const IOrderRepository = {
   createOrder: async () => {
     throw new Error('IOrderRepository.createOrder not implemented');

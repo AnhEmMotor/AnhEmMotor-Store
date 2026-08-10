@@ -54,7 +54,6 @@ export const productService = {
     try {
       await productRepository.trackView(productId, dwellTimeMs, visitorKey);
     } catch {
-      // Best-effort — mất 1 lượt tracking không nên ảnh hưởng trải nghiệm xem sản phẩm.
     }
   },
 };

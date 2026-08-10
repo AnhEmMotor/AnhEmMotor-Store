@@ -28,7 +28,6 @@ const filteredLatestNews = computed(() => {
 
 await Promise.all([suspense(), suspenseLatest(), suspenseRelated()]);
 
-// Fetch related products
 const { data: _relatedProducts } = useAsyncData(
   `related-products-${route.params.slug}`,
   async () => {
@@ -39,7 +38,6 @@ const { data: _relatedProducts } = useAsyncData(
       });
       return products.items.slice(0, 4);
     } catch {
-      // Failed to fetch related products
       return [];
     }
   }

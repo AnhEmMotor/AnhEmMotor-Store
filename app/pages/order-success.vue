@@ -7,7 +7,6 @@ import { toast } from 'vue3-toastify';
 
 const route = useRoute();
 const orderStore = useOrderStore();
-// const { depositSettings } = useStoreSettings();
 const orderId = computed(() => route.query.id);
 
 if (import.meta.server) {
@@ -83,7 +82,6 @@ const formatDate = (dateStr) => {
   });
 };
 
-// VAT invoice request states
 const showInvoiceForm = ref(false);
 const isSubmittingInvoice = ref(false);
 const invoiceForm = reactive({
@@ -180,7 +178,6 @@ const submitInvoiceRequest = async () => {
             id="printable-receipt"
             class="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-gray-100 text-center space-y-8"
           >
-            <!-- Header Hóa Đơn (Chỉ hiển thị khi in ra giấy/PDF) -->
             <div
               class="hidden print:flex items-center justify-between border-b-2 border-gray-100 pb-6 mb-6 text-left"
             >
@@ -346,7 +343,6 @@ const submitInvoiceRequest = async () => {
                   </div>
                 </div>
 
-                <!-- Danh sách sản phẩm -->
                 <div
                   v-if="order.items && order.items.length"
                   class="border-t border-gray-200/60 pt-6 mt-6"
@@ -400,7 +396,6 @@ const submitInvoiceRequest = async () => {
                 </div>
               </div>
 
-              <!-- Yêu cầu xuất hóa đơn công ty (VAT) -->
               <div
                 v-if="order.isCompanyInvoice && order.companyName"
                 class="border-t border-gray-100 pt-6 mt-6"
@@ -443,7 +438,6 @@ const submitInvoiceRequest = async () => {
                     </div>
                   </div>
 
-                  <!-- Nút in hóa đơn PDF -->
                   <div class="pt-3 border-t border-blue-100/50 flex justify-end">
                     <button
                       class="print-hide inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all text-xs uppercase tracking-wider cursor-pointer shadow-md shadow-blue-600/10"
@@ -654,13 +648,11 @@ const submitInvoiceRequest = async () => {
     height: 297mm !important;
   }
 
-  /* Force override global visibility restrictions */
   #printable-receipt,
   #printable-receipt * {
     visibility: visible !important;
   }
 
-  /* Force override animations, transitions, and opacities so they don't hide print content */
   *,
   *:before,
   *:after {
@@ -672,7 +664,6 @@ const submitInvoiceRequest = async () => {
     text-shadow: none !important;
   }
 
-  /* Reset layout constraints (flex columns, min-heights, overflows) which collapse under print engines */
   html,
   body,
   #__nuxt,
@@ -688,7 +679,6 @@ const submitInvoiceRequest = async () => {
     background: white !important;
   }
 
-  /* Hide headers, footers, navigation, floating widgets, and print-hide elements */
   header,
   footer,
   nav,
@@ -710,7 +700,6 @@ const submitInvoiceRequest = async () => {
     background-color: white !important;
   }
 
-  /* Make sure the receipt container spans full page without shadows/borders */
   #printable-receipt {
     border: none !important;
     box-shadow: none !important;
@@ -722,14 +711,12 @@ const submitInvoiceRequest = async () => {
     font-size: 14px !important;
   }
 
-  /* Force 2 columns grid on print to save vertical space */
   #printable-receipt .grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 1.5rem !important;
   }
 
-  /* Scale font size and adjust line height for perfect readability */
   #printable-receipt p,
   #printable-receipt span,
   #printable-receipt td,
@@ -751,7 +738,6 @@ const submitInvoiceRequest = async () => {
     font-size: 16px !important;
   }
 
-  /* Tighten paddings/margins to fit exactly in one A4 portrait page */
   #printable-receipt .p-6,
   #printable-receipt .p-8,
   #printable-receipt .p-12 {

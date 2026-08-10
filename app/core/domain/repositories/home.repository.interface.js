@@ -1,6 +1,3 @@
-/**
- * Home Repository Interface (Domain Layer)
- */
 export const IHomeRepository = {
   getBrands: async () => {
     throw new Error('IHomeRepository.getBrands not implemented');

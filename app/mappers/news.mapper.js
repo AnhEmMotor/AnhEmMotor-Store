@@ -28,7 +28,7 @@ const newsMapper = {
       title: raw.title,
       slug: raw.slug,
       summary: summary,
-      excerpt: summary, // Used by some components
+      excerpt: summary, 
       content: raw.content,
       image: getImageUrl(
         raw.coverImageUrl || raw.image || raw.thumbnail || '/assets/image/placeholder-news.webp'

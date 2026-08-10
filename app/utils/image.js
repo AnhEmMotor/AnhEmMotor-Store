@@ -11,10 +11,8 @@ export const getImageUrl = (path) => {
   const config = useRuntimeConfig();
   const baseURL = config.public.apiUrlForBrowserClient || '';
 
-  // Remove leading slash if exists to avoid double slashes
   const cleanPath = path.startsWith('/') ? path.substring(1) : path;
 
-  // If path already contains the view-image route (e.g., from backend), just use it directly
   if (cleanPath.startsWith('api/v1/MediaFile/view-image/')) {
     return `${baseURL}/${cleanPath}`;
   }

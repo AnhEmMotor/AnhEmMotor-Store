@@ -13,7 +13,6 @@ const handleSearch = async () => {
   isLoading.value = true;
   try {
     const axios = useAxios();
-    // Gọi sang API C# Backend
     const res = await axios.post('/api/Ai/search', { keyword });
 
     if (res.data?.isSuccess) {
@@ -29,7 +28,6 @@ const handleSearch = async () => {
     isLoading.value = false;
   }
 
-  // Fallback mặc định
   navigateTo({
     path: '/products',
     query: { search: keyword },
@@ -42,7 +40,6 @@ const handleSearch = async () => {
     <div
       class="bg-white rounded-24 shadow-elevated p-5 sm:p-6 flex flex-col gap-4 border border-slate-100"
     >
-      <!-- Search Input (Stretches to full width) -->
       <div class="relative group w-full">
         <Icon
           name="ph:magnifying-glass-bold"
@@ -58,7 +55,6 @@ const handleSearch = async () => {
         />
       </div>
 
-      <!-- Search Button (Full width at bottom) -->
       <button
         class="h-14 w-full bg-slate-900 text-white rounded-16 font-bold hover:bg-primary transition-all flex items-center justify-center gap-3 active:scale-95 shadow-lg shadow-black/5 disabled:opacity-75 disabled:cursor-not-allowed disabled:hover:bg-slate-900"
         :disabled="isLoading"

@@ -1,6 +1,3 @@
-/**
- * User Repository Interface (Domain Layer)
- */
 export const IUserRepository = {
   getUserProfile: async () => {
     throw new Error('IUserRepository.getUserProfile not implemented');

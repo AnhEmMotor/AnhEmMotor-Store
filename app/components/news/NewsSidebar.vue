@@ -10,7 +10,6 @@ defineProps({
   },
 });
 
-// News categories for the sidebar
 const _newsCategories = [
   { name: 'ĐÁNH GIÁ XE', slug: 'danh-gia-xe', count: 15 },
   { name: 'TIN KHUYẾN MÃI', slug: 'tin-khuyen-mai', count: 8 },
@@ -82,11 +81,9 @@ const _newsCategories = [
       </div>
     </div>
 
-    <!-- IMMERSIVE NEWSLETTER BOX (Premium Addon) -->
     <div
       class="relative p-8 bg-gray-950 rounded-[2.5rem] overflow-hidden text-white border border-white/5 shadow-2xl"
     >
-      <!-- Neon Glow Background -->
       <div class="absolute -right-20 -bottom-20 w-48 h-48 bg-red-600/10 blur-[60px] rounded-full" />
 
       <div class="relative z-10 space-y-6">

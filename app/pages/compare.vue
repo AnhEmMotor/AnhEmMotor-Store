@@ -8,20 +8,17 @@ const compareStore = useCompareStore();
 const productStore = useProductStore();
 const { products: compareProducts } = storeToRefs(compareStore);
 
-// State
-const isComparing = ref(false); // Step 2
+const isComparing = ref(false); 
 const isModalOpen = ref(false);
 const searchQuery = ref('');
-const selectedVehicleType = ref(null); // Step 1
+const selectedVehicleType = ref(null); 
 
-// If compare store already has a locked type, use it
 watch(
   () => compareStore.lockedType,
   (newVal) => {
     if (newVal) {
       selectedVehicleType.value = newVal;
     } else if (compareProducts.value.length === 0) {
-      // If all cleared, go back to step 0
       selectedVehicleType.value = null;
       isComparing.value = false;
     }
@@ -29,7 +26,6 @@ watch(
   { immediate: true }
 );
 
-// All products for selection
 const allProducts = ref([]);
 const { data, pending: isLoadingProducts } = await useAsyncData('all-products-compare', () =>
   productStore.getProducts({ pageSize: 100 })
@@ -54,7 +50,6 @@ const getRepresentativeImage = (typeId) => {
   return prod ? getBasicProductImage(prod) : '/assets/image/placeholder-product.webp';
 };
 
-// Comparison details
 const detailedProducts = ref([null, null, null]);
 const isLoadingComparison = ref(true);
 
@@ -66,7 +61,6 @@ const fetchComparisonData = async () => {
   }
   isLoadingComparison.value = true;
   try {
-    // Remove products no longer in compareProducts
     for (let i = 0; i < 3; i++) {
       if (
         detailedProducts.value[i] &&
@@ -76,7 +70,6 @@ const fetchComparisonData = async () => {
       }
     }
 
-    // Add new products
     const promises = compareProducts.value.map(async (p) => {
       if (!detailedProducts.value.find((item) => item && item.product.id === p.id)) {
         const detail = await productStore.fetchFullProductDetail(p.slug);
@@ -91,7 +84,6 @@ const fetchComparisonData = async () => {
 
     const validResults = results.filter(Boolean);
     if (validResults.length === 1 && detailedProducts.value.filter(Boolean).length === 0) {
-      // If exactly 1 new product and currently empty, put in the middle
       detailedProducts.value = [null, validResults[0], null];
     } else {
       results.forEach((res) => {
@@ -229,7 +221,6 @@ const getBasicProductImage = (product) => {
   );
 };
 
-// Selection Actions
 const toggleSelect = (product) => {
   const isSelected = compareProducts.value.some((p) => p.id === product.id);
   if (isSelected) {
@@ -281,7 +272,6 @@ const handleCompare = async () => {
   }
 };
 
-// List Filtering
 const filteredProducts = computed(() => {
   let list = allProducts.value;
   if (selectedVehicleType.value) {
@@ -295,7 +285,6 @@ const filteredProducts = computed(() => {
 <template>
   <div class="min-h-screen bg-white pt-32 pb-24">
     <div class="max-w-[1400px] mx-auto px-6">
-      <!-- Tiêu đề Header -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div class="flex flex-col">
           <button
@@ -352,7 +341,6 @@ const filteredProducts = computed(() => {
         </div>
       </div>
 
-      <!-- Bước 0: Màn hình Chọn Loại Xe -->
       <div
         v-if="!selectedVehicleType && !isComparing"
         class="bg-gray-50/30 p-8 lg:p-12 border border-gray-100 min-h-[400px]"
@@ -386,7 +374,6 @@ const filteredProducts = computed(() => {
         </div>
       </div>
 
-      <!-- Bước 1: Màn hình Danh sách Sản phẩm (Selection Mode) -->
       <div
         v-else-if="selectedVehicleType && !isComparing"
         class="bg-gray-50/30 p-8 lg:p-12 border border-gray-100"
@@ -408,7 +395,6 @@ const filteredProducts = computed(() => {
               <h3 class="text-sm font-black text-black uppercase leading-tight line-clamp-1 mb-2">
                 {{ product.name }}
               </h3>
-              <!-- MỚI Badge -->
               <span
                 class="inline-block px-2 py-0.5 bg-red-500 text-white text-[8px] font-black uppercase mb-2"
                 >MỚI</span
@@ -433,7 +419,6 @@ const filteredProducts = computed(() => {
                   formatPrice(product.price)
                 }}</span>
               </p>
-              <!-- Checkbox -->
               <div
                 class="w-5 h-5 rounded-full flex items-center justify-center transition-colors shadow-sm"
                 :class="
@@ -449,19 +434,15 @@ const filteredProducts = computed(() => {
         </div>
       </div>
 
-      <!-- Bước 2: Bảng so sánh (Comparison Mode) -->
       <div v-else class="relative bg-white border border-gray-100 pb-12">
         <div class="overflow-x-auto scrollbar-hide">
           <div class="min-w-[900px] lg:min-w-0">
-            <!-- Header Cột Xe -->
             <div class="bg-white pt-8 pb-4 border-b border-gray-200">
               <div class="grid grid-cols-12 items-stretch">
-                <!-- Vòng lặp xe đã chọn & ô trống -->
                 <template
                   v-for="(item, idx) in detailedProducts"
                   :key="item ? item.product.id : 'empty-' + idx"
                 >
-                  <!-- Slot Xe -->
                   <div
                     v-if="item"
                     class="col-span-4 flex flex-col items-center relative border-r border-gray-200 px-6 last:border-r-0"
@@ -508,7 +489,6 @@ const filteredProducts = computed(() => {
                           Phiên bản {{ v.name || 'Tiêu chuẩn' }}
                         </option>
                       </select>
-                      <!-- Chevron overlay -->
                       <Icon
                         name="fa6-solid:chevron-down"
                         class="absolute right-4 top-[50%] -translate-y-1/2 text-gray-400 pointer-events-none text-xs"
@@ -524,7 +504,6 @@ const filteredProducts = computed(() => {
                     </div>
                   </div>
 
-                  <!-- Slot Ô trống -->
                   <div
                     v-else
                     class="col-span-4 flex flex-col items-center justify-center bg-white border-r border-gray-200 p-8 min-h-[300px] last:border-r-0"
@@ -549,9 +528,7 @@ const filteredProducts = computed(() => {
               </div>
             </div>
 
-            <!-- Nội dung bảng thông số -->
             <div class="relative">
-              <!-- Hàng Giá bán -->
               <div class="grid grid-cols-12 items-stretch border-b border-gray-200 bg-white">
                 <template
                   v-for="(item, idx) in detailedProducts"
@@ -576,7 +553,6 @@ const filteredProducts = computed(() => {
                 </template>
               </div>
 
-              <!-- Lặp qua từng nhóm thông số -->
               <div
                 v-for="(group, gIdx) in specGroups"
                 :key="group.name"
@@ -611,13 +587,11 @@ const filteredProducts = computed(() => {
         </div>
       </div>
 
-      <!-- Modal CHỌN THÊM SẢN PHẨM -->
       <div v-if="isModalOpen" class="fixed inset-0 z-[2200] flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="isModalOpen = false" />
         <div
           class="relative w-full max-w-5xl bg-white rounded-none shadow-2xl flex flex-col h-[85vh] animate-in fade-in zoom-in-95 duration-200"
         >
-          <!-- Nút Tắt (X) màu Đỏ -->
           <div class="absolute top-0 right-0 z-10">
             <button
               class="w-12 h-12 bg-[#CC0000] text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer"
@@ -627,7 +601,6 @@ const filteredProducts = computed(() => {
             </button>
           </div>
 
-          <!-- Header & Tabs -->
           <div class="pt-6 px-8 border-b border-gray-200 bg-white sticky top-0 z-0">
             <div class="flex gap-8 overflow-x-auto scrollbar-hide pr-12">
               <button
@@ -658,7 +631,6 @@ const filteredProducts = computed(() => {
             </div>
           </div>
 
-          <!-- Thanh Tìm kiếm -->
           <div class="p-6 pb-2 bg-white sticky top-[57px] z-0">
             <div
               class="relative border border-gray-300 flex items-center group focus-within:border-gray-900"
@@ -676,7 +648,6 @@ const filteredProducts = computed(() => {
             </div>
           </div>
 
-          <!-- Danh sách xe -->
           <div class="flex-1 overflow-y-auto p-6 scrollbar-hide bg-white">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
               <div
@@ -726,7 +697,6 @@ const filteredProducts = computed(() => {
             </div>
           </div>
 
-          <!-- Footer Modal -->
           <div class="p-6 border-t border-gray-200 flex justify-center bg-white">
             <button
               class="px-10 py-3 bg-white border border-[#CC0000] text-[#CC0000] hover:bg-[#CC0000] hover:text-white font-black uppercase tracking-widest text-[11px] transition-colors flex items-center gap-2"

@@ -95,7 +95,6 @@ const productMapper = {
       if (option.values && Array.isArray(option.values)) {
         option.values.forEach((val) => {
           const valName = val.value || val.name || '';
-          // Deduplicate values by their name/value string to avoid repeated labels
           if (!grouped[option.name].values.find((v) => v.name === valName)) {
             grouped[option.name].values.push({
               id: val.id,
@@ -198,7 +197,6 @@ const productMapper = {
     let specifications;
     const specObj = { ...product, ...currentVariant, ...(product.specifications || {}) };
 
-    // Tổng hợp kích thước nếu có
     if (specObj.length && specObj.width && specObj.height && !specObj.dimensions) {
       specObj.dimensions = `${specObj.length} x ${specObj.width} x ${specObj.height} mm`;
     }
@@ -226,7 +224,7 @@ const productMapper = {
         .map(([key, value]) => {
           const snakeKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
           return {
-            key: snakeKey, // chuẩn hóa key về snake_case để compare.vue tìm đúng
+            key: snakeKey, 
             label: labels[key] || labels[snakeKey],
             value: value,
           };
@@ -242,7 +240,6 @@ const productMapper = {
           image: h.image ? getImageUrl(h.image) : null,
         }));
       } catch {
-        // Ignore parse error
       }
     }
 

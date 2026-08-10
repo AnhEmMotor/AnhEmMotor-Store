@@ -96,14 +96,13 @@ body {
   font-family: 'Manrope', sans-serif;
 }
 
-/* Hide scrollbar for all elements */
 * {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 
 *::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none; 
 }
 
 #__nuxt {
@@ -112,7 +111,6 @@ body {
   flex-direction: column;
 }
 
-/* PAGE TRANSITIONS */
 .page-enter-active,
 .page-leave-active {
   transition: opacity 0.15s ease;
@@ -131,7 +129,6 @@ body {
   transform: translateY(6px);
 }
 
-/* REVEAL ON SCROLL UTILITIES */
 .reveal {
   opacity: 0;
   transform: translateY(30px);
@@ -156,15 +153,12 @@ body {
   transition-delay: 0.4s;
 }
 
-/* MOBILE RESPONSIVE UTILITIES */
 @media (max-width: 640px) {
-  /* Prevent horizontal scroll */
   body {
     overflow-x: clip;
     max-width: 100vw;
   }
 
-  /* Optimize touch targets for mobile */
   button,
   a,
   input,
@@ -173,20 +167,17 @@ body {
     min-width: 44px;
   }
 
-  /* Reduce section padding on mobile */
   section {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  /* Optimize container padding */
   .container,
   [class*='container'] {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  /* Reduce font sizes on small screens */
   h1 {
     font-size: 1.75rem;
   }
@@ -197,19 +188,16 @@ body {
     font-size: 1.25rem;
   }
 
-  /* Optimize grid for very small screens */
   .grid.grid-cols-2 {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
   }
 
-  /* Optimize images */
   img {
     max-width: 100%;
     height: auto;
   }
 
-  /* Prevent text overflow */
   p,
   span,
   div {
@@ -218,7 +206,6 @@ body {
   }
 }
 
-/* Tablet optimizations */
 @media (min-width: 641px) and (max-width: 1024px) {
   section {
     padding-left: 1.5rem;
@@ -230,15 +217,12 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Improve touch scrolling on mobile */
 @media (max-width: 1024px) {
-  /* Smooth scrolling for mobile */
   html {
     -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Fix for modal/overlay on mobile */
 @media (max-width: 768px) {
   .fixed.inset-0 {
     position: fixed;
@@ -248,7 +232,6 @@ body {
     bottom: 0;
   }
 
-  /* Optimize modals for mobile */
   [role='dialog'],
   dialog {
     max-width: 100vw;
@@ -258,14 +241,12 @@ body {
   }
 }
 
-/* Prevent accidental zoom on double tap */
 @media (max-width: 1024px) {
   * {
     touch-action: manipulation;
   }
 }
 
-/* Mobile reveal animations - lighter for performance */
 @media (max-width: 768px) {
   .reveal {
     transform: translateY(20px);
@@ -277,14 +258,12 @@ body {
     transform: translateY(20px);
   }
 
-  /* Reduce animation complexity on mobile */
   .reveal-visible {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Reduced motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal-left,
@@ -299,7 +278,6 @@ body {
   }
 }
 
-/* Mobile-specific utility classes */
 .mobile-only {
   display: none;
 }
@@ -331,14 +309,12 @@ body {
   }
 }
 
-/* XS screens (extra small phones - under 400px) */
 @media (max-width: 399px) {
   .header-text-brand {
     display: none;
   }
 }
 
-/* Optimize button tap targets on mobile */
 @media (max-width: 768px) {
   .btn,
   button,
@@ -349,7 +325,6 @@ body {
   }
 }
 
-/* Mobile card optimizations */
 @media (max-width: 768px) {
   .card,
   [class*='card'] {
@@ -357,7 +332,6 @@ body {
   }
 }
 
-/* Tablet and up */
 @media (min-width: 768px) {
   .mobile-only,
   .mobile-sm-only {
@@ -365,7 +339,6 @@ body {
   }
 }
 
-/* Custom Toastify Styles */
 .Toastify__progress-bar--success {
   background-color: #e31837 !important;
 }

@@ -12,7 +12,6 @@ const keyPartsFor = (item) => {
   const rawString = String(rawVariantId || '');
   const variantPart = rawString.split(':')[0];
   let variantId = variantPart;
-  // if it's purely numeric, convert to number, otherwise keep as string (for UUIDs)
   if (variantPart && !isNaN(Number(variantPart))) {
     variantId = Number(variantPart);
   }

@@ -191,7 +191,6 @@ watch(
       />
     </div>
 
-    <!-- Checkbox yêu cầu xuất hóa đơn đỏ -->
     <div class="pt-2 flex flex-col gap-4">
       <div class="flex items-center gap-3">
         <input
@@ -208,7 +207,6 @@ watch(
         </label>
       </div>
 
-      <!-- Form nhập thông tin doanh nghiệp (VAT) -->
       <div
         v-if="orderStore.shippingInfo.isCompanyInvoice"
         class="bg-gray-50 border border-gray-100 rounded-2xl p-6 space-y-4 animate-in fade-in duration-300 text-left"

@@ -106,11 +106,6 @@ export function usePaginatedQuery(config) {
       }
     );
 
-    // `rawFilters` (e.g. the sidebar's v-model) is replaced wholesale on every edit,
-    // including edits to debounced fields like "search" — so this must diff the actual
-    // non-debounced values, not just react to the ref being reassigned, or every
-    // keystroke in a debounced field would also re-sync the URL with stale debounced
-    // values and stomp what the user just typed.
     let previousNonDebouncedSnapshot = JSON.stringify(getNonDebouncedSnapshot());
     watch(
       getNonDebouncedSnapshot,

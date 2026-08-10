@@ -26,7 +26,6 @@ const { data: filterFacetsData } = useQuery({
     if (categoryIds.length > 0) {
       params.categoryIds = categoryIds.join(',');
     }
-    // Fetch all products (page size 200 covers all 80 items) to extract unique brands
     const response = await productStore.getProducts(params);
 
     const brandsById = new Map();
@@ -100,8 +99,6 @@ const { data: brandsData } = useQuery({
   staleTime: 1000 * 60 * 60,
 });
 
-// Brand data has genuine duplicate rows sharing the same name (same name, different ids).
-// Group them by name so the picker shows each name once, and selecting it filters by every id sharing that name.
 const brands = computed(() => {
   const items = brandsData.value || [];
   const byName = new Map();
@@ -214,13 +211,11 @@ const toggleOption = (val) => {
   const isAlreadySelected = isSelected(val);
 
   if (isAlreadySelected) {
-    // Remove all IDs in this group
     ids.forEach((id) => {
       const index = current.indexOf(id);
       if (index > -1) current.splice(index, 1);
     });
   } else {
-    // Add all IDs in this group that aren't already there
     ids.forEach((id) => {
       if (!current.includes(id)) current.push(id);
     });
@@ -301,7 +296,6 @@ const searchArticle = (_event) => {};
     </div>
 
     <div class="flex-1 overflow-y-auto p-6 space-y-10 custom-scrollbar">
-      <!-- Search -->
       <div class="space-y-3">
         <span class="text-sm font-black text-gray-900 uppercase tracking-widest"> Tìm kiếm </span>
         <div class="relative">
@@ -320,7 +314,6 @@ const searchArticle = (_event) => {};
         </div>
       </div>
 
-      <!-- Brands -->
       <div class="space-y-4">
         <div class="flex items-center gap-2">
           <div class="w-1 h-4 bg-primary rounded-full" />
@@ -345,7 +338,6 @@ const searchArticle = (_event) => {};
         </div>
       </div>
 
-      <!-- Categories (Danh mục) -->
       <div class="space-y-4">
         <div class="flex items-center gap-2">
           <div class="w-1 h-4 bg-primary rounded-full" />
@@ -368,7 +360,6 @@ const searchArticle = (_event) => {};
         </div>
       </div>
 
-      <!-- Price Range -->
       <div class="space-y-6">
         <div class="flex items-center gap-2">
           <div class="w-1 h-4 bg-primary rounded-full" />
@@ -378,9 +369,7 @@ const searchArticle = (_event) => {};
         </div>
 
         <div class="space-y-8 px-2">
-          <!-- Range Slider Container -->
           <div class="relative h-2 bg-gray-100 rounded-full">
-            <!-- Active Track Highlight -->
             <div
               class="absolute h-full bg-primary rounded-full shadow-[0_0_10px_rgba(227,24,55,0.3)] will-change-[left,right]"
               :style="{
@@ -389,7 +378,6 @@ const searchArticle = (_event) => {};
               }"
             />
 
-            <!-- Min Slider -->
             <input
               v-model.number="minPrice"
               type="range"
@@ -400,7 +388,6 @@ const searchArticle = (_event) => {};
               @input="minPrice = Math.min(minPrice, (maxPrice || MAX_PRICE) - 500000)"
             />
 
-            <!-- Max Slider -->
             <input
               v-model.number="maxPrice"
               type="range"
@@ -412,7 +399,6 @@ const searchArticle = (_event) => {};
             />
           </div>
 
-          <!-- Labels -->
           <div class="flex items-center justify-between">
             <div class="space-y-1">
               <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Từ</span>
@@ -428,7 +414,6 @@ const searchArticle = (_event) => {};
         </div>
       </div>
 
-      <!-- Dynamic Options (Brand, Color, VehicleType) -->
       <ClientOnly>
         <div v-if="isLoadingOptions" class="py-8 flex justify-center">
           <div
@@ -446,7 +431,6 @@ const searchArticle = (_event) => {};
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-2 gap-2">
               <template v-for="val in option.values" :key="val.id">
-                <!-- Default Button -->
                 <button
                   class="px-3 py-3 text-[11px] font-bold rounded-xl border transition-all duration-300 text-center min-h-[44px]"
                   :class="[
@@ -462,7 +446,6 @@ const searchArticle = (_event) => {};
             </div>
           </div>
 
-          <!-- Phiên bản -->
           <div v-if="versions.length > 0" class="space-y-4">
             <div class="flex items-center gap-2">
               <div class="w-1 h-4 bg-primary rounded-full" />
@@ -485,7 +468,6 @@ const searchArticle = (_event) => {};
             </div>
           </div>
 
-          <!-- Màu sắc -->
           <div v-if="colors.length > 0" class="space-y-4">
             <div class="flex items-center gap-2">
               <div class="w-1 h-4 bg-primary rounded-full" />
@@ -541,14 +523,13 @@ const searchArticle = (_event) => {};
 }
 
 .custom-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 .custom-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none; 
 }
 
-/* Custom Multi-Range Slider Styling */
 input[type='range'] {
   pointer-events: none;
 }
@@ -596,7 +577,6 @@ input[type='range']::-moz-range-thumb:hover {
   border-color: #ffffff;
 }
 
-/* Remove default track styles to avoid overlapping tracks */
 input[type='range']::-webkit-slider-runnable-track {
   background: transparent;
   border: none;

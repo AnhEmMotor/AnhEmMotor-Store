@@ -9,7 +9,6 @@ export function getOrCreateVisitorKey() {
   return key;
 }
 
-// Khách bấm "Xoá cuộc trò chuyện" — luôn cấp key mới, để phiên cũ không còn được tham chiếu nữa.
 export function resetVisitorKey() {
   const key = crypto.randomUUID();
   localStorage.setItem(VISITOR_KEY_STORAGE, key);

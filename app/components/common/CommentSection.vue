@@ -24,7 +24,6 @@ const fetchComments = async () => {
   try {
     isLoading.value = true;
     const data = await commentService.getComments(props.articleType, props.articleSlug);
-    // Only show approved comments
     comments.value = (data || []).filter((c) => c.isApproved);
   } catch {
   } finally {
@@ -48,7 +47,7 @@ const submitComment = async () => {
     await commentService.createComment({
       articleType: props.articleType,
       articleSlug: props.articleSlug,
-      authorName: 'Khách', // Ideally this should come from logged in user if available
+      authorName: 'Khách', 
       content: newComment.value,
     });
 
@@ -85,7 +84,6 @@ const formatDate = (dateString) => {
       <span class="text-gray-400 text-base font-medium ml-1">({{ comments.length }})</span>
     </h3>
 
-    <!-- Comment Input UI -->
     <div class="flex gap-4 mb-10">
       <div class="hidden sm:block shrink-0">
         <div
@@ -126,7 +124,6 @@ const formatDate = (dateString) => {
       </div>
     </div>
 
-    <!-- Comments List -->
     <div v-if="isLoading" class="text-center py-10">
       <Icon name="ph:spinner-gap-bold" class="animate-spin text-3xl text-gray-400" />
     </div>
