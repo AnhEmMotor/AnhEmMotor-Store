@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue';
+import { STATIC_CATEGORIES } from '~/constants/categories';
 
 const route = useRoute();
 const router = useRouter();
@@ -8,404 +9,421 @@ const productStore = useProductStore();
 const isSidebarOpen = ref(false);
 
 function parseArrayQuery(val) {
-	if (!val) return [];
-	const strVal = String(val);
-	return strVal
-		.split(",")
-		.map(Number)
-		.filter((n) => !Number.isNaN(n));
+  if (!val) return [];
+  const strVal = String(val);
+  return strVal
+    .split(',')
+    .map(Number)
+    .filter((n) => !Number.isNaN(n));
 }
 
 const categoryStore = useCategoryStore();
 
 function parseStringArrayQuery(val) {
-	if (!val) return [];
-	const strVal = String(val);
-	return strVal
-		.split(",")
-		.map((s) => s.trim())
-		.filter((s) => s !== "");
+  if (!val) return [];
+  const strVal = String(val);
+  return strVal
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s !== '');
 }
 
 const pageMode = computed(() => {
-	const ids = parseArrayQuery(route.query.category_ids);
-	
-	const categories = Array.isArray(categoryStore.categories) ? categoryStore.categories : [];
-	const xeMayCat = categories.find(c => c.name?.toLowerCase() === "xe máy" || c.name?.toLowerCase() === "xe");
-	const xeMayId = xeMayCat ? xeMayCat.id : 8;
-	
-	const phuTungCats = categories.filter(c => c.name?.toLowerCase() === "phụ tùng" || c.name?.toLowerCase() === "phụ kiện");
-	const phuTungIds = phuTungCats.length > 0 ? phuTungCats.map(c => c.id) : [12, 13];
-	
-	if (ids.includes(xeMayId) && ids.length === 1) return "motorcycles";
-	if (ids.some((id) => phuTungIds.includes(id))) return "accessories";
-	
-	return "all";
+  const ids = parseArrayQuery(route.query.category_ids);
+
+  const categories = Array.isArray(categoryStore.categories) ? categoryStore.categories : [];
+  const xeMayCat = categories.find(
+    (c) => c.name?.toLowerCase() === 'xe máy' || c.name?.toLowerCase() === 'xe'
+  );
+  const xeMayId = xeMayCat ? xeMayCat.id : 8;
+
+  const phuTungCats = categories.filter(
+    (c) => c.name?.toLowerCase() === 'phụ tùng' || c.name?.toLowerCase() === 'phụ kiện'
+  );
+  const phuTungIds = phuTungCats.length > 0 ? phuTungCats.map((c) => c.id) : [12, 13];
+
+  if (ids.includes(xeMayId) && ids.length === 1) return 'motorcycles';
+  if (ids.some((id) => phuTungIds.includes(id))) return 'accessories';
+
+  return 'all';
 });
 
 const pageConfig = computed(() => {
-	if (pageMode.value === "motorcycles") {
-		return {
-			title: "Danh sách Xe máy",
-			description:
-				"Khám phá các dòng xe máy Honda, Yamaha, Suzuki, Kawasaki mới nhất tại AnhEm Motor.",
-			heading: "Xe Máy",
-		};
-	}
-	if (pageMode.value === "accessories") {
-		return {
-			title: "Phụ tùng & Phụ kiện",
-			description:
-				"Cung cấp phụ tùng chính hãng, đồ chơi xe máy và phụ kiện bảo hộ cao cấp.",
-			heading: "Phụ tùng & Phụ kiện",
-		};
-	}
-	return {
-		title: "Tất cả sản phẩm",
-		description:
-			"Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.",
-		heading: "Sản phẩm",
-	};
+  if (pageMode.value === 'motorcycles') {
+    return {
+      title: 'Danh sách Xe máy',
+      description:
+        'Khám phá các dòng xe máy Honda, Yamaha, Suzuki, Kawasaki mới nhất tại AnhEm Motor.',
+      heading: 'Xe Máy',
+    };
+  }
+  if (pageMode.value === 'accessories') {
+    return {
+      title: 'Phụ tùng & Phụ kiện',
+      description: 'Cung cấp phụ tùng chính hãng, đồ chơi xe máy và phụ kiện bảo hộ cao cấp.',
+      heading: 'Phụ tùng & Phụ kiện',
+    };
+  }
+  return {
+    title: 'Tất cả sản phẩm',
+    description: 'Khám phá tất cả các dòng xe máy và phụ tùng chính hãng tại AnhEm Motor.',
+    heading: 'Sản phẩm',
+  };
 });
 
 useSeoMeta({
-	title: () => `${pageConfig.value.title} | AnhEm Motor`,
-	ogTitle: () => `${pageConfig.value.title} | AnhEm Motor`,
-	description: () => pageConfig.value.description,
-	ogDescription: () => pageConfig.value.description,
-	ogImage: "/assets/image/index/index-banner-bg.webp",
-	twitterTitle: () => `${pageConfig.value.title} | AnhEm Motor`,
-	twitterDescription: () => pageConfig.value.description,
-	twitterImage: "/assets/image/index/index-banner-bg.webp",
+  title: () => `${pageConfig.value.title} | AnhEm Motor`,
+  ogTitle: () => `${pageConfig.value.title} | AnhEm Motor`,
+  description: () => pageConfig.value.description,
+  ogDescription: () => pageConfig.value.description,
+  ogImage: '/assets/image/index/index-banner-bg.webp',
+  twitterTitle: () => `${pageConfig.value.title} | AnhEm Motor`,
+  twitterDescription: () => pageConfig.value.description,
+  twitterImage: '/assets/image/index/index-banner-bg.webp',
 });
 
 const filters = ref({
-	search: route.query.search || "",
-	optionValueIds: parseArrayQuery(route.query.optionValueIds),
-	category_ids: parseArrayQuery(route.query.category_ids),
-	brand_ids: parseArrayQuery(route.query.brand_ids),
-	minPrice: route.query.minPrice ? Number(route.query.minPrice) : null,
-	maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : null,
-	versions: parseStringArrayQuery(route.query.versions),
-	colors: parseStringArrayQuery(route.query.colors),
+  search: route.query.search || '',
+  optionValueIds: parseArrayQuery(route.query.optionValueIds),
+  category_ids: parseArrayQuery(route.query.category_ids),
+  brand_ids: parseArrayQuery(route.query.brand_ids),
+  minPrice: route.query.minPrice ? Number(route.query.minPrice) : null,
+  maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : null,
+  versions: parseStringArrayQuery(route.query.versions),
+  colors: parseStringArrayQuery(route.query.colors),
+  sortBy: route.query.sortBy || '',
 });
 
 const {
-	data: products,
-	isLoading,
-	pagination,
+  data: products,
+  isLoading,
+  pagination,
 } = usePaginatedQuery({
-	queryKey: ["products"],
-	queryFn: (params) => {
-		const sieveParams = { ...params };
+  queryKey: ['products'],
+  queryFn: (params) => {
+    const sieveParams = { ...params };
 
-		const filterParts = [];
-		if (filters.value.search) {
-			filterParts.push(`search@${filters.value.search}`);
-		}
-		if (filters.value.versions && filters.value.versions.length > 0) {
-			filterParts.push(`VariantName==${filters.value.versions.join("|")}`);
-		}
-		if (filters.value.colors && filters.value.colors.length > 0) {
-			filterParts.push(`ColorName==${filters.value.colors.join("|")}`);
-		}
+    const filterParts = [];
+    if (filters.value.search) {
+      filterParts.push(`search@${filters.value.search}`);
+    }
+    if (filters.value.versions && filters.value.versions.length > 0) {
+      filterParts.push(`VariantName==${filters.value.versions.join('|')}`);
+    }
+    if (filters.value.colors && filters.value.colors.length > 0) {
+      filterParts.push(`ColorName==${filters.value.colors.join('|')}`);
+    }
 
-		if (filterParts.length > 0) {
-			sieveParams.filters = filterParts.join(",");
-		}
+    if (filterParts.length > 0) {
+      sieveParams.filters = filterParts.join(',');
+    }
 
-		if (filters.value.optionValueIds.length > 0) {
-			sieveParams.optionValueIds = filters.value.optionValueIds.join(",");
-		}
-		if (filters.value.category_ids.length > 0) {
-			sieveParams.categoryIds = filters.value.category_ids.join(",");
-		}
-		if (filters.value.brand_ids.length > 0) {
-			sieveParams.brandIds = filters.value.brand_ids.join(",");
-		}
+    if (filters.value.optionValueIds.length > 0) {
+      sieveParams.optionValueIds = filters.value.optionValueIds.join(',');
+    }
+    if (filters.value.category_ids.length > 0) {
+      sieveParams.categoryIds = filters.value.category_ids.join(',');
+    }
+    if (filters.value.brand_ids.length > 0) {
+      sieveParams.brandIds = filters.value.brand_ids.join(',');
+    }
 
-		if (filters.value.minPrice !== null)
-			sieveParams.minPrice = Math.round(filters.value.minPrice);
-		if (filters.value.maxPrice !== null)
-			sieveParams.maxPrice = Math.round(filters.value.maxPrice);
+    if (filters.value.minPrice !== null) sieveParams.minPrice = Math.round(filters.value.minPrice);
+    if (filters.value.maxPrice !== null) sieveParams.maxPrice = Math.round(filters.value.maxPrice);
 
-		return productStore.getProducts(sieveParams);
-	},
-	itemsPerPage: 12,
-	filters: filters,
-	debouncedFields: ["search"],
-	dataKey: (res) => res.items,
+    delete sieveParams.sortBy;
+    if (filters.value.sortBy === 'price_asc') sieveParams.sorts = 'price';
+    else if (filters.value.sortBy === 'price_desc') sieveParams.sorts = '-price';
+
+    return productStore.getProducts(sieveParams);
+  },
+  itemsPerPage: 12,
+  filters: filters,
+  debouncedFields: ['search'],
+  dataKey: (res) => res.items,
 });
 
-// Watch for URL changes to sync filters back (Crucial for Header links)
 watch(
-	() => route.query,
-	(newQuery) => {
-		const query = { ...newQuery };
-		if (query.type === "xe-may") {
-			delete query.type;
-			query.category_ids = "8";
-			router.replace({ query });
-			return;
-		}
-		if (query.type === "phu-tung-phu-kien") {
-			delete query.type;
-			query.category_ids = "12,13";
-			router.replace({ query });
-			return;
-		}
+  () => route.query,
+  (newQuery) => {
+    const query = { ...newQuery };
+    if (query.type === 'xe-may') {
+      delete query.type;
+      query.category_ids = '8';
+      router.replace({ query });
+      return;
+    }
+    if (query.type === 'phu-tung-phu-kien') {
+      delete query.type;
+      query.category_ids = '12,13';
+      router.replace({ query });
+      return;
+    }
 
-		const newSearch = newQuery.search || "";
-		if (filters.value.search !== newSearch) {
-			filters.value.search = newSearch;
-		}
+    const newSearch = newQuery.search || '';
+    if (filters.value.search !== newSearch) {
+      filters.value.search = newSearch;
+    }
 
-		const newOptionValueIds = parseArrayQuery(newQuery.optionValueIds);
-		if (JSON.stringify(filters.value.optionValueIds) !== JSON.stringify(newOptionValueIds)) {
-			filters.value.optionValueIds = newOptionValueIds;
-		}
+    const newOptionValueIds = parseArrayQuery(newQuery.optionValueIds);
+    if (JSON.stringify(filters.value.optionValueIds) !== JSON.stringify(newOptionValueIds)) {
+      filters.value.optionValueIds = newOptionValueIds;
+    }
 
-		const newCategoryIds = parseArrayQuery(newQuery.category_ids);
-		if (JSON.stringify(filters.value.category_ids) !== JSON.stringify(newCategoryIds)) {
-			filters.value.category_ids = newCategoryIds;
-		}
+    const newCategoryIds = parseArrayQuery(newQuery.category_ids);
+    if (JSON.stringify(filters.value.category_ids) !== JSON.stringify(newCategoryIds)) {
+      filters.value.category_ids = newCategoryIds;
+    }
 
-		const newBrandIds = parseArrayQuery(newQuery.brand_ids);
-		if (JSON.stringify(filters.value.brand_ids) !== JSON.stringify(newBrandIds)) {
-			filters.value.brand_ids = newBrandIds;
-		}
+    const newBrandIds = parseArrayQuery(newQuery.brand_ids);
+    if (JSON.stringify(filters.value.brand_ids) !== JSON.stringify(newBrandIds)) {
+      filters.value.brand_ids = newBrandIds;
+    }
 
-		const newMinPrice = newQuery.minPrice ? Number(newQuery.minPrice) : null;
-		if (filters.value.minPrice !== newMinPrice) {
-			filters.value.minPrice = newMinPrice;
-		}
+    const newMinPrice = newQuery.minPrice ? Number(newQuery.minPrice) : null;
+    if (filters.value.minPrice !== newMinPrice) {
+      filters.value.minPrice = newMinPrice;
+    }
 
-		const newMaxPrice = newQuery.maxPrice ? Number(newQuery.maxPrice) : null;
-		if (filters.value.maxPrice !== newMaxPrice) {
-			filters.value.maxPrice = newMaxPrice;
-		}
+    const newMaxPrice = newQuery.maxPrice ? Number(newQuery.maxPrice) : null;
+    if (filters.value.maxPrice !== newMaxPrice) {
+      filters.value.maxPrice = newMaxPrice;
+    }
 
-		const newVersions = parseStringArrayQuery(newQuery.versions);
-		if (JSON.stringify(filters.value.versions) !== JSON.stringify(newVersions)) {
-			filters.value.versions = newVersions;
-		}
+    const newVersions = parseStringArrayQuery(newQuery.versions);
+    if (JSON.stringify(filters.value.versions) !== JSON.stringify(newVersions)) {
+      filters.value.versions = newVersions;
+    }
 
-		const newColors = parseStringArrayQuery(newQuery.colors);
-		if (JSON.stringify(filters.value.colors) !== JSON.stringify(newColors)) {
-			filters.value.colors = newColors;
-		}
-	},
-	{ immediate: true, deep: true },
+    const newColors = parseStringArrayQuery(newQuery.colors);
+    if (JSON.stringify(filters.value.colors) !== JSON.stringify(newColors)) {
+      filters.value.colors = newColors;
+    }
+
+    const newSortBy = newQuery.sortBy || '';
+    if (filters.value.sortBy !== newSortBy) {
+      filters.value.sortBy = newSortBy;
+    }
+  },
+  { immediate: true, deep: true }
 );
 
 const toggleSidebar = () => {
-	isSidebarOpen.value = !isSidebarOpen.value;
-	if (isSidebarOpen.value) {
-		document.body.style.overflow = "hidden";
-	} else {
-		document.body.style.overflow = "";
-	}
+  isSidebarOpen.value = !isSidebarOpen.value;
+  if (isSidebarOpen.value) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
 };
 
 const handleViewDetail = (product) => {
-	if (product.slug) {
-		navigateTo(`/product/${product.slug}`);
-	}
+  if (product.slug) {
+    navigateTo(`/product/${product.slug}`);
+  }
 };
 
 const formatVND = (value) => {
-	if (!value) return "0 ₫";
-	return new Intl.NumberFormat("vi-VN", {
-		style: "currency",
-		currency: "VND",
-	}).format(value);
+  if (!value) return '0 ₫';
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value);
 };
 </script>
 
 <template>
-	<div class="bg-white min-h-screen">
-		<Transition name="fade">
-			<div
-				v-if="isSidebarOpen"
-				class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
-				@click="toggleSidebar"
-			/>
-		</Transition>
+  <div class="bg-white min-h-screen">
+    <Transition name="fade">
+      <div
+        v-if="isSidebarOpen"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+        @click="toggleSidebar"
+      />
+    </Transition>
 
-		<Transition name="slide">
-			<aside
-				v-show="isSidebarOpen"
-				class="fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white z-[70] lg:hidden shadow-2xl"
-			>
-				<ProductFilterSidebar v-model="filters" @close="toggleSidebar" />
-			</aside>
-		</Transition>
+    <Transition name="slide">
+      <aside
+        v-show="isSidebarOpen"
+        class="fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white z-[70] lg:hidden shadow-2xl"
+      >
+        <ProductFilterSidebar v-model="filters" @close="toggleSidebar" />
+      </aside>
+    </Transition>
 
-		<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
-			<div class="flex flex-col lg:flex-row gap-12">
-				<aside class="hidden lg:block w-80 flex-shrink-0">
-					<div
-						class="sticky top-[120px] border border-gray-100 rounded-3xl shadow-sm overflow-hidden flex flex-col max-h-[calc(100vh-140px)]"
-					>
-						<ProductFilterSidebar v-model="filters" />
-					</div>
-				</aside>
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
+      <div class="flex flex-col lg:flex-row gap-12">
+        <aside class="hidden lg:block w-80 flex-shrink-0">
+          <div
+            class="sticky top-[120px] border border-gray-100 rounded-3xl shadow-sm overflow-hidden flex flex-col max-h-[calc(100vh-140px)]"
+          >
+            <ProductFilterSidebar v-model="filters" />
+          </div>
+        </aside>
 
-				<div class="flex-1 min-w-0">
-					<div
-						class="flex flex-col sm:flex-row sm:items-center justify-between mb-10 gap-6"
-					>
-						<div>
-							<h1
-								class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 uppercase tracking-tighter"
-							>
-								{{ pageConfig.heading }}
-							</h1>
-							<p class="text-gray-400 font-medium text-sm">
-								{{ pageConfig.description }}
-							</p>
-						</div>
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-10 gap-6">
+            <div>
+              <h1
+                class="text-3xl sm:text-5xl font-black text-gray-900 mb-2 uppercase tracking-tighter"
+              >
+                {{ pageConfig.heading }}
+              </h1>
+              <p class="text-gray-400 font-medium text-sm">
+                {{ pageConfig.description }}
+              </p>
+            </div>
 
-						<div class="flex items-center gap-3">
-							<button
-								class="lg:hidden flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"
-								aria-label="Mở bộ lọc sản phẩm"
-								@click="toggleSidebar"
-							>
-								<Icon name="fa6-solid:filter" class="text-primary" />
-								Lọc
-							</button>
-						</div>
-					</div>
+            <div class="flex items-center gap-3">
+              <div class="relative">
+                <select
+                  v-model="filters.sortBy"
+                  aria-label="Sắp xếp sản phẩm"
+                  class="h-12 pl-4 pr-9 bg-white border border-gray-200 rounded-xl outline-none appearance-none font-bold text-gray-900 cursor-pointer focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm shadow-sm"
+                >
+                  <option value="">Sắp xếp: Mặc định</option>
+                  <option value="price_asc">Giá: Thấp đến cao</option>
+                  <option value="price_desc">Giá: Cao đến thấp</option>
+                </select>
+                <Icon
+                  name="ph:caret-down-bold"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm"
+                />
+              </div>
+              <button
+                class="lg:hidden flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-xl font-bold text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"
+                aria-label="Mở bộ lọc sản phẩm"
+                @click="toggleSidebar"
+              >
+                <Icon name="fa6-solid:filter" class="text-primary" />
+                Lọc
+              </button>
+            </div>
+          </div>
 
-					<div
-						v-if="
-							filters.search ||
-							filters.optionValueIds.length > 0 ||
-							filters.category_ids.length > 0 ||
-							filters.brand_ids.length > 0 ||
-							filters.minPrice !== null ||
-							filters.maxPrice !== null
-						"
-						class="flex flex-wrap gap-3 mb-8"
-					>
-						<span
-							class="text-xs font-bold text-gray-400 uppercase tracking-widest w-full mb-1"
-							>Đang lọc theo:</span
-						>
+          <div
+            v-if="
+              filters.search ||
+              filters.optionValueIds.length > 0 ||
+              filters.category_ids.length > 0 ||
+              filters.brand_ids.length > 0 ||
+              filters.minPrice !== null ||
+              filters.maxPrice !== null
+            "
+            class="flex flex-wrap gap-3 mb-8"
+          >
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest w-full mb-1"
+              >Đang lọc theo:</span
+            >
 
-						<!-- Search Chip -->
-						<button
-							v-if="filters.search"
-							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
-							@click="filters.search = ''"
-						>
-							<Icon name="fa6-solid:magnifying-glass" class="text-xs" />
-							<span>Tìm kiếm: {{ filters.search }}</span>
-							<Icon
-								name="fa6-solid:xmark"
-								class="ml-1 opacity-50 group-hover:opacity-100"
-							/>
-						</button>
+            <button
+              v-if="filters.search"
+              class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
+              @click="filters.search = ''"
+            >
+              <Icon name="fa6-solid:magnifying-glass" class="text-xs" />
+              <span>Tìm kiếm: {{ filters.search }}</span>
+              <Icon name="fa6-solid:xmark" class="ml-1 opacity-50 group-hover:opacity-100" />
+            </button>
 
-						<!-- Category Chip -->
-						<button
-							v-for="catId in filters.category_ids"
-							:key="'cat-' + catId"
-							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
-							@click="filters.category_ids = filters.category_ids.filter(id => id !== catId)"
-						>
-							<Icon name="fa6-solid:folder-open" class="text-xs" />
-							<span>Danh mục: {{ categoryStore.categories.find(c => c.id === catId)?.name || catId }}</span>
-							<Icon
-								name="fa6-solid:xmark"
-								class="ml-1 opacity-50 group-hover:opacity-100"
-							/>
-						</button>
+            <button
+              v-for="catId in filters.category_ids"
+              :key="'cat-' + catId"
+              class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
+              @click="filters.category_ids = filters.category_ids.filter((id) => id !== catId)"
+            >
+              <Icon name="fa6-solid:folder-open" class="text-xs" />
+              <span
+                >Danh mục:
+                {{
+                  categoryStore.categories.find((c) => c.id === catId)?.name ||
+                  STATIC_CATEGORIES.find((c) => c.id === catId)?.name ||
+                  catId
+                }}</span
+              >
+              <Icon name="fa6-solid:xmark" class="ml-1 opacity-50 group-hover:opacity-100" />
+            </button>
 
-						<!-- Price Chip -->
-						<button
-							v-if="filters.minPrice !== null || filters.maxPrice !== null"
-							class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
-							@click="
-								filters.minPrice = null;
-								filters.maxPrice = null;
-							"
-						>
-							<Icon name="fa6-solid:money-bill-wave" class="text-xs" />
-							<span>
-								Giá:
-								{{ filters.minPrice ? formatVND(filters.minPrice) : "0" }} -
-								{{ filters.maxPrice ? formatVND(filters.maxPrice) : "Tối đa" }}
-							</span>
-							<Icon
-								name="fa6-solid:xmark"
-								class="ml-1 opacity-50 group-hover:opacity-100"
-							/>
-						</button>
+            <button
+              v-if="filters.minPrice !== null || filters.maxPrice !== null"
+              class="group flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 text-primary border border-primary/10 rounded-full text-sm font-bold transition-all"
+              @click="
+                filters.minPrice = null;
+                filters.maxPrice = null;
+              "
+            >
+              <Icon name="fa6-solid:money-bill-wave" class="text-xs" />
+              <span>
+                Giá:
+                {{ filters.minPrice ? formatVND(filters.minPrice) : '0' }} -
+                {{ filters.maxPrice ? formatVND(filters.maxPrice) : 'Tối đa' }}
+              </span>
+              <Icon name="fa6-solid:xmark" class="ml-1 opacity-50 group-hover:opacity-100" />
+            </button>
 
-						<button
-							class="px-4 py-2 bg-primary/5 text-primary rounded-full text-xs font-bold border border-primary/10 hover:bg-primary/10 transition-colors flex items-center gap-2"
-							aria-label="Xóa tất cả bộ lọc đang chọn"
-							@click="
-								filters.search = '';
-								filters.optionValueIds = [];
-								filters.category_ids = [];
-								filters.brand_ids = [];
-								filters.minPrice = null;
-								filters.maxPrice = null;
-								filters.versions = [];
-								filters.colors = [];
-							"
-						>
-							Xóa tất cả
-							<Icon name="fa6-solid:xmark" />
-						</button>
-					</div>
+            <button
+              class="px-4 py-2 bg-primary/5 text-primary rounded-full text-xs font-bold border border-primary/10 hover:bg-primary/10 transition-colors flex items-center gap-2"
+              aria-label="Xóa tất cả bộ lọc đang chọn"
+              @click="
+                filters.search = '';
+                filters.optionValueIds = [];
+                filters.category_ids = [];
+                filters.brand_ids = [];
+                filters.minPrice = null;
+                filters.maxPrice = null;
+                filters.versions = [];
+                filters.colors = [];
+                filters.sortBy = '';
+              "
+            >
+              Xóa tất cả
+              <Icon name="fa6-solid:xmark" />
+            </button>
+          </div>
 
-					<ProductList
-						:products="products"
-						:is-loading="isLoading"
-						@view-detail="handleViewDetail"
-					/>
+          <ProductList
+            :products="products"
+            :is-loading="isLoading"
+            @view-detail="handleViewDetail"
+          />
 
-					<div v-if="pagination.totalPages > 1" class="flex justify-center">
-						<UiBasePagination
-							:current-page="pagination.currentPage"
-							:total-pages="pagination.totalPages"
-							@update:current-page="pagination.goToPage"
-						/>
-					</div>
-				</div>
-			</div>
-		</div>
-		<ProductCompareBar />
-	</div>
+          <div v-if="pagination.totalPages > 1" class="flex justify-center">
+            <UiBasePagination
+              :current-page="pagination.currentPage"
+              :total-pages="pagination.totalPages"
+              @update:current-page="pagination.goToPage"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <ProductCompareBar />
+  </div>
 </template>
 
 <style scoped>
 .text-primary {
-	color: #e31837;
+  color: #e31837;
 }
 .bg-primary {
-	background-color: #e31837;
+  background-color: #e31837;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 .fade-enter-from,
 .fade-leave-to {
-	opacity: 0;
+  opacity: 0;
 }
 
 .slide-enter-active,
 .slide-leave-active {
-	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .slide-enter-from,
 .slide-leave-to {
-	transform: translateX(-100%);
+  transform: translateX(-100%);
 }
 </style>

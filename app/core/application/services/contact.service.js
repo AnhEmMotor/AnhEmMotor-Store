@@ -6,12 +6,7 @@ export const contactService = {
     return await contactRepository.getSupportTracking(id, trackingToken);
   },
   async rateSupportEmployee(id, trackingToken, rating, comment) {
-    return await contactRepository.rateSupportEmployee(
-      id,
-      trackingToken,
-      rating,
-      comment,
-    );
+    return await contactRepository.rateSupportEmployee(id, trackingToken, rating, comment);
   },
 };
 

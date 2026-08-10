@@ -1,31 +1,31 @@
 <script setup>
-import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
-import { useOrderStore } from "~/stores/order.store";
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useOrderStore } from '~/stores/order.store';
 
 const route = useRoute();
 const orderStore = useOrderStore();
 const isRetrying = ref(false);
-const retryError = ref("");
+const retryError = ref('');
 
 const orderId = computed(() => route.query.id);
 const paymentMethod = computed(() => {
-  const method = String(route.query.method || "").toLowerCase();
-  if (method === "vnpay") return "VNPay";
-  if (method === "payos") return "PayOS";
-  return "cổng thanh toán";
+  const method = String(route.query.method || '').toLowerCase();
+  if (method === 'vnpay') return 'VNPay';
+  if (method === 'payos') return 'PayOS';
+  return 'cổng thanh toán';
 });
 
 const reasonMessage = computed(() => {
   switch (route.query.reason) {
-    case "cancelled":
-      return "Bạn đã rời hoặc hủy phiên thanh toán. Đơn hàng vẫn được giữ lại.";
-    case "failed":
-      return "Giao dịch chưa thành công. Đơn hàng vẫn được giữ để bạn thanh toán lại.";
-    case "verification":
-      return "Chưa thể xác nhận kết quả thanh toán với hệ thống.";
-    case "invalid":
-      return "Thông tin trả về từ cổng thanh toán không hợp lệ.";
+    case 'cancelled':
+      return 'Bạn đã rời hoặc hủy phiên thanh toán. Đơn hàng vẫn được giữ lại.';
+    case 'failed':
+      return 'Giao dịch chưa thành công. Đơn hàng vẫn được giữ để bạn thanh toán lại.';
+    case 'verification':
+      return 'Chưa thể xác nhận kết quả thanh toán với hệ thống.';
+    case 'invalid':
+      return 'Thông tin trả về từ cổng thanh toán không hợp lệ.';
     default:
       return `${paymentMethod.value} chưa sẵn sàng hoặc chưa được cấu hình đầy đủ.`;
   }
@@ -34,11 +34,11 @@ const reasonMessage = computed(() => {
 async function retryPayment() {
   if (!orderId.value) return;
   isRetrying.value = true;
-  retryError.value = "";
+  retryError.value = '';
   try {
     const url = await orderStore.getPaymentLink(orderId.value);
     if (!url) {
-      throw new Error("Không nhận được đường dẫn thanh toán.");
+      throw new Error('Không nhận được đường dẫn thanh toán.');
     }
     window.location.href = url;
   } catch (error) {
@@ -53,8 +53,8 @@ async function retryPayment() {
 }
 
 useSeoMeta({
-  title: "Chưa hoàn tất thanh toán",
-  description: "Tiếp tục thanh toán đơn hàng tại AnhEm Motor.",
+  title: 'Chưa hoàn tất thanh toán',
+  description: 'Tiếp tục thanh toán đơn hàng tại AnhEm Motor.',
 });
 </script>
 
@@ -77,17 +77,13 @@ useSeoMeta({
           <p class="text-gray-600 font-medium leading-relaxed">
             {{ reasonMessage }}
           </p>
-          <p v-if="orderId" class="text-sm text-gray-400 font-bold">
-            Mã đơn hàng: #{{ orderId }}
-          </p>
+          <p v-if="orderId" class="text-sm text-gray-400 font-bold">Mã đơn hàng: #{{ orderId }}</p>
         </div>
 
-        <div
-          class="rounded-2xl bg-blue-50 border border-blue-100 p-5 text-left"
-        >
+        <div class="rounded-2xl bg-blue-50 border border-blue-100 p-5 text-left">
           <p class="text-sm text-blue-800 font-medium leading-relaxed">
-            Đây không phải trang xác nhận thanh toán thành công. Khi thử lại,
-            hệ thống sẽ mở trực tiếp trang thanh toán chính thức của
+            Đây không phải trang xác nhận thanh toán thành công. Khi thử lại, hệ thống sẽ mở trực
+            tiếp trang thanh toán chính thức của
             {{ paymentMethod }}.
           </p>
         </div>
@@ -109,7 +105,7 @@ useSeoMeta({
             :disabled="isRetrying"
             @click="retryPayment"
           >
-            {{ isRetrying ? "Đang mở cổng..." : `Thanh toán qua ${paymentMethod}` }}
+            {{ isRetrying ? 'Đang mở cổng...' : `Thanh toán qua ${paymentMethod}` }}
           </button>
         </div>
       </div>

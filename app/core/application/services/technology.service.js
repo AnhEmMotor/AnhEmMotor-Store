@@ -1,10 +1,10 @@
-import { technologyRepository } from "../../infrastructure/repositories/technology.repository";
+import { technologyRepository } from '../../infrastructure/repositories/technology.repository';
 import {
   TechFeature,
   EngineTech,
   InteractionCard,
   ManagementFeature,
-} from "../../domain/models/technology.model";
+} from '../../domain/models/technology.model';
 
 export const technologyService = {
   async getConnectivityFeatures() {

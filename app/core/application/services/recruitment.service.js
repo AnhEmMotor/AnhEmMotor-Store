@@ -1,4 +1,4 @@
-import { recruitmentRepository } from "../../infrastructure/repositories/recruitment.repository";
+import { recruitmentRepository } from '../../infrastructure/repositories/recruitment.repository';
 
 export const recruitmentService = {
   async getJobs() {

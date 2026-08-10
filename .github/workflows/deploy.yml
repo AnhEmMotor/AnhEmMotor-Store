@@ -17,8 +17,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "lts/*"
-          cache: "npm"
+          node-version: 'lts/*'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -36,8 +36,8 @@ jobs:
           username: ${{ secrets.PRODUCTION_SERVER_USERNAME }}
           key: ${{ secrets.SERVER_REMOTE_ACCESS_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT_FOR_PRODUCTION_SERVER }}
-          source: ".output/,ecosystem.config.js"
-          target: "/var/www/anhemmotor/frontend-store"
+          source: '.output/,ecosystem.config.js'
+          target: '/var/www/anhemmotor/frontend-store'
           strip_components: 0
 
       - name: Restart Application via SSH

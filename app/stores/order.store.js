@@ -1,451 +1,449 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { useQueryClient, useQuery } from "@tanstack/vue-query";
-import { useAxios } from "@/composables/useAxios";
-import orderService from "@/services/order.service";
-import orderMapper from "@/mappers/order.mapper";
-import { useAuthStore } from "@/stores/auth.store";
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
+import { useQueryClient, useQuery } from '@tanstack/vue-query';
+import { useAxios } from '@/composables/useAxios';
+import orderService from '@/services/order.service';
+import orderMapper from '@/mappers/order.mapper';
+import { useAuthStore } from '@/stores/auth.store';
 
+export const useOrderStore = defineStore('order', () => {
+  const service = orderService;
+  const queryClient = useQueryClient();
 
-export const useOrderStore = defineStore("order", () => {
-	const service = orderService;
-	const queryClient = useQueryClient();
+  const currentOrder = ref(null);
+  const lastCreatedOrderId = ref(null);
+  const isRedirecting = ref(false);
+  const isLoading = ref(false);
+  const error = ref(null);
+  const fieldErrors = ref({});
 
-	const currentOrder = ref(null);
-	const lastCreatedOrderId = ref(null);
-	const isRedirecting = ref(false);
-	const isLoading = ref(false);
-	const error = ref(null);
-	const fieldErrors = ref({});
+  const selectedPaymentMethod = ref('cod');
+  const paymentUrl = ref(null);
 
-	const selectedPaymentMethod = ref("cod");
-	const paymentUrl = ref(null);
+  const statusMap = ref({
+    pending: 'Chờ xác nhận',
+    waiting_deposit: 'Chờ đặt cọc',
+    deposit_paid: 'Đã đặt cọc',
+    confirmed_cod: 'Đã xác nhận (COD)',
+    paid_processing: 'Đang xử lý',
+    waiting_pickup: 'Chờ lấy hàng',
+    delivering: 'Đang giao hàng',
+    completed: 'Đã hoàn tất',
+    cancelled: 'Đã hủy',
+    refunding: 'Đang hoàn tiền',
+    refunded: 'Đã hoàn tiền',
+  });
+  const lockedStatuses = ref({
+    deliveryInfo: ['delivering', 'completed', 'cancelled'],
+    notes: ['completed', 'cancelled'],
+  });
+  const cancellableStatuses = ref(['pending', 'waiting_deposit']);
 
-	const statusMap = ref({
-		pending: "Chờ xác nhận",
-		waiting_deposit: "Chờ đặt cọc",
-		deposit_paid: "Đã đặt cọc",
-		confirmed_cod: "Đã xác nhận (COD)",
-		paid_processing: "Đang xử lý",
-		waiting_pickup: "Chờ lấy hàng",
-		delivering: "Đang giao hàng",
-		completed: "Đã hoàn tất",
-		cancelled: "Đã hủy",
-		refunding: "Đang hoàn tiền",
-		refunded: "Đã hoàn tiền",
-	});
-	const lockedStatuses = ref({
-		deliveryInfo: ["delivering", "completed", "cancelled"],
-		notes: ["completed", "cancelled"],
-	});
-	const cancellableStatuses = ref(["pending", "waiting_deposit"]);
+  const { data: storeSettings } = useQuery({
+    queryKey: ['store-settings'],
+    queryFn: async () => {
+      const settingSvc = (await import('@/services/setting.service')).default(useAxios());
+      return settingSvc.getStoreSettings();
+    },
+  });
 
-	const { data: storeSettings } = useQuery({
-		queryKey: ["store-settings"],
-		queryFn: async () => {
-			const settingSvc = (await import("@/services/setting.service")).default(
-				useAxios(),
-			);
-			return settingSvc.getStoreSettings();
-		},
-	});
+  const settings = computed(() => storeSettings.value || {});
 
-	const settings = computed(() => storeSettings.value || {});
+  const calculatedShippingFee = ref(null);
+  const isCalculatingShipping = ref(false);
 
-	const calculatedShippingFee = ref(null);
-	const isCalculatingShipping = ref(false);
+  const calculateShippingFee = async (cartDetails) => {
+    if (
+      !shippingInfo.value.provinceId ||
+      !shippingInfo.value.wardCode ||
+      !cartDetails ||
+      cartDetails.length === 0
+    ) {
+      calculatedShippingFee.value = null;
+      return;
+    }
+    isCalculatingShipping.value = true;
+    try {
+      const axios = useAxios();
+      const res = await axios.post('/api/v1/logistics/calculate-fee', {
+        provinceId: Number(shippingInfo.value.provinceId),
+        wardId: String(shippingInfo.value.wardCode),
+        items: cartDetails.map((item) => ({
+          productVariantId: item.productVariantId || item.variantId || item.id,
+          productVariantColorId:
+            item.productVariantColorId && item.productVariantColorId > 0
+              ? item.productVariantColorId
+              : null,
+          quantity: item.quantity,
+        })),
+      });
+      calculatedShippingFee.value = res.data;
+    } catch {
+      calculatedShippingFee.value = null;
+    } finally {
+      isCalculatingShipping.value = false;
+    }
+  };
 
-	const calculateShippingFee = async (cartDetails) => {
-		if (!shippingInfo.value.provinceId || !shippingInfo.value.wardCode || !cartDetails || cartDetails.length === 0) {
-			calculatedShippingFee.value = null;
-			return;
-		}
-		isCalculatingShipping.value = true;
-		try {
-			const axios = useAxios();
-			const res = await axios.post('/api/v1/logistics/calculate-fee', {
-				provinceId: Number(shippingInfo.value.provinceId),
-				wardId: String(shippingInfo.value.wardCode),
-				items: cartDetails.map(item => ({ 
-					productVariantId: item.productVariantId || item.variantId || item.id, 
-					productVariantColorId: item.productVariantColorId && item.productVariantColorId > 0 ? item.productVariantColorId : null,
-					quantity: item.quantity 
-				}))
-			});
-			calculatedShippingFee.value = res.data;
-		} catch {
-			calculatedShippingFee.value = null;
-		} finally {
-			isCalculatingShipping.value = false;
-		}
-	};
+  const initStatuses = async () => {
+    try {
+      const [mapRes, cancellableRes] = await Promise.all([
+        service.getStatusMap(),
+        service.getCancellableStatuses(),
+      ]);
 
-	const initStatuses = async () => {
-		try {
-			const [mapRes, cancellableRes] = await Promise.all([
-				service.getStatusMap(),
-				service.getCancellableStatuses(),
-			]);
+      statusMap.value = orderMapper.mapStatusMap(mapRes);
+      cancellableStatuses.value = cancellableRes || [];
 
-			statusMap.value = orderMapper.mapStatusMap(mapRes);
-			cancellableStatuses.value = cancellableRes || [];
+      lockedStatuses.value = {
+        deliveryInfo: ['delivering', 'completed', 'cancelled'],
+        notes: ['completed', 'cancelled'],
+      };
+    } catch {
+      null;
+    }
+  };
 
-			lockedStatuses.value = {
-				deliveryInfo: ["delivering", "completed", "cancelled"],
-				notes: ["completed", "cancelled"],
-			};
-		} catch {
-			null;
-		}
-	};
+  const _refreshMyOrders = async () => {
+    const params = { page: 1, pageSize: 10 };
+    await queryClient.prefetchQuery({
+      queryKey: ['my-orders', params],
+      queryFn: () => getMyPurchases(params),
+    });
+  };
 
-	const _refreshMyOrders = async () => {
-		const params = { page: 1, pageSize: 10 };
-		await queryClient.prefetchQuery({
-			queryKey: ["my-orders", params],
-			queryFn: () => getMyPurchases(params),
-		});
-	};
+  const shippingInfo = ref({
+    fullName: '',
+    phone: '',
+    address: '',
+    notes: '',
+    paymentMethod: 'COD',
+    isCompanyInvoice: false,
+    companyName: '',
+    companyAddress: '',
+    companyTaxCode: '',
+    companyEmail: '',
+    budgetCode: '',
+    provinceId: '',
+    wardCode: '',
+  });
 
-	const shippingInfo = ref({
-		fullName: "",
-		phone: "",
-		address: "",
-		notes: "",
-		paymentMethod: "COD",
-		isCompanyInvoice: false,
-		companyName: "",
-		companyAddress: "",
-		companyTaxCode: "",
-		companyEmail: "",
-		budgetCode: "",
-		provinceId: null,
-		wardCode: "",
-	});
+  const errors = ref({
+    fullName: '',
+    phone: '',
+    address: '',
+    companyName: '',
+    companyAddress: '',
+    companyTaxCode: '',
+    companyEmail: '',
+    budgetCode: '',
+    provinceId: '',
+    wardCode: '',
+  });
 
-	const errors = ref({
-		fullName: "",
-		phone: "",
-		address: "",
-		companyName: "",
-		companyAddress: "",
-		companyTaxCode: "",
-		companyEmail: "",
-		budgetCode: "",
-		provinceId: "",
-		wardCode: "",
-	});
+  const initShippingInfo = (user) => {
+    if (user) {
+      shippingInfo.value.fullName = user.fullName || user.userName || '';
+      shippingInfo.value.phone = user.phoneNumber || '';
+      shippingInfo.value.address = user.address || '';
+    }
+  };
 
-	const initShippingInfo = (user) => {
-		if (user) {
-			shippingInfo.value.fullName = user.fullName || user.userName || "";
-			shippingInfo.value.phone = user.phoneNumber || "";
-			shippingInfo.value.address = user.address || "";
-		}
-	};
+  const validateShippingInfo = () => {
+    let isValid = true;
+    errors.value = {
+      fullName: '',
+      phone: '',
+      address: '',
+      companyName: '',
+      companyAddress: '',
+      companyTaxCode: '',
+      companyEmail: '',
+      budgetCode: '',
+      provinceId: '',
+      wardCode: '',
+    };
 
-	const validateShippingInfo = () => {
-		let isValid = true;
-		errors.value = {
-			fullName: "",
-			phone: "",
-			address: "",
-			companyName: "",
-			companyAddress: "",
-			companyTaxCode: "",
-			companyEmail: "",
-			budgetCode: "",
-			provinceId: "",
-			wardCode: "",
-		};
+    if (!shippingInfo.value.provinceId) {
+      errors.value.provinceId = 'Vui lòng chọn Tỉnh/Thành phố';
+      isValid = false;
+    }
+    if (!shippingInfo.value.wardCode) {
+      errors.value.wardCode = 'Vui lòng chọn Quận/Huyện/Phường/Xã';
+      isValid = false;
+    }
 
-		if (!shippingInfo.value.provinceId) {
-			errors.value.provinceId = "Vui lòng chọn Tỉnh/Thành phố";
-			isValid = false;
-		}
-		if (!shippingInfo.value.wardCode) {
-			errors.value.wardCode = "Vui lòng chọn Quận/Huyện/Phường/Xã";
-			isValid = false;
-		}
+    if (!shippingInfo.value.fullName?.trim()) {
+      errors.value.fullName = 'Vui lòng nhập họ và tên người nhận';
+      isValid = false;
+    }
+    if (!shippingInfo.value.phone?.trim()) {
+      errors.value.phone = 'Vui lòng nhập số điện thoại nhận hàng';
+      isValid = false;
+    }
+    if (!shippingInfo.value.address?.trim()) {
+      errors.value.address = 'Vui lòng nhập địa chỉ giao hàng chi tiết';
+      isValid = false;
+    }
 
-		if (!shippingInfo.value.fullName?.trim()) {
-			errors.value.fullName = "Vui lòng nhập họ và tên người nhận";
-			isValid = false;
-		}
-		if (!shippingInfo.value.phone?.trim()) {
-			errors.value.phone = "Vui lòng nhập số điện thoại nhận hàng";
-			isValid = false;
-		}
-		if (!shippingInfo.value.address?.trim()) {
-			errors.value.address = "Vui lòng nhập địa chỉ giao hàng chi tiết";
-			isValid = false;
-		}
+    if (shippingInfo.value.isCompanyInvoice) {
+      if (!shippingInfo.value.companyName?.trim()) {
+        errors.value.companyName = 'Tên công ty không được để trống';
+        isValid = false;
+      }
+      if (!shippingInfo.value.companyAddress?.trim()) {
+        errors.value.companyAddress = 'Địa chỉ công ty không được để trống';
+        isValid = false;
+      }
+      if (!shippingInfo.value.companyTaxCode?.trim()) {
+        errors.value.companyTaxCode = 'Mã số thuế không được để trống';
+        isValid = false;
+      } else {
+        const taxRegex = /^\d{3}$|^\d{10}$|^\d{13}$|^\d{10}-\d{3}$/;
+        if (!taxRegex.test(shippingInfo.value.companyTaxCode.trim())) {
+          errors.value.companyTaxCode =
+            'Mã số thuế không hợp lệ. Nhập đúng 3 số hoặc MST chuẩn (10/13 số).';
+          isValid = false;
+        }
+      }
+      if (shippingInfo.value.companyEmail?.trim()) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(shippingInfo.value.companyEmail.trim())) {
+          errors.value.companyEmail = 'Email không đúng định dạng';
+          isValid = false;
+        }
+      }
+    }
 
-		if (shippingInfo.value.isCompanyInvoice) {
-			if (!shippingInfo.value.companyName?.trim()) {
-				errors.value.companyName = "Tên công ty không được để trống";
-				isValid = false;
-			}
-			if (!shippingInfo.value.companyAddress?.trim()) {
-				errors.value.companyAddress = "Địa chỉ công ty không được để trống";
-				isValid = false;
-			}
-			if (!shippingInfo.value.companyTaxCode?.trim()) {
-				errors.value.companyTaxCode = "Mã số thuế không được để trống";
-				isValid = false;
-			} else {
-				const taxRegex = /^\d{3}$|^\d{10}$|^\d{13}$|^\d{10}-\d{3}$/;
-				if (!taxRegex.test(shippingInfo.value.companyTaxCode.trim())) {
-					errors.value.companyTaxCode = "Mã số thuế không hợp lệ. Nhập đúng 3 số hoặc MST chuẩn (10/13 số).";
-					isValid = false;
-				}
-			}
-			if (shippingInfo.value.companyEmail?.trim()) {
-				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				if (!emailRegex.test(shippingInfo.value.companyEmail.trim())) {
-					errors.value.companyEmail = "Email không đúng định dạng";
-					isValid = false;
-				}
-			}
-		}
+    return isValid;
+  };
 
-		return isValid;
-	};
+  const appliedVoucherId = ref(null);
+  const appliedVoucherCode = ref(null);
+  const appliedVoucherDiscount = ref(0);
 
-const appliedVoucherId = ref(null);
-const appliedVoucherCode = ref(null);
-const appliedVoucherDiscount = ref(0);
+  const setAppliedVoucher = (appliedVoucher) => {
+    if (appliedVoucher?.discountAmount > 0) {
+      appliedVoucherId.value = appliedVoucher.id || appliedVoucher.voucherId;
+      appliedVoucherCode.value = appliedVoucher.code;
+      appliedVoucherDiscount.value = appliedVoucher.discountAmount;
+    } else {
+      appliedVoucherId.value = null;
+      appliedVoucherCode.value = null;
+      appliedVoucherDiscount.value = 0;
+    }
+  };
 
- 
-const setAppliedVoucher = (appliedVoucher) => {
-  if (appliedVoucher?.discountAmount > 0) {
-    appliedVoucherId.value = appliedVoucher.id || appliedVoucher.voucherId;
-    appliedVoucherCode.value = appliedVoucher.code;
-    appliedVoucherDiscount.value = appliedVoucher.discountAmount;
-  } else {
+  const clearAppliedVoucher = () => {
     appliedVoucherId.value = null;
     appliedVoucherCode.value = null;
     appliedVoucherDiscount.value = 0;
-  }
-};
+  };
 
-const clearAppliedVoucher = () => {
-  appliedVoucherId.value = null;
-  appliedVoucherCode.value = null;
-  appliedVoucherDiscount.value = 0;
-};
+  const createOrder = async (cartItems) => {
+    isLoading.value = true;
+    error.value = null;
+    fieldErrors.value = {};
+    try {
+      const authStore = useAuthStore();
+      const userId = authStore.user?.id || authStore.user?.sub;
+      const payload = orderMapper.mapOrderPayload(
+        shippingInfo.value,
+        cartItems,
+        userId,
+        shippingInfo.value.paymentMethod,
+        appliedVoucherCode.value
+      );
+      if (appliedVoucherId.value) {
+        payload.voucherId = appliedVoucherId.value;
+        payload.discountAmount = appliedVoucherDiscount.value;
+      }
+      const res = await service.createOrder(payload);
+      lastCreatedOrderId.value = res.id || res.Id;
+      currentOrder.value = orderMapper.mapOrderResponse(res);
 
-	const createOrder = async (cartItems) => {
-		isLoading.value = true;
-		error.value = null;
-		fieldErrors.value = {};
-		try {
-			const authStore = useAuthStore();
-			const userId = authStore.user?.id || authStore.user?.sub;
-			const payload = orderMapper.mapOrderPayload(
-				shippingInfo.value,
-				cartItems,
-				userId,
-				shippingInfo.value.paymentMethod,
-                appliedVoucherCode.value
-			);
-    if (appliedVoucherId.value) {
-      payload.voucherId = appliedVoucherId.value;
-      payload.discountAmount = appliedVoucherDiscount.value;
+      queryClient.invalidateQueries({ queryKey: ['my-orders'] });
+      _refreshMyOrders();
+
+      isRedirecting.value = true;
+      return currentOrder.value;
+    } catch (e) {
+      const data = e.response?.data;
+      if (data?.errors) {
+        const fieldMapping = {
+          CustomerName: 'fullName',
+          CustomerPhone: 'phone',
+          CustomerAddress: 'address',
+        };
+        const unmappedErrors = [];
+
+        data.errors.forEach((err) => {
+          let mapped = false;
+
+          if (err.field && fieldMapping[err.field]) {
+            errors.value[fieldMapping[err.field]] = err.message;
+            mapped = true;
+          }
+
+          if (err.field && err.field.startsWith('products[')) {
+            const index = parseInt(err.field.match(/\d+/)[0]);
+            const item = cartItems[index];
+            if (item) {
+              fieldErrors.value[item.id] = err.message;
+              mapped = true;
+            }
+          }
+
+          if (!mapped) {
+            unmappedErrors.push(err.message);
+          }
+        });
+
+        if (unmappedErrors.length > 0) {
+          error.value = unmappedErrors.join(' ');
+        }
+      } else {
+        error.value = data?.message || 'Đã có lỗi xảy ra';
+      }
+      throw e;
+    } finally {
+      isLoading.value = false;
     }
-			const res = await service.createOrder(payload);
-			lastCreatedOrderId.value = res.id || res.Id;
-			currentOrder.value = orderMapper.mapOrderResponse(res);
+  };
 
-			queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-			_refreshMyOrders();
+  const fetchProvinces = async () => {
+    const axios = useAxios();
+    const response = await axios.get('/api/v1/SalesOrders/provinces');
+    return Array.isArray(response.data) ? response.data : [];
+  };
 
-			isRedirecting.value = true;
-			return currentOrder.value;
-		} catch (e) {
-			const data = e.response?.data;
-			if (data?.errors) {
-				const fieldMapping = {
-					CustomerName: "fullName",
-					CustomerPhone: "phone",
-					CustomerAddress: "address",
-				};
-				const unmappedErrors = [];
+  const fetchWards = async (provinceId) => {
+    const axios = useAxios();
+    const response = await axios.get(`/api/v1/SalesOrders/wards/${provinceId}`);
+    return Array.isArray(response.data) ? response.data : [];
+  };
 
-				data.errors.forEach((err) => {
-					let mapped = false;
+  const getMyPurchases = async (params) => {
+    const res = await service.getMyPurchases(params);
+    return {
+      ...res,
+      items: orderMapper.mapOrderList(res),
+    };
+  };
 
-					if (err.field && fieldMapping[err.field]) {
-						errors.value[fieldMapping[err.field]] = err.message;
-						mapped = true;
-					}
+  const fetchOrderDetail = async (id) => {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const res = await service.getOrderDetail(id);
+      currentOrder.value = orderMapper.mapOrderResponse(res);
+      return currentOrder.value;
+    } catch (e) {
+      error.value = 'Không tìm thấy thông tin đơn hàng';
+      throw e;
+    } finally {
+      isLoading.value = false;
+    }
+  };
 
-					if (err.field && err.field.startsWith("products[")) {
-						const index = parseInt(err.field.match(/\d+/)[0]);
-						const item = cartItems[index];
-						if (item) {
-							fieldErrors.value[item.id] = err.message;
-							mapped = true;
-						}
-					}
+  const cancelOrder = async (orderId) => {
+    await service.cancelOrder(orderId);
+    queryClient.invalidateQueries({ queryKey: ['my-orders'] });
+    _refreshMyOrders();
+  };
 
-					if (!mapped) {
-						unmappedErrors.push(err.message);
-					}
-				});
+  const updateOrderInfo = async (orderId, payload) => {
+    await service.updateOrder(orderId, payload);
+    queryClient.invalidateQueries({ queryKey: ['my-orders'] });
+    _refreshMyOrders();
+  };
 
-				if (unmappedErrors.length > 0) {
-					error.value = unmappedErrors.join(" ");
-				}
-			} else {
-				error.value = data?.message || "Đã có lỗi xảy ra";
-			}
-			throw e;
-		} finally {
-			isLoading.value = false;
-		}
-	};
+  const updateOrderCompanyInvoice = async (orderId, invoiceData) => {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const res = await service.updateCompanyInvoice(orderId, invoiceData);
+      currentOrder.value = orderMapper.mapOrderResponse(res);
+      queryClient.invalidateQueries({ queryKey: ['my-orders'] });
+      _refreshMyOrders();
+      return currentOrder.value;
+    } catch (e) {
+      error.value = e.response?.data?.message || 'Không thể cập nhật thông tin hóa đơn';
+      throw e;
+    } finally {
+      isLoading.value = false;
+    }
+  };
 
-	const fetchProvinces = async () => {
-		const axios = useAxios();
-		const response = await axios.get("/api/v1/SalesOrders/provinces");
-		return Array.isArray(response.data) ? response.data : [];
-	};
+  const setPaymentUrl = (url) => {
+    paymentUrl.value = url;
+  };
 
-	const fetchWards = async (provinceId) => {
-		const axios = useAxios();
-		const response = await axios.get(`/api/v1/SalesOrders/wards/${provinceId}`);
-		return Array.isArray(response.data) ? response.data : [];
-	};
+  const getPaymentLink = async (orderId) => {
+    const res = await service.getPaymentLink(orderId);
+    const url = res?.url || '';
+    if (url) {
+      paymentUrl.value = url;
+    }
+    return url;
+  };
 
-	const getMyPurchases = async (params) => {
-		const res = await service.getMyPurchases(params);
-		return {
-			...res,
-			items: orderMapper.mapOrderList(res),
-		};
-	};
+  const clearPayment = () => {
+    paymentUrl.value = null;
+    shippingInfo.value.paymentMethod = 'COD';
+    selectedPaymentMethod.value = 'cod';
+  };
 
-	const fetchOrderDetail = async (id) => {
-		isLoading.value = true;
-		error.value = null;
-		try {
-			const res = await service.getOrderDetail(id);
-			currentOrder.value = orderMapper.mapOrderResponse(res);
-			return currentOrder.value;
-		} catch (e) {
-			error.value = "Không tìm thấy thông tin đơn hàng";
-			throw e;
-		} finally {
-			isLoading.value = false;
-		}
-	};
+  const getStatusName = (statusId) => {
+    return statusMap.value[statusId] || statusId || 'Đang xử lý';
+  };
 
-	const cancelOrder = async (orderId) => {
-		await service.cancelOrder(orderId);
-		queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-		_refreshMyOrders();
-	};
+  const clearOrder = () => {
+    currentOrder.value = null;
+    lastCreatedOrderId.value = null;
+    isRedirecting.value = false;
+    error.value = null;
+    fieldErrors.value = {};
+    errors.value = { fullName: '', phone: '', address: '' };
+    shippingInfo.value.isCompanyInvoice = false;
+    clearPayment();
+    clearAppliedVoucher();
+  };
 
-	const updateOrderInfo = async (orderId, payload) => {
-		await service.updateOrder(orderId, payload);
-		queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-		_refreshMyOrders();
-	};
-
-	const updateOrderCompanyInvoice = async (orderId, invoiceData) => {
-		isLoading.value = true;
-		error.value = null;
-		try {
-			const res = await service.updateCompanyInvoice(orderId, invoiceData);
-			currentOrder.value = orderMapper.mapOrderResponse(res);
-			queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-			_refreshMyOrders();
-			return currentOrder.value;
-		} catch (e) {
-			error.value = e.response?.data?.message || "Không thể cập nhật thông tin hóa đơn";
-			throw e;
-		} finally {
-			isLoading.value = false;
-		}
-	};
-
-	const setPaymentUrl = (url) => {
-		paymentUrl.value = url;
-	};
-
-	const getPaymentLink = async (orderId) => {
-		const res = await service.getPaymentLink(orderId);
-		const url = res?.url || "";
-		if (url) {
-			paymentUrl.value = url;
-		}
-		return url;
-	};
-
-	const clearPayment = () => {
-		paymentUrl.value = null;
-		shippingInfo.value.paymentMethod = "COD";
-		selectedPaymentMethod.value = "cod";
-	};
-
-	const getStatusName = (statusId) => {
-		return statusMap.value[statusId] || statusId || "Đang xử lý";
-	};
-
-	const clearOrder = () => {
-		currentOrder.value = null;
-		lastCreatedOrderId.value = null;
-		isRedirecting.value = false;
-		error.value = null;
-		fieldErrors.value = {};
-		errors.value = { fullName: "", phone: "", address: "" };
-		shippingInfo.value.isCompanyInvoice = false;
-		clearPayment();
-  clearAppliedVoucher();
-	};
-
-	return {
-		currentOrder,
-		lastCreatedOrderId,
-		isRedirecting,
-		statusMap,
-		lockedStatuses,
-		cancellableStatuses,
-		isLoading,
-		error,
-		fieldErrors,
-		shippingInfo,
-		errors,
-		selectedPaymentMethod,
-		settings,
-		initStatuses,
-		initShippingInfo,
-		validateShippingInfo,
-		createOrder,
-		getMyPurchases,
-		fetchOrderDetail,
-		cancelOrder,
-		updateOrderInfo,
-		updateOrderCompanyInvoice,
-		getPaymentLink,
-		setPaymentUrl,
-		clearPayment,
-		getStatusName,
-		clearOrder,
-		fetchProvinces,
-		fetchWards,
-		calculatedShippingFee,
-		isCalculatingShipping,
-		calculateShippingFee,
-		setAppliedVoucher,
-		clearAppliedVoucher,
-	};
+  return {
+    currentOrder,
+    lastCreatedOrderId,
+    isRedirecting,
+    statusMap,
+    lockedStatuses,
+    cancellableStatuses,
+    isLoading,
+    error,
+    fieldErrors,
+    shippingInfo,
+    errors,
+    selectedPaymentMethod,
+    settings,
+    initStatuses,
+    initShippingInfo,
+    validateShippingInfo,
+    createOrder,
+    getMyPurchases,
+    fetchOrderDetail,
+    cancelOrder,
+    updateOrderInfo,
+    updateOrderCompanyInvoice,
+    getPaymentLink,
+    setPaymentUrl,
+    clearPayment,
+    getStatusName,
+    clearOrder,
+    fetchProvinces,
+    fetchWards,
+    calculatedShippingFee,
+    isCalculatingShipping,
+    calculateShippingFee,
+    setAppliedVoucher,
+    clearAppliedVoucher,
+  };
 });
-
-
-
-
-
-
-

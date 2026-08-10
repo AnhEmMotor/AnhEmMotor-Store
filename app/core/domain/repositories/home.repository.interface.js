@@ -1,7 +1,3 @@
- 
-/**
- * Home Repository Interface (Domain Layer)
- */
 export const IHomeRepository = {
   getBrands: async () => {
     throw new Error('IHomeRepository.getBrands not implemented');
@@ -17,5 +13,5 @@ export const IHomeRepository = {
   },
   getBanners: async () => {
     throw new Error('IHomeRepository.getBanners not implemented');
-  }
+  },
 };

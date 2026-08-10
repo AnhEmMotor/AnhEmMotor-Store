@@ -1,61 +1,88 @@
 {
-	"name": "anhemmotor-store",
-	"type": "module",
-	"private": true,
-	"scripts": {
-		"build": "cross-env NODE_OPTIONS='--no-deprecation' nuxi build",
-		"dev": "cross-env NODE_OPTIONS='--max-old-space-size=8192' nuxt dev --port 3000",
-		"generate": "nuxt generate",
-		"preview": "nuxt preview",
-		"postinstall": "nuxt prepare",
-		"lint": "eslint . --fix",
-		"start": "node --env-file=.env .output/server/index.mjs"
-	},
-	"dependencies": {
-		"@eslint/js": "^10.0.1",
-		"@microsoft/fetch-event-source": "^2.0.1",
-		"@microsoft/signalr": "^10.0.0",
-		"@nuxt/content": "^3.13.0",
-		"@nuxt/eslint": "^1.15.2",
-		"@nuxt/icon": "^2.2.1",
-		"@nuxt/image": "^2.0.0",
-		"@nuxtjs/seo": "^5.0.2",
-		"@pinia/nuxt": "^0.11.3",
-		"@tailwindcss/vite": "^4.2.4",
-		"@takumi-rs/core": "^1.1.2",
-		"@tanstack/vue-query": "^5.100.5",
-		"@tanstack/vue-query-devtools": "^6.1.24",
-		"@vue/eslint-config-prettier": "^10.2.0",
-		"axios": "^1.15.2",
-		"better-sqlite3": "^12.9.0",
-		"eslint": "^10.2.1",
-		"eslint-plugin-vue": "~10.9.0",
-		"marked": "^18.0.7",
-		"nuxt": "^4.4.2",
-		"pinia": "^3.0.4",
-		"tailwindcss": "^4.2.4",
-		"vite-svg-loader": "^5.1.1",
-		"vue": "^3.5.33",
-		"vue-router": "^5.0.6",
-		"vue3-toastify": "^0.2.9"
-	},
-	"overrides": {
-		"serialize-javascript": "^7.0.3",
-		"glob": "^13.0.6"
-	},
-	"devDependencies": {
-		"@iconify-json/fa6-brands": "^1.2.6",
-		"@iconify-json/fa6-regular": "^1.2.4",
-		"@iconify-json/fa6-solid": "^1.2.4",
-		"@iconify-json/lucide": "^1.2.107",
-		"@iconify-json/ph": "^1.2.2",
-		"@nuxt/eslint-config": "^1.15.2",
-		"@tailwindcss/typography": "^0.5.20",
-		"cross-env": "^10.1.0"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"better-sqlite3"
-		]
-	}
+  "name": "anhemmotor-store",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "cross-env NODE_OPTIONS='--no-deprecation' nuxi build",
+    "dev": "cross-env NODE_OPTIONS='--max-old-space-size=8192' nuxt dev --port 3000",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --fix",
+    "start": "node --env-file=.env .output/server/index.mjs",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "@microsoft/signalr": "^10.0.0",
+    "@nuxt/content": "^3.13.0",
+    "@nuxt/eslint": "^1.15.2",
+    "@nuxt/icon": "^2.2.1",
+    "@nuxt/image": "^2.0.0",
+    "@nuxtjs/seo": "^5.0.2",
+    "@pinia/nuxt": "^0.11.3",
+    "@tailwindcss/vite": "^4.2.4",
+    "@takumi-rs/core": "^1.1.2",
+    "@tanstack/vue-query": "^5.100.5",
+    "@tanstack/vue-query-devtools": "^6.1.24",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "axios": "^1.15.2",
+    "better-sqlite3": "^12.9.0",
+    "eslint": "^10.2.1",
+    "eslint-plugin-vue": "~10.9.0",
+    "marked": "^18.0.7",
+    "nuxt": "^4.4.2",
+    "pinia": "^3.0.4",
+    "tailwindcss": "^4.2.4",
+    "vite-svg-loader": "^5.1.1",
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6",
+    "vue3-toastify": "^0.2.9"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.3",
+    "glob": "^13.0.6"
+  },
+  "devDependencies": {
+    "@iconify-json/fa6-brands": "^1.2.6",
+    "@iconify-json/fa6-regular": "^1.2.4",
+    "@iconify-json/fa6-solid": "^1.2.4",
+    "@iconify-json/lucide": "^1.2.107",
+    "@iconify-json/ph": "^1.2.2",
+    "@nuxt/eslint-config": "^1.15.2",
+    "@tailwindcss/typography": "^0.5.20",
+    "cross-env": "^10.1.0",
+    "decomment": "^0.9.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "prettier": "^3.9.6",
+    "strip-comments": "^2.0.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,jsx,ts,tsx}": [
+      "node scripts/strip-comments-runner.mjs",
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.vue": [
+      "node scripts/strip-comments-runner.mjs",
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss,less,html}": [
+      "node scripts/strip-comments-runner.mjs",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
 }
