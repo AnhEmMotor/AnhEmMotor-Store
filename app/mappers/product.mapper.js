@@ -224,7 +224,7 @@ const productMapper = {
         .map(([key, value]) => {
           const snakeKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
           return {
-            key: snakeKey, 
+            key: snakeKey,
             label: labels[key] || labels[snakeKey],
             value: value,
           };
@@ -239,8 +239,7 @@ const productMapper = {
           ...h,
           image: h.image ? getImageUrl(h.image) : null,
         }));
-      } catch {
-      }
+      } catch {}
     }
 
     const mapColors = (variantLike) => {
@@ -307,9 +306,7 @@ const productMapper = {
           null,
         productLimit: currentVariant.productLimit ?? currentVariant.product_limit ?? null,
         colors: mapColors(currentVariant),
-        photos: currentVariant.photo_collection?.map((url) => getImageUrl(url)) || [
-          getImageUrl(currentVariant.cover_image_url),
-        ],
+        photos: photos.length > 0 ? photos : [getImageUrl(currentVariant.cover_image_url)],
       },
       otherVariants: raw.other_variants?.map((v) => ({
         id: validId(v.id, v.Id, v.productVariantId, v.variantId, product.id),
@@ -320,9 +317,10 @@ const productMapper = {
         image: getImageUrl(v.cover_image_url),
         cover_image_url: getImageUrl(v.cover_image_url),
         colors: mapColors(v),
-        photos: v.photo_collection?.map((url) => getImageUrl(url)) || [
+        photos: [
           getImageUrl(v.cover_image_url),
-        ],
+          ...(v.photo_collection?.map((url) => getImageUrl(url)) || []),
+        ].filter((img, idx, arr) => img && arr.indexOf(img) === idx),
       })),
       specifications,
     };
