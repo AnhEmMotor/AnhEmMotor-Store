@@ -1,5 +1,3 @@
-import { logError } from '~/utils/logger';
-
 export const voucherService = {
   async getByCode(code) {
     const trimmed = String(code || '')
@@ -9,8 +7,7 @@ export const voucherService = {
     try {
       const data = await voucherRepository.getByCode(trimmed);
       return data;
-    } catch (e) {
-      logError('voucherService.getByCode', { error: e.message });
+    } catch {
       return null;
     }
   },
@@ -20,7 +17,6 @@ export const voucherService = {
       const result = await voucherRepository.validate(voucherId, outputId, orderTotal);
       return result;
     } catch (e) {
-      logError('voucherService.validate', { error: e.message, voucherId, outputId });
       return { isValid: false, message: e?.message || 'Voucher không hợp lệ' };
     }
   },
@@ -29,8 +25,7 @@ export const voucherService = {
     try {
       const data = await voucherRepository.apply(voucherId, outputId);
       return data;
-    } catch (e) {
-      logError('voucherService.apply', { error: e.message, voucherId, outputId });
+    } catch {
       return null;
     }
   },
@@ -39,8 +34,7 @@ export const voucherService = {
     try {
       const data = await voucherRepository.remove(orderVoucherId);
       return data;
-    } catch (e) {
-      logError('voucherService.remove', { error: e.message, orderVoucherId });
+    } catch {
       return null;
     }
   },
