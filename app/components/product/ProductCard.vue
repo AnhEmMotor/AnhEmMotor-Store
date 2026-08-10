@@ -30,6 +30,11 @@ const normalizeText = (value) =>
     .toLocaleLowerCase("vi-VN")
     .trim();
 
+const isVehicle = computed(() => {
+  const catName = props.product?.categoryName || props.product?.category || props.product?.category_name || "";
+  return catName.toLowerCase().includes("xe");
+});
+
 watch(
   [() => props.product, () => route.query.versions, () => route.query.colors],
   ([newProd, urlVersions, urlColors]) => {
@@ -326,6 +331,16 @@ const toggleCompare = (e) => {
 
       <div class="pt-3 border-t border-slate-50 flex items-center gap-2">
         <button
+          v-if="isVehicle"
+          type="button"
+          class="flex-1 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all duration-300 hover:bg-primary shadow-sm flex items-center justify-center gap-2"
+          @click.prevent.stop="navigateTo('/support')"
+        >
+          <Icon name="fa6-solid:headset" class="text-sm" />
+          Đăng ký tư vấn
+        </button>
+        <button
+          v-else
           type="button"
           class="flex-1 py-3 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all duration-300 hover:bg-primary shadow-sm flex items-center justify-center gap-2"
           @click.prevent.stop="handleAddToCart"

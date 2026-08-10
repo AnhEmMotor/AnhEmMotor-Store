@@ -80,6 +80,10 @@ onBeforeUnmount(() => {
 });
 
 const currentVariant = computed(() => detail.value?.currentVariant);
+const isVehicle = computed(() => {
+	const catName = detail.value?.product?.categoryName || detail.value?.product?.category || detail.value?.product?.category_name || "";
+	return catName.toLowerCase().includes("xe");
+});
 const selectedColorIndex = ref(0);
 const selectedImage = ref(null);
 
@@ -698,6 +702,15 @@ const bookTestDrive = () => {
 												>Trải nghiệm thực tế tại cửa hàng AnhEm Motor</span
 											>
 										</button>
+									</template>
+									<template v-else-if="isVehicle">
+										<NuxtLink
+											to="/support"
+											class="w-full py-5 bg-primary text-white font-black text-xs rounded-[1.5rem] hover:scale-[1.01] active:scale-95 transition-all shadow-lg flex items-center justify-center gap-3 uppercase tracking-[0.2em]"
+										>
+											<Icon name="fa6-solid:headset" class="text-white text-sm" />
+											ĐĂNG KÝ TƯ VẤN
+										</NuxtLink>
 									</template>
 									<template v-else>
 										<button
