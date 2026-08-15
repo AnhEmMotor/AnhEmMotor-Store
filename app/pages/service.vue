@@ -48,3 +48,4 @@ const openBooking = (service) => {
 </template>
 
 <style scoped></style>
+

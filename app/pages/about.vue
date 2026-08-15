@@ -59,3 +59,4 @@ if (import.meta.client) {
     <AboutMapSection :locations="aboutStore.locations" class="reveal" />
   </div>
 </template>
+

@@ -82,3 +82,4 @@ const footerData = computed(() => layoutStore.footerData);
   @apply text-white/80 leading-loose transition-colors duration-300 ease-in-out hover:text-red-500;
 }
 </style>
+

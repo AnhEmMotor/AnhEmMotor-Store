@@ -9,9 +9,9 @@ definePageMeta({
 });
 
 useSeoMeta({
-  title: 'Tải Ứng Dụng AnhEmMoto App | Đặt Lịch & Bảo Dưỡng Nhanh Chóng',
+  title: 'Tải Ứng Dụng AnhEmMotor App | Đặt Lịch & Bảo Dưỡng Nhanh Chóng',
   description:
-    'Tải ngay App AnhEmMoto để trải nghiệm dịch vụ chăm sóc xe máy hàng đầu: đặt lịch sửa chữa 30s, theo dõi sổ bảo dưỡng điện tử, tích điểm đổi quà và săn ngàn ưu đãi đặc quyền.',
+    'Tải ngay App AnhEmMotor để trải nghiệm dịch vụ chăm sóc xe máy hàng đầu: đặt lịch sửa chữa 30s, theo dõi sổ bảo dưỡng điện tử, tích điểm đổi quà và săn ngàn ưu đãi đặc quyền.',
 });
 
 const appStore = useAppStore();
@@ -77,7 +77,7 @@ if (import.meta.client) {
                 transform-origin: left center;
               "
             >
-              ANHEMMOTO <span class="text-red-600 font-black">APP</span>
+              ANHEMMOTOR <span class="text-red-600 font-black">APP</span>
             </h1>
           </div>
 
@@ -405,3 +405,7 @@ if (import.meta.client) {
   animation-fill-mode: forwards;
 }
 </style>
+
+
+
+

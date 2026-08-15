@@ -128,3 +128,4 @@ const manualBrands = [
   @apply text-red-600;
 }
 </style>
+

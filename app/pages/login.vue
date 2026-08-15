@@ -101,3 +101,4 @@ useSeoMeta({
   animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 </style>
+

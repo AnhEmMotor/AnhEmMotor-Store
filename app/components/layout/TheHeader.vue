@@ -19,7 +19,7 @@
             to="/app"
             class="text-[9px] font-[1000] uppercase tracking-widest text-white px-3 py-1 bg-linear-to-r from-red-600 to-red-800 rounded-full hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-1.5 relative z-10 shrink-0 font-sans"
           >
-            AnhEmMoto App
+            AnhEmMotor App
             <span class="relative flex h-1.5 w-1.5 flex-shrink-0">
               <span
                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"
@@ -177,7 +177,7 @@
           </ul>
         </nav>
 
-        <div class="flex items-center gap-2 sm:gap-4 ml-auto">
+        <div class="flex items-center gap-2 sm:gap-4 ml-auto shrink-0">
           <div class="relative">
             <button
               class="w-10 h-10 flex items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 transition-all"
@@ -241,7 +241,7 @@
             </NuxtLink>
           </div>
 
-          <div class="pl-2 sm:pl-4 border-l border-gray-100">
+          <div class="pl-2 sm:pl-4 border-l border-gray-100 shrink-0">
             <template v-if="authStore.isLoggedIn">
               <div class="relative group">
                 <button
@@ -639,3 +639,4 @@ if (import.meta.client) {
   }
 }
 </style>
+

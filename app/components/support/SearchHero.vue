@@ -33,17 +33,17 @@
           <div
             class="absolute -inset-1 bg-gradient-to-r from-red-600 to-red-900 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"
           />
-          <div class="relative flex items-center bg-white rounded-xl overflow-hidden shadow-2xl">
-            <div class="pl-5 text-gray-400">
+          <div class="relative flex items-center bg-white rounded-full overflow-hidden shadow-2xl p-1.5 pl-5">
+            <div class="text-gray-400">
               <Icon name="fa6-solid:magnifying-glass" class="text-base" />
             </div>
             <input
               type="text"
               placeholder="Nhập vấn đề bạn đang gặp phải..."
-              class="w-full py-4 px-5 text-[13px] font-bold text-gray-900 outline-none placeholder:text-gray-400"
+              class="w-full h-12 px-4 text-[13px] font-bold text-gray-900 outline-none placeholder:text-gray-400 bg-transparent"
             />
             <button
-              class="mr-1.5 px-6 py-3 bg-gray-900 text-white rounded-lg text-[10px] font-extrabold uppercase tracking-widest hover:bg-red-600 transition-colors shadow-lg"
+              class="h-12 px-8 bg-gray-900 text-white rounded-full text-[10px] font-extrabold uppercase tracking-widest hover:bg-red-600 transition-colors shadow-lg whitespace-nowrap"
             >
               Tìm kiếm
             </button>
@@ -72,3 +72,4 @@
 <script setup></script>
 
 <style scoped></style>
+

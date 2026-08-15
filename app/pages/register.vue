@@ -78,3 +78,4 @@ const registerStore = useRegisterStore();
   }
 }
 </style>
+

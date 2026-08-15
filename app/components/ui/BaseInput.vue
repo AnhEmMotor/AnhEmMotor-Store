@@ -32,7 +32,7 @@ defineEmits(['update:modelValue']);
 <template>
   <div class="space-y-2 group">
     <label
-      class="text-[10px] font-black uppercase text-white/50 ml-4 group-hover:text-red-500 transition-colors"
+      class="text-[10px] font-black uppercase text-white/70 ml-4 group-hover:text-red-500 transition-colors"
     >
       {{ label }}
     </label>
@@ -42,7 +42,7 @@ defineEmits(['update:modelValue']);
       :placeholder="placeholder"
       :required="required"
       :list="list"
-      class="w-full h-16 bg-white/5 rounded-2xl border-2 border-white/10 px-6 focus:border-red-600 focus:ring-4 focus:ring-red-600/30 outline-none transition-all font-bold text-lg placeholder:text-white/20 hover:border-white/20"
+      class="w-full h-16 bg-white/10 rounded-2xl border-2 border-white/20 px-6 focus:border-red-600 focus:ring-4 focus:ring-red-600/30 focus:bg-white/20 hover:bg-white/15 outline-none transition-all font-bold text-lg placeholder:text-white/40 hover:border-white/30"
       @input="$emit('update:modelValue', $event.target.value)"
     />
   </div>

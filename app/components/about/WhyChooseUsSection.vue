@@ -64,7 +64,7 @@ defineProps({
         <div class="relative z-10">
           <h3 class="text-3xl md:text-4xl font-black mb-6">Bạn cần tư vấn chọn xe ngay?</h3>
           <p class="text-red-100 mb-10 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Đội ngũ chuyên gia của AnhEm Motor luôn sẵn sàng hỗ trợ bạn tìm kiếm chiếc xe ưng ý
+            Đội ngũ chuyên gia của ANHEM MOTOR luôn sẵn sàng hỗ trợ bạn tìm kiếm chiếc xe ưng ý
             nhất.
           </p>
           <div class="flex flex-wrap justify-center gap-6">
@@ -125,3 +125,7 @@ defineProps({
   transition-delay: 0.3s;
 }
 </style>
+
+
+
+

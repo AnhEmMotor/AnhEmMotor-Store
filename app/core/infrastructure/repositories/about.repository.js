@@ -4,10 +4,10 @@ export const aboutRepository = {
       mission: {
         title: 'Sứ Mệnh Của Chúng Tôi',
         description:
-          'Tại AnhEm Moto, chúng tôi không chỉ đơn thuần là một cửa hàng xe máy – chúng tôi là người bạn đồng hành tin cậy trên mỗi chặng đường. Sứ mệnh của chúng tôi là mang đến cho khách hàng những phương tiện di chuyển an toàn, bền bỉ và phù hợp nhất với nhu cầu cá nhân, đồng thời xây dựng một cộng đồng người yêu xe mạnh mẽ và gắn kết.',
+          'Tại AnhEm Motor, chúng tôi không chỉ đơn thuần là một cửa hàng xe máy – chúng tôi là người bạn đồng hành tin cậy trên mỗi chặng đường. Sứ mệnh của chúng tôi là mang đến cho khách hàng những phương tiện di chuyển an toàn, bền bỉ và phù hợp nhất với nhu cầu cá nhân, đồng thời xây dựng một cộng đồng người yêu xe mạnh mẽ và gắn kết.',
       },
       services: {
-        title: 'Dịch Vụ Tại AnhEm Moto',
+        title: 'Dịch Vụ Tại AnhEm Motor',
         items: [
           {
             label: 'Bán xe mới và xe đã qua sử dụng:',
@@ -28,7 +28,7 @@ export const aboutRepository = {
         ],
       },
       commitment: {
-        title: 'Cam Kết Từ AnhEm Moto',
+        title: 'Cam Kết Từ AnhEm Motor',
         list: [
           'Xe đúng chất lượng như cam kết',
           'Không xe tai nạn, ngập nước',
@@ -61,7 +61,7 @@ export const aboutRepository = {
       contact: {
         title: 'Liên Hệ Với Chúng Tôi',
         description:
-          'Hãy ghé thăm cửa hàng AnhEm Moto để trải nghiệm thực tế và nhận tư vấn chi tiết về chiếc xe phù hợp nhất với bạn. Chúng tôi luôn sẵn sàng hỗ trợ!',
+          'Hãy ghé thăm cửa hàng AnhEm Motor để trải nghiệm thực tế và nhận tư vấn chi tiết về chiếc xe phù hợp nhất với bạn. Chúng tôi luôn sẵn sàng hỗ trợ!',
         hotline: '0901 234 567',
         email: 'info@anhemmotor.vn',
       },
@@ -77,7 +77,7 @@ export const aboutRepository = {
     return [
       {
         title: 'Cơ Sở 2 - TP. Đồng Nai',
-        address: '193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam',
+        address: '193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai',
       },
     ];
   },
