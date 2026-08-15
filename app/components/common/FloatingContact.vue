@@ -116,8 +116,7 @@ const initChat = async () => {
   if (accessToken.value) {
     try {
       await storeChatRepository.linkToCustomer(session.id);
-    } catch {
-    }
+    } catch {}
   }
 
   messages.value = await storeChatRepository.getHistory(session.id);
@@ -163,8 +162,7 @@ const clearChat = async () => {
     messages.value = [];
 
     await connectHub();
-  } catch {
-  }
+  } catch {}
 };
 
 const sendMessage = async () => {
@@ -205,7 +203,24 @@ const renderMessageContent = (msg) =>
 const parseCards = (cardsJson) => {
   if (!cardsJson) return [];
   try {
-    return JSON.parse(cardsJson);
+    const blocks = JSON.parse(cardsJson);
+    if (!Array.isArray(blocks)) return blocks;
+
+    const variantBlockProductIds = blocks
+      .filter((b) => b.kind === 'variant-cards' && b.productId)
+      .map((b) => b.productId);
+
+    return blocks
+      .map((b) => {
+        if (b.kind === 'product-cards') {
+          const filteredItems = (b.items || []).filter(
+            (item) => !variantBlockProductIds.includes(item.productId)
+          );
+          return { ...b, items: filteredItems };
+        }
+        return b;
+      })
+      .filter((b) => !(b.kind === 'product-cards' && b.items.length === 0));
   } catch {
     return [];
   }
@@ -234,8 +249,7 @@ watch(accessToken, async (newToken, oldToken) => {
     needsContactInfo.value = false;
     try {
       await storeChatRepository.linkToCustomer(sessionId.value);
-    } catch {
-    }
+    } catch {}
   }
 });
 </script>

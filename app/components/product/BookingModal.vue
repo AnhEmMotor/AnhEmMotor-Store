@@ -16,7 +16,7 @@ const props = defineProps({
   },
   type: {
     type: String,
-    default: 'Maintenance', 
+    default: 'Maintenance',
   },
 });
 

@@ -67,9 +67,11 @@ export default defineNuxtConfig({
             'virtual:#nitro-internal-virtual/storage',
             'module-preload-polyfill',
           ];
+          const msg =
+            typeof warning === 'string' ? warning : warning.message || warning.toString() || '';
           if (
             silentCodes.includes(warning.code || '') ||
-            silentMessages.some((msg) => warning.message?.includes(msg))
+            silentMessages.some((m) => msg.includes(m))
           ) {
             return;
           }
@@ -82,15 +84,18 @@ export default defineNuxtConfig({
   nitro: {
     rollupConfig: {
       onwarn(warning, warn) {
-        const silentCodes = ['CIRCULAR_DEPENDENCY'];
+        const silentCodes = ['CIRCULAR_DEPENDENCY', 'INVALID_ANNOTATION'];
         const silentMessages = [
           'cache-driver.js',
           'virtual:#nitro-internal-virtual/storage',
           'node_modules/nitropack',
+          'contains an annotation that Rollup cannot interpret',
         ];
+        const msg =
+          typeof warning === 'string' ? warning : warning.message || warning.toString() || '';
         if (
           silentCodes.includes(warning.code || '') ||
-          silentMessages.some((msg) => warning.message?.includes(msg))
+          silentMessages.some((m) => msg.includes(m))
         ) {
           return;
         }
