@@ -15,6 +15,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  preload: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const selectedVariant = ref(null);
@@ -251,6 +255,8 @@ const toggleCompare = (e) => {
       <img
         :src="useAssetUrl(currentImage)"
         :alt="product.name"
+        :fetchpriority="preload ? 'high' : 'auto'"
+        :loading="preload ? 'eager' : 'lazy'"
         class="w-full h-full transition-transform duration-700"
         :class="isPlaceholderImage ? 'object-contain' : 'object-cover group-hover:scale-110'"
         @error="$event.target.src = '/assets/image/placeholder-product.webp'"
