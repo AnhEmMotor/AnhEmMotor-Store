@@ -83,7 +83,7 @@ const handleSubmit = () => {
 
           <button
             type="submit"
-            class="px-10 py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold transition-all shadow-xl shadow-primary/20 flex items-center gap-2 whitespace-nowrap"
+            class="h-16 px-10 bg-primary hover:bg-primary-dark text-white rounded-2xl font-bold transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-2 whitespace-nowrap"
             :disabled="isSubmitting"
           >
             {{ isSubmitting ? 'Đang gửi...' : 'Gửi thông tin' }}
@@ -123,3 +123,4 @@ const handleSubmit = () => {
   opacity: 0;
 }
 </style>
+

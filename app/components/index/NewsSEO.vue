@@ -77,3 +77,4 @@ const newsStore = useNewsStore();
     </div>
   </section>
 </template>
+

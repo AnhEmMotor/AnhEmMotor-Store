@@ -16,7 +16,7 @@ const props = defineProps({
   },
   type: {
     type: String,
-    default: 'Maintenance', 
+    default: 'Maintenance',
   },
 });
 
@@ -395,3 +395,4 @@ const close = () => {
   scrollbar-width: none;
 }
 </style>
+

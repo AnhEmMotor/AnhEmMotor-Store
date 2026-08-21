@@ -523,11 +523,11 @@ const searchArticle = (_event) => {};
 }
 
 .custom-scrollbar {
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .custom-scrollbar::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 
 input[type='range'] {

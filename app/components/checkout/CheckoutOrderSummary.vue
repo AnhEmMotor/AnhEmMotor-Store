@@ -84,7 +84,7 @@ async function handleApplyVoucher() {
     appliedVoucher.value = {
       ...voucher,
       discountAmount: validation.discountAmount || 0,
-      orderVoucherId: null, 
+      orderVoucherId: null,
     };
     orderStore.setAppliedVoucher(appliedVoucher.value);
   } catch (e) {

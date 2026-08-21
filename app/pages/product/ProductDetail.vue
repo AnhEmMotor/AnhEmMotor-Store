@@ -409,6 +409,7 @@ const bookTestDrive = () => {
                   class="w-full h-full transition-transform duration-1000 group-hover:scale-105"
                   :class="isPlaceholderImage ? 'object-contain p-8' : 'object-cover'"
                   loading="eager"
+                  fetchpriority="high"
                   @error="$event.target.src = '/assets/image/placeholder-product.webp'"
                 />
               </div>
@@ -1000,6 +1001,8 @@ const bookTestDrive = () => {
               <img
                 :src="mainImage"
                 :alt="detail.product.name"
+                loading="eager"
+                fetchpriority="high"
                 class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
                 @error="$event.target.src = '/assets/image/placeholder-product.webp'"
               />
@@ -1238,3 +1241,4 @@ i {
   font-style: italic;
 }
 </style>
+

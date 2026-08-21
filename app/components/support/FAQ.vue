@@ -153,3 +153,4 @@ const filteredFaqs = computed(() => {
   }
 }
 </style>
+

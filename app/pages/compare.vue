@@ -8,10 +8,10 @@ const compareStore = useCompareStore();
 const productStore = useProductStore();
 const { products: compareProducts } = storeToRefs(compareStore);
 
-const isComparing = ref(false); 
+const isComparing = ref(false);
 const isModalOpen = ref(false);
 const searchQuery = ref('');
-const selectedVehicleType = ref(null); 
+const selectedVehicleType = ref(null);
 
 watch(
   () => compareStore.lockedType,

@@ -1,7 +1,7 @@
 export const appRepository = {
   getAppContent: async () => {
     return {
-      title: 'ANHEMMOTO APP',
+      title: 'ANHEMMOTOR APP',
       subtitle: 'Trải nghiệm hoàn toàn mới',
       description:
         'Đặt lịch bảo dưỡng siêu tốc, quản lý lịch trình chăm sóc xế yêu, tích lũy điểm thưởng đổi quà đặc quyền và khám phá thế giới xe máy chính hãng ngay trên chiếc điện thoại của bạn.',
@@ -70,7 +70,7 @@ export const appRepository = {
       ],
       faqs: [
         {
-          question: 'Ứng dụng AnhEmMoto có hoàn toàn miễn phí không?',
+          question: 'Ứng dụng ANHEMMOTOR có hoàn toàn miễn phí không?',
           answer:
             'Hoàn toàn miễn phí! Bạn có thể tải app trên cả App Store (iOS) và Google Play (Android) mà không tốn bất kỳ chi phí nào để sử dụng các tính năng cơ bản như đặt lịch, theo dõi bảo dưỡng.',
         },

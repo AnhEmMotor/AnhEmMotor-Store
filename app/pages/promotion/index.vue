@@ -315,3 +315,4 @@ watch(promotionPage, () => {
   transform: translateY(0);
 }
 </style>
+

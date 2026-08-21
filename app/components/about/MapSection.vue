@@ -41,7 +41,7 @@ const searchLocation = (address) => {
 
         <div class="lg:col-span-4 space-y-6">
           <AboutLocationInfo
-            address="193 Đỗ Văn Thi, Trấn Biên, Đồng Nai 76126, Việt Nam"
+            address="193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai"
             hotline="0901.234.567"
             @search="searchLocation"
           />
@@ -50,3 +50,4 @@ const searchLocation = (address) => {
     </div>
   </section>
 </template>
+

@@ -23,7 +23,7 @@ export class AppFaq {
 
 export class AppContent {
   constructor(data = {}) {
-    this.title = data.title || 'ANHEMMOTO APP';
+    this.title = data.title || 'ANHEMMOTOR APP';
     this.subtitle = data.subtitle || '';
     this.description = data.description || '';
     this.downloadLinks = {

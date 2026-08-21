@@ -205,3 +205,4 @@ onMounted(async () => {
   animation: fade-in-up 1s forwards cubic-bezier(0.16, 1, 0.3, 1);
 }
 </style>
+

@@ -192,3 +192,4 @@ const categories = [
   transform: translateY(20px);
 }
 </style>
+

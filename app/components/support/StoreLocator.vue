@@ -142,10 +142,12 @@
 <script setup>
 const store = {
   name: 'Trụ sở chính AnhEm Motor',
-  address: '123 Đường Võ Thị Sáu, Phường Thống Nhất, TP. Biên Hòa, Đồng Nai',
-  phone: '0901 234 567',
+  address: '193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai',
+  phone: '0901.234.567',
   type: 'hq',
   mapUrl:
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.892953284566!2d106.8242485!3d10.9639534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174df44a7b74409%3A0xc3411b0e00f9f31b!2sV%C3%B5%20Th%E1%BB%8B%20S%C3%A1u%2C%20Bi%C3%AAn%20H%C3%B2a%2C%20%C4%90%E1%BB%93ng%20Nai!5e0!3m2!1svi!2s!4v1715421500000!5m2!1svi!2s',
 };
 </script>
+
+

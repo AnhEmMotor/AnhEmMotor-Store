@@ -15,7 +15,7 @@ export const layoutRepository = {
     return {
       contact: {
         address: '193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai',
-        phone: '(024) 8582 0808',
+        phone: '0901.234.567',
         email: 'anhemmotor@gmail.com',
         socials: [
           { name: 'facebook', icon: 'fa6-brands:facebook-f', url: '#' },
@@ -57,3 +57,4 @@ export const layoutRepository = {
     };
   },
 };
+
