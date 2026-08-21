@@ -70,7 +70,7 @@ export const appRepository = {
       ],
       faqs: [
         {
-          question: 'Ứng dụng ANHEMMOTOR có hoàn toàn miễn phí không?',
+          question: 'Ứng dụng AnhEmMotor có hoàn toàn miễn phí không?',
           answer:
             'Hoàn toàn miễn phí! Bạn có thể tải app trên cả App Store (iOS) và Google Play (Android) mà không tốn bất kỳ chi phí nào để sử dụng các tính năng cơ bản như đặt lịch, theo dõi bảo dưỡng.',
         },

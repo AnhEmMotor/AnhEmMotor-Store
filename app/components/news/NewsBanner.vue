@@ -81,7 +81,7 @@ const scrollToNews = () => {
               to="/support"
               class="px-6 md:px-10 py-4 md:py-5 bg-white/5 backdrop-blur-xl text-white border border-white/10 rounded-xl md:rounded-2xl font-black text-xs md:sm uppercase tracking-widest hover:bg-white/10 transition-all flex items-center gap-2 md:gap-3"
             >
-              Liên hệ báo chí
+              Liên hệ
               <Icon name="ph:chat-circle-dots-fill" class="text-lg md:text-xl" />
             </NuxtLink>
           </div>
@@ -110,7 +110,7 @@ const scrollToNews = () => {
             </div>
 
             <div
-              class="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-gray-950 via-gray-950/60 to-transparent"
+              class="absolute bottom-0 left-0 right-0 p-10 pb-32 bg-gradient-to-t from-gray-950 via-gray-950/80 to-transparent"
             >
               <div class="space-y-2">
                 <p class="text-[10px] font-black text-red-500 uppercase tracking-[0.3em]">
@@ -120,20 +120,7 @@ const scrollToNews = () => {
                   KHAI TRƯƠNG
                   <span class="text-red-500">SHOWROOM MỚI</span>
                 </h3>
-                <div class="flex items-center gap-4 pt-4">
-                  <div
-                    class="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-lg border border-white/10"
-                  >
-                    <Icon name="ph:calendar-blank-fill" class="text-red-500" />
-                    <span class="text-[10px] text-white font-bold uppercase">Tháng này</span>
-                  </div>
-                  <div
-                    class="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-lg border border-white/10"
-                  >
-                    <Icon name="ph:users-fill" class="text-red-500" />
-                    <span class="text-[10px] text-white font-bold uppercase">Đặc quyền VIP</span>
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>
@@ -145,7 +132,7 @@ const scrollToNews = () => {
       class="absolute top-1/4 -right-20 w-96 h-96 bg-red-600/5 rounded-full blur-[120px] pointer-events-none"
     />
     <div
-      class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent z-10"
+      class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"
     />
   </section>
 </template>

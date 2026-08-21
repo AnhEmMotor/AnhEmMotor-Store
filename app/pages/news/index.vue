@@ -83,21 +83,7 @@ const featuredNews = computed(() => {
 const activeTab = ref('all');
 
 const filteredNewsList = computed(() => {
-  if (!allNews.value) return [];
-  if (activeTab.value === 'all') return allNews.value;
-
-  const categoryMapping = {
-    events: ['Sự kiện', 'Sự kiện showroom', 'Showroom'],
-    guides: ['Cẩm nang', 'Hướng dẫn', 'Công nghệ'],
-    reviews: ['Đánh giá', 'Đánh giá xe'],
-  };
-  const allowedCategories = categoryMapping[activeTab.value] || [];
-  return allNews.value.filter((news) => {
-    const catName = news.category?.name || news.category || '';
-    return allowedCategories.some((allowed) =>
-      catName.toLowerCase().includes(allowed.toLowerCase())
-    );
-  });
+  return allNews.value || [];
 });
 
 watch(

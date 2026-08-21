@@ -138,7 +138,7 @@ export const newsService = {
       return {
         id: item.id,
         title: item.title,
-        image: item.coverImageUrl,
+        image: getImageUrl(item.coverImageUrl || item.image || item.thumbnail),
         content: item.content,
         category: item.categoryName,
         publishedDate: new Date(item.publishedDate).toLocaleDateString('vi-VN'),
