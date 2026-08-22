@@ -153,4 +153,16 @@ export const recruitmentRepository = {
       message: 'Gửi hồ sơ ứng viên thành công.',
     };
   },
+
+  uploadCv: async (file) => {
+    const axios = useAxios();
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await axios.post('/api/v1/Contacts/upload-cv', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data; // Giả sử response.data là chuỗi URL hoặc chứa URL
+  },
 };

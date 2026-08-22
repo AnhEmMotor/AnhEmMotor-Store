@@ -108,6 +108,7 @@
                 </p>
               </div>
               <button
+                @click="handleAction(categories[activeIdx].link)"
                 class="w-full h-14 bg-gray-900 text-white rounded-xl text-[11px] font-extrabold uppercase tracking-widest hover:bg-red-600 transition-colors flex items-center justify-center gap-3"
               >
                 {{ categories[activeIdx].ctaAction }}
@@ -137,6 +138,7 @@ const categories = [
     features: ['Hỗ trợ trả trước 0đ', 'Lãi suất 0%', 'Thủ tục CCCD', 'Duyệt nhanh'],
     ctaDesc: 'Tính toán khoản vay & tư vấn ngay',
     ctaAction: 'Xem bảng giá trả góp',
+    link: '/bang-gia',
   },
   {
     title: 'Bảo dưỡng định kỳ',
@@ -153,6 +155,7 @@ const categories = [
     ],
     ctaDesc: 'Tiết kiệm thời gian chờ đợi',
     ctaAction: 'Đặt lịch bảo dưỡng',
+    link: '/service-booking',
   },
   {
     title: 'Hỗ trợ kỹ thuật',
@@ -164,6 +167,7 @@ const categories = [
     features: ['Tư vấn 24/7', 'Kỹ thuật chuyên sâu', 'Hướng dẫn sử dụng', 'Xử lý lỗi nhanh'],
     ctaDesc: 'Kết nối trực tiếp với kỹ thuật viên',
     ctaAction: 'Chat với kỹ thuật viên',
+    link: '/contact',
   },
   {
     title: 'Phản hồi & Khiếu nại',
@@ -175,8 +179,15 @@ const categories = [
     features: ['Lắng nghe 100%', 'Xử lý triệt để', 'Bảo mật thông tin', 'Quà tặng tri ân'],
     ctaDesc: 'Giúp chúng tôi hoàn thiện dịch vụ',
     ctaAction: 'Gửi ý kiến đóng góp',
+    link: '/feedback',
   },
 ];
+
+const handleAction = (link) => {
+  if (link) {
+    navigateTo(link);
+  }
+};
 </script>
 
 <style scoped>

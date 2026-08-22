@@ -95,27 +95,27 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div class="space-y-3">
                     <label
-                      class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2"
+                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Họ và Tên *</label
                     >
                     <input
                       v-model="form.name"
                       type="text"
                       placeholder="Nguyễn Văn A"
-                      class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
+                      class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
                       required
                     />
                   </div>
                   <div class="space-y-3">
                     <label
-                      class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2"
+                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Số điện thoại *</label
                     >
                     <input
                       v-model="form.phone"
                       type="tel"
                       placeholder="09xx xxx xxx"
-                      class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
+                      class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
                       required
                     />
                   </div>
@@ -124,19 +124,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div class="space-y-3">
                     <label
-                      class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2"
+                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Email</label
                     >
                     <input
                       v-model="form.email"
                       type="email"
                       placeholder="email@example.com"
-                      class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
+                      class="w-full px-8 py-5 rounded-[1.5rem] bg-white/5 border border-white/10 text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all font-medium"
                     />
                   </div>
                   <div class="space-y-3 relative">
                     <label
-                      class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2"
+                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Vị trí ứng tuyển *</label
                     >
                     <div class="relative">
@@ -168,7 +168,7 @@
 
                 <div class="space-y-3">
                   <label
-                    class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2"
+                    class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                     >Đính kèm CV (PDF, DOCX)</label
                   >
                   <div
@@ -184,7 +184,7 @@
                       />
                     </div>
                     <p
-                      class="text-sm font-black text-white/30 uppercase tracking-widest group-hover/upload:text-white transition-colors"
+                      class="text-sm font-black text-white uppercase tracking-widest group-hover/upload:text-white transition-colors"
                     >
                       {{ fileName || 'Tải lên hồ sơ của bạn' }}
                     </p>
@@ -194,14 +194,14 @@
 
                 <div class="space-y-3">
                   <label
-                    class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-2"
+                    class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                     >Ghi chú thêm</label
                   >
                   <textarea
                     v-model="form.message"
                     rows="4"
                     placeholder="Giới thiệu ngắn về bản thân hoặc kinh nghiệm của bạn..."
-                    class="w-full px-8 py-5 rounded-[2rem] bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none font-medium"
+                    class="w-full px-8 py-5 rounded-[2rem] bg-white/5 border border-white/10 text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none font-medium"
                   />
                 </div>
 
@@ -242,11 +242,13 @@ const form = ref({
   email: '',
   position: '',
   message: '',
+  cvFileUrl: '',
 });
 
-const { submitApplication, isSubmitting } = useRecruitment();
+const { submitApplication, uploadCv, isSubmitting } = useRecruitment();
 const fileName = ref('');
 const fileInput = ref(null);
+const selectedFile = ref(null);
 
 const positions = [
   'Nhân viên Tư vấn Bán hàng',
@@ -290,25 +292,38 @@ const handleFileChange = (e) => {
   const file = e.target.files[0];
   if (file) {
     fileName.value = file.name;
+    selectedFile.value = file;
   }
 };
 
 const submitForm = async () => {
   try {
+    if (selectedFile.value) {
+      const uploadRes = await uploadCv(selectedFile.value);
+      if (uploadRes) {
+        form.value.cvFileUrl = uploadRes;
+      }
+    }
+
     const response = await submitApplication(form.value);
     if (response.success) {
-      alert('Cảm ơn bạn đã ứng tuyển! Chúng tôi sẽ liên hệ sớm nhất có thể.');
+      const { $toast } = useNuxtApp();
+      $toast.success('Cảm ơn bạn đã ứng tuyển! Chúng tôi sẽ liên hệ sớm nhất có thể.');
       form.value = {
         name: '',
         phone: '',
         email: '',
         position: '',
         message: '',
+        cvFileUrl: '',
       };
       fileName.value = '';
+      selectedFile.value = null;
     }
-  } catch {
-    alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+  } catch (err) {
+    console.error(err);
+    const { $toast } = useNuxtApp();
+    $toast.error('Có lỗi xảy ra, vui lòng thử lại sau.');
   }
 };
 </script>

@@ -1,91 +1,118 @@
 <template>
-  <section class="support-tracker">
-    <div class="support-tracker__header">
+  <section class="mx-6 mb-8 p-6 bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+    
+    <div class="flex items-center justify-between mb-8 relative z-10">
       <div>
-        <p>Theo dõi yêu cầu #{{ request?.id }}</p>
-        <h3>{{ request?.subject || 'Yêu cầu hỗ trợ của bạn' }}</h3>
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full mb-3">
+          <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+          <span class="text-[10px] font-black uppercase tracking-widest text-primary">Yêu cầu #{{ request?.id }}</span>
+        </div>
+        <h3 class="text-xl font-black text-gray-900">{{ request?.subject || 'Yêu cầu hỗ trợ của bạn' }}</h3>
       </div>
-      <button type="button" :disabled="loading" @click="$emit('refresh')">
-        <Icon name="ph:arrows-clockwise-bold" :class="{ 'animate-spin': loading }" />
+      <button 
+        type="button" 
+        :disabled="loading" 
+        @click="$emit('refresh')"
+        class="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-xl text-xs font-bold transition-colors disabled:opacity-50 group"
+      >
+        <Icon name="ph:arrows-clockwise-bold" :class="{ 'animate-spin': loading }" class="text-base group-hover:-rotate-45 transition-transform" />
         Cập nhật
       </button>
     </div>
 
-    <div v-if="loading && !request" class="support-tracker__empty">Đang tải tiến độ hỗ trợ...</div>
+    <div v-if="loading && !request" class="py-12 flex flex-col items-center justify-center text-gray-400">
+      <Icon name="ph:spinner-gap-bold" class="animate-spin text-4xl mb-4 text-primary/50" />
+      <span class="text-sm font-medium tracking-wide">Đang tải tiến độ hỗ trợ...</span>
+    </div>
 
     <template v-else-if="request">
-      <div class="support-tracker__employee">
-        <Icon name="ph:headset-fill" />
+      <div class="flex items-center gap-4 p-4 mb-8 bg-gradient-to-r from-red-50 to-white rounded-2xl border border-red-100/50 relative z-10">
+        <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0">
+          <Icon name="ph:headset-fill" class="text-2xl text-primary" />
+        </div>
         <div>
-          <span>Nhân viên phụ trách</span>
-          <strong>{{ request.assignedUserName || 'Đang chờ phân công' }}</strong>
+          <span class="text-xs font-bold text-red-400 uppercase tracking-wider block mb-1">Nhân viên phụ trách</span>
+          <strong class="text-base font-black text-gray-900">{{ request.assignedUserName || 'Đang chờ phân công' }}</strong>
         </div>
       </div>
 
-      <div class="support-tracker__steps">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 relative z-10">
         <div
           v-for="(step, index) in steps"
           :key="step.status"
-          class="support-tracker__step"
-          :class="{
-            'is-complete': index < currentStepIndex,
-            'is-current': index === currentStepIndex,
-          }"
+          class="relative p-5 rounded-2xl border transition-all duration-300"
+          :class="[
+            index === currentStepIndex 
+              ? 'bg-red-50 border-red-200 shadow-md shadow-red-100/50 scale-[1.02]' 
+              : index < currentStepIndex
+                ? 'bg-gray-50 border-gray-100'
+                : 'bg-white border-gray-100 opacity-60'
+          ]"
         >
-          <div class="support-tracker__marker">
-            <Icon :name="index < currentStepIndex ? 'ph:check-bold' : step.icon" />
+          <div 
+            class="w-10 h-10 rounded-xl mb-3 flex items-center justify-center transition-colors"
+            :class="[
+              index === currentStepIndex
+                ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                : index < currentStepIndex
+                  ? 'bg-green-500 text-white shadow-md shadow-green-500/20'
+                  : 'bg-gray-100 text-gray-400'
+            ]"
+          >
+            <Icon :name="index < currentStepIndex ? 'ph:check-bold' : step.icon" class="text-xl" />
           </div>
           <div>
-            <strong>{{ step.label }}</strong>
-            <span>{{ formatTime(step.value) }}</span>
+            <strong class="block text-sm font-black text-gray-900 mb-1">{{ step.label }}</strong>
+            <span class="text-xs font-medium text-gray-500">{{ formatTime(step.value) }}</span>
           </div>
         </div>
       </div>
 
-      <section v-if="request.status === 'Closed'" class="rating-history">
-        <div class="rating-history__heading">
+      <section v-if="request.status === 'Closed'" class="mt-8 pt-8 border-t border-gray-100 relative z-10">
+        <div class="flex items-center justify-between mb-6">
           <div>
-            <span>Đánh giá dịch vụ</span>
-            <h4>Lịch sử đánh giá</h4>
+            <span class="text-[10px] font-black uppercase tracking-widest text-orange-500 block mb-1">Đánh giá dịch vụ</span>
+            <h4 class="text-lg font-black text-gray-900">Lịch sử đánh giá</h4>
           </div>
-          <Icon name="ph:star-fill" />
+          <div class="w-10 h-10 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center">
+            <Icon name="ph:star-fill" class="text-xl" />
+          </div>
         </div>
 
-        <article v-if="request.customerRatingOfEmployee != null" class="rating-history__item">
+        <article v-if="request.customerRatingOfEmployee != null" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-gray-50 border border-gray-100 rounded-2xl">
           <div>
-            <strong>Đánh giá nhân viên hỗ trợ</strong>
-            <span>{{ formatTime(request.customerRatedAt) }}</span>
+            <strong class="block text-sm font-black text-gray-900 mb-1">Đánh giá nhân viên hỗ trợ</strong>
+            <span class="text-xs font-medium text-gray-500">{{ formatTime(request.customerRatedAt) }}</span>
           </div>
-          <div class="rating-history__score">
-            <div class="rating-history__stars" aria-label="Số sao đã đánh giá">
+          <div class="flex items-center gap-3">
+            <div class="flex gap-1 text-gray-200">
               <Icon
                 v-for="star in 5"
                 :key="star"
                 name="ph:star-fill"
-                :class="{
-                  'is-active': star <= request.customerRatingOfEmployee,
-                }"
+                class="text-lg"
+                :class="{'text-orange-500': star <= request.customerRatingOfEmployee}"
               />
             </div>
-            <b>{{ request.customerRatingOfEmployee }}/5 sao</b>
+            <b class="text-sm font-black text-gray-900 bg-white px-2 py-1 rounded-lg border border-gray-100">{{ request.customerRatingOfEmployee }}/5 sao</b>
           </div>
         </article>
 
-        <div v-else-if="request.canCustomerRate" class="rating-history__action">
+        <div v-else-if="request.canCustomerRate" class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-6 bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-2xl shadow-sm">
           <div>
-            <strong>Đánh giá nhân viên hỗ trợ</strong>
-            <span>Chọn số sao cho trải nghiệm hỗ trợ của bạn.</span>
+            <strong class="block text-sm font-black text-gray-900 mb-1">Đánh giá nhân viên hỗ trợ</strong>
+            <span class="text-xs font-medium text-gray-500">Chọn số sao cho trải nghiệm hỗ trợ của bạn.</span>
           </div>
-          <div class="rating-history__action-controls">
-            <div
-              class="rating-history__stars rating-history__stars--editable"
-              aria-label="Điểm đánh giá từ 1 đến 5"
-            >
+          <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <div class="flex gap-1.5 text-gray-200">
               <button
                 v-for="star in 5"
                 :key="star"
                 type="button"
-                :class="{ 'is-active': star <= rating }"
+                class="text-2xl hover:scale-110 transition-transform focus:outline-none"
+                :class="{ 'text-orange-500': star <= rating }"
                 @click="rating = star"
               >
                 <Icon name="ph:star-fill" />
@@ -93,16 +120,16 @@
             </div>
             <button
               type="button"
-              class="rating-history__submit"
+              class="w-full sm:w-auto px-6 py-3 bg-primary text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/20"
               :disabled="rating === 0 || ratingSubmitting"
               @click="$emit('rate', rating, '')"
             >
-              {{ ratingSubmitting ? 'Đang gửi...' : 'Lưu số sao' }}
+              {{ ratingSubmitting ? 'Đang gửi...' : 'Lưu đánh giá' }}
             </button>
           </div>
         </div>
 
-        <p v-else class="rating-history__empty">Chưa có lượt đánh giá nào.</p>
+        <p v-else class="text-center text-sm font-medium text-gray-400 py-6">Chưa có lượt đánh giá nào.</p>
       </section>
     </template>
   </section>
@@ -166,211 +193,5 @@ const formatTime = (value) => {
 </script>
 
 <style scoped>
-.support-tracker {
-  margin: 0 1.5rem 1.5rem;
-  padding: 1.25rem;
-  border: 1px solid rgb(229 231 235);
-  border-radius: 1.5rem;
-  background: rgb(255 255 255);
-}
-.support-tracker__header,
-.support-tracker__employee,
-.support-tracker__step {
-  display: flex;
-  align-items: center;
-}
-.support-tracker__header {
-  gap: 1rem;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-.support-tracker__header p,
-.support-tracker__header h3,
-.rating-history__heading h4 {
-  margin: 0;
-}
-.support-tracker__header p,
-.rating-history__heading span {
-  color: rgb(220 38 38);
-  font-size: 0.625rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.support-tracker__header h3,
-.rating-history__heading h4 {
-  color: rgb(17 24 39);
-  font-size: 1rem;
-  font-weight: 900;
-}
-.support-tracker__header button {
-  display: inline-flex;
-  gap: 0.4rem;
-  align-items: center;
-  padding: 0.55rem 0.75rem;
-  color: rgb(75 85 99);
-  border-radius: 0.75rem;
-  background: rgb(249 250 251);
-  font-size: 0.68rem;
-  font-weight: 800;
-}
-.support-tracker__employee {
-  gap: 0.75rem;
-  padding: 0.9rem;
-  color: rgb(220 38 38);
-  border-radius: 1rem;
-  background: rgb(254 242 242);
-}
-.support-tracker__employee div,
-.support-tracker__step > div:last-child,
-.rating-history__item > div:first-child,
-.rating-history__action > div:first-child {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-}
-.support-tracker__employee span,
-.support-tracker__step span,
-.rating-history__item span,
-.rating-history__action span,
-.rating-history__empty {
-  color: rgb(107 114 128);
-  font-size: 0.65rem;
-}
-.support-tracker__employee strong,
-.support-tracker__step strong,
-.rating-history__item strong,
-.rating-history__action strong {
-  color: rgb(31 41 55);
-  font-size: 0.75rem;
-}
-.support-tracker__steps {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.65rem;
-  margin-top: 1rem;
-}
-.support-tracker__step {
-  gap: 0.65rem;
-  padding: 0.75rem;
-  border: 1px solid rgb(243 244 246);
-  border-radius: 1rem;
-  background: rgb(249 250 251);
-}
-.support-tracker__marker {
-  display: grid;
-  flex: 0 0 2rem;
-  width: 2rem;
-  height: 2rem;
-  color: rgb(156 163 175);
-  border-radius: 0.7rem;
-  background: rgb(229 231 235);
-  place-items: center;
-}
-.support-tracker__step.is-current {
-  border-color: rgb(248 113 113);
-  background: rgb(254 242 242);
-}
-.support-tracker__step.is-current .support-tracker__marker {
-  color: white;
-  background: rgb(220 38 38);
-}
-.support-tracker__step.is-complete .support-tracker__marker {
-  color: white;
-  background: rgb(22 163 74);
-}
-.rating-history {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgb(229 231 235);
-}
-.rating-history__heading,
-.rating-history__item,
-.rating-history__action,
-.rating-history__score,
-.rating-history__action-controls {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  justify-content: space-between;
-}
-.rating-history__heading {
-  margin-bottom: 0.75rem;
-  color: rgb(245 158 11);
-}
-.rating-history__heading > div {
-  display: flex;
-  flex-direction: column;
-}
-.rating-history__item,
-.rating-history__action,
-.rating-history__empty {
-  padding: 0.9rem;
-  border: 1px solid rgb(243 244 246);
-  border-radius: 1rem;
-  background: rgb(249 250 251);
-}
-.rating-history__stars {
-  display: flex;
-  gap: 0.22rem;
-  color: rgb(209 213 219);
-}
-.rating-history__stars .is-active,
-.rating-history__stars button.is-active {
-  color: rgb(245 158 11);
-}
-.rating-history__stars--editable button {
-  font-size: 1.35rem;
-}
-.rating-history__score b {
-  color: rgb(31 41 55);
-  font-size: 0.7rem;
-  white-space: nowrap;
-}
-.rating-history__submit {
-  padding: 0.65rem 0.85rem;
-  color: white;
-  border-radius: 0.7rem;
-  background: rgb(220 38 38);
-  font-size: 0.68rem;
-  font-weight: 900;
-}
-.rating-history__submit:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-.rating-history__empty {
-  margin: 0;
-  text-align: center;
-}
-.support-tracker__empty {
-  padding: 1.5rem;
-  color: rgb(107 114 128);
-  font-size: 0.75rem;
-  text-align: center;
-}
-@media (max-width: 639px) {
-  .rating-history__item,
-  .rating-history__action {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .rating-history__action-controls {
-    width: 100%;
-  }
-}
-@media (min-width: 640px) {
-  .support-tracker {
-    margin-right: 2.5rem;
-    margin-left: 2.5rem;
-  }
-  .support-tracker__steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 1024px) {
-  .support-tracker__steps {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
+/* Scoped styles replaced by Tailwind utilities */
 </style>

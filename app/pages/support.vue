@@ -114,7 +114,8 @@ onMounted(() => {
                 <p class="text-lg font-black text-gray-900">1900.xxxx</p>
               </a>
               <a
-                href="#"
+                href="https://zalo.me/0123456789"
+                target="_blank"
                 class="flex flex-col p-6 bg-gray-50 rounded-[2rem] hover:bg-white hover:shadow-2xl hover:shadow-primary/10 transition-all group border border-gray-100"
               >
                 <Icon

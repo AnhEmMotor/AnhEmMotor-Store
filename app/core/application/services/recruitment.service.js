@@ -12,4 +12,8 @@ export const recruitmentService = {
   async submitApplication(formData) {
     return await recruitmentRepository.submitApplication(formData);
   },
+
+  async uploadCv(file) {
+    return await recruitmentRepository.uploadCv(file);
+  },
 };
