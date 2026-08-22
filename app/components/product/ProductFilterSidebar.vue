@@ -1,6 +1,6 @@
 <script setup>
-import { computed, onServerPrefetch } from 'vue';
-import { useQuery, useQueryClient } from '@tanstack/vue-query';
+import { computed } from 'vue';
+import { useQuery } from '@tanstack/vue-query';
 import { STATIC_CATEGORIES } from '~/constants/categories';
 
 const props = defineProps({
@@ -58,6 +58,7 @@ const { data: filterFacetsData } = useQuery({
     }
 
     return {
+      brands: [...brandsById.values()].sort((a, b) => a.name.localeCompare(b.name, 'vi')),
       versions: [...versionsSet].sort((a, b) => a.localeCompare(b, 'vi')),
       colors: [...colorsSet].sort((a, b) => a.localeCompare(b, 'vi')),
     };
@@ -66,41 +67,8 @@ const { data: filterFacetsData } = useQuery({
   placeholderData: (prev) => prev,
 });
 
-const queryClient = useQueryClient();
-const brandsQueryKey = ['product-brands'];
-
-async function fetchBrands() {
-  const pageSize = 100;
-  let page = 1;
-  let totalPages = 1;
-  const items = [];
-  do {
-    const res = await productStore.getBrands({ page, pageSize });
-    items.push(...(res.items || []));
-    totalPages = res.totalPages || 1;
-    page++;
-  } while (page <= totalPages);
-  return items;
-}
-
-if (import.meta.server) {
-  onServerPrefetch(async () => {
-    await queryClient.prefetchQuery({
-      queryKey: brandsQueryKey,
-      queryFn: fetchBrands,
-      staleTime: 1000 * 60 * 60,
-    });
-  });
-}
-
-const { data: brandsData } = useQuery({
-  queryKey: brandsQueryKey,
-  queryFn: fetchBrands,
-  staleTime: 1000 * 60 * 60,
-});
-
 const brands = computed(() => {
-  const items = brandsData.value || [];
+  const items = filterFacetsData.value?.brands || [];
   const byName = new Map();
   for (const b of items) {
     const key = (b.name || '').trim();

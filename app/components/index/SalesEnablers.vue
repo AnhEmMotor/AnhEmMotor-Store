@@ -37,11 +37,12 @@ import { BENEFITS } from '@/constants/benefit.constant';
         </div>
 
         <div class="pt-4">
-          <button
-            class="px-10 py-5 bg-slate-900 text-white rounded-xl font-bold transition-all hover:bg-primary shadow-xl shadow-black/5 hover:-translate-y-1"
+          <NuxtLink
+            to="/support"
+            class="inline-flex px-10 py-5 bg-slate-900 text-white rounded-xl font-bold transition-all hover:bg-primary shadow-xl shadow-black/5 hover:-translate-y-1"
           >
             Liên hệ tư vấn trả góp
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ await useAsyncData('promotion-banners', () => promotionStore.fetchBanners());
 
 const filteredPromotions = computed(() => {
   if (activeTab.value === 'all') return promotionStore.promotions;
-  return promotionStore.promotions.slice(0, 3);
+  return promotionStore.promotions.filter((promotion) => promotion.category === activeTab.value);
 });
 
 const featuredPromotion = computed(() => {
@@ -22,6 +22,7 @@ const featuredPromotion = computed(() => {
 
 const regularPromotions = computed(() => {
   const all = filteredPromotions.value;
+  if (activeTab.value !== 'all') return all;
   if (all.length > 0) {
     return all.filter((p) => p.id !== featuredPromotion.value?.id);
   }
@@ -315,4 +316,3 @@ watch(promotionPage, () => {
   transform: translateY(0);
 }
 </style>
-

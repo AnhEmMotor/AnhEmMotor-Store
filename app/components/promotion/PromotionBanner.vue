@@ -128,7 +128,7 @@ const scrollToOffers = () => {
       class="absolute top-1/4 -right-20 w-96 h-96 bg-red-600/5 rounded-full blur-[120px] pointer-events-none"
     />
     <div
-      class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent z-10"
+      class="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"
     />
   </section>
 </template>
@@ -162,4 +162,3 @@ const scrollToOffers = () => {
   animation: fadeInRight 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 </style>
-

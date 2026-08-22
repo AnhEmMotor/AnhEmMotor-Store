@@ -50,16 +50,18 @@ defineProps({
           </div>
 
           <div class="space-y-4 pt-4">
-            <button
-              class="w-full h-16 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-red-600/20 active:scale-95"
+            <NuxtLink
+              to="/support"
+              class="w-full h-16 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-red-600/20 active:scale-95 flex items-center justify-center"
             >
               Nhận ưu đãi ngay
-            </button>
-            <button
-              class="w-full h-16 bg-white border border-gray-200 text-gray-900 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all"
+            </NuxtLink>
+            <NuxtLink
+              to="/support"
+              class="w-full h-16 bg-white border border-gray-200 text-gray-900 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all flex items-center justify-center"
             >
               Tư vấn trả góp
-            </button>
+            </NuxtLink>
           </div>
 
           <div class="flex items-center gap-3 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
@@ -101,11 +103,12 @@ defineProps({
           </div>
           <div class="text-xl font-black text-gray-950 tracking-tighter">03:12:45</div>
         </div>
-        <button
-          class="flex-1 h-14 bg-red-600 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-red-600/20 active:scale-95"
+        <NuxtLink
+          to="/support"
+          class="flex-1 h-14 bg-red-600 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-red-600/20 active:scale-95 flex items-center justify-center"
         >
           Nhận ưu đãi
-        </button>
+        </NuxtLink>
       </div>
     </div>
   </div>

@@ -99,15 +99,16 @@ onMounted(() => {
             </div>
           </div>
 
-          <button
-            class="h-20 px-12 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all shadow-[0_25px_50px_-15px_rgba(230,0,35,0.5)] hover:scale-105 active:scale-95 group"
+          <NuxtLink
+            to="/support"
+            class="h-20 px-12 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all shadow-[0_25px_50px_-15px_rgba(230,0,35,0.5)] hover:scale-105 active:scale-95 group inline-flex items-center justify-center"
           >
             Đăng ký nhận ưu đãi ngay
             <Icon
               name="ph:arrow-right-bold"
               class="ml-3 text-lg transition-transform group-hover:translate-x-2"
             />
-          </button>
+          </NuxtLink>
         </div>
       </div>
     </div>
