@@ -638,4 +638,3 @@ if (import.meta.client) {
   }
 }
 </style>
-

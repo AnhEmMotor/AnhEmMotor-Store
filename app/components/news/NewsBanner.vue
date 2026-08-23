@@ -120,7 +120,6 @@ const scrollToNews = () => {
                   KHAI TRƯƠNG
                   <span class="text-red-500">SHOWROOM MỚI</span>
                 </h3>
-
               </div>
             </div>
           </div>
@@ -166,4 +165,3 @@ const scrollToNews = () => {
   animation: fadeInRight 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 </style>
-

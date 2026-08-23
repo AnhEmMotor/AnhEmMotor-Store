@@ -136,4 +136,3 @@ const culture = [
   },
 ];
 </script>
-

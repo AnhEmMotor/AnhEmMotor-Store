@@ -238,4 +238,3 @@ const paginatedTestimonials = computed(() => {
     </div>
   </section>
 </template>
-

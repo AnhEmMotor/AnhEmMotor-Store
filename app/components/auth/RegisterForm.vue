@@ -174,4 +174,3 @@ const registerStore = useRegisterStore();
   cursor: not-allowed;
 }
 </style>
-

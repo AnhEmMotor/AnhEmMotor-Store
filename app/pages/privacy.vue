@@ -110,4 +110,3 @@ const currentYear = new Date().getFullYear();
   @apply min-h-screen font-sans;
 }
 </style>
-
