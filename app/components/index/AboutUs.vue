@@ -98,4 +98,3 @@
   @apply inline-block bg-red-600 text-white font-bold py-2.5 px-6 sm:py-3 sm:px-8 rounded-full shadow-lg hover:bg-red-700 text-sm sm:text-base;
 }
 </style>
-

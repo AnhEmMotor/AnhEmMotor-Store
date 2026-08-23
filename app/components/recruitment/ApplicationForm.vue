@@ -94,8 +94,7 @@
               <form class="space-y-8" @submit.prevent="submitForm">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div class="space-y-3">
-                    <label
-                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
+                    <label class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Họ và Tên *</label
                     >
                     <input
@@ -107,8 +106,7 @@
                     />
                   </div>
                   <div class="space-y-3">
-                    <label
-                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
+                    <label class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Số điện thoại *</label
                     >
                     <input
@@ -123,8 +121,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div class="space-y-3">
-                    <label
-                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
+                    <label class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Email</label
                     >
                     <input
@@ -135,8 +132,7 @@
                     />
                   </div>
                   <div class="space-y-3 relative">
-                    <label
-                      class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
+                    <label class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                       >Vị trí ứng tuyển *</label
                     >
                     <div class="relative">
@@ -167,8 +163,7 @@
                 </div>
 
                 <div class="space-y-3">
-                  <label
-                    class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
+                  <label class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                     >Đính kèm CV (PDF, DOCX)</label
                   >
                   <div
@@ -193,8 +188,7 @@
                 </div>
 
                 <div class="space-y-3">
-                  <label
-                    class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
+                  <label class="text-[10px] font-black text-white uppercase tracking-[0.2em] ml-2"
                     >Ghi chú thêm</label
                   >
                   <textarea
@@ -320,11 +314,9 @@ const submitForm = async () => {
       fileName.value = '';
       selectedFile.value = null;
     }
-  } catch (err) {
-    console.error(err);
+  } catch {
     const { $toast } = useNuxtApp();
     $toast.error('Có lỗi xảy ra, vui lòng thử lại sau.');
   }
 };
 </script>
-

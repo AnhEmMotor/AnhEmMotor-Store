@@ -33,7 +33,9 @@
           <div
             class="absolute -inset-1 bg-gradient-to-r from-red-600 to-red-900 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"
           />
-          <div class="relative flex items-center bg-white rounded-full overflow-hidden shadow-2xl p-1.5 pl-5">
+          <div
+            class="relative flex items-center bg-white rounded-full overflow-hidden shadow-2xl p-1.5 pl-5"
+          >
             <div class="text-gray-400">
               <Icon name="fa6-solid:magnifying-glass" class="text-base" />
             </div>
@@ -72,4 +74,3 @@
 <script setup></script>
 
 <style scoped></style>
-
