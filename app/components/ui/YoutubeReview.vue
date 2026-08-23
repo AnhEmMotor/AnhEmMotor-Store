@@ -127,4 +127,3 @@ const isVideoPlaying = ref(false);
     </div>
   </div>
 </template>
-

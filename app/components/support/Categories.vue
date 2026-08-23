@@ -108,8 +108,8 @@
                 </p>
               </div>
               <button
-                @click="handleAction(categories[activeIdx].link)"
                 class="w-full h-14 bg-gray-900 text-white rounded-xl text-[11px] font-extrabold uppercase tracking-widest hover:bg-red-600 transition-colors flex items-center justify-center gap-3"
+                @click="handleAction(categories[activeIdx].link)"
               >
                 {{ categories[activeIdx].ctaAction }}
                 <Icon name="fa6-solid:arrow-right" />
@@ -203,4 +203,3 @@ const handleAction = (link) => {
   transform: translateY(20px);
 }
 </style>
-

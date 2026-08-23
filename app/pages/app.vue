@@ -405,7 +405,3 @@ if (import.meta.client) {
   animation-fill-mode: forwards;
 }
 </style>
-
-
-
-

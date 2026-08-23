@@ -395,4 +395,3 @@ const close = () => {
   scrollbar-width: none;
 }
 </style>
-

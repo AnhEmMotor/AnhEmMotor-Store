@@ -756,4 +756,3 @@ const submitInvoiceRequest = async () => {
   }
 }
 </style>
-

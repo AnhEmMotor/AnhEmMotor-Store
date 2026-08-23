@@ -106,4 +106,3 @@
   animation: bounceSlow 3s ease-in-out infinite;
 }
 </style>
-
