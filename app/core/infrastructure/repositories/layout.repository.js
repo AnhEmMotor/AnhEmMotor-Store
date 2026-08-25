@@ -18,31 +18,31 @@ export const layoutRepository = {
         phone: '0901.234.567',
         email: 'anhemmotor@gmail.com',
         socials: [
-          { name: 'facebook', icon: 'fa6-brands:facebook-f', url: '#' },
-          { name: 'youtube', icon: 'fa6-brands:youtube', url: '#' },
-          { name: 'instagram', icon: 'fa6-brands:instagram', url: '#' },
-          { name: 'tiktok', icon: 'fa6-brands:tiktok', url: '#' },
+          { name: 'facebook', icon: 'fa6-brands:facebook-f', url: 'https://www.facebook.com' },
+          { name: 'youtube', icon: 'fa6-brands:youtube', url: 'https://www.youtube.com' },
+          { name: 'instagram', icon: 'fa6-brands:instagram', url: 'https://www.instagram.com' },
+          { name: 'tiktok', icon: 'fa6-brands:tiktok', url: 'https://www.tiktok.com' },
         ],
       },
       sections: [
         {
           title: 'Sản Phẩm',
           links: [
-            { name: 'Xe máy Honda', url: '#' },
-            { name: 'Xe máy Yamaha', url: '#' },
-            { name: 'Xe máy Suzuki', url: '#' },
-            { name: 'Xe máy Kawasaki', url: '#' },
-            { name: 'Phụ kiện xe máy', url: '#' },
+            { name: 'Xe máy Honda', url: '/products?category_ids=8' },
+            { name: 'Xe máy Yamaha', url: '/products?category_ids=8' },
+            { name: 'Xe máy Suzuki', url: '/products?category_ids=8' },
+            { name: 'Xe máy Kawasaki', url: '/products?category_ids=8' },
+            { name: 'Phụ kiện xe máy', url: '/products?category_ids=12,13&page=1' },
           ],
         },
         {
           title: 'Dịch Vụ',
           links: [
-            { name: 'Bảo dưỡng định kỳ', url: '#' },
-            { name: 'Sửa chữa xe máy', url: '#' },
-            { name: 'Đăng ký xe', url: '#' },
-            { name: 'Bảo hiểm xe máy', url: '#' },
-            { name: 'Tư vấn mua xe', url: '#' },
+            { name: 'Bảo dưỡng định kỳ', url: '/service' },
+            { name: 'Sửa chữa xe máy', url: '/service' },
+            { name: 'Đăng ký xe', url: '/support' },
+            { name: 'Bảo hiểm xe máy', url: '/support' },
+            { name: 'Tư vấn mua xe', url: '/support' },
           ],
         },
         {
@@ -57,4 +57,3 @@ export const layoutRepository = {
     };
   },
 };
-
