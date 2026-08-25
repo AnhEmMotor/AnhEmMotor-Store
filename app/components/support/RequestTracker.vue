@@ -209,7 +209,7 @@ const steps = computed(() => [
   {
     status: 'New',
     label: 'Đã tiếp nhận',
-    icon: 'ph:inbox-bold',
+    icon: 'ph:envelope-simple-bold',
     value: props.request?.createdAt,
   },
   {

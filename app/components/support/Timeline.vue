@@ -34,7 +34,7 @@ const steps = [
   {
     title: 'Giải quyết',
     time: 'Ưu tiên hàng đầu',
-    icon: 'fa6-solid:shield-check',
+    icon: 'fa6-solid:check-to-slot',
   },
 ];
 </script>

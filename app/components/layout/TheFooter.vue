@@ -32,17 +32,19 @@ const footerData = computed(() => layoutStore.footerData);
             {{ footerData.contact.email }}
           </p>
           <div class="flex gap-4 mt-5">
-            <RouterLink
+            <a
               v-for="social in footerData.contact.socials"
               :key="social.name"
-              :to="social.url"
+              :href="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
               class="social-icon"
               :aria-label="`Theo dõi AnhEm Motor trên ${social.name}`"
             >
               <ClientOnly>
                 <Icon :name="social.icon" />
               </ClientOnly>
-            </RouterLink>
+            </a>
           </div>
         </div>
 
@@ -82,4 +84,3 @@ const footerData = computed(() => layoutStore.footerData);
   @apply text-white/80 leading-loose transition-colors duration-300 ease-in-out hover:text-red-500;
 }
 </style>
-
