@@ -292,7 +292,7 @@ watch(promotionPage, () => {
             >Liên hệ ngay</NuxtLink
           >
           <NuxtLink
-            to="/products"
+            to="/bang-gia"
             class="px-12 py-6 bg-white/5 backdrop-blur-xl text-white border border-white/10 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
             >Xem bảng giá</NuxtLink
           >

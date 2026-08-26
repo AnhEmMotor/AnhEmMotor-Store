@@ -76,7 +76,7 @@
           </button>
           <button
             class="px-8 py-4 bg-white/5 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-white hover:text-gray-950 hover:border-white transition-all duration-500 active:scale-95"
-            @click="scrollToServices"
+            @click="router.push('/bang-gia')"
           >
             Xem Bảng Giá
           </button>
