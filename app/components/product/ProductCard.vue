@@ -320,13 +320,16 @@ const toggleCompare = (e) => {
 
         <div v-if="selectedVariantColors.length > 0" class="variant-section">
           <div class="variant-section__label">
-            <span>Màu sắc</span>
+            <span>
+              Màu sắc
+              <span v-if="selectedColor" class="text-gray-900 ml-1">- {{ colorLabel(selectedColor, selectedVariantColors.indexOf(selectedColor)) }}</span>
+            </span>
           </div>
-          <div class="variant-section__chips">
+          <div class="variant-section__chips flex flex-wrap gap-2">
             <ProductColorChip
               v-for="(color, index) in selectedVariantColors"
               :key="colorKey(color, index)"
-              class="variant-chip"
+              variant="circle"
               :label="colorLabel(color, index)"
               :selected="selectedColorKey === colorKey(color, index)"
               @select="applyColor(color, index)"

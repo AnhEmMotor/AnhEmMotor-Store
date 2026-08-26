@@ -534,8 +534,9 @@ const bookTestDrive = () => {
               <div v-if="Object.keys(variantGroups).length > 0" class="space-y-4">
                 <div class="space-y-3">
                   <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest"
-                    >Cấu hình & Màu sắc</label
-                  >
+                    >Cấu hình & Màu sắc
+                    <span v-if="currentVariant?.colors?.[selectedColorIndex]" class="text-gray-900 ml-1 text-[11px] normal-case tracking-normal">- {{ currentVariant.colors[selectedColorIndex].name || currentVariant.colors[selectedColorIndex].colorName || '' }}</span>
+                  </label>
                   <div class="flex flex-wrap items-center gap-4">
                     <div class="relative flex-grow">
                       <select
@@ -558,10 +559,11 @@ const bookTestDrive = () => {
                             v-if="v.slug !== currentVariant.slug"
                             :to="`/product/${v.slug}`"
                             class="block w-8 h-8 rounded-full border-2 border-white shadow-sm p-0.5 hover:scale-110 transition-transform"
+                            :title="color.name || color.colorName"
                           >
                             <div
                               class="w-full h-full rounded-full border border-black/5"
-                              :style="{ backgroundColor: color.code || '#ccc' }"
+                              :style="{ background: getColorBackground(color.name || color.colorName || color.code || '') }"
                             />
                           </NuxtLink>
                           <button
@@ -572,6 +574,7 @@ const bookTestDrive = () => {
                                 ? 'border-primary shadow-md ring-2 ring-primary/10'
                                 : 'border-white shadow-sm hover:scale-110'
                             "
+                            :title="color.name || color.colorName"
                             @click="
                               selectedColorIndex = cIdx;
                               selectedImage = null;
@@ -579,7 +582,7 @@ const bookTestDrive = () => {
                           >
                             <div
                               class="w-full h-full rounded-full border border-black/5"
-                              :style="{ backgroundColor: color.code || '#ccc' }"
+                              :style="{ background: getColorBackground(color.name || color.colorName || color.code || '') }"
                             />
                           </button>
                         </div>
