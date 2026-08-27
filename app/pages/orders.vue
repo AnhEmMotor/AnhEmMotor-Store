@@ -196,6 +196,7 @@ const confirmCancel = async () => {
 
 const isCancellable = (statusId) => orderStore.cancellableStatuses.includes(statusId);
 const canEdit = (statusId) => {
+  if (!statusId) return false;
   if (!orderStore.lockedStatuses) return true;
   const deliveryLocked = orderStore.lockedStatuses.deliveryInfo?.includes(statusId);
   const notesLocked = orderStore.lockedStatuses.notes?.includes(statusId);
@@ -259,26 +260,36 @@ const handleContinuePayment = async (order) => {
       </template>
     </div>
 
-    <OrderEditModal
-      v-model:form="editForm"
-      :is-open="isEditing"
-      :order="selectedOrder"
-      :errors="editErrors"
-      :provinces="provinces"
-      :is-submitting="isSubmittingEdit"
-      :locked-delivery="orderStore.lockedStatuses?.deliveryInfo?.includes(selectedOrder?.status)"
-      :locked-notes="orderStore.lockedStatuses?.notes?.includes(selectedOrder?.status)"
-      @close="isEditing = false"
-      @save="handleUpdateOrder"
-      @change-province="handleEditProvinceChange"
-    />
+    <Teleport to="body">
+      <OrderEditModal
+        v-model:form="editForm"
+        :is-open="isEditing"
+        :order="selectedOrder"
+        :errors="editErrors"
+        :provinces="provinces"
+        :is-submitting="isSubmittingEdit"
+        :locked-delivery="
+          orderStore.lockedStatuses?.deliveryInfo?.includes(
+            selectedOrder?.statusId || selectedOrder?.status
+          )
+        "
+        :locked-notes="
+          orderStore.lockedStatuses?.notes?.includes(
+            selectedOrder?.statusId || selectedOrder?.status
+          )
+        "
+        @close="isEditing = false"
+        @save="handleUpdateOrder"
+        @change-province="handleEditProvinceChange"
+      />
 
-    <OrderCancelModal
-      :is-open="isCancelModalOpen"
-      :is-submitting="isSubmittingCancel"
-      @close="isCancelModalOpen = false"
-      @confirm="confirmCancel"
-    />
+      <OrderCancelModal
+        :is-open="isCancelModalOpen"
+        :is-submitting="isSubmittingCancel"
+        @close="isCancelModalOpen = false"
+        @confirm="confirmCancel"
+      />
+    </Teleport>
   </div>
 </template>
 
@@ -290,4 +301,3 @@ const handleContinuePayment = async (order) => {
   background-color: #e31837;
 }
 </style>
-

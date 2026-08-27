@@ -34,8 +34,15 @@ export const useOrderStore = defineStore('order', () => {
     refunded: 'Đã hoàn tiền',
   });
   const lockedStatuses = ref({
-    deliveryInfo: ['delivering', 'completed', 'cancelled'],
-    notes: ['completed', 'cancelled'],
+    deliveryInfo: [
+      'delivering',
+      'waiting_pickup',
+      'completed',
+      'cancelled',
+      'refunding',
+      'refunded',
+    ],
+    notes: ['delivering', 'waiting_pickup', 'completed', 'cancelled', 'refunding', 'refunded'],
   });
   const cancellableStatuses = ref(['pending', 'waiting_deposit']);
 
@@ -87,18 +94,62 @@ export const useOrderStore = defineStore('order', () => {
 
   const initStatuses = async () => {
     try {
-      const [mapRes, cancellableRes] = await Promise.all([
+      const axios = useAxios();
+      const [mapRes, cancellableRes, lockedRes] = await Promise.all([
         service.getStatusMap(),
         service.getCancellableStatuses(),
+        axios
+          .get('/api/v1/SalesOrders/locked-statuses')
+          .then((r) => r.data)
+          .catch(() => null),
       ]);
 
       statusMap.value = orderMapper.mapStatusMap(mapRes);
       cancellableStatuses.value = cancellableRes || [];
 
-      lockedStatuses.value = {
-        deliveryInfo: ['delivering', 'completed', 'cancelled'],
-        notes: ['completed', 'cancelled'],
-      };
+      if (lockedRes) {
+        lockedStatuses.value = {
+          deliveryInfo: (
+            lockedRes.deliveryInfo || [
+              'delivering',
+              'waiting_pickup',
+              'completed',
+              'cancelled',
+              'refunding',
+              'refunded',
+            ]
+          ).map((s) => String(s).toLowerCase()),
+          notes: (
+            lockedRes.notes || [
+              'delivering',
+              'waiting_pickup',
+              'completed',
+              'cancelled',
+              'refunding',
+              'refunded',
+            ]
+          ).map((s) => String(s).toLowerCase()),
+        };
+      } else {
+        lockedStatuses.value = {
+          deliveryInfo: [
+            'delivering',
+            'waiting_pickup',
+            'completed',
+            'cancelled',
+            'refunding',
+            'refunded',
+          ],
+          notes: [
+            'delivering',
+            'waiting_pickup',
+            'completed',
+            'cancelled',
+            'refunding',
+            'refunded',
+          ],
+        };
+      }
     } catch {
       null;
     }

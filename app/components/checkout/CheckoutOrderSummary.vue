@@ -7,9 +7,13 @@ import voucherService from '~/services/voucher.service';
 
 const { cartItems, cartDetails, removeItem, updateQuantity, isPending } = useCart();
 const orderStore = useOrderStore();
-const isChecking = ref(false);
-
 const isSubmitting = computed(() => orderStore.isLoading);
+
+const hasInsufficientStock = computed(() =>
+  cartDetails.value.some(
+    (item) => typeof item.stock === 'number' && (item.stock <= 0 || item.quantity > item.stock)
+  )
+);
 
 function handleUpdateQuantity(item, newQuantity, index) {
   if (newQuantity < 1) {
@@ -193,6 +197,22 @@ const emit = defineEmits(['place-order']);
                 </p>
               </div>
             </div>
+            <div
+              v-if="typeof item.stock === 'number' && item.quantity > item.stock && item.stock > 0"
+              class="mt-1.5 flex items-center gap-1.5 text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-200"
+            >
+              <Icon name="fa6-solid:triangle-exclamation" class="text-amber-500 text-xs shrink-0" />
+              <span
+                >Chỉ còn {{ item.stock }} sản phẩm trong kho (bạn chọn {{ item.quantity }})</span
+              >
+            </div>
+            <div
+              v-else-if="typeof item.stock === 'number' && item.stock <= 0"
+              class="mt-1.5 flex items-center gap-1.5 text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-xl border border-amber-200"
+            >
+              <Icon name="fa6-solid:triangle-exclamation" class="text-amber-500 text-xs shrink-0" />
+              <span>Sản phẩm này hiện tại đã hết hàng</span>
+            </div>
             <p
               v-if="item.effectiveMax != null"
               class="mt-1 text-[10px] font-semibold text-gray-400"
@@ -344,7 +364,25 @@ const emit = defineEmits(['place-order']);
       </div>
 
       <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
+        <div
+          v-if="hasInsufficientStock"
+          class="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-amber-800"
+        >
+          <Icon
+            name="fa6-solid:triangle-exclamation"
+            class="text-amber-500 text-lg shrink-0 mt-0.5"
+          />
+          <div class="flex-1 text-sm">
+            <p class="font-bold">Chưa đủ tồn kho để đặt hàng</p>
+            <p class="text-xs text-amber-700 mt-1">
+              Một số sản phẩm trong đơn hàng vượt quá số lượng tồn kho khả dụng hoặc đã hết hàng.
+              Vui lòng điều chỉnh lại số lượng hoặc xóa sản phẩm để tiếp tục đặt hàng.
+            </p>
+          </div>
+        </div>
+
         <button
+          v-else
           class="w-full py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest text-sm"
           :aria-label="
             orderSummary.requiresDeposit ? 'Thanh toán đặt cọc ngay' : 'Xác nhận và đặt hàng ngay'

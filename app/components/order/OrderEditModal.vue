@@ -68,7 +68,7 @@ const handleSave = () => {
 <template>
   <div
     v-if="isOpen"
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity"
+    class="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity"
   >
     <div
       class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in duration-300"
@@ -85,124 +85,130 @@ const handleSave = () => {
       </div>
 
       <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
-        <div class="space-y-4">
-          <div class="space-y-2">
-            <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
-              Người nhận hàng
-            </label>
-            <input
-              :value="form.customerName"
-              type="text"
-              placeholder="Tên khách hàng"
-              class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-              :class="{ 'border-red-500 bg-red-50/10': errors.customerName }"
-              :disabled="lockedDelivery"
-              @input="
-                emit('update:form', {
-                  ...form,
-                  customerName: $event.target.value,
-                })
-              "
-            />
-            <p v-if="errors.customerName" class="text-xs text-red-500 mt-1">
-              {{ errors.customerName }}
-            </p>
-          </div>
+        <div
+          v-if="lockedDelivery && lockedNotes"
+          class="py-8 text-center text-gray-500 font-semibold text-sm"
+        >
+          <Icon name="fa6-solid:lock" class="text-3xl text-gray-300 mb-2 block mx-auto" />
+          Đơn hàng ở trạng thái này không thể chỉnh sửa thông tin giao hàng hoặc ghi chú.
+        </div>
 
-          <div class="space-y-2">
-            <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
-              Số điện thoại
-            </label>
-            <input
-              :value="form.customerPhone"
-              type="tel"
-              placeholder="Số điện thoại"
-              class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-              :class="{ 'border-red-500 bg-red-50/10': errors.customerPhone }"
-              :disabled="lockedDelivery"
-              @input="
-                emit('update:form', {
-                  ...form,
-                  customerPhone: $event.target.value,
-                })
-              "
-            />
-            <p v-if="errors.customerPhone" class="text-xs text-red-500 mt-1">
-              {{ errors.customerPhone }}
-            </p>
-          </div>
+        <div v-else class="space-y-4">
+          <template v-if="!lockedDelivery">
+            <div class="space-y-2">
+              <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
+                Người nhận hàng
+              </label>
+              <input
+                :value="form.customerName"
+                type="text"
+                placeholder="Tên khách hàng"
+                class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+                :class="{ 'border-red-500 bg-red-50/10': errors.customerName }"
+                @input="
+                  emit('update:form', {
+                    ...form,
+                    customerName: $event.target.value,
+                  })
+                "
+              />
+              <p v-if="errors.customerName" class="text-xs text-red-500 mt-1">
+                {{ errors.customerName }}
+              </p>
+            </div>
 
-          <div class="space-y-2">
-            <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
-              Tỉnh/Thành phố
-            </label>
-            <select
-              :value="form.provinceId || ''"
-              class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-              :class="{ 'border-red-500 bg-red-50/10': errors.provinceId }"
-              :disabled="lockedDelivery"
-              @change="emit('change-province', Number($event.target.value))"
-            >
-              <option value="" disabled>Chọn Tỉnh/Thành phố</option>
-              <option v-for="p in provinces" :key="p.provinceId" :value="p.provinceId">
-                {{ p.provinceName }}
-              </option>
-            </select>
-            <p v-if="errors.provinceId" class="text-xs text-red-500 mt-1">
-              {{ errors.provinceId }}
-            </p>
-          </div>
+            <div class="space-y-2">
+              <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
+                Số điện thoại
+              </label>
+              <input
+                :value="form.customerPhone"
+                type="tel"
+                placeholder="Số điện thoại"
+                class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+                :class="{ 'border-red-500 bg-red-50/10': errors.customerPhone }"
+                @input="
+                  emit('update:form', {
+                    ...form,
+                    customerPhone: $event.target.value,
+                  })
+                "
+              />
+              <p v-if="errors.customerPhone" class="text-xs text-red-500 mt-1">
+                {{ errors.customerPhone }}
+              </p>
+            </div>
 
-          <div class="space-y-2">
-            <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
-              Quận/Huyện/Phường/Xã
-            </label>
-            <select
-              :value="form.wardCode || ''"
-              class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
-              :class="{ 'border-red-500 bg-red-50/10': errors.wardCode }"
-              :disabled="lockedDelivery || !form.provinceId"
-              @change="
-                emit('update:form', {
-                  ...form,
-                  wardCode: $event.target.value,
-                })
-              "
-            >
-              <option value="" disabled>Chọn Phường/Xã</option>
-              <option v-for="w in wards" :key="w.wardCode" :value="w.wardCode">
-                {{ w.wardName }}
-              </option>
-            </select>
-            <p v-if="errors.wardCode" class="text-xs text-red-500 mt-1">
-              {{ errors.wardCode }}
-            </p>
-          </div>
+            <div class="space-y-2">
+              <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
+                Tỉnh/Thành phố
+              </label>
+              <select
+                :value="form.provinceId || ''"
+                class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+                :class="{ 'border-red-500 bg-red-50/10': errors.provinceId }"
+                @change="emit('change-province', Number($event.target.value))"
+              >
+                <option value="" disabled>Chọn Tỉnh/Thành phố</option>
+                <option v-for="p in provinces" :key="p.provinceId" :value="p.provinceId">
+                  {{ p.provinceName }}
+                </option>
+              </select>
+              <p v-if="errors.provinceId" class="text-xs text-red-500 mt-1">
+                {{ errors.provinceId }}
+              </p>
+            </div>
 
-          <div class="space-y-2">
-            <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
-              Địa chỉ giao hàng
-            </label>
-            <textarea
-              :value="form.customerAddress"
-              rows="3"
-              placeholder="Địa chỉ chi tiết"
-              class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
-              :class="{ 'border-red-500 bg-red-50/10': errors.customerAddress }"
-              :disabled="lockedDelivery"
-              @input="
-                emit('update:form', {
-                  ...form,
-                  customerAddress: $event.target.value,
-                })
-              "
-            />
-            <p v-if="errors.customerAddress" class="text-xs text-red-500 mt-1">
-              {{ errors.customerAddress }}
-            </p>
-          </div>
+            <div class="space-y-2">
+              <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
+                Quận/Huyện/Phường/Xã
+              </label>
+              <select
+                :value="form.wardCode || ''"
+                class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm"
+                :class="{ 'border-red-500 bg-red-50/10': errors.wardCode }"
+                :disabled="!form.provinceId"
+                @change="
+                  emit('update:form', {
+                    ...form,
+                    wardCode: $event.target.value,
+                  })
+                "
+              >
+                <option value="" disabled>Chọn Phường/Xã</option>
+                <option v-for="w in wards" :key="w.wardCode" :value="w.wardCode">
+                  {{ w.wardName }}
+                </option>
+              </select>
+              <p v-if="errors.wardCode" class="text-xs text-red-500 mt-1">
+                {{ errors.wardCode }}
+              </p>
+            </div>
 
-          <div class="space-y-2">
+            <div class="space-y-2">
+              <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
+                Địa chỉ giao hàng
+              </label>
+              <textarea
+                :value="form.customerAddress"
+                rows="3"
+                placeholder="Địa chỉ chi tiết"
+                class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
+                :class="{ 'border-red-500 bg-red-50/10': errors.customerAddress }"
+                @input="
+                  emit('update:form', {
+                    ...form,
+                    customerAddress: $event.target.value,
+                  })
+                "
+              />
+              <p v-if="errors.customerAddress" class="text-xs text-red-500 mt-1">
+                {{ errors.customerAddress }}
+              </p>
+            </div>
+          </template>
+
+          <div v-if="!lockedNotes" class="space-y-2">
             <label class="text-xs font-black text-gray-400 uppercase tracking-widest">
               Ghi chú
             </label>
@@ -211,7 +217,6 @@ const handleSave = () => {
               rows="2"
               placeholder="Lời nhắn..."
               class="w-full px-5 py-3 bg-gray-50 border-2 border-transparent focus:border-red-500/20 focus:bg-white rounded-xl outline-none transition-all font-bold text-sm resize-none"
-              :disabled="lockedNotes"
               @input="emit('update:form', { ...form, notes: $event.target.value })"
             />
           </div>
@@ -224,9 +229,10 @@ const handleSave = () => {
           aria-label="Hủy bỏ các thay đổi và đóng cửa sổ"
           @click="emit('close')"
         >
-          Hủy bỏ
+          {{ lockedDelivery && lockedNotes ? 'Đóng' : 'Hủy bỏ' }}
         </button>
         <button
+          v-if="!lockedDelivery || !lockedNotes"
           :disabled="isSubmitting"
           class="flex-1 py-4 bg-red-600 text-white font-black rounded-2xl shadow-xl shadow-red-600/20 hover:bg-red-700 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest text-xs"
           aria-label="Xác nhận lưu thay đổi thông tin đơn hàng"
