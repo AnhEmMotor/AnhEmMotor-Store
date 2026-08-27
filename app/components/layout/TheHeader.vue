@@ -76,6 +76,9 @@
             <img
               src="/assets/image/logo.webp"
               alt="Logo"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
               class="w-full h-full object-cover rounded-full"
             />
           </div>

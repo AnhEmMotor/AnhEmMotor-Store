@@ -5,6 +5,18 @@ defineProps({
     required: true,
   },
 });
+
+useHead({
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/about/hero-showroom.webp',
+      type: 'image/webp',
+      fetchpriority: 'high',
+    },
+  ],
+});
 </script>
 
 <template>
@@ -13,6 +25,9 @@ defineProps({
       <img
         src="/images/about/hero-showroom.webp"
         alt="AnhEm Motor Showroom"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
         class="w-full h-full object-cover scale-110 animate-ken-burns"
       />
       <div class="absolute inset-0 bg-black/60" />

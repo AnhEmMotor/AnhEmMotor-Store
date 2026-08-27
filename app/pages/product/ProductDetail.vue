@@ -100,6 +100,20 @@ const isPlaceholderImage = computed(() => {
   return img.includes('placeholder-product') || img.includes('placeholder');
 });
 
+useHead(() => {
+  if (!mainImage.value || isPlaceholderImage.value) return {};
+  return {
+    link: [
+      {
+        rel: 'preload',
+        as: 'image',
+        href: mainImage.value,
+        fetchpriority: 'high',
+      },
+    ],
+  };
+});
+
 const formattedPrice = computed(() => productMapper.formatPrice(currentVariant.value?.price));
 const { depositSettings } = useStoreSettings();
 
@@ -410,6 +424,7 @@ const bookTestDrive = () => {
                   :class="isPlaceholderImage ? 'object-contain p-8' : 'object-cover'"
                   loading="eager"
                   fetchpriority="high"
+                  decoding="async"
                   @error="$event.target.src = '/assets/image/placeholder-product.webp'"
                 />
               </div>
@@ -535,7 +550,16 @@ const bookTestDrive = () => {
                 <div class="space-y-3">
                   <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest"
                     >Cấu hình & Màu sắc
-                    <span v-if="currentVariant?.colors?.[selectedColorIndex]" class="text-gray-900 ml-1 text-[11px] normal-case tracking-normal">- {{ currentVariant.colors[selectedColorIndex].name || currentVariant.colors[selectedColorIndex].colorName || '' }}</span>
+                    <span
+                      v-if="currentVariant?.colors?.[selectedColorIndex]"
+                      class="text-gray-900 ml-1 text-[11px] normal-case tracking-normal"
+                      >-
+                      {{
+                        currentVariant.colors[selectedColorIndex].name ||
+                        currentVariant.colors[selectedColorIndex].colorName ||
+                        ''
+                      }}</span
+                    >
                   </label>
                   <div class="flex flex-wrap items-center gap-4">
                     <div class="relative flex-grow">
@@ -563,7 +587,11 @@ const bookTestDrive = () => {
                           >
                             <div
                               class="w-full h-full rounded-full border border-black/5"
-                              :style="{ background: getColorBackground(color.name || color.colorName || color.code || '') }"
+                              :style="{
+                                background: getColorBackground(
+                                  color.name || color.colorName || color.code || ''
+                                ),
+                              }"
                             />
                           </NuxtLink>
                           <button
@@ -582,7 +610,11 @@ const bookTestDrive = () => {
                           >
                             <div
                               class="w-full h-full rounded-full border border-black/5"
-                              :style="{ background: getColorBackground(color.name || color.colorName || color.code || '') }"
+                              :style="{
+                                background: getColorBackground(
+                                  color.name || color.colorName || color.code || ''
+                                ),
+                              }"
                             />
                           </button>
                         </div>

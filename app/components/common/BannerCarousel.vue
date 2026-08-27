@@ -21,6 +21,32 @@ const activeBanner = computed(() => {
   return props.banners.length > 0 ? props.banners[currentBannerIndex.value] : null;
 });
 
+const firstBanner = computed(() => props.banners?.[0]);
+
+useHead(() => {
+  if (!firstBanner.value) return {};
+  const desktopImg = useAssetUrl(firstBanner.value.desktopImageUrl) || props.defaultBg;
+  const mobileImg = useAssetUrl(firstBanner.value.mobileImageUrl) || desktopImg || props.defaultBg;
+  return {
+    link: [
+      {
+        rel: 'preload',
+        as: 'image',
+        href: desktopImg,
+        media: '(min-width: 768px)',
+        fetchpriority: 'high',
+      },
+      {
+        rel: 'preload',
+        as: 'image',
+        href: mobileImg,
+        media: '(max-width: 767px)',
+        fetchpriority: 'high',
+      },
+    ],
+  };
+});
+
 const nextBanner = () => {
   if (props.banners.length <= 1) return;
   slideDirection.value = 'next';
@@ -70,6 +96,9 @@ onUnmounted(() => {
           <img
             :src="useAssetUrl(banner.desktopImageUrl) || defaultBg"
             alt="Banner"
+            :loading="index === 0 ? 'eager' : 'lazy'"
+            :fetchpriority="index === 0 ? 'high' : 'low'"
+            decoding="async"
             class="w-full h-full object-cover"
           />
         </picture>
@@ -80,7 +109,14 @@ onUnmounted(() => {
     <div v-if="banners.length === 0" class="absolute inset-0">
       <picture>
         <source media="(max-width: 767px)" :srcset="defaultBg" />
-        <img :src="defaultBg" alt="Banner" class="w-full h-full object-cover" />
+        <img
+          :src="defaultBg"
+          alt="Banner"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="w-full h-full object-cover"
+        />
       </picture>
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
     </div>

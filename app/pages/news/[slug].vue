@@ -48,7 +48,20 @@ watchEffect(() => {
     useSeoMeta({
       title: `${news.value.title} | AnhEm Motor`,
       description: news.value.excerpt ?? 'Tin tức mới nhất từ AnhEm Motor.',
+      ogImage: news.value.image,
     });
+    if (news.value.image) {
+      useHead({
+        link: [
+          {
+            rel: 'preload',
+            as: 'image',
+            href: news.value.image,
+            fetchpriority: 'high',
+          },
+        ],
+      });
+    }
   }
 });
 
@@ -90,6 +103,9 @@ const copyLink = () => {
             :src="news.image"
             class="w-full h-full object-cover"
             :alt="news.title"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
           />
 
           <div class="absolute inset-0 bg-black/40" />
