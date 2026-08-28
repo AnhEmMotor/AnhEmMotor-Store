@@ -1,4 +1,17 @@
 export const maintenanceRepository = {
+  async getPersonalRepairs() {
+    const axios = useAxios();
+    const response = await axios.get('/api/v1/client/repairs/personal', {
+      params: { page: 1, pageSize: 100, sorts: '-MaintenanceDate' },
+    });
+    const data = response.data;
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.value)) return data.value;
+    if (Array.isArray(data?.data)) return data.data;
+    if (Array.isArray(data?.items)) return data.items;
+    return [];
+  },
+
   async getMaintenanceServices() {
     return [
       {

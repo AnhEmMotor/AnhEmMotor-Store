@@ -17,7 +17,6 @@ export const useUserStore = defineStore('user', () => {
     email: '',
     gender: '',
     dob: '',
-    address: '',
   });
 
   const passwordData = ref({
@@ -32,8 +31,7 @@ export const useUserStore = defineStore('user', () => {
       formData.value.phoneNumber = user.phoneNumber || '';
       formData.value.email = user.email || '';
       formData.value.gender = user.gender || '';
-      formData.value.dob = user.dob ? user.dob.split('T')[0] : '';
-      formData.value.address = user.address || '';
+      formData.value.dob = user.dateOfBirth ? user.dateOfBirth.split('T')[0] : '';
     }
   }
 
