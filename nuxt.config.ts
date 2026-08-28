@@ -134,6 +134,28 @@ export default defineNuxtConfig({
           crossorigin: 'anonymous',
         },
         {
+          rel: 'preconnect',
+          href: process.env.NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT || 'http://localhost:5000',
+        },
+        {
+          rel: 'dns-prefetch',
+          href: process.env.NUXT_PUBLIC_API_URL_FOR_BROWSER_CLIENT || 'http://localhost:5000',
+        },
+        {
+          rel: 'preload',
+          as: 'image',
+          href: '/assets/image/logo.webp',
+          type: 'image/webp',
+          fetchpriority: 'high',
+        },
+        {
+          rel: 'preload',
+          as: 'image',
+          href: '/assets/image/index/banner1.webp',
+          type: 'image/webp',
+          fetchpriority: 'high',
+        },
+        {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap',
         },

@@ -38,6 +38,7 @@ const normalizeCartItem = (item) => {
     cartKey: `${variantId}:${colorId}`,
     productVariantId: variantId,
     productVariantColorId: colorId || null,
+    effectiveMax: null,
     quantity: Math.max(Number(item.quantity || 1), 1),
   };
 };
@@ -87,7 +88,14 @@ export function useCart() {
       return data;
     },
     enabled: computed(() => !!variantIds.value.length),
-    staleTime: 1000 * 60 * 10,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+  });
+
+  watch(isCartPanelOpen, (open) => {
+    if (open && variantIds.value.length > 0) {
+      refetch();
+    }
   });
 
   const detailMap = computed(() => {
@@ -99,23 +107,38 @@ export function useCart() {
   const resolveEffectiveMax = (item) => {
     const { variantId, colorId } = keyPartsFor(item);
     const detail = detailMap.value.get(String(variantId));
-    const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
-    return (
-      color?.effectiveMax ??
-      color?.maxPurchaseQuantity ??
-      detail?.effectiveMax ??
-      detail?.productLimit ??
-      detail?.product_limit ??
-      item.effectiveMax ??
-      null
-    );
+    if (detail) {
+      const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
+      return (
+        color?.effectiveMax ??
+        color?.maxPurchaseQuantity ??
+        detail?.effectiveMax ??
+        detail?.productLimit ??
+        detail?.product_limit ??
+        null
+      );
+    }
+    return item.effectiveMax ?? null;
+  };
+
+  const resolveStock = (item) => {
+    const { variantId, colorId } = keyPartsFor(item);
+    const detail = detailMap.value.get(String(variantId));
+    if (!detail) return item.stock ?? null;
+    if (colorId != null) {
+      const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
+      if (color && typeof color.stock === 'number') {
+        return color.stock;
+      }
+    }
+    return typeof detail?.stock === 'number' ? detail.stock : (item.stock ?? null);
   };
 
   const warnMax = (limit) => {
     toast.warning(
       limit
-        ? `Da dat so luong mua toi da (${limit}) cho san pham nay.`
-        : 'Da dat so luong mua toi da cho san pham nay.'
+        ? `Đã đạt số lượng mua tối đa (${limit}) cho sản phẩm này.`
+        : 'Đã đạt số lượng mua tối đa cho sản phẩm này.'
     );
   };
 
@@ -125,11 +148,12 @@ export function useCart() {
       const detail = detailMap.value.get(String(variantId));
       const color = (detail?.colors || []).find((c) => Number(c.id) === colorId);
       const key = `${variantId}:${colorId}`;
+      const stock = resolveStock(item);
       return {
         ...item,
         id: key,
         cartKey: key,
-        name: item.name || detail?.displayName || 'San pham',
+        name: item.name || detail?.displayName || 'Sản phẩm',
         price: detail?.price ?? item.price ?? 0,
         image:
           (color?.coverImageUrl ? getImageUrl(color.coverImageUrl) : null) ||
@@ -140,6 +164,8 @@ export function useCart() {
         productVariantId: variantId,
         productVariantColorId: colorId || null,
         effectiveMax: resolveEffectiveMax(item),
+        stock,
+        isOutOfStock: typeof stock === 'number' && (stock <= 0 || item.quantity > stock),
         managementType: detail?.managementType || null,
       };
     })
@@ -237,8 +263,24 @@ export function useCart() {
   function updateQuantity(idOrPayload, change) {
     const clampToLimit = (item, desiredQty) => {
       const limit = resolveEffectiveMax(item);
-      if (limit != null && desiredQty > limit) return limit;
+      const stock = resolveStock(item);
+      let maxAllowed = limit;
+      if (typeof stock === 'number' && stock > 0) {
+        maxAllowed = maxAllowed != null ? Math.min(maxAllowed, stock) : stock;
+      }
+      if (maxAllowed != null && desiredQty > maxAllowed) return maxAllowed;
       return Math.max(desiredQty, 1);
+    };
+
+    const notifyLimitReached = (item, desiredQty, finalQty) => {
+      if (finalQty >= desiredQty) return;
+      const limit = resolveEffectiveMax(item);
+      const stock = resolveStock(item);
+      if (limit != null && finalQty === limit) {
+        warnMax(limit);
+      } else if (typeof stock === 'number' && finalQty === stock) {
+        toast.warning(`Kho hiện chỉ còn ${stock} sản phẩm.`);
+      }
     };
 
     if (typeof idOrPayload === 'object' && idOrPayload.index !== undefined) {
@@ -248,8 +290,10 @@ export function useCart() {
       const newQty = item.quantity + c;
       const clamped = clampToLimit(item, newQty);
       if (clamped <= 0) cartItems.value.splice(index, 1);
-      else item.quantity = clamped;
-      if (clamped < newQty) warnMax(resolveEffectiveMax(item));
+      else {
+        item.quantity = clamped;
+        notifyLimitReached(item, newQty, clamped);
+      }
     } else {
       const qty = change;
       const item = cartItems.value.find((i) => cartKeyFor(i) === String(idOrPayload));
@@ -260,7 +304,7 @@ export function useCart() {
       } else {
         const clamped = clampToLimit(item, qty);
         item.quantity = clamped;
-        if (clamped < qty) warnMax(resolveEffectiveMax(item));
+        notifyLimitReached(item, qty, clamped);
       }
     }
   }

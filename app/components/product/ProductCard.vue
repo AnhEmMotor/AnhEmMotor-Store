@@ -255,8 +255,9 @@ const toggleCompare = (e) => {
       <img
         :src="useAssetUrl(currentImage)"
         :alt="product.name"
-        :fetchpriority="preload ? 'high' : 'auto'"
+        :fetchpriority="preload ? 'high' : 'low'"
         :loading="preload ? 'eager' : 'lazy'"
+        decoding="async"
         class="w-full h-full transition-transform duration-700"
         :class="isPlaceholderImage ? 'object-contain' : 'object-cover group-hover:scale-110'"
         @error="$event.target.src = '/assets/image/placeholder-product.webp'"
@@ -322,7 +323,10 @@ const toggleCompare = (e) => {
           <div class="variant-section__label">
             <span>
               Màu sắc
-              <span v-if="selectedColor" class="text-gray-900 ml-1">- {{ colorLabel(selectedColor, selectedVariantColors.indexOf(selectedColor)) }}</span>
+              <span v-if="selectedColor" class="text-gray-900 ml-1"
+                >-
+                {{ colorLabel(selectedColor, selectedVariantColors.indexOf(selectedColor)) }}</span
+              >
             </span>
           </div>
           <div class="variant-section__chips flex flex-wrap gap-2">

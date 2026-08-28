@@ -1,5 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { newsService } from '@/services/news.service';
+import homeService from '@/services/home.service';
+import voucherService from '@/services/voucher.service';
+import feedbackService from '@/services/feedback.service';
 
 const activeSubTab = ref('news');
 
@@ -10,67 +14,69 @@ const subTabs = [
   { id: 'feedback', label: 'Phản hồi', icon: 'fa6-solid:comment-dots' },
 ];
 
-const notifications = ref({
-  news: [
-    {
-      id: 1,
-      title: 'Khai trương chi nhánh mới tại Quận 7',
-      date: '2024-05-10',
-      content:
-        'AnhEm Motor hân hạnh thông báo khai trương chi nhánh mới với nhiều ưu đãi hấp dẫn...',
-      isRead: false,
-    },
-    {
-      id: 2,
-      title: 'Cập nhật chính sách bảo hành 2024',
-      date: '2024-05-01',
-      content:
-        'Chúng tôi đã cập nhật điều khoản bảo hành mới giúp khách hàng an tâm hơn khi sử dụng dịch vụ...',
-      isRead: true,
-    },
-  ],
-  promotions: [
-    {
-      id: 3,
-      title: 'Giảm 50% phí thay nhớt cuối tuần',
-      date: '2024-05-12',
-      content: 'Chương trình áp dụng cho tất cả các dòng xe tay ga và xe số tại toàn hệ thống...',
-      isRead: false,
-    },
-  ],
-  vouchers: [
-    {
-      id: 4,
-      title: 'Voucher giảm 500k mua xe mới',
-      expiry: '2024-06-30',
-      code: 'ANHEM500',
-      status: 'Còn hạn',
-    },
-    {
-      id: 5,
-      title: 'Miễn phí rửa xe 1 năm',
-      expiry: '2024-12-31',
-      code: 'FREEWASH',
-      status: 'Còn hạn',
-    },
-  ],
-  feedback: [
-    {
-      id: 6,
-      store: 'AnhEm Motor - Thủ Đức',
-      title: 'Phản hồi về lịch bảo dưỡng',
-      date: '2024-05-13',
-      content:
-        'Cảm ơn bạn đã đặt lịch, chuyên viên của chúng tôi sẽ đợi bạn vào lúc 14h ngày mai...',
-      isRead: false,
-    },
-  ],
-});
-
-function markAsRead(type, id) {
-  const item = notifications.value[type].find((n) => n.id === id);
-  if (item) item.isRead = true;
+function formatDate(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('vi-VN');
 }
+
+function getLatestReply(feedback) {
+  return [...(feedback.contact?.replies || [])]
+    .filter((reply) => !reply.isInternal)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]?.message;
+}
+
+const {
+  data: sourceData,
+  status,
+  refresh,
+} = await useAsyncData(
+  'profile-notifications',
+  async () => {
+    const [news, promotions, vouchers, feedback] = await Promise.all([
+      newsService.getLatestNews(),
+      homeService.getBanners('Promotion'),
+      voucherService.getPersonal(),
+      feedbackService.getMine(),
+    ]);
+
+    return { news, promotions, vouchers, feedback };
+  },
+  {
+    default: () => ({ news: [], promotions: [], vouchers: [], feedback: [] }),
+  }
+);
+
+const notifications = computed(() => ({
+  news: sourceData.value.news.map((item) => ({
+    id: item.id,
+    title: item.title,
+    date: formatDate(item.createdAt),
+    content: item.excerpt || item.content || 'Xem nội dung tin tức mới nhất từ AnhEm Motor.',
+  })),
+  promotions: sourceData.value.promotions.map((item) => ({
+    id: item.id,
+    title: item.title,
+    content: item.description || item.ctaLabel || 'Xem chương trình khuyến mãi đang áp dụng.',
+    link: item.ctaLink,
+  })),
+  vouchers: sourceData.value.vouchers.map((item) => ({
+    id: item.id,
+    title: item.name,
+    expiry: formatDate(item.validTo),
+    code: item.code,
+    status: new Date(item.validTo) >= new Date() ? 'Còn hạn' : 'Hết hạn',
+  })),
+  feedback: sourceData.value.feedback.map((item) => ({
+    id: item.id,
+    title: item.contact?.subject || `Phản hồi ${item.feedbackArea || ''}`.trim(),
+    date: formatDate(item.createdAt),
+    content: getLatestReply(item) || item.content,
+    status: item.status,
+  })),
+}));
+
+const isLoading = computed(() => status.value === 'pending');
 </script>
 
 <template>
@@ -92,15 +98,15 @@ function markAsRead(type, id) {
         >
           <Icon :name="tab.icon" />
           {{ tab.label }}
-          <span
-            v-if="notifications[tab.id]?.filter((n) => !n.isRead).length > 0"
-            class="w-2 h-2 rounded-full bg-white animate-pulse"
-          />
         </button>
       </div>
     </div>
 
-    <div class="p-6">
+    <div v-if="isLoading" class="flex justify-center py-20">
+      <Icon name="fa6-solid:spinner" class="animate-spin text-primary text-3xl" />
+    </div>
+
+    <div v-else class="p-6">
       <Transition name="fade" mode="out-in">
         <div :key="activeSubTab" class="space-y-3">
           <div v-if="activeSubTab !== 'vouchers'" class="space-y-3">
@@ -115,13 +121,10 @@ function markAsRead(type, id) {
             <div
               v-for="item in notifications[activeSubTab]"
               :key="item.id"
-              class="group p-4 rounded-md border transition-all hover:shadow-md"
-              :class="item.isRead ? 'bg-white border-gray-100' : 'bg-primary/5 border-primary/20'"
-              @click="markAsRead(activeSubTab, item.id)"
+              class="group p-4 rounded-md border border-gray-100 bg-white transition-all hover:shadow-md"
             >
               <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center gap-3">
-                  <div v-if="!item.isRead" class="w-2 h-2 rounded-full bg-primary" />
                   <h4 class="font-bold text-gray-900 group-hover:text-primary transition-colors">
                     {{ item.title }}
                   </h4>
@@ -144,6 +147,20 @@ function markAsRead(type, id) {
           </div>
 
           <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              v-if="notifications.vouchers.length === 0"
+              class="md:col-span-2 flex flex-col items-center justify-center py-20 text-gray-400"
+            >
+              <Icon name="ph:ticket-bold" class="text-6xl mb-4 opacity-20" />
+              <p>Bạn chưa có voucher nào đang khả dụng</p>
+              <button
+                class="mt-4 text-sm font-semibold text-primary hover:underline"
+                @click="refresh"
+              >
+                Tải lại
+              </button>
+            </div>
+
             <div
               v-for="voucher in notifications.vouchers"
               :key="voucher.id"
@@ -218,4 +235,3 @@ function markAsRead(type, id) {
   }
 }
 </style>
-

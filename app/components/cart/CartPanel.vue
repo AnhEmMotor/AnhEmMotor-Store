@@ -44,55 +44,81 @@
           <div
             v-for="(item, index) in cartItems"
             :key="item.id"
-            class="flex items-center gap-3 mb-4 pb-4 border-b last:border-b-0 transition-opacity duration-300"
+            class="mb-4 pb-4 border-b last:border-b-0 transition-opacity duration-300"
             :class="{ 'opacity-60': item.loading }"
           >
-            <div class="relative">
-              <img
-                :src="item.image"
-                :alt="item.name"
-                class="w-16 h-16 object-contain rounded-lg border p-1 bg-gray-50"
-                @error="(e) => (e.target.src = '/assets/image/placeholder-product.webp')"
-              />
-              <div
-                v-if="item.loading"
-                class="absolute inset-0 flex items-center justify-center bg-white/40"
-              >
-                <Icon name="fa6-solid:circle-notch" class="animate-spin text-red-500 text-xs" />
-              </div>
-            </div>
-            <div class="flex-1">
-              <div class="font-semibold text-sm text-gray-800">
-                {{ item.name }}
-              </div>
-              <div class="text-[#de0000] font-semibold text-sm">
-                {{ formatCurrency(item.price) }} VNĐ
-              </div>
-              <div class="flex items-center gap-2 mt-2">
-                <NumberStepper
-                  :model-value="item.quantity"
-                  :min="0"
-                  :max="999999999"
-                  :disabled="isChecking"
-                  @increment="$emit('updateQuantity', { index, change: 1 })"
-                  @decrement="$emit('updateQuantity', { index, change: -1 })"
+            <div class="flex items-start gap-3">
+              <div class="relative shrink-0">
+                <img
+                  :src="item.image"
+                  :alt="item.name"
+                  class="w-16 h-16 object-contain rounded-lg border p-1 bg-gray-50"
+                  @error="(e) => (e.target.src = '/assets/image/placeholder-product.webp')"
                 />
-                <span
-                  v-if="item.effectiveMax != null"
-                  class="text-[10px] font-semibold text-gray-500"
+                <div
+                  v-if="item.loading"
+                  class="absolute inset-0 flex items-center justify-center bg-white/40"
                 >
-                  Tối đa {{ item.effectiveMax }} sản phẩm
-                </span>
+                  <Icon name="fa6-solid:circle-notch" class="animate-spin text-red-500 text-xs" />
+                </div>
               </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-semibold text-sm text-gray-800 line-clamp-2">
+                  {{ item.name }}
+                </div>
+                <div class="text-[#de0000] font-semibold text-sm mt-0.5">
+                  {{ formatCurrency(item.price) }} VNĐ
+                </div>
+
+                <div
+                  v-if="
+                    typeof item.stock === 'number' && item.quantity > item.stock && item.stock > 0
+                  "
+                  class="mt-1 flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 w-fit"
+                >
+                  <Icon
+                    name="fa6-solid:triangle-exclamation"
+                    class="text-amber-500 text-[10px] shrink-0"
+                  />
+                  <span>Kho chỉ còn {{ item.stock }} sản phẩm</span>
+                </div>
+                <div
+                  v-else-if="typeof item.stock === 'number' && item.stock <= 0"
+                  class="mt-1 flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 w-fit"
+                >
+                  <Icon
+                    name="fa6-solid:triangle-exclamation"
+                    class="text-amber-500 text-[10px] shrink-0"
+                  />
+                  <span>Tạm thời hết hàng</span>
+                </div>
+
+                <div class="flex items-center gap-2 mt-2">
+                  <NumberStepper
+                    :model-value="item.quantity"
+                    :min="0"
+                    :max="999999999"
+                    :disabled="isChecking"
+                    @increment="$emit('updateQuantity', { index, change: 1 })"
+                    @decrement="$emit('updateQuantity', { index, change: -1 })"
+                  />
+                  <span
+                    v-if="item.effectiveMax != null"
+                    class="text-[10px] font-semibold text-gray-500"
+                  >
+                    Tối đa {{ item.effectiveMax }} sản phẩm
+                  </span>
+                </div>
+              </div>
+              <button
+                class="text-red-500 hover:bg-red-100 rounded p-2 disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                :disabled="isChecking"
+                aria-label="Xóa sản phẩm khỏi giỏ hàng"
+                @click="$emit('removeItem', index)"
+              >
+                <Icon name="fa6-solid:trash-can" />
+              </button>
             </div>
-            <button
-              class="text-red-500 hover:bg-red-100 rounded p-2 disabled:opacity-30 disabled:cursor-not-allowed"
-              :disabled="isChecking"
-              aria-label="Xóa sản phẩm khỏi giỏ hàng"
-              @click="$emit('removeItem', index)"
-            >
-              <Icon name="fa6-solid:trash-can" />
-            </button>
           </div>
         </div>
       </div>
@@ -102,40 +128,59 @@
           <span class="font-semibold text-lg">Tổng cộng:</span>
           <span class="font-bold text-honda-red text-xl">{{ formatCurrency(cartTotal) }} VNĐ</span>
         </div>
-        <BaseButton
-          v-if="auth.isLoggedIn"
-          id="checkout-button"
-          :disabled="cartItems.length === 0"
-          aria-label="Tiến hành đặt hàng và thanh toán"
-          class="!w-full"
-          @click="handleCheckout"
+
+        <div
+          v-if="hasInsufficientStock"
+          class="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-2 text-amber-800"
         >
-          <Icon name="fa6-solid:credit-card" class="mr-2" />
-          Tiến hành thanh toán
-        </BaseButton>
-        <BaseButton
-          v-if="!auth.isLoggedIn"
-          id="checkout-button"
-          :disabled="cartItems.length === 0"
-          aria-label="Đăng nhập để tiếp tục thanh toán"
-          class="!w-full"
-          @click="onCheckout"
-        >
-          <Icon name="fa6-solid:right-to-bracket" class="mr-2" />
-          Đăng nhập để thanh toán
-        </BaseButton>
+          <Icon
+            name="fa6-solid:triangle-exclamation"
+            class="text-amber-500 text-sm shrink-0 mt-0.5"
+          />
+          <div class="flex-1 text-xs">
+            <p class="font-bold">Chưa đủ tồn kho để thanh toán</p>
+            <p class="text-[11px] text-amber-700 mt-0.5">
+              Vui lòng giảm số lượng hoặc xóa bớt sản phẩm hết hàng để tiếp tục thanh toán.
+            </p>
+          </div>
+        </div>
+
+        <template v-else>
+          <BaseButton
+            v-if="auth.isLoggedIn"
+            id="checkout-button"
+            :disabled="cartItems.length === 0"
+            aria-label="Tiến hành đặt hàng và thanh toán"
+            class="!w-full"
+            @click="handleCheckout"
+          >
+            <Icon name="fa6-solid:credit-card" class="mr-2" />
+            Tiến hành thanh toán
+          </BaseButton>
+          <BaseButton
+            v-if="!auth.isLoggedIn"
+            id="checkout-button"
+            :disabled="cartItems.length === 0"
+            aria-label="Đăng nhập để tiếp tục thanh toán"
+            class="!w-full"
+            @click="onCheckout"
+          >
+            <Icon name="fa6-solid:right-to-bracket" class="mr-2" />
+            Đăng nhập để thanh toán
+          </BaseButton>
+        </template>
       </div>
     </div>
   </teleport>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import BaseButton from '../ui/BaseButton.vue';
 import NumberStepper from '../ui/NumberStepper.vue';
 import { formatCurrency } from '~/utils/currency';
 
-const { isOpen, cartItems, cartTotal, isChecking } = defineProps({
+const props = defineProps({
   isOpen: Boolean,
   cartItems: {
     type: Array,
@@ -153,10 +198,16 @@ const { isOpen, cartItems, cartTotal, isChecking } = defineProps({
 const auth = useAuthStore();
 const emit = defineEmits(['close', 'updateQuantity', 'removeItem']);
 
-const shouldRender = ref(isOpen);
+const hasInsufficientStock = computed(() =>
+  (props.cartItems || []).some(
+    (item) => typeof item.stock === 'number' && (item.stock <= 0 || item.quantity > item.stock)
+  )
+);
+
+const shouldRender = ref(props.isOpen);
 let closeTimer = null;
 watch(
-  () => isOpen,
+  () => props.isOpen,
   (val) => {
     if (val) {
       if (closeTimer) {

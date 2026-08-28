@@ -1,4 +1,12 @@
 export const voucherService = {
+  async getPersonal() {
+    try {
+      return await voucherRepository.getPersonal();
+    } catch {
+      return [];
+    }
+  },
+
   async getByCode(code) {
     const trimmed = String(code || '')
       .trim()

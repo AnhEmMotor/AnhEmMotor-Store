@@ -115,11 +115,6 @@ const stats = [
   { value: '20k+', label: 'Lượt phục vụ' },
   { value: '100%', label: 'Chính hãng' },
 ];
-
-const scrollToServices = () => {
-  const el = document.getElementById('services-grid');
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-};
 </script>
 
 <style scoped>

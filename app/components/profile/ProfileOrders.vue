@@ -152,6 +152,7 @@ const confirmCancel = async () => {
 
 const isCancellable = (statusId) => orderStore.cancellableStatuses.includes(statusId);
 const canEdit = (statusId) => {
+  if (!statusId) return false;
   if (!orderStore.lockedStatuses) return true;
   const deliveryLocked = orderStore.lockedStatuses.deliveryInfo?.includes(statusId);
   const notesLocked = orderStore.lockedStatuses.notes?.includes(statusId);
@@ -198,8 +199,16 @@ const canEdit = (statusId) => {
         :order="selectedOrder"
         :errors="editErrors"
         :is-submitting="isSubmittingEdit"
-        :locked-delivery="orderStore.lockedStatuses?.deliveryInfo?.includes(selectedOrder?.status)"
-        :locked-notes="orderStore.lockedStatuses?.notes?.includes(selectedOrder?.status)"
+        :locked-delivery="
+          orderStore.lockedStatuses?.deliveryInfo?.includes(
+            selectedOrder?.statusId || selectedOrder?.status
+          )
+        "
+        :locked-notes="
+          orderStore.lockedStatuses?.notes?.includes(
+            selectedOrder?.statusId || selectedOrder?.status
+          )
+        "
         @close="isEditing = false"
         @save="handleUpdateOrder"
       />

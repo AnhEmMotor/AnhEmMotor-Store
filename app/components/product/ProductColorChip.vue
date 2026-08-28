@@ -4,13 +4,13 @@ import { computed } from 'vue';
 const props = defineProps({
   label: { type: String, required: true },
   selected: { type: Boolean, default: false },
-  variant: { type: String, default: 'pill' }, // 'pill' or 'circle'
+  variant: { type: String, default: 'pill' },
 });
 
 defineEmits(['select']);
 
 const bgStyle = computed(() => ({
-  background: getColorBackground(props.label)
+  background: getColorBackground(props.label),
 }));
 </script>
 
@@ -20,16 +20,14 @@ const bgStyle = computed(() => ({
     type="button"
     class="relative w-6 h-6 rounded-full border border-gray-200 transition-all flex items-center justify-center shrink-0"
     :class="
-      selected
-        ? 'ring-1 ring-red-600 ring-offset-2 border-transparent'
-        : 'hover:border-gray-400'
+      selected ? 'ring-1 ring-red-600 ring-offset-2 border-transparent' : 'hover:border-gray-400'
     "
     :aria-pressed="selected"
     :aria-label="label"
     :title="label"
     @click.prevent.stop="$emit('select')"
   >
-    <span class="w-full h-full rounded-full border border-black/10" :style="bgStyle"></span>
+    <span class="w-full h-full rounded-full border border-black/10" :style="bgStyle" />
   </button>
 
   <button

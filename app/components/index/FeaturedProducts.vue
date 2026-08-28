@@ -104,9 +104,10 @@ const handleViewDetail = (product) => {
 
           <template v-else>
             <ProductCard
-              v-for="product in products"
+              v-for="(product, index) in products"
               :key="product.id"
               :product="product"
+              :preload="index < 4"
               show-action
               @click="handleViewDetail(product)"
             />

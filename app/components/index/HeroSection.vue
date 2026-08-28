@@ -78,6 +78,33 @@ const activeBanner = computed(() => {
   return banners.value.length > 0 ? banners.value[currentBannerIndex.value] : null;
 });
 
+const firstBanner = computed(() => banners.value?.[0]);
+
+useHead(() => {
+  if (!firstBanner.value) return {};
+  const desktopImg =
+    firstBanner.value.desktopImageUrl || '/assets/image/index/index-banner-bg.webp';
+  const mobileImg = firstBanner.value.mobileImageUrl || desktopImg;
+  return {
+    link: [
+      {
+        rel: 'preload',
+        as: 'image',
+        href: desktopImg,
+        media: '(min-width: 768px)',
+        fetchpriority: 'high',
+      },
+      {
+        rel: 'preload',
+        as: 'image',
+        href: mobileImg,
+        media: '(max-width: 767px)',
+        fetchpriority: 'high',
+      },
+    ],
+  };
+});
+
 const nextBanner = () => {
   if (banners.value.length <= 1) return;
   slideDirection.value = 'next';
@@ -163,6 +190,9 @@ onUnmounted(() => {
           <img
             :src="banner.desktopImageUrl || '/assets/image/index/index-banner-bg.webp'"
             alt="Banner"
+            :loading="index === 0 ? 'eager' : 'lazy'"
+            :fetchpriority="index === 0 ? 'high' : 'low'"
+            decoding="async"
             class="w-full h-full object-cover"
           />
         </picture>
@@ -176,6 +206,9 @@ onUnmounted(() => {
         <img
           src="/assets/image/index/index-banner-bg.webp"
           alt="Banner"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
           class="w-full h-full object-cover"
         />
       </picture>

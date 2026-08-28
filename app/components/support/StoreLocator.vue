@@ -146,8 +146,6 @@ const store = {
   phone: '0901.234.567',
   type: 'hq',
   mapUrl:
-    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.892953284566!2d106.8242485!3d10.9639534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174df44a7b74409%3A0xc3411b0e00f9f31b!2sV%C3%B5%20Th%E1%BB%8B%20S%C3%A1u%2C%20Bi%C3%AAn%20H%C3%B2a%2C%20%C4%90%E1%BB%93ng%20Nai!5e0!3m2!1svi!2s!4v1715421500000!5m2!1svi!2s',
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.15452442564!2d106.8336939!3d10.93762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174df8850f50511%3A0x852d023377c2fbe1!2sFPT%20PolySchool%20%C4%90%C3%B2ng%20Nai%20(%C6%A1%20s%E1%BB%9F%202)!5e0!3m2!1svn!2s!4v1716450000000!5m2!1svn!2s',
 };
 </script>
-
-

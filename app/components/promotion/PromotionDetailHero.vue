@@ -1,9 +1,23 @@
 <script setup>
-defineProps({
+const props = defineProps({
   promotion: {
     type: Object,
     required: true,
   },
+});
+
+useHead(() => {
+  if (!props.promotion?.image) return {};
+  return {
+    link: [
+      {
+        rel: 'preload',
+        as: 'image',
+        href: props.promotion.image,
+        fetchpriority: 'high',
+      },
+    ],
+  };
 });
 
 const calculateTimeLeft = (endDate) => {
@@ -30,6 +44,9 @@ onMounted(() => {
         :src="promotion.image"
         class="w-full h-full object-cover opacity-40 scale-105"
         :alt="promotion.title"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
       />
       <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/60 to-transparent" />
       <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent" />
