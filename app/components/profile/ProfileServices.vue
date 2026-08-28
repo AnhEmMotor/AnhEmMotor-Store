@@ -1,89 +1,19 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
+import maintenanceService from '@/services/maintenance.service';
 
-const services = ref([
-  {
-    id: 1,
-    serviceName: 'Bảo dưỡng định kỳ 1000km',
-    date: '2024-05-10',
-    time: '09:00',
-    status: 'Completed',
-    location: 'AnhEm Motor - Quận 1',
-    technician: 'Nguyễn Văn A',
-    cost: 250000,
-    icon: 'ph:wrench-fill',
-  },
-  {
-    id: 2,
-    serviceName: 'Thay lốp Michelin City Grip 2',
-    date: '2024-05-25',
-    time: '14:30',
-    status: 'Confirmed',
-    location: 'AnhEm Motor - Quận 7',
-    technician: 'Trần Văn B',
-    cost: 1200000,
-    icon: 'ph:tire-fill',
-  },
-  {
-    id: 3,
-    serviceName: 'Kiểm tra hệ thống điện',
-    date: '2024-06-05',
-    time: '10:00',
-    status: 'Pending',
-    location: 'AnhEm Motor - Quận 1',
-    technician: 'Chưa phân công',
-    cost: 0,
-    icon: 'ph:lightning-fill',
-  },
-  {
-    id: 4,
-    serviceName: 'Thay nhớt máy và nhớt hộp số',
-    date: '2024-04-12',
-    time: '08:30',
-    status: 'Completed',
-    location: 'AnhEm Motor - Quận 3',
-    technician: 'Lê Văn C',
-    cost: 350000,
-    icon: 'ph:drop-fill',
-  },
-  {
-    id: 5,
-    serviceName: 'Bảo dưỡng nồi tay ga',
-    date: '2024-03-20',
-    time: '13:00',
-    status: 'Completed',
-    location: 'AnhEm Motor - Quận 1',
-    technician: 'Phạm Văn D',
-    cost: 450000,
-    icon: 'ph:gear-fill',
-  },
-  {
-    id: 6,
-    serviceName: 'Sơn dặm vết xước',
-    date: '2024-02-15',
-    time: '15:00',
-    status: 'Completed',
-    location: 'AnhEm Motor - Quận 7',
-    technician: 'Hoàng Văn E',
-    cost: 800000,
-    icon: 'ph:paint-brush-fill',
-  },
-  {
-    id: 7,
-    serviceName: 'Thay bugi và lọc gió',
-    date: '2024-01-10',
-    time: '14:00',
-    status: 'Completed',
-    location: 'AnhEm Motor - Quận 1',
-    technician: 'Trần Văn F',
-    cost: 250000,
-    icon: 'ph:engine-fill',
-  },
-]);
+const {
+  data: services,
+  status,
+  refresh,
+} = await useAsyncData('profile-services', () => maintenanceService.getPersonalRepairs(), {
+  default: () => [],
+});
 
 const activeFilter = ref('All');
 const currentPage = ref(1);
 const itemsPerPage = 3;
+const isLoading = computed(() => status.value === 'pending');
 
 watch(activeFilter, () => {
   currentPage.value = 1;
@@ -91,8 +21,6 @@ watch(activeFilter, () => {
 
 const filters = [
   { id: 'All', label: 'Tất cả dịch vụ', icon: 'ph:layout-fill' },
-  { id: 'Pending', label: 'Đã đặt lịch', icon: 'ph:calendar-plus-fill' },
-  { id: 'Confirmed', label: 'Xác nhận', icon: 'ph:check-circle-fill' },
   {
     id: 'Completed',
     label: 'Lịch sử dịch vụ',
@@ -187,7 +115,13 @@ const formatPrice = (price) => {
       </button>
     </div>
 
-    <div v-if="filteredServices.length > 0" class="grid grid-cols-1 gap-4">
+    <div v-if="isLoading" class="bg-white rounded-lg p-16 shadow-sm border border-gray-100">
+      <div class="flex justify-center">
+        <Icon name="fa6-solid:spinner" class="animate-spin text-primary text-3xl" />
+      </div>
+    </div>
+
+    <div v-else-if="filteredServices.length > 0" class="grid grid-cols-1 gap-4">
       <div
         v-for="service in paginatedServices"
         :key="service.id"
@@ -216,8 +150,8 @@ const formatPrice = (price) => {
                   {{ service.time }}
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <Icon name="ph:map-pin-fill" class="text-primary/60" />
-                  {{ service.location }}
+                  <Icon name="ph:motorcycle-fill" class="text-primary/60" />
+                  {{ service.vehicle }}
                 </div>
               </div>
             </div>
@@ -307,13 +241,17 @@ const formatPrice = (price) => {
             : 'Bạn không có dịch vụ nào ở trạng thái này.'
         }}
       </p>
-      <NuxtLink
-        v-if="activeFilter === 'All'"
-        to="/service"
-        class="px-8 py-3 bg-primary text-white text-[11px] font-black rounded-md hover:shadow-lg hover:shadow-primary/20 transition-all"
-      >
-        Đặt lịch dịch vụ ngay
-      </NuxtLink>
+      <template v-if="activeFilter === 'All'">
+        <NuxtLink
+          to="/service"
+          class="px-8 py-3 bg-primary text-white text-[11px] font-black rounded-md hover:shadow-lg hover:shadow-primary/20 transition-all"
+        >
+          Đặt lịch dịch vụ ngay
+        </NuxtLink>
+        <button class="mt-3 text-xs font-bold text-primary hover:underline" @click="refresh">
+          Tải lại dữ liệu
+        </button>
+      </template>
       <button
         v-else
         class="px-8 py-3 bg-gray-900 text-white text-[11px] font-black rounded-md hover:shadow-lg transition-all"
@@ -324,4 +262,3 @@ const formatPrice = (price) => {
     </div>
   </div>
 </template>
-
