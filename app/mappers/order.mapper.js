@@ -162,7 +162,7 @@ const orderMapper = {
     const depositType = 'percentage';
     const fixedDepositAmount = 0;
 
-    const requiresDeposit = orderValueExceeds > 0 && subtotal > orderValueExceeds;
+    const requiresDeposit = orderValueExceeds > 0 && total > orderValueExceeds;
 
     let depositAmount = 0;
     let displayRatio = depositRatio;
@@ -177,8 +177,8 @@ const orderMapper = {
         });
         if (vehicleCount > 0) {
           depositAmount = fixedDepositAmount * vehicleCount;
-          if (subtotal > 0) {
-            displayRatio = Math.round((depositAmount / subtotal) * 100);
+          if (total > 0) {
+            displayRatio = Math.round((depositAmount / total) * 100);
           } else {
             displayRatio = 0;
           }
@@ -187,7 +187,7 @@ const orderMapper = {
           displayRatio = 0;
         }
       } else {
-        depositAmount = Math.round((subtotal * depositRatio) / 100);
+        depositAmount = Math.round((total * depositRatio) / 100);
       }
     }
 
