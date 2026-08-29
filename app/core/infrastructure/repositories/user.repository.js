@@ -1,19 +1,19 @@
 export const userRepository = {
   async getUserProfile() {
     const axios = useAxios();
-    const response = await axios.get('/api/v1/User/profile');
+    const response = await axios.get('/api/v1/User/me');
     return response.data;
   },
 
   async updateProfile(profileData) {
     const axios = useAxios();
-    const response = await axios.put('/api/v1/User/profile', profileData);
+    const response = await axios.put('/api/v1/User/me', profileData);
     return response.data;
   },
 
   async changePassword(passwordData) {
     const axios = useAxios();
-    const response = await axios.post('/api/v1/auth/change-password', passwordData);
+    const response = await axios.post('/api/v1/User/change-password', passwordData);
     return response.data;
   },
 

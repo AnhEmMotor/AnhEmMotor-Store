@@ -677,476 +677,401 @@ const bookTestDrive = () => {
           </div>
         </div>
 
-        <div v-if="detail.product.description" class="space-y-8 relative py-12">
-          <div class="text-center space-y-4 reveal-up">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 rounded-full">
-              <span class="text-[8px] font-black text-primary uppercase tracking-[0.3em]"
-                >Chi tiết</span
-              >
-            </div>
-            <h2
-              class="text-3xl lg:text-5xl font-black text-gray-900 uppercase tracking-tight leading-[1.1]"
-            >
-              Nội dung <span class="text-primary">Sản phẩm</span>
-            </h2>
-          </div>
-
-          <div
-            class="max-w-4xl mx-auto px-4 html-content text-gray-700 text-base md:text-lg leading-relaxed"
+        <div class="product-story overflow-hidden rounded-[2rem] lg:rounded-[3rem]">
+          <section
+            v-if="detail.product.description"
+            id="overview"
+            class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 px-6 py-12 sm:px-10 lg:px-16 lg:py-20"
           >
-            <div v-html="detail.product.description" />
-          </div>
-        </div>
-
-        <div v-if="highlights.length > 0" class="space-y-24 lg:space-y-32 relative">
-          <div
-            class="absolute inset-0 bg-gradient-to-b from-gray-50/30 via-white to-gray-50/30 -z-10 rounded-[3rem]"
-          />
-
-          <div class="text-center space-y-4 reveal-up">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 rounded-full">
-              <div class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-              <span class="text-[8px] font-black text-primary uppercase tracking-[0.3em]"
-                >Innovation</span
-              >
-            </div>
-            <h2
-              class="text-4xl lg:text-6xl font-black text-gray-900 uppercase tracking-tight leading-[1.1]"
-            >
-              Đột phá <span class="text-primary">Kỹ thuật</span>
-            </h2>
-          </div>
-
-          <div
-            v-for="(hl, idx) in highlights"
-            :key="idx"
-            class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-center reveal-up px-4 lg:px-12"
-          >
-            <div :class="['lg:col-span-7 relative group', idx % 2 !== 0 ? 'lg:order-2' : '']">
+            <div class="lg:col-span-5 lg:sticky lg:top-32 lg:self-start space-y-8">
+              <div class="section-kicker">
+                <span>01</span>
+                Tổng quan
+              </div>
+              <div class="space-y-5">
+                <h2 class="section-title">
+                  Một thiết kế.<br />
+                  <span>Một tuyên ngôn.</span>
+                </h2>
+                <p class="max-w-sm text-sm font-medium leading-7 text-slate-500">
+                  Khám phá câu chuyện, thiết kế và trải nghiệm tạo nên
+                  {{ detail.product.name }}.
+                </p>
+              </div>
               <div
-                class="relative rounded-[2.5rem] overflow-hidden shadow-xl border border-gray-100 transition-transform duration-700 group-hover:scale-[1.01]"
+                class="hidden lg:flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.22em] text-slate-400"
               >
-                <img
-                  :src="hl.image"
-                  :alt="hl.title"
-                  class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                  loading="lazy"
-                />
+                <span class="h-px w-10 bg-primary" />
+                Cuộn để khám phá
               </div>
             </div>
-            <div :class="['lg:col-span-5 space-y-6', idx % 2 !== 0 ? 'lg:text-right' : '']">
-              <div class="space-y-3">
-                <h3
-                  class="text-3xl lg:text-4xl font-black text-gray-900 leading-[1.15] uppercase tracking-tight"
-                >
-                  {{ hl.title }}
-                </h3>
+
+            <div class="lg:col-span-7">
+              <div class="story-copy html-content">
+                <div v-html="detail.product.description" />
               </div>
-              <p class="text-gray-500 font-medium leading-relaxed text-base">
-                {{ hl.description }}
+            </div>
+          </section>
+
+          <section
+            v-if="highlights.length > 0"
+            id="highlights"
+            class="border-t border-slate-200/70 px-6 py-12 sm:px-10 lg:px-16 lg:py-20"
+          >
+            <div
+              class="mb-10 flex flex-col gap-5 lg:mb-14 lg:flex-row lg:items-end lg:justify-between"
+            >
+              <div class="space-y-4">
+                <div class="section-kicker">
+                  <span>02</span>
+                  Điểm nổi bật
+                </div>
+                <h2 class="section-title">
+                  Công nghệ tạo nên<br />
+                  <span>khác biệt.</span>
+                </h2>
+              </div>
+              <p class="max-w-md text-sm font-medium leading-7 text-slate-500">
+                Mỗi chi tiết đều được hoàn thiện để hành trình hàng ngày trở nên tiện nghi, an toàn
+                và đầy cảm hứng hơn.
               </p>
-              <div :class="['flex', idx % 2 !== 0 ? 'justify-end' : '']">
-                <button
-                  class="px-8 py-3.5 bg-gray-900 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-primary transition-all"
-                >
-                  Khám phá
-                </button>
-              </div>
             </div>
-          </div>
-        </div>
 
-        <div class="space-y-20 relative">
-          <div class="text-center space-y-6 reveal-up">
-            <div class="flex justify-center">
-              <span
-                class="px-6 py-2 bg-dark-900 text-primary text-[10px] font-black uppercase tracking-[0.4em] rounded-full border border-primary/20 shadow-[0_0_20px_rgba(227,24,55,0.1)]"
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+              <article
+                v-for="(hl, idx) in highlights"
+                :key="idx"
+                class="highlight-card group"
+                :class="idx === 0 ? 'lg:col-span-2 lg:grid lg:grid-cols-2' : ''"
               >
-                Comparison Board
-              </span>
-            </div>
-            <h2
-              class="text-5xl lg:text-7xl font-black text-gray-900 uppercase tracking-tighter leading-none"
-            >
-              Đẳng cấp <span class="text-primary">Khác biệt</span>
-            </h2>
-            <p class="text-gray-400 font-bold text-xs uppercase tracking-widest max-w-lg mx-auto">
-              Chúng tôi không chỉ bán xe, chúng tôi trao gửi sự an tâm tuyệt đối và đặc quyền tối
-              thượng
-            </p>
-          </div>
-
-          <div class="max-w-6xl mx-auto relative px-4">
-            <div
-              class="absolute -top-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10 animate-pulse"
-            />
-            <div
-              class="absolute -bottom-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-[100px] -z-10"
-            />
-
-            <div
-              class="grid grid-cols-1 lg:grid-cols-12 gap-0 rounded-[3.5rem] overflow-hidden border border-gray-100 shadow-2xl bg-white/50 backdrop-blur-xl"
-            >
-              <div class="lg:col-span-4 p-8 lg:p-12 space-y-8 bg-gray-50/50">
-                <div class="space-y-2 pt-4">
-                  <h3 class="text-2xl font-black text-gray-900 uppercase tracking-tighter">
-                    ĐẶC QUYỀN <span class="text-primary">SỞ HỮU</span>
-                  </h3>
-                  <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                    Dịch vụ chuẩn 5 sao
-                  </p>
+                <div class="highlight-media" :class="idx === 0 ? 'lg:min-h-[460px]' : ''">
+                  <img :src="hl.image" :alt="hl.title" loading="lazy" />
+                  <div class="highlight-index">{{ String(idx + 1).padStart(2, '0') }}</div>
                 </div>
-                <div class="space-y-12">
-                  <div
-                    v-for="feat in [
-                      'Thời gian Bảo hành',
-                      'Cứu hộ tận nơi',
-                      'Hỗ trợ kỹ thuật',
-                      'Không gian chờ',
-                      'Thủ tục Trả góp',
-                    ]"
-                    :key="feat"
-                    class="h-10 flex items-center text-xs font-black text-gray-700 uppercase tracking-widest border-b border-gray-100 pb-2"
-                  >
-                    {{ feat }}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                class="lg:col-span-4 bg-dark-900 p-8 lg:p-12 relative overflow-hidden group shadow-[0_0_50px_rgba(0,0,0,0.3)] z-10 scale-105 lg:-my-6 lg:rounded-[3rem]"
-              >
-                <div
-                  class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] group-hover:bg-primary/20 transition-all duration-700"
-                />
-                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-primary/5 blur-[80px]" />
-
-                <div class="relative z-20 space-y-8">
-                  <div class="text-center space-y-3 pb-4">
+                <div class="flex flex-col justify-between gap-8 p-7 sm:p-9 lg:p-10">
+                  <div class="space-y-4">
                     <div
-                      class="inline-block px-3 py-1 bg-primary text-white text-[8px] font-black uppercase tracking-[0.2em] rounded-lg shadow-glow-sm"
+                      class="flex items-center gap-3 text-[9px] font-black uppercase tracking-[0.22em] text-primary"
                     >
-                      Recommended
+                      <span class="h-px w-8 bg-primary" />
+                      Công nghệ nổi bật
                     </div>
-                    <div class="text-2xl font-black text-white uppercase tracking-tighter">
-                      ANHEM MOTOR
-                    </div>
-                  </div>
-
-                  <div class="space-y-12 text-center">
-                    <div
-                      v-for="(v, i) in [
-                        '05 Năm',
-                        '24/7 Toàn quốc',
-                        'Chuyên gia riêng',
-                        'VIP Lounge',
-                        'Dưới 15 phút',
-                      ]"
-                      :key="i"
-                      class="h-10 flex flex-col items-center justify-center gap-1"
+                    <h3
+                      class="text-2xl font-black uppercase leading-tight tracking-[-0.04em] text-slate-950 lg:text-3xl"
                     >
-                      <div class="flex items-center gap-2">
-                        <Icon name="fa6-solid:shield-check" class="text-primary text-sm" />
-                        <span class="text-xs font-black text-white uppercase tracking-wider">{{
-                          v
-                        }}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="pt-8 text-center">
-                    <button
-                      class="w-full py-4 bg-gradient-premium text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl shadow-glow hover:scale-105 transition-all"
-                    >
-                      Trở thành hội viên
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="lg:col-span-4 p-8 lg:p-12 space-y-8 bg-white/30 text-center">
-                <div class="space-y-2 pt-4 opacity-50">
-                  <h3 class="text-2xl font-black text-gray-400 uppercase tracking-tighter">
-                    PHỔ THÔNG
-                  </h3>
-                  <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">
-                    Tiêu chuẩn thị trường
-                  </p>
-                </div>
-
-                <div class="space-y-12 opacity-40">
-                  <div
-                    v-for="(v, i) in [
-                      '03 Năm',
-                      'Giờ hành chính',
-                      'Tổng đài viên',
-                      'Khu vực chung',
-                      '30-60 phút',
-                    ]"
-                    :key="i"
-                    class="h-10 flex flex-col items-center justify-center gap-1"
-                  >
-                    <div class="flex items-center gap-2">
-                      <Icon name="fa6-solid:circle-info" class="text-gray-400 text-xs" />
-                      <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">{{
-                        v
-                      }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-16">
-          <div class="text-center space-y-4">
-            <div class="flex justify-center items-center gap-1 text-yellow-400">
-              <Icon v-for="i in 5" :key="i" name="fa6-solid:star" class="text-lg" />
-            </div>
-            <h2
-              class="text-4xl lg:text-6xl font-black text-gray-900 uppercase tracking-tighter leading-none"
-            >
-              CỘNG ĐỒNG <span class="text-primary">ANHEM MOTOR</span>
-            </h2>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-            <div
-              v-for="rv in [
-                {
-                  n: 'Lê Tuấn Anh',
-                  t: 'Winner X V3',
-                  c: 'Xe vận hành bốc, tư vấn chuyên nghiệp. Lấy xe trong 30p!',
-                },
-                {
-                  n: 'Nguyễn Quang',
-                  t: 'Exciter 155',
-                  c: 'Bảo hành tuyệt vời, hỗ trợ cứu hộ nhanh chóng. Rất tin tưởng.',
-                },
-                {
-                  n: 'Hoàng Nam',
-                  t: 'Vario 160',
-                  c: 'Ưu đãi hội viên rất tốt, thường xuyên có quà tặng. 10 điểm!',
-                },
-              ]"
-              :key="rv.n"
-              class="p-8 bg-white rounded-[2.5rem] border border-gray-100 shadow-lg space-y-6 hover:-translate-y-2 transition-all"
-            >
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-14 h-14 rounded-2xl bg-gradient-premium flex items-center justify-center text-white font-black text-xl shadow-lg"
-                >
-                  {{ rv.n[0] }}
-                </div>
-                <div class="space-y-0.5">
-                  <div class="font-black text-gray-900 text-base">
-                    {{ rv.n }}
-                  </div>
-                  <div class="flex items-center gap-1.5">
-                    <Icon name="fa6-solid:circle-check" class="text-green-500 text-[10px]" />
-                    <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest"
-                      >Verified Buyer</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <p class="text-gray-600 font-bold leading-relaxed text-base">"{{ rv.c }}"</p>
-              <div class="flex items-center justify-between pt-4 border-t border-gray-50">
-                <div class="text-[9px] font-black text-primary uppercase tracking-[0.2em]">
-                  {{ rv.t }}
-                </div>
-                <div class="flex items-center gap-1 text-yellow-400">
-                  <Icon v-for="i in 5" :key="i" name="fa6-solid:star" class="text-[8px]" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="relative rounded-[3.5rem] overflow-hidden bg-dark-900 py-16 lg:py-24 shadow-2xl mx-4 lg:mx-0 group border border-white/5"
-        >
-          <div
-            class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"
-          />
-          <div
-            class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-[120px]"
-          />
-
-          <div
-            class="relative z-10 max-w-6xl mx-auto px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-          >
-            <div class="space-y-8 reveal-up">
-              <div
-                class="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 rounded-full border border-primary/20"
-              >
-                <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-                <span class="text-[9px] font-black text-primary uppercase tracking-[0.3em]"
-                  >Cơ hội sở hữu cuối cùng</span
-                >
-              </div>
-              <h2
-                class="text-5xl lg:text-7xl font-black text-white leading-[1.1] uppercase tracking-tight"
-              >
-                Đừng bỏ lỡ<br /><span class="text-primary drop-shadow-lg">Chiến mã</span>
-              </h2>
-              <p class="text-white/60 font-bold text-lg max-w-md leading-relaxed">
-                Sở hữu ngay siêu phẩm {{ detail.product.name }} với ưu đãi độc quyền chỉ có tại hệ
-                thống AnhEm Motor.
-              </p>
-              <div class="flex flex-wrap gap-4 pt-4">
-                <template v-if="isMotorbike">
-                  <button
-                    class="px-12 py-5 bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-primary transition-all animate-glow shadow-xl flex items-center gap-2"
-                    @click="openConsultation"
-                  >
-                    Tư vấn & Báo giá
-                    <Icon name="fa6-solid:phone-volume" class="text-[10px]" />
-                  </button>
-                  <button
-                    class="px-10 py-5 bg-white/5 backdrop-blur-md text-white border border-white/10 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all flex items-center gap-2"
-                    @click="bookTestDrive"
-                  >
-                    Đăng ký lái thử
-                    <Icon name="fa6-solid:motorcycle" class="text-[10px]" />
-                  </button>
-                </template>
-                <template v-else>
-                  <button
-                    class="px-12 py-5 bg-primary text-white font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-primary transition-all animate-glow shadow-xl"
-                    @click="buyNow"
-                  >
-                    Đặt mua ngay
-                  </button>
-                  <button
-                    class="px-10 py-5 bg-white/5 backdrop-blur-md text-white border border-white/10 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl hover:bg-white/10 transition-all"
-                    @click="openConsultation"
-                  >
-                    Liên hệ tư vấn
-                  </button>
-                </template>
-              </div>
-            </div>
-
-            <div class="relative lg:h-[400px] flex items-center justify-center reveal-up delay-200">
-              <div
-                class="absolute inset-0 bg-primary/5 rounded-full blur-3xl scale-150 animate-pulse"
-              />
-              <img
-                :src="mainImage"
-                :alt="detail.product.name"
-                loading="eager"
-                fetchpriority="high"
-                class="relative z-10 w-full object-contain transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-700 drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
-                @error="$event.target.src = '/assets/image/placeholder-product.webp'"
-              />
-              <div
-                class="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[80%] h-12 bg-black/40 blur-2xl rounded-full"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div v-if="specifications.length > 0" class="space-y-16">
-          <div
-            class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-gray-100 pb-10"
-          >
-            <div class="space-y-3">
-              <span class="text-[9px] font-black text-primary uppercase tracking-[0.6em]"
-                >Technical Sheet</span
-              >
-              <h2
-                class="text-4xl lg:text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none"
-              >
-                Thông số <span class="text-primary">Kỹ thuật</span>
-              </h2>
-            </div>
-            <button
-              class="flex items-center gap-3 px-6 py-3 bg-gray-50 rounded-xl text-[9px] font-black text-gray-400 uppercase tracking-widest hover:bg-primary hover:text-white transition-all group"
-            >
-              <Icon
-                name="fa6-solid:download"
-                class="text-xs group-hover:-translate-y-0.5 transition-transform"
-              />
-              Tải Catalogue
-            </button>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-            <div
-              v-for="group in specGroups"
-              :key="group.title"
-              class="premium-card rounded-[2.5rem] bg-white/50 backdrop-blur-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col"
-              :class="[
-                isGroupExpanded(group.title)
-                  ? 'shadow-xl border-primary/20'
-                  : 'hover:border-primary/10',
-              ]"
-            >
-              <button
-                class="flex items-center justify-between gap-5 p-8 w-full text-left group/header"
-                @click="toggleGroup(group.title)"
-              >
-                <div class="flex items-center gap-5">
-                  <div
-                    class="w-14 h-14 rounded-[1.5rem] bg-gray-900 flex items-center justify-center text-primary text-2xl shadow-xl transition-transform duration-500 group-hover/header:scale-110"
-                    :class="[
-                      isGroupExpanded(group.title) ? 'scale-110 ring-4 ring-primary/10' : '',
-                    ]"
-                  >
-                    <Icon :name="`fa6-solid:${group.icon}`" />
-                  </div>
-                  <div class="space-y-1">
-                    <h3 class="font-black text-gray-900 text-lg uppercase tracking-tight">
-                      {{ group.title }}
+                      {{ hl.title }}
                     </h3>
-                    <div
-                      class="h-1 bg-primary/20 rounded-full transition-all duration-500"
-                      :class="[isGroupExpanded(group.title) ? 'w-16' : 'w-8']"
-                    />
+                    <p class="text-sm font-medium leading-7 text-slate-500">
+                      {{ hl.description }}
+                    </p>
+                  </div>
+                  <div
+                    class="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-950"
+                  >
+                    <span
+                      class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-white"
+                    >
+                      <Icon name="fa6-solid:arrow-right" />
+                    </span>
+                    Chi tiết nổi bật
                   </div>
                 </div>
-                <Icon
-                  name="fa6-solid:chevron-down"
-                  class="text-gray-300 text-sm transition-transform duration-500"
-                  :class="[isGroupExpanded(group.title) ? 'rotate-180 text-primary' : '']"
-                />
-              </button>
+              </article>
+            </div>
+          </section>
 
-              <div
-                class="grid transition-all duration-500 ease-in-out px-8"
-                :class="[
-                  isGroupExpanded(group.title)
-                    ? 'grid-rows-[1fr] opacity-100 pb-10'
-                    : 'grid-rows-[0fr] opacity-0 pb-0',
-                ]"
-              >
-                <div class="overflow-hidden">
-                  <div class="grid grid-cols-1 gap-6 pt-6 border-t border-gray-100/50">
+          <section id="ownership" class="ownership-section px-6 py-12 sm:px-10 lg:px-16 lg:py-20">
+            <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+              <div class="lg:col-span-5 space-y-6">
+                <div class="section-kicker section-kicker-dark">
+                  <span>{{ highlights.length > 0 ? '03' : '02' }}</span>
+                  An tâm sở hữu
+                </div>
+                <h2
+                  class="text-4xl font-black uppercase leading-[0.96] tracking-[-0.06em] text-white sm:text-5xl lg:text-6xl"
+                >
+                  Đồng hành<br />
+                  <span class="text-primary">trọn hành trình.</span>
+                </h2>
+                <p class="max-w-md text-sm font-medium leading-7 text-white/55">
+                  Không chỉ là một chiếc xe mới. Bạn nhận được hệ sinh thái chăm sóc riêng từ AnhEm
+                  Motor, từ tư vấn đến hậu mãi.
+                </p>
+                <div class="flex items-center gap-4 pt-2">
+                  <div class="flex -space-x-3">
                     <div
-                      v-for="spec in group.specs"
-                      :key="spec.key"
-                      class="flex flex-col gap-1.5 group/item"
+                      v-for="letter in ['A', 'N', 'H']"
+                      :key="letter"
+                      class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#111318] bg-primary text-[10px] font-black text-white"
                     >
-                      <div class="flex items-center gap-2">
-                        <div
-                          class="w-1.5 h-1.5 rounded-full bg-primary/20 group-hover/item:bg-primary transition-colors"
-                        />
+                      {{ letter }}
+                    </div>
+                  </div>
+                  <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">
+                    Đội ngũ hỗ trợ<br /><span class="text-white">luôn sẵn sàng</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="lg:col-span-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <article
+                  v-for="benefit in [
+                    { icon: 'shield-halved', value: '05 năm', label: 'Bảo hành chính hãng' },
+                    { icon: 'truck-fast', value: '24/7', label: 'Cứu hộ trên toàn quốc' },
+                    { icon: 'headset', value: '1:1', label: 'Chuyên gia hỗ trợ riêng' },
+                    { icon: 'stopwatch', value: '< 15 phút', label: 'Hỗ trợ thủ tục trả góp' },
+                  ]"
+                  :key="benefit.label"
+                  class="benefit-card"
+                >
+                  <div class="benefit-icon">
+                    <Icon :name="`fa6-solid:${benefit.icon}`" />
+                  </div>
+                  <div>
+                    <div
+                      class="text-2xl sm:text-3xl font-black uppercase tracking-[-0.05em] text-white"
+                    >
+                      {{ benefit.value }}
+                    </div>
+                    <div
+                      class="mt-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] text-white/45"
+                    >
+                      {{ benefit.label }}
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section
+            v-if="specifications.length > 0"
+            id="specifications"
+            class="border-t border-slate-200/70 px-6 py-12 sm:px-10 lg:px-16 lg:py-20"
+          >
+            <div
+              class="mb-10 flex flex-col gap-5 lg:mb-14 lg:flex-row lg:items-end lg:justify-between"
+            >
+              <div class="space-y-4">
+                <div class="section-kicker">
+                  <span>{{ highlights.length > 0 ? '04' : '03' }}</span>
+                  Dữ liệu sản phẩm
+                </div>
+                <h2 class="section-title">
+                  Thông số<br />
+                  <span>kỹ thuật.</span>
+                </h2>
+              </div>
+              <p class="max-w-md text-sm font-medium leading-7 text-slate-500">
+                Chọn từng nhóm để xem đầy đủ thông số của phiên bản {{ variantName }}.
+              </p>
+            </div>
+
+            <div class="specification-list">
+              <article
+                v-for="(group, groupIndex) in specGroups"
+                :key="group.title"
+                class="specification-group"
+                :class="isGroupExpanded(group.title) ? 'is-open' : ''"
+              >
+                <button class="specification-trigger" @click="toggleGroup(group.title)">
+                  <span class="specification-number">{{
+                    String(groupIndex + 1).padStart(2, '0')
+                  }}</span>
+                  <span class="specification-icon">
+                    <Icon :name="`fa6-solid:${group.icon}`" />
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span
+                      class="block text-left text-base font-black uppercase tracking-[-0.02em] text-slate-950 sm:text-xl"
+                    >
+                      {{ group.title }}
+                    </span>
+                    <span
+                      class="mt-1 block text-left text-[9px] font-bold uppercase tracking-[0.18em] text-slate-400"
+                    >
+                      {{ group.specs.length }} thông số
+                    </span>
+                  </span>
+                  <span class="specification-toggle">
+                    <Icon
+                      name="fa6-solid:plus"
+                      class="transition-transform duration-300"
+                      :class="isGroupExpanded(group.title) ? 'rotate-45' : ''"
+                    />
+                  </span>
+                </button>
+
+                <div
+                  class="grid transition-all duration-500 ease-in-out"
+                  :class="isGroupExpanded(group.title) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
+                >
+                  <div class="overflow-hidden">
+                    <div
+                      class="grid grid-cols-1 gap-x-10 px-4 pb-7 sm:grid-cols-2 sm:px-24 lg:px-32"
+                    >
+                      <div
+                        v-for="spec in group.specs"
+                        :key="spec.key"
+                        class="flex items-start justify-between gap-5 border-t border-slate-100 py-4"
+                      >
+                        <span class="text-xs font-semibold leading-5 text-slate-400">{{
+                          spec.label
+                        }}</span>
                         <span
-                          class="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover/item:text-primary transition-colors"
-                          >{{ spec.label }}</span
+                          class="max-w-[55%] text-right text-xs font-black leading-5 text-slate-900"
+                          >{{ spec.value }}</span
                         >
                       </div>
-                      <span class="text-base font-black text-gray-900 tracking-tight pl-3.5">{{
-                        spec.value
-                      }}</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section
+            id="reviews"
+            class="border-t border-slate-200/70 px-6 py-12 sm:px-10 lg:px-16 lg:py-20"
+          >
+            <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+              <div class="lg:col-span-4 space-y-6">
+                <div class="section-kicker">
+                  <span>{{ highlights.length > 0 ? '05' : '04' }}</span>
+                  Khách hàng nói gì
+                </div>
+                <h2 class="section-title">
+                  Trải nghiệm<br />
+                  <span>thật.</span>
+                </h2>
+                <div class="flex items-center gap-4">
+                  <div class="text-5xl font-black tracking-[-0.06em] text-slate-950">5.0</div>
+                  <div>
+                    <div class="flex gap-1 text-amber-400">
+                      <Icon v-for="i in 5" :key="i" name="fa6-solid:star" class="text-xs" />
+                    </div>
+                    <div
+                      class="mt-2 text-[9px] font-black uppercase tracking-[0.18em] text-slate-400"
+                    >
+                      Khách hàng xác thực
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="lg:col-span-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <article
+                  v-for="(review, index) in [
+                    {
+                      name: 'Lê Tuấn Anh',
+                      product: 'Winner X V3',
+                      content: 'Xe vận hành bốc, tư vấn chuyên nghiệp. Lấy xe trong 30 phút!',
+                    },
+                    {
+                      name: 'Nguyễn Quang',
+                      product: 'Exciter 155',
+                      content: 'Bảo hành tuyệt vời, hỗ trợ cứu hộ nhanh chóng. Rất tin tưởng.',
+                    },
+                    {
+                      name: 'Hoàng Nam',
+                      product: 'Vario 160',
+                      content: 'Ưu đãi hội viên rất tốt, thường xuyên có quà tặng. 10 điểm!',
+                    },
+                  ]"
+                  :key="review.name"
+                  class="review-card"
+                  :class="index === 2 ? 'md:col-span-2' : ''"
+                >
+                  <Icon name="fa6-solid:quote-left" class="text-2xl text-primary/20" />
+                  <p class="text-base font-bold leading-7 text-slate-700">{{ review.content }}</p>
+                  <div
+                    class="mt-auto flex items-center justify-between gap-4 border-t border-slate-100 pt-5"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-xs font-black text-white"
+                      >
+                        {{ review.name[0] }}
+                      </div>
+                      <div>
+                        <div class="text-xs font-black text-slate-950">{{ review.name }}</div>
+                        <div
+                          class="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-slate-400"
+                        >
+                          {{ review.product }}
+                        </div>
+                      </div>
+                    </div>
+                    <Icon name="fa6-solid:circle-check" class="text-sm text-emerald-500" />
+                  </div>
+                </article>
+              </div>
             </div>
-          </div>
+          </section>
+
+          <section class="purchase-cta group">
+            <div class="purchase-cta-glow" />
+            <div
+              class="relative z-10 grid grid-cols-1 items-center gap-8 px-6 py-12 sm:px-10 lg:grid-cols-2 lg:px-16 lg:py-16"
+            >
+              <div class="space-y-6">
+                <div
+                  class="inline-flex items-center gap-3 text-[9px] font-black uppercase tracking-[0.24em] text-primary"
+                >
+                  <span class="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                  Sẵn sàng trải nghiệm
+                </div>
+                <h2
+                  class="text-4xl font-black uppercase leading-[0.96] tracking-[-0.06em] text-white sm:text-5xl lg:text-6xl"
+                >
+                  Đưa {{ detail.product.name }}<br />
+                  <span class="text-primary">về nhà hôm nay.</span>
+                </h2>
+                <p class="max-w-lg text-sm font-medium leading-7 text-white/55">
+                  Nhận báo giá lăn bánh, phương án trả góp và ưu đãi phù hợp nhất từ chuyên viên
+                  AnhEm Motor.
+                </p>
+                <div class="flex flex-col gap-3 pt-2 sm:flex-row">
+                  <template v-if="isMotorbike">
+                    <button class="cta-primary" @click="openConsultation">
+                      Tư vấn & Báo giá
+                      <Icon name="fa6-solid:phone-volume" />
+                    </button>
+                    <button class="cta-secondary" @click="bookTestDrive">
+                      Đăng ký lái thử
+                      <Icon name="fa6-solid:motorcycle" />
+                    </button>
+                  </template>
+                  <template v-else>
+                    <button class="cta-primary" @click="buyNow">
+                      Đặt mua ngay
+                      <Icon name="fa6-solid:arrow-right" />
+                    </button>
+                    <button class="cta-secondary" @click="openConsultation">
+                      Liên hệ tư vấn
+                      <Icon name="fa6-solid:headset" />
+                    </button>
+                  </template>
+                </div>
+              </div>
+
+              <div class="relative flex min-h-[260px] items-center justify-center lg:min-h-[360px]">
+                <div
+                  class="absolute h-52 w-52 rounded-full border border-white/10 sm:h-72 sm:w-72"
+                />
+                <div
+                  class="absolute h-36 w-36 rounded-full border border-primary/20 sm:h-52 sm:w-52"
+                />
+                <img
+                  :src="mainImage"
+                  :alt="detail.product.name"
+                  loading="lazy"
+                  class="relative z-10 max-h-[340px] w-full object-contain drop-shadow-[0_28px_30px_rgba(0,0,0,0.55)] transition-transform duration-700 group-hover:-translate-y-2 group-hover:scale-105"
+                  @error="$event.target.src = '/assets/image/placeholder-product.webp'"
+                />
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -1270,6 +1195,316 @@ const bookTestDrive = () => {
 .premium-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.1);
+}
+
+.product-story {
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px), #f8fafc;
+  background-size: 48px 48px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #64748b;
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.section-kicker span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: #e31837;
+  color: white;
+  letter-spacing: 0;
+}
+
+.section-kicker-dark {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.section-title {
+  color: #0f172a;
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 900;
+  line-height: 0.96;
+  letter-spacing: -0.065em;
+  text-transform: uppercase;
+}
+
+.section-title span {
+  color: #e31837;
+}
+
+.story-copy {
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 24px 70px -38px rgba(15, 23, 42, 0.28);
+  color: #475569;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.9;
+}
+
+.story-copy :deep(p:first-child) {
+  color: #0f172a;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.75;
+}
+
+.highlight-card {
+  overflow: hidden;
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 24px 70px -42px rgba(15, 23, 42, 0.35);
+}
+
+.highlight-media {
+  position: relative;
+  min-height: 280px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.highlight-media::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(15, 23, 42, 0.42));
+  content: '';
+}
+
+.highlight-media img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.highlight-card:hover .highlight-media img {
+  transform: scale(1.045);
+}
+
+.highlight-index {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1rem;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.08em;
+}
+
+.ownership-section {
+  background:
+    radial-gradient(circle at 8% 10%, rgba(227, 24, 55, 0.16), transparent 32%),
+    radial-gradient(circle at 92% 90%, rgba(227, 24, 55, 0.08), transparent 28%), #111318;
+}
+
+.benefit-card {
+  display: flex;
+  min-height: 168px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(227, 24, 55, 0.45);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.benefit-icon {
+  display: flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background: #e31837;
+  color: white;
+  box-shadow: 0 14px 28px -12px rgba(227, 24, 55, 0.7);
+}
+
+.specification-list {
+  overflow: hidden;
+  border-top: 1px solid #e2e8f0;
+}
+
+.specification-group {
+  border-bottom: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.6);
+  transition: background-color 0.3s ease;
+}
+
+.specification-group.is-open {
+  background: white;
+}
+
+.specification-trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 0.25rem;
+  outline: none;
+}
+
+.specification-trigger:focus-visible {
+  outline: 2px solid #e31837;
+  outline-offset: -2px;
+}
+
+.specification-number {
+  display: none;
+  width: 2rem;
+  color: #94a3b8;
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.specification-icon,
+.specification-toggle {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+}
+
+.specification-icon {
+  width: 3rem;
+  height: 3rem;
+  background: #0f172a;
+  color: #e31837;
+}
+
+.specification-toggle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+}
+
+.specification-group.is-open .specification-toggle {
+  border-color: #e31837;
+  background: #e31837;
+  color: white;
+}
+
+.review-card {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow: 0 22px 60px -42px rgba(15, 23, 42, 0.4);
+}
+
+.purchase-cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(110deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px), #0b0d11;
+  background-size: 40px 40px;
+}
+
+.purchase-cta-glow {
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 9999px;
+  background: rgba(227, 24, 55, 0.18);
+  filter: blur(100px);
+}
+
+.cta-primary,
+.cta-secondary {
+  display: inline-flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0 1.5rem;
+  border-radius: 1rem;
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.cta-primary {
+  background: #e31837;
+  color: white;
+  box-shadow: 0 18px 38px -16px rgba(227, 24, 55, 0.72);
+}
+
+.cta-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  color: white;
+}
+
+.cta-primary:hover,
+.cta-secondary:hover {
+  transform: translateY(-2px);
+}
+
+.cta-primary:hover {
+  background: white;
+  color: #e31837;
+}
+
+.cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (min-width: 640px) {
+  .specification-number {
+    display: inline-block;
+  }
+
+  .specification-trigger {
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .review-card {
+    padding: 2rem;
+  }
 }
 
 i {

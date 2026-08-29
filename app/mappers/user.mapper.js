@@ -4,6 +4,7 @@ export const userMapper = {
       fullName: formData.fullName,
       phoneNumber: formData.phoneNumber,
       gender: formData.gender,
+      dateOfBirth: formData.dob || null,
     };
   },
 

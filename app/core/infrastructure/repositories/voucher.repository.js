@@ -1,4 +1,10 @@
 export const voucherRepository = {
+  async getPersonal() {
+    const axios = useAxios();
+    const response = await axios.get('/api/v1/client/vouchers/personal');
+    return response.data?.value || response.data || [];
+  },
+
   async getByCode(code) {
     const axios = useAxios();
     const response = await axios.get(`/api/v1/voucher/code/${code}`);
