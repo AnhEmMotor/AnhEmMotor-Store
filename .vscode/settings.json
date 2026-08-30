@@ -3,5 +3,37 @@
   "scss.validate": false,
   "less.validate": false,
   "css.lint.unknownAtRules": "ignore",
-  "css.lint.unknownProperties": "ignore"
+  "css.lint.unknownProperties": "ignore",
+  "editor.formatOnSave": true,
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5",
+  "prettier.printWidth": 100,
+  "prettier.tabWidth": 2,
+  "prettier.bracketSpacing": true,
+  "prettier.arrowParens": "always",
+  "prettier.vueIndentScriptAndStyle": true,
+  "vue.format.template.enabled": false,
+  "vue.format.script.enabled": false,
+  "vue.format.style.enabled": false
 }
