@@ -192,7 +192,7 @@ const orderMapper = {
     }
 
     const remainingAmount = requiresDeposit ? Math.max(total - depositAmount, 0) : 0;
-    const payableNow = requiresDeposit ? Math.max(0, depositAmount - discountAmount) : total;
+    const payableNow = requiresDeposit ? depositAmount : total;
 
     return {
       subtotal,
