@@ -167,6 +167,7 @@ export function useCart() {
         stock,
         isOutOfStock: typeof stock === 'number' && (stock <= 0 || item.quantity > stock),
         managementType: detail?.managementType || null,
+        categoryName: detail?.categoryName || null,
       };
     })
   );
